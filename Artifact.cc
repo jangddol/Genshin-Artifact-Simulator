@@ -8,11 +8,12 @@ void Artifact::FullMainOption(int mainType)
 }
 
 
-int Artifact::UseCummulatedWeight(int cummulatedWeight[19])
+int Artifact::UseCummulatedWeight(int* cummulatedWeight, int length)
 {
-	int tempInt = gRandom->Integer(cummulatedWeight[18]) + 1; // 1부터 확률표 합까지의 랜덤 int를 만든다.
+	// generate random integer from 0 to the sum of probability table
+	int tempInt = gRandom->Integer(cummulatedWeight[length - 1]) + 1;  
 	int selectedInt = -1;
-	for (int i = 0; i < 19; i++) // for문을 돌리면서 대소비교를 한다.
+	for (int i = 0; i < length; i++) // for문을 돌리면서 대소비교를 한다.
 	{
 		int ithWeight = cummulatedWeight[i];
 		if (ithWeight <= tempInt)
@@ -27,22 +28,20 @@ int Artifact::UseCummulatedWeight(int cummulatedWeight[19])
 
 void Artifact::GenerateMainOption()
 {
-	int selectedInt = UseCummulatedWeight(mCummulatedWeight);
+	int selectedInt = UseCummulatedWeight(mCummulatedWeight, 19);
 	mMainType = selectedInt;
 	FullMainOption(selectedInt); //////////// 안묶여있는게 좀 그렇네요.
 }
 
 
-int* Artifact::GenerateCummulatedWeight()
-{
-	int returnList[10];
-	std::copy_n(std::begin(mSubOptProb), 10, std::begin(returnList));
-	returnList[mMainType] = 0;
+void Artifact::GenerateCummulatedWeight(int* oList)
+{	
+	std::copy_n(std::begin(mSubOptProb), 10, oList);
+	oList[mMainType] = 0;
 	for (int i = 1; i < 10; i++)
 	{
-		returnList[i] += mSubOptProb[i - 1];
+		oList[i] += oList[i - 1];
 	}
-	return returnList;
 }
 
 
@@ -68,23 +67,20 @@ bool CheckIsThereIn(int element, int* list, int length)
 }
 
 
-int* Artifact::GenerateStartOpt(int cummulatedWeight[19])
+void Artifact::GenerateStartOpt(int* oList, int cummulatedWeight[10])
 {
-	UseCummulatedWeight(cummulatedWeight);
-	int returnList[4] = { -1, -1, -1, -1 };
-	returnList[1] = UseCummulatedWeight(cummulatedWeight);
-
-	for (int i = 2; i < 5; i++)
+	oList[0] = UseCummulatedWeight(cummulatedWeight, 10);
+	cout << "oList[0] : " << oList[0] << endl;
+	for (int i = 1; i < 4; i++)
 	{
-		int temp = UseCummulatedWeight(cummulatedWeight);
-		while (CheckIsThereIn(temp, returnList, 4))
+		int temp = UseCummulatedWeight(cummulatedWeight, 10);
+		cout << "temp : " << temp << endl;
+		while (CheckIsThereIn(temp, oList, 4)) ///////////////////////////////// stuck in here
 		{
-			temp = UseCummulatedWeight(cummulatedWeight);
+			temp = UseCummulatedWeight(cummulatedWeight, 10);
 		}
-		returnList[i] = temp;
+		oList[i] = temp;
 	}
-
-	return returnList;
 }
 
 
@@ -116,20 +112,54 @@ void Artifact::UpgradeSubOption(int startOptList[4], bool whether4OptStart)
 
 void Artifact::GenerateSubOption()
 {
-	int* cummulatedWeight = GenerateCummulatedWeight();
+	int subCummulatedWeight[10] = { 0 };
+
+	cout << "Start to generate CummulatedWeight" << endl;
+
+	GenerateCummulatedWeight(subCummulatedWeight);
 		// 1. 메인옵션을 확인해서 확률표에서 해당 부분을 0으로 만든다.
 			// 1-1. 이걸 가지고 cummulatedWeight을 만든다.
+				// This cummulatedWeight is for subOption
+				// Therefore the length of cummulatedWeight is 10.
+	
+	cout << "Finish to generate CummulatedWeight" << endl;
+	cout << "subCummulatedWeight : " << subCummulatedWeight[0] << ", "
+									<< subCummulatedWeight[1] << ", "
+									<< subCummulatedWeight[2] << ", "
+									<< subCummulatedWeight[3] << ", "
+									<< subCummulatedWeight[4] << ", "
+									<< subCummulatedWeight[5] << ", "
+									<< subCummulatedWeight[6] << ", "
+									<< subCummulatedWeight[7] << ", "
+									<< subCummulatedWeight[8] << ", "
+									<< subCummulatedWeight[9] << endl;
 	bool whether4OptStart = Selected3or4OptStart();
 		// 2. 처음에 3개인지 4개인지 고른다. -> 8개 or 9개
-	int* startOptList = GenerateStartOpt(cummulatedWeight);
+	
+	cout << "Finish to decide whether 4 Option started or not" << endl;
+
+	int startOptList[4] = { -1, -1, -1, -1 };
+	GenerateStartOpt(startOptList, subCummulatedWeight);
 		// 3. 처음 옵션 4개가 무엇인지 결정한다. 4개를 겹치지 않게 생성한다.
+	
+	cout << "Finish to generate Start Options" << endl;
+
 	UpgradeSubOption(startOptList, whether4OptStart);
 		// 4. 기존 4개를 랜덤으로 각각 1회 고정에 랜덤으로 4회 또는 5회 증가시킨다.
+	
+	cout << "Finish to generate Upgrade SubOptions" << endl;
 }
 
 
 void Artifact::Generation()
 {
+	cout << "Start to generate Artifact" << endl;
+	
 	GenerateMainOption(); // 메인옵션 : 부위마다 다름
+
+	cout << "Finish to generate MainOption" << endl;
+
 	GenerateSubOption(); // 부옵션 : 부위마다, 메인옵션마다 다름.
+
+	cout << "Finish to generate SubOption" << endl;
 }

@@ -28,10 +28,10 @@ private:
 	void GenerateSubOption();
 
 	void FullMainOption(int mainType);
-	int UseCummulatedWeight(int cummulatedWeight[19]);
-	int* GenerateCummulatedWeight();
+	int  UseCummulatedWeight(int* cummulatedWeight, int length);
+	void GenerateCummulatedWeight(int* oList);
 	bool Selected3or4OptStart();
-	int* GenerateStartOpt(int cummulatedWeight[19]);
+	void GenerateStartOpt(int* oList, int cummulatedWeight[19]);
 	void UpgradeSubOption(int startOptList[4], bool whether4OptStart);
 
 	int mMainType;
