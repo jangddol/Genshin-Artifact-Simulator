@@ -6,18 +6,15 @@
 class ArtClock : public Artifact
 {
 public:
-	ArtClock() {}
+	ArtClock()
+	{
+		mType = 3;
+		mProbabiltyWeight
+			= { 0, 0, 8, 0,  3,  8,  0,  3,  8,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 };
+		mCummulatedWeight
+			= { 0, 0, 8, 8, 11, 19, 19, 22, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 };
+	}
 	~ArtClock() {}
-
-protected:
-	int mType = 3;
-	int probabiiltyWeight[19] 
-		= { 0, 0, 8, 0,  3,  8,  0,  3,  8,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 };
-	int cummulatedWeight[19]
-		= { 0, 0, 8, 8, 11, 19, 19, 22, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 };
-
-private:
-	
 };
 
 #endif

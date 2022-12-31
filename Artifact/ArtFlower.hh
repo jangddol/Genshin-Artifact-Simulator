@@ -6,16 +6,13 @@
 class ArtFlower : public Artifact
 {
 public:
-	ArtFlower() {}
+	ArtFlower()
+	{
+		mType = 1;
+		mProbabiltyWeight = { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		mCummulatedWeight = { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+	}
 	~ArtFlower() {}
-
-protected:
-	int mType = 1;
-	int probabiiltyWeight[19] = { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	int cummulatedWeight[19]  = { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-
-private:
-	
 };
 
 #endif

@@ -9,41 +9,46 @@ using namespace std;
 
 Artifact GenRandArtf_1()
 {
-	ArtFlower returnArtf = ArtFlower();
-	returnArtf.Generation();
-	return *(Artifact*)&returnArtf;
+	ArtFlower tempArtf = ArtFlower();
+	tempArtf.Generation();
+	Artifact returnArtf = *(Artifact*)&tempArtf;
+	return returnArtf;
 }
 
 
 Artifact GenRandArtf_2()
 {
-	ArtFeather returnArtf = ArtFeather();
-	returnArtf.Generation();
-	return *(Artifact*)&returnArtf;
+	ArtFeather tempArtf = ArtFeather();
+	tempArtf.Generation();
+	Artifact returnArtf = *(Artifact*)&tempArtf;
+	return returnArtf;
 }
 
 
 Artifact GenRandArtf_3()
 {
-	ArtClock returnArtf = ArtClock();
-	returnArtf.Generation();
-	return *(Artifact*)&returnArtf;
+	ArtClock tempArtf = ArtClock();
+	tempArtf.Generation();
+	Artifact returnArtf = *(Artifact*)&tempArtf;
+	return returnArtf;
 }
 
 
 Artifact GenRandArtf_4()
 {
-	ArtCup returnArtf = ArtCup();
-	returnArtf.Generation();
-	return *(Artifact*)&returnArtf;
+	ArtCup tempArtf = ArtCup();
+	tempArtf.Generation();
+	Artifact returnArtf = *(Artifact*)&tempArtf;
+	return returnArtf;
 }
 
 
 Artifact GenRandArtf_5()
 {
-	ArtCrown returnArtf = ArtCrown();
-	returnArtf.Generation();
-	return *(Artifact*)&returnArtf;
+	ArtCrown tempArtf = ArtCrown();
+	tempArtf.Generation();
+	Artifact returnArtf = *(Artifact*)&tempArtf;
+	return returnArtf;
 }
 
 
@@ -96,7 +101,7 @@ bool CheckWhetherAppend(Character* character, Artifact gennedArtifact, vector<ve
 	vector<Artifact> SelectedList = ArtifactSuperList[numType-1];
 	int mainType = gennedArtifact.GetMainType();
 
-	if (CheckEffectiveOption(character, mainType) == false) return false; 
+	if (CheckEffectiveOption(character, mainType) == false && (mainType != 3 && mainType != 6)) return false; 
 
 	int effectiveList[10] = { 0 };
 	int effListSize;
@@ -142,7 +147,9 @@ double CalLoopArtifact(Character* character, Artifact gennedArtifact, vector<vec
 												*(ArtClock*)&loopList[2][i3],
 												*(ArtCup*)&loopList[3][i4],
 												*(ArtCrown*)&loopList[4][i5]);
+						character->Initialization();
 						tempDamage = character->GetDamage();
+						cout << tempDamage << endl;
 						if (tempDamage > bestDamage)
 						{
 							bestDamage = tempDamage;
@@ -170,8 +177,23 @@ void Simulator()
 	gStyle->SetOptStat(kFALSE);
 	gRandom->SetSeed(0);
 
-	Character* simChar = new Ningguang();
+	SolarPearl weapon = SolarPearl();
+	cout << "weapon generated" << endl;
 
+	Character* simChar = new Ningguang(weapon);
+	cout << "character generated" << endl;
+	
+	simChar->MakeScoreFunction();
+	cout << "Effection List : " << simChar->GetEffection(0) << ", "
+								<< simChar->GetEffection(1) << ", "
+								<< simChar->GetEffection(2) << ", "
+								<< simChar->GetEffection(3) << ", "
+								<< simChar->GetEffection(4) << ", "
+								<< simChar->GetEffection(5) << ", "
+								<< simChar->GetEffection(6) << ", "
+								<< simChar->GetEffection(7) << ", "
+								<< simChar->GetEffection(8) << ", "
+								<< simChar->GetEffection(9) << endl;
 	vector<Artifact> ArtifactList1 = {};
 	vector<Artifact> ArtifactList2 = {};
 	vector<Artifact> ArtifactList3 = {};
@@ -185,38 +207,47 @@ void Simulator()
 	
 	// the number of artifacts to get
 	constexpr int artifactNum = 1; // 1 month ~ 300 artifacts
-
+	
 	// Nth-histogram
 	TH1D* N_Histogram[artifactNum];
 	for (int i = 0; i < artifactNum; i++)
 	{
-		N_Histogram[i] = new TH1D(Form("%d-th trial", i+1), "", artifactNum, 0, artifactNum);
+		N_Histogram[i] = new TH1D(Form("%d-th trial", i+1), "", 30, 0, 30);
 	}
 
+
+	// Simulation Part
 	for (int i = 0; i < simNum; i++)
 	{
-		cout << "start for loop - simNum" << endl;
 		double bestScore = 0;
+
+		cout << "==========" << i << "-th simulation start" << "==========" << endl;
 
 		for (int j = 0; j < artifactNum; j++)
 		{
-			cout << "start for loop - artifactNum" << endl;
-
 			Artifact gennedArtifact = GenerateRandomArtifact();
 			
-			cout << "finish Artifact generation" << endl;
-
+			cout << "	Artifact Generation End " << endl;
+			cout << "		Artifact MainOption : " << STATSTRING[gennedArtifact.GetMainType()] << " = " << gennedArtifact.GetMainStat().GetOption(gennedArtifact.GetMainType()) << endl;
+			cout << " 		Artifact SubOption  : " << gennedArtifact.GetSubStat().GetOption(0) << ", "
+													<< gennedArtifact.GetSubStat().GetOption(1) << ", "
+													<< gennedArtifact.GetSubStat().GetOption(2) << ", "
+													<< gennedArtifact.GetSubStat().GetOption(3) << ", "
+													<< gennedArtifact.GetSubStat().GetOption(4) << ", "
+													<< gennedArtifact.GetSubStat().GetOption(5) << ", "
+													<< gennedArtifact.GetSubStat().GetOption(6) << ", "
+													<< gennedArtifact.GetSubStat().GetOption(7) << ", "
+													<< gennedArtifact.GetSubStat().GetOption(8) << ", "
+													<< gennedArtifact.GetSubStat().GetOption(9) << endl;
 			bool whetherAppend = CheckWhetherAppend(simChar, gennedArtifact, ArtifactSuperList);
 
-			cout << "finish to decide whether append generated Artifact" << endl;
+			cout << "	Checking Whether Append End : " << whetherAppend << endl;
 
 			if (whetherAppend)
-			{
-				cout << "append possible" << endl;
-				
+			{				
 				double comparedScore = CalLoopArtifact(simChar, gennedArtifact, ArtifactSuperList);
 				
-				cout << "Cal Loop finished" << endl;
+				cout << "	Artifact Loop Calculation done : comparedScore = " << comparedScore << endl;
 
 				if (comparedScore >= bestScore)
 				{
@@ -224,17 +255,17 @@ void Simulator()
 				}
 
 				AppendArtifactList(gennedArtifact, ArtifactSuperList);
-
-				cout << "append finished" << endl;
 			}
-			
-			N_Histogram[i]->Fill(bestScore);
 
-			cout << "fill histogram finished" << endl;
+			cout << "	" << i << "-th bestScore : " << bestScore << endl;
+
+			N_Histogram[j]->Fill(bestScore);
 		}	
 	}
 
-	TH2D* VisualHistogram = new TH2D("Visual", "", artifactNum, 0, artifactNum, artifactNum, 0, artifactNum);
+
+	// Plot Part
+	TH2D* VisualHistogram = new TH2D("Visual", "", artifactNum, 0, artifactNum, 30, 0, 30);
 	for (int i = 0; i < artifactNum; i++)
 	{
 		for (int j = 0; j < artifactNum; j++)

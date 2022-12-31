@@ -2,18 +2,20 @@
 
 
 double Ningguang::GetDamage(Stat stat)
-{
-    double CR = stat[0];
-    double CB = stat[1];
-    double geoBonus = stat[15];
-    double normalAttackBonus = stat[19];
-    double strongAttackBonus = stat[20];
-    double eBonus = stat[22];
-    double qBonus = stat[23];
-    double totalATK = stat[24];
-    double resistCoef = stat[30];
-    double defenseCoef = stat[31];
-    double levelCoef = stat[34];
+{   
+    double CR = stat.GetOption(0);
+    if (CR > 100) CR = 100.;
+    if (CR < 0) CR = 0.;
+    double CB = stat.GetOption(1);
+    double geoBonus = stat.GetOption(15);
+    double normalAttackBonus = stat.GetOption(19);
+    double strongAttackBonus = stat.GetOption(20);
+    double eBonus = stat.GetOption(22);
+    double qBonus = stat.GetOption(23);
+    double totalATK = stat.GetOption(24);
+    double resistCoef = stat.GetOption(30);
+    double defenseCoef = stat.GetOption(31);
+    double levelCoef = stat.GetOption(34);
 
     int constellation = 6;   //////////////////////  별자리 기능 추가
     

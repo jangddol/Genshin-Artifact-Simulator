@@ -1,7 +1,8 @@
 {
     "files.associations": {
         "Simulator.C": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "test.C": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

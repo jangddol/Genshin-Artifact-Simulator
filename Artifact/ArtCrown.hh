@@ -6,18 +6,15 @@
 class ArtCrown : public Artifact
 {
 public:
-	ArtCrown() {}
-	~ArtCrown() {}
-
-protected:
-	int mType = 5;
-	int probabiiltyWeight[19]
+	ArtCrown()
+	{
+		mType = 5;
+		mProbabiltyWeight
 		= { 5,  5, 11,  0,  0, 11,  0,  2, 11,  0,  0,  0,  0,  0,  0,  0,  0,  0,  5 };
-	int cummulatedWeight[19]
+		mCummulatedWeight
 		= { 5, 10, 21, 21, 21, 32, 32, 34, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 50 };
-
-private:
-	
+	}
+	~ArtCrown() {}
 };
 
 #endif

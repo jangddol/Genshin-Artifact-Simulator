@@ -15,7 +15,7 @@ public:
 	Stat GetSubStat() { return mSubStat; }
 	Stat GetSubSubStat() { return mSubSubStat; }
 
-private:
+protected:
 	Stat mMainStat;
 	Stat mSubStat;
 	Stat mSubSubStat;

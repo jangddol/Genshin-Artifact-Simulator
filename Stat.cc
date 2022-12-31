@@ -64,8 +64,7 @@ void Stat::CalDefenseCoef()
 	double charLv = GetLevel();
 	double monsterLv = GetMonsterLevel();
 	double defenseCut = GetDefenseCut();
-	double result;
-	result = (charLv + monsterLv + 200) / ((charLv + 100) + (monsterLv + 100) * (1 - defenseCut / 100));
+	double result = (charLv + monsterLv + 200) / ((charLv + 100) + (monsterLv + 100) * (1 - defenseCut / 100));
 	mStat[31] = result;
 }
 
@@ -74,7 +73,6 @@ void Stat::CalLevelCoef()
 {
 	double charLv = GetLevel();
 	double monsterLv = GetMonsterLevel();
-	double result;
-	result = (charLv + 100) / (charLv + monsterLv + 200);
+	double result = (charLv + 100) / (charLv + monsterLv + 200);
 	mStat[34] = result;
 }

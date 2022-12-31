@@ -14,12 +14,12 @@
 class Character
 {
 public:
-	Character() {}
+	Character(Weapon weapon) { mWeapon = weapon; }
 	~Character() {}
 
 	void Initialization();
 
-	double GetDamage();
+	virtual double GetDamage() { return GetDamage(mStat); }
 	virtual double GetDamage(Stat stat);
 	void MakeScoreFunction();
 	double GetScore();
@@ -38,12 +38,15 @@ public:
 	void     SetArtCup(ArtCup artCup)				{ fArtCup = artCup; }
 	Artifact GetArtCrown()							{ return fArtCrown; }
 	void     SetArtCrown(ArtCrown artCrown)			{ fArtCrown = artCrown; }
-	Skill GetPSkill() { return mPSkill; }
-	void  SetPSkill(Skill pSkill) { mPSkill = pSkill; }
-	Skill GetESkill() { return mESkill; }
-	void  SetESkill(Skill eSkill) { mESkill = eSkill; }
-	Skill GetQSkill() { return mQSkill; }
-	void  SetQSkill(Skill qSkill) { mQSkill = qSkill; }
+	// Skill GetPSkill() { return mPSkill; }
+	// void  SetPSkill(Skill pSkill) { mPSkill = pSkill; }
+	// Skill GetESkill() { return mESkill; }
+	// void  SetESkill(Skill eSkill) { mESkill = eSkill; }
+	// Skill GetQSkill() { return mQSkill; }
+	// void  SetQSkill(Skill qSkill) { mQSkill = qSkill; }
+
+protected:
+	void SetCharacterStat(int index, double amount) { mCharacterStat.SetOption(index, amount); }
 
 private:
 	Stat GenerateStatExceptArtifact();
@@ -60,9 +63,9 @@ private:
 	ArtClock   fArtClock;
 	ArtCup     fArtCup;
 	ArtCrown   fArtCrown;
-	Skill mPSkill;
-	Skill mESkill;
-	Skill mQSkill;
+	// Skill mPSkill;
+	// Skill mESkill;
+	// Skill mQSkill;
 
 };
 

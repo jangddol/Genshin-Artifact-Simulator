@@ -3,6 +3,7 @@
 
 
 #include "Stat.hh"
+#include <vector>
 
 
 class Artifact
@@ -12,27 +13,27 @@ public:
 	~Artifact() {}
 
 	void Generation();
-	int GetType() { return mType; }
+	virtual int GetType() { return mType; }
 	int GetMainType() { return mMainType; }
 
 	Stat GetMainStat() { return mMainStat; }
 	Stat GetSubStat() { return mSubStat; }
 
 protected:
-	int mType;
-	int mProbabiiltyWeight[19];
-	int mCummulatedWeight[19];
+	int mType = 0;
+	vector<int> mProbabiltyWeight;
+	vector<int> mCummulatedWeight;
 
 private:
 	void GenerateMainOption();
 	void GenerateSubOption();
 
-	void FullMainOption(int mainType);
-	int  UseCummulatedWeight(int* cummulatedWeight, int length);
-	void GenerateCummulatedWeight(int* oList);
-	bool Selected3or4OptStart();
-	void GenerateStartOpt(int* oList, int cummulatedWeight[19]);
-	void UpgradeSubOption(int startOptList[4], bool whether4OptStart);
+	void        FullMainOption(int mainType);
+	int         UseCummulatedWeight(vector<int> cummulatedWeight);
+	vector<int> GenerateCummulatedWeight();
+	bool        Selected3or4OptStart();
+	vector<int> GenerateStartOpt(vector<int> cummulatedWeight);
+	void        UpgradeSubOption(vector<int> startOptList, bool whether4OptStart);
 
 	int mMainType;
 	double mMaxMainOptionList[19]
@@ -44,7 +45,7 @@ private:
 	Stat mMainStat;
 	Stat mSubStat;
 
-	int mSubOptProb[10] = { 3, 3, 4, 6, 4, 4, 6, 4, 4, 6 };
+	vector<int> mSubOptProb = { 3, 3, 4, 6, 4, 4, 6, 4, 4, 6 };
 	double mOptionArray[10][4] =
 	{ {2.72000003606081, 3.10999993234873, 3.50000001490116, 3.88999991118908},
 		{5.44000007212162, 6.21999986469746, 6.98999986052513, 7.76999965310097},

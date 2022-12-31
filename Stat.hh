@@ -1,6 +1,17 @@
 #ifndef STAT_HH
 #define STAT_HH
 
+
+std::vector<TString> STATSTRING
+	= {"Critical Rate", "Critical Bonus", "ATK%", "ATK", "Element Charge", 
+		"HP%", "HP", "Element Mastery", "DEF%", "DEF",
+		"Pyro Bonus", "Electro Bonus", "Cryo Bonus", "Hydro Bonus", "Anymo Bonus",
+		"Gyro Bonus", "Phys Bonus", "Dendro Bonus", "Heal Bonus", "Normal Attack Bonus", 
+		"Strong Attack Bonus", "Dodge Attack Bonus", "E Skill Bonus", "Q Skill Bonus", "Total ATK",
+		"Total HP", "Total DEF", "Resist Cut", "DEF Cut", "Monster Resist",
+		"Resist Coef", "DEF Coef", "Lv", "Monster Lv", "Lv Coef"};
+
+
 class Stat
 {
 public:

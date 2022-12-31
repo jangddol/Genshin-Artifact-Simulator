@@ -6,16 +6,13 @@
 class ArtFeather : public Artifact
 {
 public:
-	ArtFeather() {}
+	ArtFeather()
+	{
+		mType = 2;
+		mProbabiltyWeight = { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		mCummulatedWeight = { 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+	}
 	~ArtFeather() {}
-
-protected:
-	int mType = 2;
-	int probabiiltyWeight[19] = { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	int cummulatedWeight[19]  = { 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-
-private:
-	
 };
 
 #endif
