@@ -199,7 +199,7 @@ struct SuperArtifactList
 	vector<ArtClock> clock;
 	vector<ArtCup> cup;
 	vector<ArtCrown> crown;
-}
+};
 
 
 void Simulator()
@@ -217,13 +217,13 @@ void Simulator()
     artSetStat.SetZero();
     artSetStat.SetAttackPer(18);
     artSetStat.SetQBonus(20);
-    character.SetArtSetStat(artSetStat);
+    simChar->SetArtSetStat(artSetStat);
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
     resonanceStat.SetResistCut(20.);
     resonanceStat.SetGeoBonus(15.);
-    character.SetResonanceStat(resonanceStat);
+    simChar->SetResonanceStat(resonanceStat);
 
 	simChar->MakeEffectionArray();
 	cout << "Effection List : " << simChar->GetEffection(0) << ", "
@@ -237,12 +237,13 @@ void Simulator()
 								<< simChar->GetEffection(8) << ", "
 								<< simChar->GetEffection(9) << endl;
 
-	SuperArtifactList artifactSuperList;
-	artifactSuperList.flower = {};
-	artifactSuperList.feather = {};
-	artifactSuperList.clock = {};
-	artifactSuperList.cup = {};
-	artifactSuperList.crown = {};
+	vector<Artifact> ArtifactList1 = {};
+	vector<Artifact> ArtifactList2 = {};
+	vector<Artifact> ArtifactList3 = {};
+	vector<Artifact> ArtifactList4 = {};
+	vector<Artifact> ArtifactList5 = {};
+	vector<vector<Artifact>> ArtifactSuperList 
+		= { ArtifactList1, ArtifactList2, ArtifactList3, ArtifactList4, ArtifactList5 };
 
 
 	// simulation number
@@ -273,12 +274,7 @@ void Simulator()
 	for (int i = 0; i < simNum; i++)
 	{
 		double bestDamage = 0;
-		
-		artifactSuperList.flower = {};
-		artifactSuperList.feather = {};
-		artifactSuperList.clock = {};
-		artifactSuperList.cup = {};
-		artifactSuperList.crown = {};
+		ArtifactSuperList = { ArtifactList1, ArtifactList2, ArtifactList3, ArtifactList4, ArtifactList5 };
 		
 		// cout << "==========" << i << "-th simulation start" << "==========" << endl;
 
