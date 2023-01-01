@@ -192,6 +192,16 @@ void AppendArtifactList(Artifact gennedArtifact, vector<vector<Artifact>>& Artif
 }
 
 
+struct SuperArtifactList
+{
+	vector<ArtFlower> flower;
+	vector<ArtFeather> feather;
+	vector<ArtClock> clock;
+	vector<ArtCup> cup;
+	vector<ArtCrown> crown;
+}
+
+
 void Simulator()
 {
 	// gStyle->SetOptStat(kFALSE);
@@ -203,6 +213,18 @@ void Simulator()
 	Character* simChar = new Ningguang(weapon);
 	cout << "character generated" << endl;
 	
+	Stat artSetStat = Stat();
+    artSetStat.SetZero();
+    artSetStat.SetAttackPer(18);
+    artSetStat.SetQBonus(20);
+    character.SetArtSetStat(artSetStat);
+
+    Stat resonanceStat = Stat();
+    resonanceStat.SetZero();
+    resonanceStat.SetResistCut(20.);
+    resonanceStat.SetGeoBonus(15.);
+    character.SetResonanceStat(resonanceStat);
+
 	simChar->MakeEffectionArray();
 	cout << "Effection List : " << simChar->GetEffection(0) << ", "
 								<< simChar->GetEffection(1) << ", "
@@ -214,13 +236,14 @@ void Simulator()
 								<< simChar->GetEffection(7) << ", "
 								<< simChar->GetEffection(8) << ", "
 								<< simChar->GetEffection(9) << endl;
-	vector<Artifact> ArtifactList1 = {};
-	vector<Artifact> ArtifactList2 = {};
-	vector<Artifact> ArtifactList3 = {};
-	vector<Artifact> ArtifactList4 = {};
-	vector<Artifact> ArtifactList5 = {};
-	vector<vector<Artifact>> ArtifactSuperList 
-		= { ArtifactList1, ArtifactList2, ArtifactList3, ArtifactList4, ArtifactList5 };
+
+	SuperArtifactList artifactSuperList;
+	artifactSuperList.flower = {};
+	artifactSuperList.feather = {};
+	artifactSuperList.clock = {};
+	artifactSuperList.cup = {};
+	artifactSuperList.crown = {};
+
 
 	// simulation number
 	int simNum = 100;
@@ -250,7 +273,13 @@ void Simulator()
 	for (int i = 0; i < simNum; i++)
 	{
 		double bestDamage = 0;
-		ArtifactSuperList = { ArtifactList1, ArtifactList2, ArtifactList3, ArtifactList4, ArtifactList5 };
+		
+		artifactSuperList.flower = {};
+		artifactSuperList.feather = {};
+		artifactSuperList.clock = {};
+		artifactSuperList.cup = {};
+		artifactSuperList.crown = {};
+		
 		// cout << "==========" << i << "-th simulation start" << "==========" << endl;
 
 		for (int j = 0; j < artifactNum; j++)
