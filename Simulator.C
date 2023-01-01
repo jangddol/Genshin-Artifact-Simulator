@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <vector>
 #include <algorithm>
+#include <ctime>
 
 
 using namespace std;
@@ -130,6 +131,8 @@ bool CheckWhetherAppend(Character* character, Artifact gennedArtifact, vector<ve
 }
 
 
+double CALLOOPTIMELIST[3] = { 0. };
+double CALLOOPSTART, CALLOOPFINISH;
 double CalLoopArtifact(Character* character, Artifact gennedArtifact, vector<vector<Artifact>> ArtifactSuperList)
 {
 	vector<vector<Artifact>> loopList = ArtifactSuperList;
@@ -139,25 +142,38 @@ double CalLoopArtifact(Character* character, Artifact gennedArtifact, vector<vec
 	bestDamage = 0;
 	for (int i1 = 0; i1 < loopList[0].size(); i1++)
 	{
+		ArtFlower tempArtf1 = *(ArtFlower*)&loopList[0][i1];
 		for (int i2 = 0; i2 < loopList[1].size(); i2++)
 		{
+			ArtFeather tempArtf2 = *(ArtFeather*)&loopList[1][i2];
 			for (int i3 = 0; i3 < loopList[2].size(); i3++)
 			{
+				ArtClock tempArtf3 = *(ArtClock*)&loopList[2][i3];
 				for (int i4 = 0; i4 < loopList[3].size(); i4++)
 				{
+					ArtCup tempArtf4 = *(ArtCup*)&loopList[3][i4];
 					for (int i5 = 0; i5 < loopList[4].size(); i5++)
 					{
-						character->SetArtifact( *(ArtFlower*)&loopList[0][i1],
-												*(ArtFeather*)&loopList[1][i2],
-												*(ArtClock*)&loopList[2][i3],
-												*(ArtCup*)&loopList[3][i4],
-												*(ArtCrown*)&loopList[4][i5]);
+						ArtCrown tempArtf5 = *(ArtCrown*)&loopList[4][i5];
+						
+						CALLOOPSTART = clock();
+						character->SetArtifact( tempArtf1, tempArtf2, tempArtf3, tempArtf4, tempArtf5);
+						CALLOOPFINISH = clock();
+						CALLOOPTIMELIST[0] += (double)(CALLOOPFINISH - CALLOOPSTART) / CLOCKS_PER_SEC;
+
+						CALLOOPSTART = CALLOOPFINISH;
 						character->Initialization();
+						CALLOOPFINISH = clock();
+						CALLOOPTIMELIST[1] += (double)(CALLOOPFINISH - CALLOOPSTART) / CLOCKS_PER_SEC;
+						
+						CALLOOPSTART = CALLOOPFINISH;
 						tempDamage = character->GetDamage();
+						CALLOOPFINISH = clock();
+						CALLOOPTIMELIST[2] += (double)(CALLOOPFINISH - CALLOOPSTART) / CLOCKS_PER_SEC;
+
 						if (tempDamage > bestDamage)
 						{
 							bestDamage = tempDamage;
-							// oCombination = { loopList[0][i1], loopList[1][i2], loopList[2][i3], loopList[3][i4], loopList[4][i5] };
 						}
 					}
 				}
@@ -168,12 +184,11 @@ double CalLoopArtifact(Character* character, Artifact gennedArtifact, vector<vec
 }
 
 
-vector<vector<Artifact>> AppendArtifactList(Artifact gennedArtifact, vector<vector<Artifact>> ArtifactSuperList)
+void AppendArtifactList(Artifact gennedArtifact, vector<vector<Artifact>>& ArtifactSuperList)
 {
 	int numType = gennedArtifact.GetType();
 	int index = numType - 1;
 	ArtifactSuperList[index].push_back(gennedArtifact);
-	return ArtifactSuperList;
 }
 
 
@@ -211,21 +226,25 @@ void Simulator()
 	int simNum = 100;
 	
 	// the number of artifacts to get
-	constexpr int artifactNum = 100; // 1 month ~ 300 artifacts
+	constexpr int artifactNum = 100; // 5.112 per day
 	
 	// maxDamage, binNum
 	int binNum = 50;
 	double maxDamage = 200000.;
 
 	// Nth-histogram
-	/*
+	
 	TH1D* N_Histogram[artifactNum];
 	for (int i = 0; i < artifactNum; i++)
 	{
 		N_Histogram[i] = new TH1D(Form("%d-th trial", i+1), "", binNum, 0, maxDamage);
 	}
-	*/
+	
 
+
+	// Code Execution Time Evaluation
+	double TIMELIST[4] = { 0. };
+	double start, finish;
 
 	// Simulation Part
 	for (int i = 0; i < simNum; i++)
@@ -236,27 +255,24 @@ void Simulator()
 
 		for (int j = 0; j < artifactNum; j++)
 		{
+			start = clock(); 
 			Artifact gennedArtifact = GenerateRandomArtifact();
-			
-			// cout << "	Artifact Generation End " << endl;
-			// cout << "		Artifact MainOption : " << STATSTRING[gennedArtifact.GetMainType()] << " = " << gennedArtifact.GetMainStat().GetOption(gennedArtifact.GetMainType()) << endl;
-			// cout << " 		Artifact SubOption  : " << gennedArtifact.GetSubStat().GetOption(0) << ", "
-			// 										<< gennedArtifact.GetSubStat().GetOption(1) << ", "
-			// 										<< gennedArtifact.GetSubStat().GetOption(2) << ", "
-			// 										<< gennedArtifact.GetSubStat().GetOption(3) << ", "
-			// 										<< gennedArtifact.GetSubStat().GetOption(4) << ", "
-			// 										<< gennedArtifact.GetSubStat().GetOption(5) << ", "
-			// 										<< gennedArtifact.GetSubStat().GetOption(6) << ", "
-			// 										<< gennedArtifact.GetSubStat().GetOption(7) << ", "
-			// 										<< gennedArtifact.GetSubStat().GetOption(8) << ", "
-			// 										<< gennedArtifact.GetSubStat().GetOption(9) << endl;
+			finish  = clock();
+			TIMELIST[0] += (double)(finish - start) / CLOCKS_PER_SEC;
+
+			start = finish; 
 			bool whetherAppend = CheckWhetherAppend(simChar, gennedArtifact, ArtifactSuperList);
+			finish  = clock();
+			TIMELIST[1] += (double)(finish - start) / CLOCKS_PER_SEC;
 
 			// cout << "	Checking Whether Append End : " << whetherAppend << endl;
 
 			if (whetherAppend)
 			{				
+				start = clock(); 
 				double comparedDamage = CalLoopArtifact(simChar, gennedArtifact, ArtifactSuperList);
+				finish  = clock();
+				TIMELIST[2] += (double)(finish - start) / CLOCKS_PER_SEC;
 				
 				// cout << "	Artifact Loop Calculation done : comparedDamage = " << comparedDamage << endl;
 
@@ -264,8 +280,11 @@ void Simulator()
 				{
 					bestDamage = comparedDamage; 
 				}
-
-				ArtifactSuperList = AppendArtifactList(gennedArtifact, ArtifactSuperList);
+				
+				start = finish; 
+				AppendArtifactList(gennedArtifact, ArtifactSuperList);
+				finish  = clock();
+				TIMELIST[3] += (double)(finish - start) / CLOCKS_PER_SEC;
 			}
 
 			// cout << "	" << i << "-th bestDamage : " << bestDamage << endl;
@@ -274,16 +293,18 @@ void Simulator()
 
 			double beforePercent = (double)(i * artifactNum + j - 1)/(double)(simNum * artifactNum) * 100.;
 			double percent = (double)(i * artifactNum + j)/(double)(simNum * artifactNum) * 100.;
-			if ((int)beforePercent != (int)percent) cout << (int)percent << "% end" << endl;
+			if ((int)beforePercent != (int)percent) std::cout << (int)percent << "% end" << std::endl;
 		}	
 	}
 
-	/*
+	cout << TIMELIST[0] << "s, " << TIMELIST[1] << "s, " << TIMELIST[2] << "s, " << TIMELIST[3] << "s" << endl;
+	cout << CALLOOPTIMELIST[0] << "s, " << CALLOOPTIMELIST[1] << "s, " << CALLOOPTIMELIST[2] << "s" << endl;
+	
 	// Plot Part
 	TH2D* VisualHistogram = new TH2D("Visual", "", artifactNum, 0, artifactNum, binNum, 0, maxDamage);
 	for (int i = 0; i < artifactNum; i++)
 	{
-		for (int j = 0; j < artifactNum; j++)
+		for (int j = 0; j < binNum; j++)
 		{
 			VisualHistogram->SetBinContent(i + 1, j + 1, N_Histogram[i]->GetBinContent(j + 1));
 		}
@@ -299,5 +320,5 @@ void Simulator()
 	VisualHistogram->GetYaxis()->SetTitle("Damage");
 	VisualHistogram->GetZaxis()->SetTitle("Count");
 	VisualHistogram->Draw("COL4Z");
-	*/
+	
 }

@@ -145,19 +145,16 @@ void Artifact::UpgradeSubOption(vector<int> startOptList, bool whether4OptStart)
 	// 각각 1회씩
 	for (int i = 0; i < 4; i++)
 	{
-		int randomNum = gRandom->Integer(4);
 		int optIndex = startOptList[i];
-		double randomStat = OPTIONARRAY[optIndex][randomNum];
+		double randomStat = OPTIONARRAY[optIndex][uni4(rng)];
 		mSubStat.AddOption(optIndex, randomStat);
 	}
 
 	// 랜덤으로 numUpgrade만큼
 	for (int i = 0; i < numUpgrade; i++)
 	{
-		int randomNum1 = gRandom->Integer(4);
-		int randomNum2 = gRandom->Integer(4);
-		int randomIndex = startOptList[randomNum1];
-		double randomStat = OPTIONARRAY[randomIndex][randomNum2];
+		int randomIndex = startOptList[uni4(rng)];
+		double randomStat = OPTIONARRAY[randomIndex][uni4(rng)];
 		mSubStat.AddOption(randomIndex, randomStat);
 	}
 }

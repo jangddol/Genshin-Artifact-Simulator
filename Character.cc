@@ -5,11 +5,16 @@
 
 void Character::Initialization()
 {
-    // 캐릭터 기초 스탯, 무기, 성유물의 효과를 모두 합산해서 mStat으로 넘기는 작업
-    
-    Stat WeaponMainStat = mWeapon.GetMainStat();
-    Stat WeaponSubStat = mWeapon.GetSubStat();
-    Stat WeaponSubSubStat = mWeapon.GetSubSubStat();
+    if (!bPossibleExceptArtifact)
+    {
+        InitializationExceptArtifact();
+    }
+    ArtifactInitialization();
+}
+
+
+void Character::ArtifactInitialization()
+{
     Stat FlowerMainStat = fArtFlower.GetMainStat();
     Stat FlowerSubStat = fArtFlower.GetSubStat();
     Stat FeatherMainStat = fArtFeather.GetMainStat();
@@ -21,33 +26,53 @@ void Character::Initialization()
     Stat CrownMainStat = fArtCrown.GetMainStat();
     Stat CrownSubStat = fArtCrown.GetSubStat();
 
-    mStat.SetZero();
+    mStat = mStatExceptArtifact;
 
-    for (int i = 0; i < 35; i++)
+    mStat.AddOption(6, FlowerMainStat.GetOption(6));
+    mStat.AddOption(3, FeatherMainStat.GetOption(3));
+    mStat.AddOption(fArtClock.GetMainType(), ClockMainStat.GetOption(fArtClock.GetMainType()));
+    mStat.AddOption(fArtCup.GetMainType(), CupMainStat.GetOption(fArtCup.GetMainType()));
+    mStat.AddOption(fArtCrown.GetMainType(), CrownMainStat.GetOption(fArtCrown.GetMainType()));
+
+    for (int i = 0; i < 10; i++)
     {
-        mStat.AddOption(i, mCharacterStat.GetOption(i));
-        mStat.AddOption(i, WeaponMainStat.GetOption(i));
-        mStat.AddOption(i, WeaponSubStat.GetOption(i));
-        mStat.AddOption(i, WeaponSubSubStat.GetOption(i));
-        mStat.AddOption(i, FlowerMainStat.GetOption(i));
         mStat.AddOption(i, FlowerSubStat.GetOption(i));
-        mStat.AddOption(i, FeatherMainStat.GetOption(i));
         mStat.AddOption(i, FeatherSubStat.GetOption(i));
-        mStat.AddOption(i, ClockMainStat.GetOption(i));
         mStat.AddOption(i, ClockSubStat.GetOption(i));
-        mStat.AddOption(i, CupMainStat.GetOption(i));
         mStat.AddOption(i, CupSubStat.GetOption(i));
-        mStat.AddOption(i, CrownMainStat.GetOption(i));
         mStat.AddOption(i, CrownSubStat.GetOption(i));
-        mStat.AddOption(i, mArtSetStat.GetOption(i));
-        mStat.AddOption(i, mResonanceStat.GetOption(i));
-    }
-    for (int i = 0; i < 3; i++)
-    {
-        mStat.SetBaseOption(i, mCharacterStat.GetBaseOption(i) + WeaponMainStat.GetBaseOption(i));
     }
 
     mStat.Initialization();
+}
+
+
+void Character::InitializationExceptArtifact()
+{
+    // 캐릭터 기초 스탯, 무기, 성유물의 효과를 모두 합산해서 mStat으로 넘기는 작업
+    
+    Stat WeaponMainStat = mWeapon.GetMainStat();
+    Stat WeaponSubStat = mWeapon.GetSubStat();
+    Stat WeaponSubSubStat = mWeapon.GetSubSubStat();
+
+    mStatExceptArtifact.SetZero();
+
+    for (int i = 0; i < 35; i++)
+    {
+        mStatExceptArtifact.AddOption(i, mCharacterStat.GetOption(i));
+        mStatExceptArtifact.AddOption(i, WeaponMainStat.GetOption(i));
+        mStatExceptArtifact.AddOption(i, WeaponSubStat.GetOption(i));
+        mStatExceptArtifact.AddOption(i, WeaponSubSubStat.GetOption(i));
+        mStatExceptArtifact.AddOption(i, mArtSetStat.GetOption(i));
+        mStatExceptArtifact.AddOption(i, mResonanceStat.GetOption(i));
+    }
+    for (int i = 0; i < 3; i++)
+    {
+        mStatExceptArtifact.SetBaseOption(i, mCharacterStat.GetBaseOption(i) + WeaponMainStat.GetBaseOption(i));
+    }
+
+    mStatExceptArtifact.Initialization();
+    bPossibleExceptArtifact = true;
 }
 
 
@@ -70,14 +95,22 @@ double Character::GetDamage(Stat stat)
 void Character::MakeEffectionArray()
 {
     Stat tempStat = GenerateStatExceptSubOpt(); // 성유물이 초기화된 새로운 스탯을 생성한다.
-    Stat tempStatArray[10] = { tempStat, tempStat, tempStat, tempStat, tempStat,
-                               tempStat, tempStat, tempStat, tempStat, tempStat };
+    Stat tempStatArray[19] = { tempStat, tempStat, tempStat, tempStat, tempStat,
+                                tempStat, tempStat, tempStat, tempStat, tempStat,
+                                tempStat, tempStat, tempStat, tempStat, tempStat,
+                                tempStat, tempStat, tempStat, tempStat};
 
     double startDamage = GetDamage(tempStat); // 현재 스펙을 기록한다.
 
     for (int j = 0; j < 10; j++)
     {
         tempStatArray[j].AddOption(j, PLUSARRAY[j]);
+        tempStatArray[j].Initialization();
+        mEffectionArray[j] = GetDamage(tempStatArray[j]) - startDamage;
+    }
+    for (int j = 10; j < 19; j++)
+    {
+        tempStatArray[j].AddOption(j, 10.);
         tempStatArray[j].Initialization();
         mEffectionArray[j] = GetDamage(tempStatArray[j]) - startDamage;
     }

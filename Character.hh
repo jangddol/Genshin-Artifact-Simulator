@@ -29,6 +29,8 @@ public:
 	~Character() {}
 
 	void Initialization();
+	void ArtifactInitialization();
+	void InitializationExceptArtifact();
 
 	virtual double GetDamage() { return GetDamage(mStat); }
 	virtual double GetDamage(Stat stat);
@@ -38,12 +40,16 @@ public:
 	double GetScore();
 	double GetEffection(int index) { return mEffectionArray[index]; }
 
-	Stat GetStat() { return mStat; }
-	void SetStat(Stat stat) { mStat = stat; }
-	Stat GetArtSetStat() { return mArtSetStat; }
-	void SetArtSetStat(Stat stat) { mArtSetStat = stat; }
-	Stat GetResonanceStat() { return mResonanceStat; }
-	void SetResonanceStat(Stat stat) { mResonanceStat = stat; }
+	Weapon GetWeapon()              { return mWeapon; }
+	void   SetWeapon(Weapon weapon) { mWeapon = weapon; bPossibleExceptArtifact = false; }
+
+	Stat GetStat()                   { return mStat; }
+	void SetStat(Stat stat)          { mStat = stat; bPossibleExceptArtifact = false; }
+	Stat GetArtSetStat()             { return mArtSetStat; }
+	void SetArtSetStat(Stat stat)    { mArtSetStat = stat; bPossibleExceptArtifact = false; }
+	Stat GetResonanceStat()          { return mResonanceStat; }
+	void SetResonanceStat(Stat stat) { mResonanceStat = stat; bPossibleExceptArtifact = false; }
+
 	void SetArtifact(ArtFlower flower, ArtFeather feather, ArtClock clock, ArtCup cup, ArtCrown crown);
 	Artifact GetArtFlower()							{ return fArtFlower; }
 	void     SetArtFlower(ArtFlower artFlower)		{ fArtFlower = artFlower; }
@@ -70,9 +76,11 @@ protected:
 
 private:
 	Stat GenerateStatExceptSubOpt();
+	Stat mStatExceptArtifact;
+	bool bPossibleExceptArtifact = false;
 
 	double mSavedFunction[46];
-	double mEffectionArray[10];
+	double mEffectionArray[19];
 
 	Stat mStat;
 	Stat mCharacterStat;

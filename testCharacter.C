@@ -35,7 +35,7 @@ void testCharacter()
     character.Initialization();
     character.MakeEffectionArray();
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 19; i++)
     {
         cout << i << "  Effection : " << character.GetEffection(i) << endl;
     }
