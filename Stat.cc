@@ -1,15 +1,16 @@
 #include "Stat.hh"
+#include <iostream>
 
 
 void PrintStat(Stat stat)
 {
     for (int i = 0; i < 35; i++)
     {
-        cout << STATSTRING[i] << " : " << stat.GetOption(i) << endl;
+        std::cout << STATSTRING[i] << " : " << stat.GetOption(i) << std::endl;
     }
     for (int i = 0; i < 3; i++)
     {
-        cout << BASESTATSTRING[i] << " : " << stat.GetBaseOption(i) << endl;
+        std::cout << BASESTATSTRING[i] << " : " << stat.GetBaseOption(i) << std::endl;
     }
 }
 

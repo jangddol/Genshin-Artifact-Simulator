@@ -1,6 +1,7 @@
 #include "RandomInitialization.hh"
 #include "Artifact.hh"
 #include <algorithm>
+#include <iostream>
 
 
 void PrintArtifact(Artifact artifact)

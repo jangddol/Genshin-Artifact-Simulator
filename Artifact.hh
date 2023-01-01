@@ -43,19 +43,19 @@ public:
 
 protected:
 	int mType = 0;
-	vector<int> mProbabiltyWeight;
-	vector<int> mCummulatedWeight;
+	std::vector<int> mProbabiltyWeight;
+	std::vector<int> mCummulatedWeight;
 
 private:
 	void GenerateMainOption();
 	void GenerateSubOption();
 
 	void        FullMainOption(int mainType);
-	int         UseCummulatedWeight(vector<int> cummulatedWeight);
-	vector<int> GenerateCummulatedWeight();
+	int         UseCummulatedWeight(std::vector<int> cummulatedWeight);
+	std::vector<int> GenerateCummulatedWeight();
 	bool        Selected3or4OptStart();
-	vector<int> GenerateStartOpt(vector<int> cummulatedWeight);
-	void        UpgradeSubOption(vector<int> startOptList, bool whether4OptStart);
+	std::vector<int> GenerateStartOpt(std::vector<int> cummulatedWeight);
+	void        UpgradeSubOption(std::vector<int> startOptList, bool whether4OptStart);
 
 	int mMainType;
 

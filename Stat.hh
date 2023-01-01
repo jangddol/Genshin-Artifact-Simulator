@@ -1,8 +1,13 @@
 #ifndef STAT_HH
 #define STAT_HH
 
-std::vector<TString> BASESTATSTRING = {"Base ATK", "Base HP", "Base DEF"};
-std::vector<TString> STATSTRING
+
+#include <vector>
+#include <string>
+
+
+std::vector<string> BASESTATSTRING = {"Base ATK", "Base HP", "Base DEF"};
+std::vector<string> STATSTRING
 	= {"Critical Rate", "Critical Bonus", "ATK%", "ATK", "Element Charge", 
 		"HP%", "HP", "Element Mastery", "DEF%", "DEF",
 		"Pyro Bonus", "Electro Bonus", "Cryo Bonus", "Hydro Bonus", "Anymo Bonus",

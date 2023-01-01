@@ -1,4 +1,5 @@
 #include "top.hh"
+#include <iostream>
 #include <cstdio>
 #include <vector>
 #include <algorithm>
@@ -217,11 +218,13 @@ void Simulator()
 	double maxDamage = 200000.;
 
 	// Nth-histogram
+	/*
 	TH1D* N_Histogram[artifactNum];
 	for (int i = 0; i < artifactNum; i++)
 	{
 		N_Histogram[i] = new TH1D(Form("%d-th trial", i+1), "", binNum, 0, maxDamage);
 	}
+	*/
 
 
 	// Simulation Part

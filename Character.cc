@@ -1,5 +1,6 @@
 #include "Character.hh"
 #include <algorithm>
+#include <iostream>
 
 
 void Character::Initialization()
@@ -157,7 +158,7 @@ int FindNthLargestOption(double damArray[], int nth)
         tempList[i].x = damArray[i];
         tempList[i].y = i;
     }
-    sort(tempList, tempList+10, cmp);
+    std::sort(tempList, tempList+10, cmp);
     return tempList[10 - nth].y;
 }
 
