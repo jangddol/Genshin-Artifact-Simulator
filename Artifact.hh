@@ -50,12 +50,12 @@ private:
 	void GenerateMainOption();
 	void GenerateSubOption();
 
-	void        FullMainOption(int mainType);
-	int         UseCummulatedWeight(std::vector<int> cummulatedWeight);
+	void             FullMainOption(int mainType);
+	int              UseCummulatedWeight(std::vector<int> cummulatedWeight);
 	std::vector<int> GenerateCummulatedWeight();
-	bool        Selected3or4OptStart();
+	bool             Selected3or4OptStart();
 	std::vector<int> GenerateStartOpt(std::vector<int> cummulatedWeight);
-	void        UpgradeSubOption(std::vector<int> startOptList, bool whether4OptStart);
+	void             UpgradeSubOption(std::vector<int> startOptList, bool whether4OptStart);
 
 	int mMainType;
 

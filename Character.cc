@@ -1,6 +1,7 @@
 #include "Character.hh"
 #include <algorithm>
 #include <iostream>
+#include <ctime>
 
 
 void Character::Initialization()
@@ -13,26 +14,43 @@ void Character::Initialization()
 }
 
 
+double ARTINITSTART, ARTINITFINISH;
+double ARTINITTIMELIST[5] = { 0. };
+
 void Character::ArtifactInitialization()
 {
-    Stat FlowerMainStat = fArtFlower.GetMainStat();
-    Stat FlowerSubStat = fArtFlower.GetSubStat();
-    Stat FeatherMainStat = fArtFeather.GetMainStat();
-    Stat FeatherSubStat = fArtFeather.GetSubStat();
-    Stat ClockMainStat = fArtClock.GetMainStat();
-    Stat ClockSubStat = fArtClock.GetSubStat();
-    Stat CupMainStat = fArtCup.GetMainStat();
-    Stat CupSubStat = fArtCup.GetSubStat();
-    Stat CrownMainStat = fArtCrown.GetMainStat();
-    Stat CrownSubStat = fArtCrown.GetSubStat();
+    ARTINITSTART = clock();
+    
+    Stat FlowerMainStat = fArtFlower->GetMainStat();
+    Stat FlowerSubStat = fArtFlower->GetSubStat();
+    Stat FeatherMainStat = fArtFeather->GetMainStat();
+    Stat FeatherSubStat = fArtFeather->GetSubStat();
+    Stat ClockMainStat = fArtClock->GetMainStat();
+    Stat ClockSubStat = fArtClock->GetSubStat();
+    Stat CupMainStat = fArtCup->GetMainStat();
+    Stat CupSubStat = fArtCup->GetSubStat();
+    Stat CrownMainStat = fArtCrown->GetMainStat();
+    Stat CrownSubStat = fArtCrown->GetSubStat();
+
+    ARTINITFINISH = clock();
+	ARTINITTIMELIST[0] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
+    ARTINITSTART = ARTINITFINISH;
 
     mStat = mStatExceptArtifact;
 
+    ARTINITFINISH = clock();
+	ARTINITTIMELIST[1] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
+    ARTINITSTART = ARTINITFINISH;
+
     mStat.AddOption(6, FlowerMainStat.GetOption(6));
     mStat.AddOption(3, FeatherMainStat.GetOption(3));
-    mStat.AddOption(fArtClock.GetMainType(), ClockMainStat.GetOption(fArtClock.GetMainType()));
-    mStat.AddOption(fArtCup.GetMainType(), CupMainStat.GetOption(fArtCup.GetMainType()));
-    mStat.AddOption(fArtCrown.GetMainType(), CrownMainStat.GetOption(fArtCrown.GetMainType()));
+    mStat.AddOption(fArtClock->GetMainType(), ClockMainStat.GetOption(fArtClock->GetMainType()));
+    mStat.AddOption(fArtCup->GetMainType(), CupMainStat.GetOption(fArtCup->GetMainType()));
+    mStat.AddOption(fArtCrown->GetMainType(), CrownMainStat.GetOption(fArtCrown->GetMainType()));
+
+    ARTINITFINISH = clock();
+	ARTINITTIMELIST[2] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
+    ARTINITSTART = ARTINITFINISH;
 
     for (int i = 0; i < 10; i++)
     {
@@ -43,7 +61,14 @@ void Character::ArtifactInitialization()
         mStat.AddOption(i, CrownSubStat.GetOption(i));
     }
 
+    ARTINITFINISH = clock();
+	ARTINITTIMELIST[3] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
+    ARTINITSTART = ARTINITFINISH;
+
     mStat.Initialization();
+
+    ARTINITFINISH = clock();
+	ARTINITTIMELIST[4] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
 }
 
 
@@ -51,9 +76,9 @@ void Character::InitializationExceptArtifact()
 {
     // 캐릭터 기초 스탯, 무기, 성유물의 효과를 모두 합산해서 mStat으로 넘기는 작업
     
-    Stat WeaponMainStat = mWeapon.GetMainStat();
-    Stat WeaponSubStat = mWeapon.GetSubStat();
-    Stat WeaponSubSubStat = mWeapon.GetSubSubStat();
+    Stat WeaponMainStat = mWeapon->GetMainStat();
+    Stat WeaponSubStat = mWeapon->GetSubStat();
+    Stat WeaponSubSubStat = mWeapon->GetSubSubStat();
 
     mStatExceptArtifact.SetZero();
 
@@ -133,14 +158,14 @@ Stat Character::GenerateStatExceptSubOpt()
 {    
     Stat returnStat;
     
-    Stat WeaponMainStat = mWeapon.GetMainStat();
-    Stat WeaponSubStat = mWeapon.GetSubStat();
-    Stat WeaponSubSubStat = mWeapon.GetSubSubStat();
-    Stat FlowerMainStat = fArtFlower.GetMainStat();
-    Stat FeatherMainStat = fArtFeather.GetMainStat();
-    Stat ClockMainStat = fArtClock.GetMainStat();
-    Stat CupMainStat = fArtCup.GetMainStat();
-    Stat CrownMainStat = fArtCrown.GetMainStat();
+    Stat WeaponMainStat = mWeapon->GetMainStat();
+    Stat WeaponSubStat = mWeapon->GetSubStat();
+    Stat WeaponSubSubStat = mWeapon->GetSubSubStat();
+    Stat FlowerMainStat = fArtFlower->GetMainStat();
+    Stat FeatherMainStat = fArtFeather->GetMainStat();
+    Stat ClockMainStat = fArtClock->GetMainStat();
+    Stat CupMainStat = fArtCup->GetMainStat();
+    Stat CrownMainStat = fArtCrown->GetMainStat();
 
     for (int i = 0; i < 35; i++)
     {
@@ -199,9 +224,9 @@ int FindNthLargestOption(double damArray[], int nth)
 void Character::MakeScoreFunction()
 {
     int mainOp[10] = { 0 }; // 메인옵션에 무엇무엇이 있는지 확인한다. (mainOp[10])
-    if (fArtClock.GetMainType() < 10) mainOp[fArtClock.GetMainType()] = 1;
-    if (fArtCup.GetMainType() < 10) mainOp[fArtCup.GetMainType()] = 1;
-    if (fArtCrown.GetMainType() < 10) mainOp[fArtCrown.GetMainType()] = 1;
+    if (fArtClock->GetMainType() < 10) mainOp[fArtClock->GetMainType()] = 1;
+    if (fArtCup->GetMainType() < 10) mainOp[fArtCup->GetMainType()] = 1;
+    if (fArtCrown->GetMainType() < 10) mainOp[fArtCrown->GetMainType()] = 1;
 
     int numArray[10] = { 0 }; // 각 옵션이 몇번 들어갔는지 기록한 어레이를 만든다. (numArray[10])
     double damArray[10] = { 0 }; // 각 옵션이 추가되었을 때의 데미지를 기록할 어레이를 만든다. (damArray[10])
@@ -332,8 +357,8 @@ double Character::GetScore()
 }
 
 
-void Character::SetArtifact(ArtFlower flower, ArtFeather feather, ArtClock clock, 
-							ArtCup cup, ArtCrown crown)
+void Character::SetArtifact(ArtFlower* flower, ArtFeather* feather, ArtClock* clock, 
+							ArtCup* cup, ArtCrown* crown)
 {
 	fArtFlower = flower;
 	fArtFeather = feather;
