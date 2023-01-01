@@ -8,18 +8,12 @@ class Ningguang : public Character
 public:
 	Ningguang(Weapon weapon) : Character(weapon)
 	{
-		for (int i = 0; i < 35; i++)
-		{
-			SetCharacterStat(i, 0.);
-		}
-		SetCharacterStat(6, 9787.);
-		SetCharacterStat(3, 212.);
-		SetCharacterStat(9, 573.);
-		SetCharacterStat(0, 5.);
-		SetCharacterStat(1, 50.);
-		SetCharacterStat(15, 24.);
-		SetCharacterStat(32, 90.);
-		SetCharacterStat(33, 90.);
+		SetBasicCharacterStat();
+		AddCharacterStat(15, 24.); // Geo Bonus
+
+		SetCharacterBaseStat(0, 212.);
+		SetCharacterBaseStat(1, 9787.);
+		SetCharacterBaseStat(2, 573.);
 	}
 	~Ningguang() {}
 

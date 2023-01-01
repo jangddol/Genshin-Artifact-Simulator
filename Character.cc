@@ -20,9 +20,10 @@ void Character::Initialization()
     Stat CrownMainStat = fArtCrown.GetMainStat();
     Stat CrownSubStat = fArtCrown.GetSubStat();
 
+    mStat.SetZero();
+
     for (int i = 0; i < 35; i++)
     {
-        mStat.SetOption(i, 0.);
         mStat.AddOption(i, mCharacterStat.GetOption(i));
         mStat.AddOption(i, WeaponMainStat.GetOption(i));
         mStat.AddOption(i, WeaponSubStat.GetOption(i));
@@ -37,7 +38,14 @@ void Character::Initialization()
         mStat.AddOption(i, CupSubStat.GetOption(i));
         mStat.AddOption(i, CrownMainStat.GetOption(i));
         mStat.AddOption(i, CrownSubStat.GetOption(i));
+        mStat.AddOption(i, mArtSetStat.GetOption(i));
+        mStat.AddOption(i, mResonanceStat.GetOption(i));
     }
+    for (int i = 0; i < 3; i++)
+    {
+        mStat.SetBaseOption(i, mCharacterStat.GetBaseOption(i) + WeaponMainStat.GetBaseOption(i));
+    }
+
     mStat.Initialization();
 }
 
@@ -58,13 +66,47 @@ double Character::GetDamage(Stat stat)
 }
 
 
-Stat Character::GenerateStatExceptArtifact()
+void Character::MakeEffectionArray()
 {
+    Stat tempStat = GenerateStatExceptSubOpt(); // 성유물이 초기화된 새로운 스탯을 생성한다.
+    Stat tempStatArray[10] = { tempStat, tempStat, tempStat, tempStat, tempStat,
+                               tempStat, tempStat, tempStat, tempStat, tempStat };
+
+    double startDamage = GetDamage(tempStat); // 현재 스펙을 기록한다.
+
+    for (int j = 0; j < 10; j++)
+    {
+        tempStatArray[j].AddOption(j, PLUSARRAY[j]);
+        tempStatArray[j].Initialization();
+        mEffectionArray[j] = GetDamage(tempStatArray[j]) - startDamage;
+    }
+}
+
+
+void Character::SetBasicCharacterStat()
+{
+    mCharacterStat.SetZero();	
+	mCharacterStat.SetCriticalRate(5.);
+	mCharacterStat.SetCriticalBonus(50.);
+    mCharacterStat.SetElementCharge(100.);
+    mCharacterStat.SetLevel(90.);
+    mCharacterStat.SetMonsterLevel(100.);
+    mCharacterStat.SetMonsterResist(10.);
+}
+
+
+Stat Character::GenerateStatExceptSubOpt()
+{    
     Stat returnStat;
     
     Stat WeaponMainStat = mWeapon.GetMainStat();
     Stat WeaponSubStat = mWeapon.GetSubStat();
     Stat WeaponSubSubStat = mWeapon.GetSubSubStat();
+    Stat FlowerMainStat = fArtFlower.GetMainStat();
+    Stat FeatherMainStat = fArtFeather.GetMainStat();
+    Stat ClockMainStat = fArtClock.GetMainStat();
+    Stat CupMainStat = fArtCup.GetMainStat();
+    Stat CrownMainStat = fArtCrown.GetMainStat();
 
     for (int i = 0; i < 35; i++)
     {
@@ -73,6 +115,17 @@ Stat Character::GenerateStatExceptArtifact()
         returnStat.AddOption(i, WeaponMainStat.GetOption(i));
         returnStat.AddOption(i, WeaponSubStat.GetOption(i));
         returnStat.AddOption(i, WeaponSubSubStat.GetOption(i));
+        returnStat.AddOption(i, FlowerMainStat.GetOption(i));
+        returnStat.AddOption(i, FeatherMainStat.GetOption(i));
+        returnStat.AddOption(i, ClockMainStat.GetOption(i));
+        returnStat.AddOption(i, CupMainStat.GetOption(i));
+        returnStat.AddOption(i, CrownMainStat.GetOption(i));
+        returnStat.AddOption(i, mArtSetStat.GetOption(i));
+        returnStat.AddOption(i, mResonanceStat.GetOption(i));
+    }
+    for (int i = 0; i < 3; i++)
+    {
+        returnStat.SetBaseOption(i, mCharacterStat.GetBaseOption(i) + WeaponMainStat.GetBaseOption(i));
     }
     returnStat.Initialization();
 
@@ -105,36 +158,23 @@ int FindNthLargestOption(double damArray[], int nth)
         tempList[i].y = i;
     }
     sort(tempList, tempList+10, cmp);
-    return tempList[9].y;
+    return tempList[10 - nth].y;
 }
 
 
 void Character::MakeScoreFunction()
 {
     int mainOp[10] = { 0 }; // 메인옵션에 무엇무엇이 있는지 확인한다. (mainOp[10])
+    if (fArtClock.GetMainType() < 10) mainOp[fArtClock.GetMainType()] = 1;
+    if (fArtCup.GetMainType() < 10) mainOp[fArtCup.GetMainType()] = 1;
+    if (fArtCrown.GetMainType() < 10) mainOp[fArtCrown.GetMainType()] = 1;
+
     int numArray[10] = { 0 }; // 각 옵션이 몇번 들어갔는지 기록한 어레이를 만든다. (numArray[10])
     double damArray[10] = { 0 }; // 각 옵션이 추가되었을 때의 데미지를 기록할 어레이를 만든다. (damArray[10])
-    
-    // 각 옵션이 1회 업그레이드당 올라가는 수치
-    double plusArray[10] = { 3.88999991118908, 7.76999965310097, 5.82999996840954,
-                             19.4500007629395, 6.4800001680851,  5.82999996840954,
-                             298.75,           23.3099994659424, 7.28999972343445,
-                             23.1499996185303 };
 
-    Stat tempStat = GenerateStatExceptArtifact(); // 성유물이 초기화된 새로운 스탯을 생성한다.
-    tempStat.Initialization();
+    Stat tempStat = GenerateStatExceptSubOpt(); // 성유물이 초기화된 새로운 스탯을 생성한다.
     cout << "tempStat generated" << endl;
     double startDamage = GetDamage(tempStat); // 현재 스펙을 기록한다.
-    if (startDamage == 0)
-    {
-        cout << "Weapon pointer         : " << &mWeapon << endl;
-        cout << "Character Stat pointer : " << &mCharacterStat << endl;
-        cout << "mStat pointer          : " << &tempStat << endl;
-        cout << "Total ATK              : " << tempStat.GetTotalAttack() << endl;
-        cout << "Resist Coef            : " << tempStat.GetResistCoef() << endl;
-        cout << "Defense Coef           : " << tempStat.GetDefenseCoef() << endl;
-        cout << "Level Coef             : " << tempStat.GetLevelCoef() << endl;
-    }
 
     Stat tempStatArray[10] = { tempStat, tempStat, tempStat, tempStat, tempStat,
                                tempStat, tempStat, tempStat, tempStat, tempStat };
@@ -143,35 +183,22 @@ void Character::MakeScoreFunction()
 
     for (int i = 0; i < 45; i++) // for문으로 45회동안, 
     {
+        cout << "part1" << endl;
+
         double beforeDamage = GetDamage(tempStat); // 현재 스탯에 대한 데미지를 기록하고,
         double difEC = mTargetEC - tempStat.GetOption(4); // 현재 원충이 원충요구수치보다 낮은지 체크한다.
         bool whetherNotEnoughEC = (difEC > 0);
 
-        cout << "part1" << endl;
-
-        if (i == 1)
-        {
-            cout << "startDamage : " << startDamage << endl;
-            for (int j = 0; j < 10; j++)
-            {
-                tempStatArray[j] = tempStat;
-                tempStatArray[j].AddOption(j, plusArray[j]);
-                tempStatArray[j].Initialization();
-                damArray[j] = GetDamage(tempStatArray[j]);
-                cout << "damArray : " << damArray[j] << endl;
-                mEffectionArray[j] = damArray[j] - startDamage;
-            }
-        }
-
+        cout << i + 1 << "-th difEC & whetherNotEnoughEC : " << difEC << ", " << whetherNotEnoughEC << endl;
         cout << "part2" << endl;
 
-        if (i <= 20)
+        if (i < 20)
         {
             // 원충이 들어가야 하면 원충을 넣는다.
             if (whetherNotEnoughEC && (5 - mainOp[4] > numArray[4]))
             {
                 cout << "part2-1" << endl;
-                tempStat.AddOption(4, plusArray[4]);
+                tempStat.AddOption(4, PLUSARRAY[4]);
                 numArray[4] += 1;
             }
             else // 그렇지 않다면
@@ -181,7 +208,7 @@ void Character::MakeScoreFunction()
                 for (int j = 0; j < 10; j++) 
                 {
                     tempStatArray[j] = tempStat;
-                    tempStatArray[j].AddOption(j, plusArray[j]);
+                    tempStatArray[j].AddOption(j, PLUSARRAY[j]);
                     tempStatArray[j].Initialization();
                     damArray[j] = GetDamage(tempStatArray[j]);
                 }
@@ -193,12 +220,14 @@ void Character::MakeScoreFunction()
                 for (int j = 1; j <= 5; j++)
                 {
                     cout << "part2-3-1" << endl;
-                    int largeStat = FindNthLargestOption(damArray, j); 
+                    int largeStat = FindNthLargestOption(damArray, j);
                     cout << "part2-3-2" << endl;
                     if (5 - mainOp[largeStat] > numArray[largeStat])
                     {
                         cout << "part2-3-2-1" << endl;
-                        tempStat.AddOption(largeStat, plusArray[largeStat]);
+                        if ((damArray[largeStat] == damArray[4]) && (5 - mainOp[4] > numArray[4])) largeStat = 4;
+                        tempStat.AddOption(largeStat, PLUSARRAY[largeStat]);
+                        cout << i + 1 << "-th Added Stat : " << STATSTRING[largeStat] << endl;
                         cout << "part2-3-2-2" << endl;
                         numArray[largeStat] += 1;
                         cout << "part2-3-2-3" << endl;
@@ -212,7 +241,7 @@ void Character::MakeScoreFunction()
         {
             if (whetherNotEnoughEC)
             {
-                tempStat.AddOption(4, plusArray[4]);
+                tempStat.AddOption(4, PLUSARRAY[4]);
                 numArray[4] += 1;
             }
             else
@@ -220,7 +249,7 @@ void Character::MakeScoreFunction()
                 for (int j = 0; j < 10; j++)
                 {
                     tempStatArray[j] = tempStat;
-                    tempStatArray[j].AddOption(j, plusArray[j]);
+                    tempStatArray[j].AddOption(j, PLUSARRAY[j]);
                     tempStatArray[j].Initialization();
                     damArray[j] = GetDamage(tempStatArray[j]);
                 }
@@ -230,7 +259,8 @@ void Character::MakeScoreFunction()
                     int largeStat = FindNthLargestOption(damArray, j);
                     if (30 - mainOp[largeStat] != numArray[largeStat])
                     {
-                        tempStat.AddOption(largeStat, plusArray[largeStat]);
+                        tempStat.AddOption(largeStat, PLUSARRAY[largeStat]);
+                        cout << i << "-th Added Stat : " << STATSTRING[largeStat] << endl;
                         numArray[largeStat] += 1;
                         break;
                     }

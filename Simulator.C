@@ -55,7 +55,10 @@ Artifact GenRandArtf_5()
 Artifact GenerateRandomArtifact()
 {
 	// 20% 확률로 부위를 결정.
-	int temp = gRandom->Integer(5);
+	
+
+	// int temp = gRandom->Integer(5);
+	int temp = uni(rng);
 
 	switch (temp)
 	{
@@ -129,7 +132,8 @@ bool CheckWhetherAppend(Character* character, Artifact gennedArtifact, vector<ve
 double CalLoopArtifact(Character* character, Artifact gennedArtifact, vector<vector<Artifact>> ArtifactSuperList)
 {
 	vector<vector<Artifact>> loopList = ArtifactSuperList;
-	loopList[gennedArtifact.GetType()] = { gennedArtifact };
+	loopList[gennedArtifact.GetType() - 1] = { gennedArtifact };
+
 	double tempDamage, bestDamage;
 	bestDamage = 0;
 	for (int i1 = 0; i1 < loopList[0].size(); i1++)
@@ -149,7 +153,6 @@ double CalLoopArtifact(Character* character, Artifact gennedArtifact, vector<vec
 												*(ArtCrown*)&loopList[4][i5]);
 						character->Initialization();
 						tempDamage = character->GetDamage();
-						cout << tempDamage << endl;
 						if (tempDamage > bestDamage)
 						{
 							bestDamage = tempDamage;
@@ -164,18 +167,19 @@ double CalLoopArtifact(Character* character, Artifact gennedArtifact, vector<vec
 }
 
 
-void AppendArtifactList(Artifact gennedArtifact, vector<vector<Artifact>> ArtifactSuperList)
+vector<vector<Artifact>> AppendArtifactList(Artifact gennedArtifact, vector<vector<Artifact>> ArtifactSuperList)
 {
 	int numType = gennedArtifact.GetType();
 	int index = numType - 1;
 	ArtifactSuperList[index].push_back(gennedArtifact);
+	return ArtifactSuperList;
 }
 
 
 void Simulator()
 {
-	gStyle->SetOptStat(kFALSE);
-	gRandom->SetSeed(0);
+	// gStyle->SetOptStat(kFALSE);
+	// gRandom->SetSeed(0);
 
 	SolarPearl weapon = SolarPearl();
 	cout << "weapon generated" << endl;
@@ -183,7 +187,7 @@ void Simulator()
 	Character* simChar = new Ningguang(weapon);
 	cout << "character generated" << endl;
 	
-	simChar->MakeScoreFunction();
+	simChar->MakeEffectionArray();
 	cout << "Effection List : " << simChar->GetEffection(0) << ", "
 								<< simChar->GetEffection(1) << ", "
 								<< simChar->GetEffection(2) << ", "
@@ -203,69 +207,77 @@ void Simulator()
 		= { ArtifactList1, ArtifactList2, ArtifactList3, ArtifactList4, ArtifactList5 };
 
 	// simulation number
-	int simNum = 1;
+	int simNum = 100;
 	
 	// the number of artifacts to get
-	constexpr int artifactNum = 1; // 1 month ~ 300 artifacts
+	constexpr int artifactNum = 100; // 1 month ~ 300 artifacts
 	
+	// maxDamage, binNum
+	int binNum = 50;
+	double maxDamage = 200000.;
+
 	// Nth-histogram
 	TH1D* N_Histogram[artifactNum];
 	for (int i = 0; i < artifactNum; i++)
 	{
-		N_Histogram[i] = new TH1D(Form("%d-th trial", i+1), "", 30, 0, 30);
+		N_Histogram[i] = new TH1D(Form("%d-th trial", i+1), "", binNum, 0, maxDamage);
 	}
 
 
 	// Simulation Part
 	for (int i = 0; i < simNum; i++)
 	{
-		double bestScore = 0;
-
-		cout << "==========" << i << "-th simulation start" << "==========" << endl;
+		double bestDamage = 0;
+		ArtifactSuperList = { ArtifactList1, ArtifactList2, ArtifactList3, ArtifactList4, ArtifactList5 };
+		// cout << "==========" << i << "-th simulation start" << "==========" << endl;
 
 		for (int j = 0; j < artifactNum; j++)
 		{
 			Artifact gennedArtifact = GenerateRandomArtifact();
 			
-			cout << "	Artifact Generation End " << endl;
-			cout << "		Artifact MainOption : " << STATSTRING[gennedArtifact.GetMainType()] << " = " << gennedArtifact.GetMainStat().GetOption(gennedArtifact.GetMainType()) << endl;
-			cout << " 		Artifact SubOption  : " << gennedArtifact.GetSubStat().GetOption(0) << ", "
-													<< gennedArtifact.GetSubStat().GetOption(1) << ", "
-													<< gennedArtifact.GetSubStat().GetOption(2) << ", "
-													<< gennedArtifact.GetSubStat().GetOption(3) << ", "
-													<< gennedArtifact.GetSubStat().GetOption(4) << ", "
-													<< gennedArtifact.GetSubStat().GetOption(5) << ", "
-													<< gennedArtifact.GetSubStat().GetOption(6) << ", "
-													<< gennedArtifact.GetSubStat().GetOption(7) << ", "
-													<< gennedArtifact.GetSubStat().GetOption(8) << ", "
-													<< gennedArtifact.GetSubStat().GetOption(9) << endl;
+			// cout << "	Artifact Generation End " << endl;
+			// cout << "		Artifact MainOption : " << STATSTRING[gennedArtifact.GetMainType()] << " = " << gennedArtifact.GetMainStat().GetOption(gennedArtifact.GetMainType()) << endl;
+			// cout << " 		Artifact SubOption  : " << gennedArtifact.GetSubStat().GetOption(0) << ", "
+			// 										<< gennedArtifact.GetSubStat().GetOption(1) << ", "
+			// 										<< gennedArtifact.GetSubStat().GetOption(2) << ", "
+			// 										<< gennedArtifact.GetSubStat().GetOption(3) << ", "
+			// 										<< gennedArtifact.GetSubStat().GetOption(4) << ", "
+			// 										<< gennedArtifact.GetSubStat().GetOption(5) << ", "
+			// 										<< gennedArtifact.GetSubStat().GetOption(6) << ", "
+			// 										<< gennedArtifact.GetSubStat().GetOption(7) << ", "
+			// 										<< gennedArtifact.GetSubStat().GetOption(8) << ", "
+			// 										<< gennedArtifact.GetSubStat().GetOption(9) << endl;
 			bool whetherAppend = CheckWhetherAppend(simChar, gennedArtifact, ArtifactSuperList);
 
-			cout << "	Checking Whether Append End : " << whetherAppend << endl;
+			// cout << "	Checking Whether Append End : " << whetherAppend << endl;
 
 			if (whetherAppend)
 			{				
-				double comparedScore = CalLoopArtifact(simChar, gennedArtifact, ArtifactSuperList);
+				double comparedDamage = CalLoopArtifact(simChar, gennedArtifact, ArtifactSuperList);
 				
-				cout << "	Artifact Loop Calculation done : comparedScore = " << comparedScore << endl;
+				// cout << "	Artifact Loop Calculation done : comparedDamage = " << comparedDamage << endl;
 
-				if (comparedScore >= bestScore)
+				if (comparedDamage >= bestDamage)
 				{
-					bestScore = comparedScore; 
+					bestDamage = comparedDamage; 
 				}
 
-				AppendArtifactList(gennedArtifact, ArtifactSuperList);
+				ArtifactSuperList = AppendArtifactList(gennedArtifact, ArtifactSuperList);
 			}
 
-			cout << "	" << i << "-th bestScore : " << bestScore << endl;
+			// cout << "	" << i << "-th bestDamage : " << bestDamage << endl;
 
-			N_Histogram[j]->Fill(bestScore);
+			N_Histogram[j]->Fill(bestDamage);
+
+			double beforePercent = (double)(i * artifactNum + j - 1)/(double)(simNum * artifactNum) * 100.;
+			double percent = (double)(i * artifactNum + j)/(double)(simNum * artifactNum) * 100.;
+			if ((int)beforePercent != (int)percent) cout << (int)percent << "% end" << endl;
 		}	
 	}
 
-
+	/*
 	// Plot Part
-	TH2D* VisualHistogram = new TH2D("Visual", "", artifactNum, 0, artifactNum, 30, 0, 30);
+	TH2D* VisualHistogram = new TH2D("Visual", "", artifactNum, 0, artifactNum, binNum, 0, maxDamage);
 	for (int i = 0; i < artifactNum; i++)
 	{
 		for (int j = 0; j < artifactNum; j++)
@@ -281,8 +293,8 @@ void Simulator()
 	gPad->SetTopMargin(0.05);
 
 	VisualHistogram->GetXaxis()->SetTitle("The number of artifact to get");
-	VisualHistogram->GetYaxis()->SetTitle("Score");
+	VisualHistogram->GetYaxis()->SetTitle("Damage");
 	VisualHistogram->GetZaxis()->SetTitle("Count");
 	VisualHistogram->Draw("COL4Z");
-
+	*/
 }

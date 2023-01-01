@@ -1,0 +1,43 @@
+{
+    "tasks": [
+        // C++
+        {
+            "type": "shell",
+            "label": "g++ build",
+            "command": "g++",
+            "args": [
+                "-g",
+                "${fileDirname}\\**.cpp",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+            ],
+            "problemMatcher": ["$gcc"],
+            "group": "build", 
+        }, 
+        // C
+        {
+            "type": "shell",
+            "label": "gcc build",
+            "command": "gc",
+            "args": [
+                "-g",
+                "${fileDirname}\\**.cpp",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+            ],
+            "problemMatcher": ["$gcc"],
+            "group": "build", 
+        }, 
+        // excute
+        {
+            "label": "execute",
+            "command": "cmd",
+            "args": [
+                "/C",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+            ],
+            "group": "test", 
+        }
+    ],
+    "version": "2.0.0"
+}

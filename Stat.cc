@@ -1,6 +1,32 @@
 #include "Stat.hh"
 
 
+void PrintStat(Stat stat)
+{
+    for (int i = 0; i < 35; i++)
+    {
+        cout << STATSTRING[i] << " : " << stat.GetOption(i) << endl;
+    }
+    for (int i = 0; i < 3; i++)
+    {
+        cout << BASESTATSTRING[i] << " : " << stat.GetBaseOption(i) << endl;
+    }
+}
+
+
+void Stat::SetZero()
+{
+	for (int i = 0; i < 35 ; i++)
+	{
+		mStat[i] = 0.;
+	}
+	for (int i = 0; i < 3 ; i++)
+	{
+		mBaseStat[i] = 0.;
+	}
+}
+
+
 void Stat::Initialization()
 {
 	CalTotalAttack();

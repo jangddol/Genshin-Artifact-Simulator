@@ -1,12 +1,12 @@
 #ifndef STAT_HH
 #define STAT_HH
 
-
+std::vector<TString> BASESTATSTRING = {"Base ATK", "Base HP", "Base DEF"};
 std::vector<TString> STATSTRING
 	= {"Critical Rate", "Critical Bonus", "ATK%", "ATK", "Element Charge", 
 		"HP%", "HP", "Element Mastery", "DEF%", "DEF",
 		"Pyro Bonus", "Electro Bonus", "Cryo Bonus", "Hydro Bonus", "Anymo Bonus",
-		"Gyro Bonus", "Phys Bonus", "Dendro Bonus", "Heal Bonus", "Normal Attack Bonus", 
+		"Geo Bonus", "Phys Bonus", "Dendro Bonus", "Heal Bonus", "Normal Attack Bonus", 
 		"Strong Attack Bonus", "Dodge Attack Bonus", "E Skill Bonus", "Q Skill Bonus", "Total ATK",
 		"Total HP", "Total DEF", "Resist Cut", "DEF Cut", "Monster Resist",
 		"Resist Coef", "DEF Coef", "Lv", "Monster Lv", "Lv Coef"};
@@ -18,6 +18,7 @@ public:
 	Stat() {};
 	~Stat() {};
 
+	void SetZero();
 	void Initialization();
 
 	void SetOption(int index, double amount) { mStat[index] = amount; }
@@ -75,11 +76,11 @@ public:
 	double GetEBonus() { return mStat[22]; }
 	void SetQBonus(double qBonus) { mStat[23] = qBonus; }
 	double GetQBonus() { return mStat[23]; }
-	void CalTotalAttack() { mStat[24] = mBaseStat[0] + mStat[2] + mStat[3]; } // BaseATK + AP + ATK
+	void CalTotalAttack() { mStat[24] = mBaseStat[0] * (1 + mStat[2] / 100.) + mStat[3]; } // BaseATK + AP + ATK
 	double GetTotalAttack() { return mStat[24]; }
-	void CalTotalHP() { mStat[25] = mBaseStat[1] + mStat[5] + mStat[6]; } // BaseHP + HPP + HP
+	void CalTotalHP() { mStat[25] = mBaseStat[1] * (1 + mStat[5] / 100.) + mStat[6]; } // BaseHP + HPP + HP
 	double GetTotalHP() { return mStat[25]; }
-	void CalTotalDefense() { mStat[26] = mBaseStat[2] + mStat[8] + mStat[9]; } // BaseDF + DFP + DF
+	void CalTotalDefense() { mStat[26] = mBaseStat[2] * (1 + mStat[8] / 100.) + mStat[9]; } // BaseDF + DFP + DF
 	double GetTotalDefense() { return mStat[26]; }
 	void SetResistCut(double resistCut) { mStat[27] = resistCut; }
 	double GetResistCut() { return mStat[27]; }
@@ -98,6 +99,8 @@ public:
 	void CalLevelCoef();
 	double GetLevelCoef() { return mStat[34]; }
 
+	double GetBaseOption(int index) { return mBaseStat[index]; }
+	void SetBaseOption(int index, double amount) { mBaseStat[index] = amount; }
 	double GetBaseAttack() { return mBaseStat[0]; }
 	void SetBaseAttack(double baseATK) { mBaseStat[0] = baseATK; }
 	double GetBaseHP() { return mBaseStat[1]; }
