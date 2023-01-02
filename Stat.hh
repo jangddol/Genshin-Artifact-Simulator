@@ -25,6 +25,7 @@ public:
 
 	void SetZero();
 	void Initialization();
+	void InitializationFast();
 
 	void SetOption(int index, double amount) { mStat[index] = amount; }
 	void AddOption(int index, double amount) { mStat[index] += amount; }

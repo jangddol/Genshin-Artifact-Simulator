@@ -65,7 +65,7 @@ void Character::ArtifactInitialization()
 	ARTINITTIMELIST[3] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
     ARTINITSTART = ARTINITFINISH;
 
-    mStat.Initialization();
+    mStat.InitializationFast();
 
     ARTINITFINISH = clock();
 	ARTINITTIMELIST[4] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
