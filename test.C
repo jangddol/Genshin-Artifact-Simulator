@@ -1,27 +1,25 @@
-class Parent
-{
-public:
-    Parent(){}
-    ~Parent(){}
+#include <vector>
 
-    void PrintTemp(){ cout << mTemp << endl; }
 
-protected:
-    int mTemp = 0;
-
-};
-
-class Child : public Parent
-{
-public:
-    Child(){ mTemp = 1; }
-    ~Child(){}
-};
+using namespace std;
 
 void test()
 {
-    Child tempChild = Child();
-    tempChild.PrintTemp();
-    Parent tempParent = *(Parent*)&tempChild;
-    tempParent.PrintTemp();
+    vector<double> tempVec = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
+
+    int count = 0;
+    for (int i = 0; i < tempVec.size(); i++)
+    {
+        if (tempVec.at(i) == 4)
+        {
+            tempVec.erase(tempVec.begin() + i);
+            i--;
+        }
+        cout << tempVec.size() << endl;
+    }
+    
+    for (int i = 0; i < tempVec.size(); i++)
+    {
+        cout << tempVec.at(i) << endl;
+    }
 }

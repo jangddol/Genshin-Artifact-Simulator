@@ -108,95 +108,187 @@ void MakeEffectiveOptionList(int* oEffectiveList, int oSize, Character* characte
 }
 
 
-void Convert_pArtFlowerList2pArtifact(vector<Artifact*>& selectedList, SuperArtifactList& ArtifactSuperList)
+bool CheckWhetherAppend(Stat tempSubOpt, Stat gennedSubOpt, double effectiveList[], int effListSize)
 {
-	int length = ArtifactSuperList.flower.size();
-	for(int i = 0; i < length; i++) selectedList.push_back((Artifact*)ArtifactSuperList.flower[i]);
+	for (int j = 0; j < effListSize; j++)
+	{
+		if (tempSubOpt.GetOption(effectiveList[j]) < gennedSubOpt.GetOption(effectiveList[j]))
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 
-void Convert_pArtFeatherList2pArtifact(vector<Artifact*>& selectedList, SuperArtifactList& ArtifactSuperList)
+bool CheckWhetherDelete(Stat tempSubOpt, Stat gennedSubOpt, double effectiveList[], int effListSize)
 {
-	int length = ArtifactSuperList.feather.size();
-	for(int i = 0; i < length; i++) selectedList.push_back((Artifact*)ArtifactSuperList.feather[i]);
+	int numSame = 0;
+	for (int j = 0; j < effListSize; j++)
+	{
+		if (tempSubOpt.GetOption(effectiveList[j]) > gennedSubOpt.GetOption(effectiveList[j])) return false;
+		if (tempSubOpt.GetOption(effectiveList[j]) == gennedSubOpt.GetOption(effectiveList[j])) numSame++;
+	}
+	if (numSame == effListSize) return false;
+	else return true;
 }
 
 
-void Convert_pArtClockList2pArtifact(vector<Artifact*>& selectedList, SuperArtifactList& ArtifactSuperList)
+bool CheckWhetherAppendAndDelete_Flower(Character* character, Artifact* gennedArtifact, SuperArtifactList& ArtifactSuperList)
 {
-	int length = ArtifactSuperList.clock.size();
-	for(int i = 0; i < length; i++) selectedList.push_back((Artifact*)ArtifactSuperList.clock[i]);
+	int effectiveList[10] = { 0 };
+	int effListSize;
+	MakeEffectiveOptionList(effectiveList, effListSize, character);
+	
+	Stat gennedSubOpt = gennedArtifact->GetSubStat();
+
+	int numType = gennedArtifact->GetType();
+	vector<ArtFlower*> ArtifactSuperList.flower = ArtifactSuperList.flower;
+
+	bool returnBool = true;
+	for (int i = 0; i < ArtifactSuperList.flower.size(); i++)
+	{
+		Stat tempSubOpt = ArtifactSuperList.flower[i]->GetSubStat();
+		if (returnBool) returnBool = CheckWhetherAppend(tempSubOpt, gennedSubOpt, effectiveList, effListSize);
+		bool isNeed2Delete = CheckWhetherDelete(tempSubOpt, gennedSubOpt, effectiveList, effListSize);
+		if (isNeed2Delete)
+		{
+			ArtifactSuperList.flower.remove(ArtifactSuperList.flower.begin() + i);
+			i--;
+		}
+	}
+	return returnBool;
 }
 
 
-void Convert_pArtCupList2pArtifact(vector<Artifact*>& selectedList, SuperArtifactList& ArtifactSuperList)
+bool CheckWhetherAppendAndDelete_Feather(Character* character, Artifact* gennedArtifact, SuperArtifactList& ArtifactSuperList)
 {
-	int length = ArtifactSuperList.cup.size();
-	for(int i = 0; i < length; i++) selectedList.push_back((Artifact*)ArtifactSuperList.cup[i]);
+	int effectiveList[10] = { 0 };
+	int effListSize;
+	MakeEffectiveOptionList(effectiveList, effListSize, character);
+	
+	Stat gennedSubOpt = gennedArtifact->GetSubStat();
+
+	int numType = gennedArtifact->GetType();
+	vector<ArtFeather*> ArtifactSuperList.feather = ArtifactSuperList.feather;
+
+	bool returnBool = true;
+	for (int i = 0; i < ArtifactSuperList.feather.size(); i++)
+	{
+		Stat tempSubOpt = ArtifactSuperList.feather[i]->GetSubStat();
+		if (returnBool) returnBool = CheckWhetherAppend(tempSubOpt, gennedSubOpt, effectiveList, effListSize);
+		bool isNeed2Delete = CheckWhetherDelete(tempSubOpt, gennedSubOpt, effectiveList, effListSize);
+		if (isNeed2Delete)
+		{
+			ArtifactSuperList.feather.remove(ArtifactSuperList.feather.begin() + i);
+			i--;
+		}
+	}
+	return returnBool;
 }
 
 
-void Convert_pArtCrownList2pArtifact(vector<Artifact*>& selectedList, SuperArtifactList& ArtifactSuperList)
+bool CheckWhetherAppendAndDelete_Clock(Character* character, Artifact* gennedArtifact, SuperArtifactList& ArtifactSuperList)
 {
-	int length = ArtifactSuperList.crown.size();
-	for(int i = 0; i < length; i++) selectedList.push_back((Artifact*)ArtifactSuperList.crown[i]);
+	int effectiveList[10] = { 0 };
+	int effListSize;
+	MakeEffectiveOptionList(effectiveList, effListSize, character);
+	
+	Stat gennedSubOpt = gennedArtifact->GetSubStat();
+
+	int numType = gennedArtifact->GetType();
+	vector<ArtClock*> ArtifactSuperList.clock = ArtifactSuperList.clock;
+
+	bool returnBool = true;
+	for (int i = 0; i < ArtifactSuperList.clock.size(); i++)
+	{
+		Stat tempSubOpt = ArtifactSuperList.clock[i]->GetSubStat();
+		if (returnBool) returnBool = CheckWhetherAppend(tempSubOpt, gennedSubOpt, effectiveList, effListSize);
+		bool isNeed2Delete = CheckWhetherDelete(tempSubOpt, gennedSubOpt, effectiveList, effListSize);
+		if (isNeed2Delete)
+		{
+			ArtifactSuperList.clock.remove(ArtifactSuperList.clock.begin() + i);
+			i--;
+		}
+	}
+	return returnBool;
+}
+
+
+bool CheckWhetherAppendAndDelete_Cup(Character* character, Artifact* gennedArtifact, SuperArtifactList& ArtifactSuperList)
+{
+	int effectiveList[10] = { 0 };
+	int effListSize;
+	MakeEffectiveOptionList(effectiveList, effListSize, character);
+	
+	Stat gennedSubOpt = gennedArtifact->GetSubStat();
+
+	int numType = gennedArtifact->GetType();
+	vector<ArtCup*> ArtifactSuperList.cup = ArtifactSuperList.cup;
+
+	bool returnBool = true;
+	for (int i = 0; i < ArtifactSuperList.cup.size(); i++)
+	{
+		Stat tempSubOpt = ArtifactSuperList.cup[i]->GetSubStat();
+		if (returnBool) returnBool = CheckWhetherAppend(tempSubOpt, gennedSubOpt, effectiveList, effListSize);
+		bool isNeed2Delete = CheckWhetherDelete(tempSubOpt, gennedSubOpt, effectiveList, effListSize);
+		if (isNeed2Delete)
+		{
+			ArtifactSuperList.cup.remove(ArtifactSuperList.cup.begin() + i);
+			i--;
+		}
+	}
+	return returnBool;
+}
+
+
+bool CheckWhetherAppendAndDelete_Crown(Character* character, Artifact* gennedArtifact, SuperArtifactList& ArtifactSuperList)
+{
+	int effectiveList[10] = { 0 };
+	int effListSize;
+	MakeEffectiveOptionList(effectiveList, effListSize, character);
+	
+	Stat gennedSubOpt = gennedArtifact->GetSubStat();
+
+	int numType = gennedArtifact->GetType();
+	vector<ArtCrown*> ArtifactSuperList.crown = ArtifactSuperList.crown;
+
+	bool returnBool = true;
+	for (int i = 0; i < ArtifactSuperList.crown.size(); i++)
+	{
+		Stat tempSubOpt = ArtifactSuperList.crown[i]->GetSubStat();
+		if (returnBool) returnBool = CheckWhetherAppend(tempSubOpt, gennedSubOpt, effectiveList, effListSize);
+		bool isNeed2Delete = CheckWhetherDelete(tempSubOpt, gennedSubOpt, effectiveList, effListSize);
+		if (isNeed2Delete)
+		{
+			ArtifactSuperList.crown.remove(ArtifactSuperList.crown.begin() + i);
+			i--;
+		}
+	}
+	return returnBool;
 }
 
 
 bool CheckWhetherAppendAndDelete(Character* character, Artifact* gennedArtifact, SuperArtifactList& ArtifactSuperList)
 {
-	int numType = gennedArtifact->GetType();
-	vector<Artifact*> selectedList = {};
-
-	if (numType == 1) Convert_pArtFlowerList2pArtifact(selectedList, ArtifactSuperList);
-	else if (numType == 2) Convert_pArtFeatherList2pArtifact(selectedList, ArtifactSuperList);
-	else if (numType == 3) Convert_pArtClockList2pArtifact(selectedList, ArtifactSuperList);
-	else if (numType == 4) Convert_pArtCupList2pArtifact(selectedList, ArtifactSuperList);
-	else if (numType == 5) Convert_pArtCrownList2pArtifact(selectedList, ArtifactSuperList);
-	else
-	{
-		cout << "Error : gennedArtifact has wrong Type at CheckWhetherAppend : numType = " << numType << endl;
-		return false;
-	}
-
-	/*
-	switch (numType)
-	{
-	case 1: Convert_pArtFlowerList2pArtifact(selectedList, ArtifactSuperList);
-	case 2: Convert_pArtFeatherList2pArtifact(selectedList, ArtifactSuperList);
-	case 3: Convert_pArtClockList2pArtifact(selectedList, ArtifactSuperList);
-	case 4: Convert_pArtCupList2pArtifact(selectedList, ArtifactSuperList);
-	case 5: Convert_pArtCrownList2pArtifact(selectedList, ArtifactSuperList);
-	default:
-		{
-			cout << "Error : gennedArtifact has wrong Type at CheckWhetherAppend : numType = " << numType << endl;
-			return false;
-		}
-	}*/
-
 	int mainType = gennedArtifact->GetMainType();
 
 	if (CheckEffectiveOption(character, mainType) == false && (mainType != 3 && mainType != 6)) return false; 
 
-	int effectiveList[10] = { 0 };
-	int effListSize;
-	MakeEffectiveOptionList(effectiveList, effListSize, character);
+	int numType = gennedArtifact->GetType();
 
-	Stat gennedSubOpt = gennedArtifact->GetSubStat();
-	
-	bool returnBool = true;
-	for (int i = 0; i < selectedList.size(); i++)
+	vector<Artifact*> selectedList = {};
+
+	bool returnBool;
+	if      (numType == 1) returnBool = CheckWhetherAppendAndDelete_Flower(character, gennedArtifact, ArtifactSuperList);
+	else if (numType == 2) returnBool = CheckWhetherAppendAndDelete_Feather(character, gennedArtifact, ArtifactSuperList);
+	else if (numType == 3) returnBool = CheckWhetherAppendAndDelete_Clock(character, gennedArtifact, ArtifactSuperList);
+	else if (numType == 4) returnBool = CheckWhetherAppendAndDelete_Cup(character, gennedArtifact, ArtifactSuperList);
+	else if (numType == 5) returnBool = CheckWhetherAppendAndDelete_Crown(character, gennedArtifact, ArtifactSuperList);
+	else
 	{
-		Stat tempSubOpt = selectedList[i]->GetSubStat();
-		for (int j = 0; j < effListSize; j++)
-		{
-			if (tempSubOpt.GetOption(effectiveList[j]) < gennedSubOpt.GetOption(effectiveList[j]))
-			{
-				returnBool = false;
-				break;
-			}
-		}
-		if (!returnBool) break;
+		cout << "Error : gennedArtifact has wrong Type at CheckWhetherAppend : numType = " << numType << endl;
+		return false;
 	}
 	return returnBool;
 }
