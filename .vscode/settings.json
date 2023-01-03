@@ -64,7 +64,9 @@
         "semaphore": "cpp",
         "sstream": "cpp",
         "stop_token": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "Simulator copy.C": "cpp",
+        "Simulator_copy.C": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

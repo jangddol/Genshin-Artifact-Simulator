@@ -73,7 +73,7 @@ vector<int> Artifact::GenerateCummulatedWeight()
 	{
 		returnList[i] = SUBOPTPROB[i];
 	} 
-	if ((mMainType >= 0) && (mMainType < 10)) returnList[mMainType] = 0;
+	if ((mMainType >= 0) && (mMainType < 10) && (mMainType != 3) && (mMainType != 6)) returnList[mMainType] = 0;
 	for (int i = 1; i < 10; i++)
 	{
 		returnList[i] += returnList[i - 1];
@@ -122,7 +122,7 @@ bool CheckIsThereIn(int element, vector<int> list)
 
 vector<int> Artifact::GenerateStartOpt(vector<int> cummulatedWeight)
 {
-	vector<int> returnList(4);
+	vector<int> returnList = { -1, -1, -1, -1 };
 	returnList[0] = UseCummulatedWeight(cummulatedWeight);
 	for (int i = 1; i < 4; i++)
 	{
@@ -170,7 +170,6 @@ void Artifact::GenerateSubOption()
 
 	bool whether4OptStart = Selected3or4OptStart();
 		// 2. 처음에 3개인지 4개인지 고른다. -> 8개 or 9개
-
 	vector<int> startOptList = GenerateStartOpt(subCummulatedWeight);
 		// 3. 처음 옵션 4개가 무엇인지 결정한다. 4개를 겹치지 않게 생성한다.
 
@@ -181,6 +180,8 @@ void Artifact::GenerateSubOption()
 
 void Artifact::Generation()
 {
+	mMainStat.SetZero();
+	mSubStat.SetZero();
 	GenerateMainOption(); // 메인옵션 : 부위마다 다름.
 	GenerateSubOption(); // 부옵션 : 부위마다, 메인옵션마다 다름.
 }
@@ -188,6 +189,8 @@ void Artifact::Generation()
 
 void Artifact::Generation(int mainType)
 {
+	mMainStat.SetZero();
+	mSubStat.SetZero();
 	SetMainType(mainType);
 	GenerateSubOption();
 }
