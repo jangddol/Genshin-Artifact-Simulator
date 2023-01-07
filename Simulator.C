@@ -66,7 +66,7 @@ Artifact* GenRandArtf_5()
 
 Artifact* GenerateRandomArtifact()
 {
-	// 20% È®·ü·Î ºÎÀ§¸¦ °áÁ¤.
+	// 20% ÃˆÂ®Â·Ã¼Â·ÃŽ ÂºÃŽÃ€Â§Â¸Â¦ Â°Ã¡ÃÂ¤.
 	// int temp = gRandom->Integer(5);
 	int temp = uni(rng);
 
@@ -378,9 +378,9 @@ void Simulator()
     artSetStat.SetZero();
     artSetStat.SetAttackPer(18);
     artSetStat.SetQBonus(20);
-	cout << "artifact set effect generated" << endl;
+	  cout << "artifact set effect generated" << endl;
     simChar->SetArtSetStat(artSetStat);
-	cout << "artifact set effect set" << endl;
+	  cout << "artifact set effect set" << endl;
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
@@ -400,12 +400,13 @@ void Simulator()
 								<< simChar->GetEffection(8) << ", "
 								<< simChar->GetEffection(9) << endl;
 
-	SuperArtifactList artifactSuperList;
-	artifactSuperList.flower = {};
-	artifactSuperList.feather = {};
-	artifactSuperList.clock = {};
-	artifactSuperList.cup = {};
-	artifactSuperList.crown = {};
+	vector<Artifact> ArtifactList1 = {};
+	vector<Artifact> ArtifactList2 = {};
+	vector<Artifact> ArtifactList3 = {};
+	vector<Artifact> ArtifactList4 = {};
+	vector<Artifact> ArtifactList5 = {};
+	vector<vector<Artifact>> ArtifactSuperList 
+		= { ArtifactList1, ArtifactList2, ArtifactList3, ArtifactList4, ArtifactList5 };
 
 
 	// simulation number
