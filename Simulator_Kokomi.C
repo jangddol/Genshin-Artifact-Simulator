@@ -266,9 +266,20 @@ bool CheckWhetherAppendAndDelete(Character* character, Artifact* gennedArtifact,
 			if (isNeed2Delete)
 			{
 				EraseSuperArtifactList(ArtifactSuperList, numType, i);
+
+				// cout << "before deleted" << endl;
+				// PrintArtifact(*selectedList[i]);
+
 				delete selectedList[i];
+
+				// cout << "after deleted" << endl;
+				// PrintArtifact(*selectedList[i]);
+
 				selectedList.erase(selectedList.begin() + i);
-				// cout << i << "-th deleted" << endl;
+
+				// cout << "after erased" << endl;
+				// PrintArtifact(*selectedList[i]);
+
 				i--;
 			}
 		}
@@ -293,8 +304,8 @@ void AppendArtifactList(Artifact* gennedArtifact, SuperArtifactList& ArtifactSup
 }
 
 
-// double CALLOOPTIMELIST[3] = { 0. };
-// double CALLOOPSTART, CALLOOPFINISH;
+double CALLOOPTIMELIST[2] = { 0. };
+double CALLOOPSTART, CALLOOPFINISH;
 double CalLoopArtifact(Character* character, Artifact* gennedArtifact, SuperArtifactList ArtifactSuperList,
 	ArtFlower* &oFlower, ArtFeather* &oFeather, ArtClock* &oClock, ArtCup* &oCup, ArtCrown* &oCrown)
 {
@@ -330,15 +341,15 @@ double CalLoopArtifact(Character* character, Artifact* gennedArtifact, SuperArti
 					{
 						character->SetArtCrown(loopList.crown[i5]);
 						
-						// CALLOOPSTART = clock();
+						CALLOOPSTART = clock();
 						character->Initialization();
-						// CALLOOPFINISH = clock();
-						// CALLOOPTIMELIST[1] += (double)(CALLOOPFINISH - CALLOOPSTART) / CLOCKS_PER_SEC;
+						CALLOOPFINISH = clock();
+						CALLOOPTIMELIST[0] += (double)(CALLOOPFINISH - CALLOOPSTART) / CLOCKS_PER_SEC;
 						
-						// CALLOOPSTART = CALLOOPFINISH;
+						CALLOOPSTART = CALLOOPFINISH;
 						tempDamage = character->GetDamage();
-						// CALLOOPFINISH = clock();
-						// CALLOOPTIMELIST[2] += (double)(CALLOOPFINISH - CALLOOPSTART) / CLOCKS_PER_SEC;
+						CALLOOPFINISH = clock();
+						CALLOOPTIMELIST[1] += (double)(CALLOOPFINISH - CALLOOPSTART) / CLOCKS_PER_SEC;
 
 						if (tempDamage > bestDamage)
 						{
@@ -380,6 +391,12 @@ void Simulator_Kokomi()
     artSetStat.SetHealBonus(15);
     simChar->SetArtSetStat(artSetStat);
 
+    Stat resonanceStat = Stat();
+    resonanceStat.SetZero();
+    resonanceStat.SetResistCut(20.);
+    resonanceStat.SetGeoBonus(15.);
+    simChar->SetResonanceStat(resonanceStat);
+
 	simChar->MakeEffectionArray();
 	cout << "Effection List : " << simChar->GetEffection(0) << ", "
 								<< simChar->GetEffection(1) << ", "
@@ -404,7 +421,7 @@ void Simulator_Kokomi()
 	int simNum = 100;
 	
 	// the number of artifacts to get
-	constexpr int artifactNum = 300; // 4.7925 per day (150 ~ month)
+	constexpr int artifactNum = 600; // 4.7925 per day (150 ~ month)
 	
 	// maxDamage, binNum
 	int binNum = 100;
@@ -483,6 +500,7 @@ void Simulator_Kokomi()
 				finish  = clock();
 				TIMELIST[3] += (double)(finish - start) / CLOCKS_PER_SEC;
 			}
+			else delete gennedArtifact;
 
 			N_Histogram[j]->Fill(bestDamage);
 
@@ -490,12 +508,6 @@ void Simulator_Kokomi()
 			double percent = (double)(i * artifactNum + j)/(double)(simNum * artifactNum) * 100.;
 			if ((int)beforePercent != (int)percent) std::cout << (int)percent << "% end" << std::endl;
 		}
-
-		for (int j = 0; j < artifactSuperList.flower.size(); j++) delete artifactSuperList.flower[j];
-		for (int j = 0; j < artifactSuperList.feather.size(); j++) delete artifactSuperList.feather[j];
-		for (int j = 0; j < artifactSuperList.clock.size(); j++) delete artifactSuperList.clock[j];
-		for (int j = 0; j < artifactSuperList.cup.size(); j++) delete artifactSuperList.cup[j];
-		for (int j = 0; j < artifactSuperList.crown.size(); j++) delete artifactSuperList.crown[j];
 
 		cout << i << "-th result =============================================" << endl;
 		cout << "bestDamage : " << bestDamage << endl;
@@ -505,14 +517,20 @@ void Simulator_Kokomi()
 		PrintArtifact(*bestClock);
 		PrintArtifact(*bestCup);
 		PrintArtifact(*bestCrown);
-		// cout << "============== Character Stat ===============" << endl;
-		// PrintStat(simChar->GetStat());
+		cout << "============== Character Stat ===============" << endl;
+		PrintStat(simChar->GetStat());
+		
+		for (int j = 0; j < artifactSuperList.flower.size(); j++) delete artifactSuperList.flower[j];
+		for (int j = 0; j < artifactSuperList.feather.size(); j++) delete artifactSuperList.feather[j];
+		for (int j = 0; j < artifactSuperList.clock.size(); j++) delete artifactSuperList.clock[j];
+		for (int j = 0; j < artifactSuperList.cup.size(); j++) delete artifactSuperList.cup[j];
+		for (int j = 0; j < artifactSuperList.crown.size(); j++) delete artifactSuperList.crown[j];
 	}
 
 	cout << TIMELIST[0] << "s, " << TIMELIST[1] << "s, " << TIMELIST[2] << "s, " << TIMELIST[3] << "s" << endl;
-	// cout << CALLOOPTIMELIST[0] << "s, " << CALLOOPTIMELIST[1] << "s, " << CALLOOPTIMELIST[2] << "s" << endl;
-	// cout << ARTINITTIMELIST[0] << "s, " << ARTINITTIMELIST[1] << "s, " << ARTINITTIMELIST[2] << "s, "
-	// << ARTINITTIMELIST[3] << "s, " << ARTINITTIMELIST[4] << "s" << endl;
+	cout << CALLOOPTIMELIST[0] << "s, " << CALLOOPTIMELIST[1] << "s" << endl;
+	cout << ARTINITTIMELIST[0] << "s, " << ARTINITTIMELIST[1] << "s, " << ARTINITTIMELIST[2] << "s, "
+	<< ARTINITTIMELIST[3] << "s, " << ARTINITTIMELIST[4] << "s" << endl;
 
 	// Plot Part
 	TH2D* VisualHistogram = new TH2D("Visual", "", artifactNum, 0, artifactNum, binNum, minDamage, maxDamage);

@@ -14,12 +14,12 @@ void Character::Initialization()
 }
 
 
-// double ARTINITSTART, ARTINITFINISH;
-// double ARTINITTIMELIST[5] = { 0. };
+double ARTINITSTART, ARTINITFINISH;
+double ARTINITTIMELIST[5] = { 0. };
 
 void Character::ArtifactInitialization()
 {
-    // ARTINITSTART = clock();
+    ARTINITSTART = clock();
     
     Stat FlowerMainStat = fArtFlower->GetMainStat();
     Stat FlowerSubStat = fArtFlower->GetSubStat();
@@ -32,15 +32,15 @@ void Character::ArtifactInitialization()
     Stat CrownMainStat = fArtCrown->GetMainStat();
     Stat CrownSubStat = fArtCrown->GetSubStat();
 
-    // ARTINITFINISH = clock();
-	// ARTINITTIMELIST[0] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
-    // ARTINITSTART = ARTINITFINISH;
+    ARTINITFINISH = clock();
+	ARTINITTIMELIST[0] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
+    ARTINITSTART = ARTINITFINISH;
 
     mStat = mStatExceptArtifact;
 
-    // ARTINITFINISH = clock();
-	// ARTINITTIMELIST[1] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
-    // ARTINITSTART = ARTINITFINISH;
+    ARTINITFINISH = clock();
+	ARTINITTIMELIST[1] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
+    ARTINITSTART = ARTINITFINISH;
 
     mStat.AddOption(6, FlowerMainStat.GetOption(6));
     mStat.AddOption(3, FeatherMainStat.GetOption(3));
@@ -48,9 +48,9 @@ void Character::ArtifactInitialization()
     mStat.AddOption(fArtCup->GetMainType(), CupMainStat.GetOption(fArtCup->GetMainType()));
     mStat.AddOption(fArtCrown->GetMainType(), CrownMainStat.GetOption(fArtCrown->GetMainType()));
 
-    // ARTINITFINISH = clock();
-	// ARTINITTIMELIST[2] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
-    // ARTINITSTART = ARTINITFINISH;
+    ARTINITFINISH = clock();
+	ARTINITTIMELIST[2] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
+    ARTINITSTART = ARTINITFINISH;
 
     for (int i = 0; i < 10; i++)
     {
@@ -61,14 +61,14 @@ void Character::ArtifactInitialization()
         mStat.AddOption(i, CrownSubStat.GetOption(i));
     }
 
-    // ARTINITFINISH = clock();
-	// ARTINITTIMELIST[3] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
-    // ARTINITSTART = ARTINITFINISH;
+    ARTINITFINISH = clock();
+	ARTINITTIMELIST[3] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
+    ARTINITSTART = ARTINITFINISH;
 
     mStat.InitializationFast();
 
-    // ARTINITFINISH = clock();
-	// ARTINITTIMELIST[4] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
+    ARTINITFINISH = clock();
+	ARTINITTIMELIST[4] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
 }
 
 

@@ -1,4 +1,6 @@
 #include <vector>
+#include <array>
+#include "top.hh"
 
 
 using namespace std;
@@ -9,12 +11,10 @@ class tempArray
 public:
     tempArray()
     {
-        mArray = new double[10];
-        SetZero();
+        mArray = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     }
     ~tempArray()
     {
-        delete mArray;
     }
 
     void   SetZero() { for (int i = 0; i < 10; i++) mArray[i] = 0.; }
@@ -22,20 +22,24 @@ public:
     void   SetElement(int index, double amount) { mArray[index] = amount; }
 
 private:
-    double* mArray;
+    std::array<double, 10> mArray;
 };
 
 
 void test()
 {
-    tempArray* temp = new tempArray();
-    for (int i = 0; i < 10; i++)
+    int N = 10000000;
+    for (int j = 0; j < N; j++)
     {
-        cout << temp->GetElement(i) << endl;
-    }
-    delete temp;
-    for (int i = 0; i < 10; i++)
-    {
-        cout << temp->GetElement(i) << endl;
+        Stat* temp = new Stat();
+        for (int i = 0; i < 10; i++)
+        {
+            PrintStat(*temp);
+        }
+        delete temp;
+        for (int i = 0; i < 10; i++)
+        {
+            PrintStat(*temp);
+        }
     }
 }
