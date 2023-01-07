@@ -1,21 +1,20 @@
-#include "top.hh"
+#include "../header/Simulator.hh"
+#include "../header/top.hh"
+
 #include <iostream>
 #include <cstdio>
-#include <vector>
+#include <std::vector>
 #include <algorithm>
 #include <ctime>
 
 
-using namespace std;
-
-
 struct SuperArtifactList
 {
-	vector<ArtFlower*> flower;
-	vector<ArtFeather*> feather;
-	vector<ArtClock*> clock;
-	vector<ArtCup*> cup;
-	vector<ArtCrown*> crown;
+	std::vector<ArtFlower*> flower;
+	std::vector<ArtFeather*> feather;
+	std::vector<ArtClock*> clock;
+	std::vector<ArtCup*> cup;
+	std::vector<ArtCrown*> crown;
 };
 
 
@@ -79,7 +78,7 @@ Artifact* GenerateRandomArtifact()
 	case 4: return GenRandArtf_5();
 	default:
 		{
-			cout << "Error : gRandom occur some errors at GenerateRandomArtifact : temp = " << temp << endl;
+			std::cout << "Error : gRandom occur some errors at GenerateRandomArtifact : temp = " << temp << std::endl;
 			return new Artifact();
 		}
 	}
@@ -120,41 +119,41 @@ bool CheckBetterSubOpt(Stat betterOpt, Stat worseOpt, int effectiveList[], int e
 }
 
 
-vector<Artifact*> Convert2VecArtifactPointer(vector<ArtFlower*> flowerList)
+std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtFlower*> flowerList)
 {
-	vector<Artifact*> returnVector(flowerList.size());
+	std::vector<Artifact*> returnVector(flowerList.size());
 	for (int i = 0; i < flowerList.size() ; i++) returnVector[i] = (Artifact*)flowerList[i];
 	return returnVector;
 }
 
 
-vector<Artifact*> Convert2VecArtifactPointer(vector<ArtFeather*> featherList)
+std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtFeather*> featherList)
 {
-	vector<Artifact*> returnVector(featherList.size());
+	std::vector<Artifact*> returnVector(featherList.size());
 	for (int i = 0; i < featherList.size() ; i++) returnVector[i] = (Artifact*)featherList[i];
 	return returnVector;
 }
 
 
-vector<Artifact*> Convert2VecArtifactPointer(vector<ArtClock*> clockList)
+std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtClock*> clockList)
 {
-	vector<Artifact*> returnVector(clockList.size());
+	std::vector<Artifact*> returnVector(clockList.size());
 	for (int i = 0; i < clockList.size() ; i++) returnVector[i] = (Artifact*)clockList[i];
 	return returnVector;
 }
 
 
-vector<Artifact*> Convert2VecArtifactPointer(vector<ArtCup*> cupList)
+std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtCup*> cupList)
 {
-	vector<Artifact*> returnVector(cupList.size());
+	std::vector<Artifact*> returnVector(cupList.size());
 	for (int i = 0; i < cupList.size() ; i++) returnVector[i] = (Artifact*)cupList[i];
 	return returnVector;
 }
 
 
-vector<Artifact*> Convert2VecArtifactPointer(vector<ArtCrown*> crownList)
+std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtCrown*> crownList)
 {
-	vector<Artifact*> returnVector(crownList.size());
+	std::vector<Artifact*> returnVector(crownList.size());
 	for (int i = 0; i < crownList.size() ; i++) returnVector[i] = (Artifact*)crownList[i];
 	return returnVector;
 }
@@ -167,7 +166,7 @@ void EraseSuperArtifactList(SuperArtifactList& ArtifactSuperList, int numType, i
 	else if (numType == 3) ArtifactSuperList.clock.erase(ArtifactSuperList.clock.begin() + index);
 	else if (numType == 4) ArtifactSuperList.cup.erase(ArtifactSuperList.cup.begin() + index);
 	else if (numType == 5) ArtifactSuperList.crown.erase(ArtifactSuperList.crown.begin() + index);
-	else cout << "Error : gennedArtifact has wrong Type at EraseSuperArtifactList : numType = " << numType << endl;
+	else std::cout << "Error : gennedArtifact has wrong Type at EraseSuperArtifactList : numType = " << numType << std::endl;
 }
 
 
@@ -179,7 +178,7 @@ bool CheckWhetherAppendAndDelete(Character* character, Artifact* gennedArtifact,
 
 	int numType = gennedArtifact->GetType();
 
-	vector<Artifact*> selectedList;
+	std::vector<Artifact*> selectedList;
 
 	if      (numType == 1) selectedList = Convert2VecArtifactPointer(ArtifactSuperList.flower);
 	else if (numType == 2) selectedList = Convert2VecArtifactPointer(ArtifactSuperList.feather);
@@ -188,7 +187,7 @@ bool CheckWhetherAppendAndDelete(Character* character, Artifact* gennedArtifact,
 	else if (numType == 5) selectedList = Convert2VecArtifactPointer(ArtifactSuperList.crown);
 	else
 	{
-		cout << "Error : gennedArtifact has wrong Type at CheckWhetherAppendAndDelete : numType = " << numType << endl;
+		std::cout << "Error : gennedArtifact has wrong Type at CheckWhetherAppendAndDelete : numType = " << numType << std::endl;
 	}
 	
 	int effectiveList[10] = { 0 };
@@ -196,9 +195,9 @@ bool CheckWhetherAppendAndDelete(Character* character, Artifact* gennedArtifact,
 	MakeEffectiveOptionList(effectiveList, effListSize, character);
 	
 	/*
-	cout << "================================================================================" << endl;
-	cout << "Main" << "\t|\t" << "SubOpt" << endl;
-	cout << STATSTRING[mainType] << "\t|\t" << "CR" << "\t"
+	std::cout << "================================================================================" << std::endl;
+	std::cout << "Main" << "\t|\t" << "SubOpt" << std::endl;
+	std::cout << STATSTRING[mainType] << "\t|\t" << "CR" << "\t"
 										<< "CB" << "\t"
 										<< STATSTRING[2] << "\t"
 										<< STATSTRING[3] << "\t"
@@ -207,9 +206,9 @@ bool CheckWhetherAppendAndDelete(Character* character, Artifact* gennedArtifact,
 										<< STATSTRING[6] << "\t"
 										<< "EM" << "\t"
 										<< STATSTRING[8] << "\t"
-										<< STATSTRING[9] << endl;
-	cout << "gennedArtifact" << endl;
-	cout << gennedArtifact->GetMainStat().GetOption(mainType) << "\t|\t" 
+										<< STATSTRING[9] << std::endl;
+	std::cout << "gennedArtifact" << std::endl;
+	std::cout << gennedArtifact->GetMainStat().GetOption(mainType) << "\t|\t" 
 		<< gennedArtifact->GetSubStat().GetOption(0) << "\t"
 		<< gennedArtifact->GetSubStat().GetOption(1) << "\t"
 		<< gennedArtifact->GetSubStat().GetOption(2) << "\t"
@@ -219,11 +218,11 @@ bool CheckWhetherAppendAndDelete(Character* character, Artifact* gennedArtifact,
 		<< gennedArtifact->GetSubStat().GetOption(6) << "\t"
 		<< gennedArtifact->GetSubStat().GetOption(7) << "\t"
 		<< gennedArtifact->GetSubStat().GetOption(8) << "\t"
-		<< gennedArtifact->GetSubStat().GetOption(9) << endl;
-	cout << "listArtifact" << endl;
+		<< gennedArtifact->GetSubStat().GetOption(9) << std::endl;
+	std::cout << "listArtifact" << std::endl;
 	for (int i = 0; i < selectedList.size(); i++)
 	{
-		cout << selectedList[i]->GetMainStat().GetOption(mainType) << "\t|\t" 
+		std::cout << selectedList[i]->GetMainStat().GetOption(mainType) << "\t|\t" 
 			<< selectedList[i]->GetSubStat().GetOption(0) << "\t"
 			<< selectedList[i]->GetSubStat().GetOption(1) << "\t"
 			<< selectedList[i]->GetSubStat().GetOption(2) << "\t"
@@ -233,7 +232,7 @@ bool CheckWhetherAppendAndDelete(Character* character, Artifact* gennedArtifact,
 			<< selectedList[i]->GetSubStat().GetOption(6) << "\t"
 			<< selectedList[i]->GetSubStat().GetOption(7) << "\t"
 			<< selectedList[i]->GetSubStat().GetOption(8) << "\t"
-			<< selectedList[i]->GetSubStat().GetOption(9) << endl;
+			<< selectedList[i]->GetSubStat().GetOption(9) << std::endl;
 	}*/
 
 	Stat gennedSubOpt = gennedArtifact->GetSubStat();
@@ -287,7 +286,7 @@ void AppendArtifactList(Artifact* gennedArtifact, SuperArtifactList& ArtifactSup
 	else if (numType == 5) ArtifactSuperList.crown.push_back((ArtCrown*)gennedArtifact);
 	else
 	{
-		cout << "Error : gennedArtifact has wrong Type (@ AppendArtifactList)" << endl; 
+		std::cout << "Error : gennedArtifact has wrong Type (@ AppendArtifactList)" << std::endl; 
 	}
 }
 
@@ -307,7 +306,7 @@ double CalLoopArtifact(Character* character, Artifact* gennedArtifact, SuperArti
 	else if (numType == 5) loopList.crown = { (ArtCrown*)gennedArtifact };
 	else
 	{
-		cout << "Error : gennedArtifact has wrong Type (@ CalLoopArtifact) : numType = " << numType << endl; 
+		std::cout << "Error : gennedArtifact has wrong Type (@ CalLoopArtifact) : numType = " << numType << std::endl; 
 		return 0.;
 	}
 
@@ -357,13 +356,10 @@ double CalLoopArtifact(Character* character, Artifact* gennedArtifact, SuperArti
 }
 
 
-void Simulator()
+TH2D* RunSimulation(int simNum, int artifactNum, int binNum, double minDamage, double maxDamage
+    bool seeLastArtifact, bool seeTimeConsumption)
 {
-	gStyle->SetOptStat(kFALSE);
-	gRandom->SetSeed(0);
-
 	MemoryOfDust* weapon = new MemoryOfDust();
-	cout << "weapon generated" << endl;
 
 	ArtFlower* artinit1 = new ArtFlower();
 	ArtFeather* artinit2 = new ArtFeather();
@@ -372,15 +368,12 @@ void Simulator()
 	ArtCrown* artinit5 = new ArtCrown();
 
 	Character* simChar = new Ningguang(weapon, artinit1, artinit2, artinit3, artinit4, artinit5);
-	cout << "character generated" << endl;
 	
 	Stat artSetStat = Stat();
     artSetStat.SetZero();
     artSetStat.SetAttackPer(18);
     artSetStat.SetQBonus(20);
-	  cout << "artifact set effect generated" << endl;
     simChar->SetArtSetStat(artSetStat);
-	  cout << "artifact set effect set" << endl;
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
@@ -389,46 +382,16 @@ void Simulator()
     simChar->SetResonanceStat(resonanceStat);
 
 	simChar->MakeEffectionArray();
-	cout << "Effection List : " << simChar->GetEffection(0) << ", "
-								<< simChar->GetEffection(1) << ", "
-								<< simChar->GetEffection(2) << ", "
-								<< simChar->GetEffection(3) << ", "
-								<< simChar->GetEffection(4) << ", "
-								<< simChar->GetEffection(5) << ", "
-								<< simChar->GetEffection(6) << ", "
-								<< simChar->GetEffection(7) << ", "
-								<< simChar->GetEffection(8) << ", "
-								<< simChar->GetEffection(9) << endl;
 
 	SuperArtifactList artifactSuperList;
-	artifactSuperList.flower = {};
-	artifactSuperList.feather = {};
-	artifactSuperList.clock = {};
-	artifactSuperList.cup = {};
-	artifactSuperList.crown = {};
-
-
-	// simulation number
-	int simNum = 100;
-	
-	// the number of artifacts to get
-	constexpr int artifactNum = 600; // 4.7925 per day (150 ~ month)
-	
-	// maxDamage, binNum
-	int binNum = 100;
-	double minDamage = 100000.;
-	double maxDamage = 300000.;
 
 	// Nth-histogram
-	
 	TH1D* N_Histogram[artifactNum];
 	for (int i = 0; i < artifactNum; i++)
 	{
 		N_Histogram[i] = new TH1D(Form("%d-th trial", i+1), "", binNum, minDamage, maxDamage);
 	}
 	
-
-
 	// Code Execution Time Evaluation
 	double TIMELIST[4] = { 0. };
 	double start, finish;
@@ -497,19 +460,22 @@ void Simulator()
 
 			double beforePercent = (double)(i * artifactNum + j - 1)/(double)(simNum * artifactNum) * 100.;
 			double percent = (double)(i * artifactNum + j)/(double)(simNum * artifactNum) * 100.;
-			if ((int)beforePercent != (int)percent) std::cout << (int)percent << "% end" << std::endl;
+			if ((int)beforePercent != (int)percent) std::std::cout << (int)percent << "% end" << std::std::endl;
 		}
 
-		cout << i << "-th result =============================================" << endl;
-		cout << "bestDamage : " << bestDamage << endl;
-		cout << "============== Last Artifacts ===============" << endl;
-		PrintArtifact(*bestFlower);
-		PrintArtifact(*bestFeather);
-		PrintArtifact(*bestClock);
-		PrintArtifact(*bestCup);
-		PrintArtifact(*bestCrown);
-		cout << "============== Character Stat ===============" << endl;
-		PrintStat(simChar->GetStat());
+        if (seeLastArtifact)
+        {
+            std::cout << i << "-th result =============================================" << std::endl;
+            std::cout << "bestDamage : " << bestDamage << std::endl;
+            std::cout << "============== Last Artifacts ===============" << std::endl;
+            PrintArtifact(*bestFlower);
+            PrintArtifact(*bestFeather);
+            PrintArtifact(*bestClock);
+            PrintArtifact(*bestCup);
+            PrintArtifact(*bestCrown);
+            std::cout << "============== Character Stat ===============" << std::endl;
+            PrintStat(simChar->GetStat());
+        }
 		
 		for (int j = 0; j < artifactSuperList.flower.size(); j++) delete artifactSuperList.flower[j];
 		for (int j = 0; j < artifactSuperList.feather.size(); j++) delete artifactSuperList.feather[j];
@@ -518,10 +484,13 @@ void Simulator()
 		for (int j = 0; j < artifactSuperList.crown.size(); j++) delete artifactSuperList.crown[j];
 	}
 
-	cout << TIMELIST[0] << "s, " << TIMELIST[1] << "s, " << TIMELIST[2] << "s, " << TIMELIST[3] << "s" << endl;
-	cout << CALLOOPTIMELIST[0] << "s, " << CALLOOPTIMELIST[1] << "s" << endl;
-	cout << ARTINITTIMELIST[0] << "s, " << ARTINITTIMELIST[1] << "s, " << ARTINITTIMELIST[2] << "s, "
-	<< ARTINITTIMELIST[3] << "s, " << ARTINITTIMELIST[4] << "s" << endl;
+    if (seeTimeConsumption)
+    {
+        std::cout << TIMELIST[0] << "s, " << TIMELIST[1] << "s, " << TIMELIST[2] << "s, " << TIMELIST[3] << "s" << std::endl;
+        std::cout << CALLOOPTIMELIST[0] << "s, " << CALLOOPTIMELIST[1] << "s" << std::endl;
+        std::cout << ARTINITTIMELIST[0] << "s, " << ARTINITTIMELIST[1] << "s, " << ARTINITTIMELIST[2] << "s, "
+        << ARTINITTIMELIST[3] << "s, " << ARTINITTIMELIST[4] << "s" << std::endl;
+    }
 
 	// Plot Part
 	TH2D* VisualHistogram = new TH2D("Visual", "", artifactNum, 0, artifactNum, binNum, minDamage, maxDamage);
@@ -533,19 +502,5 @@ void Simulator()
 		}
 	}
 
-	TCanvas* can1 = new TCanvas("canvas", "canvas", 1200, 800);
-	gPad->SetLeftMargin(0.12);
-	gPad->SetBottomMargin(0.12);
-	gPad->SetRightMargin(0.08);
-	gPad->SetTopMargin(0.05);
-
-	VisualHistogram->GetXaxis()->SetTitle("The number of artifact to get");
-	VisualHistogram->GetYaxis()->SetTitle("Damage");
-	VisualHistogram->GetZaxis()->SetTitle("Count");
-	VisualHistogram->Draw("COL4Z");
-	
-	TFile* file = new TFile("GenshinArtifactSimulator", "recreate");
-	VisualHistogram->Write();
-	file->Close();
-
+    return VisualHistogram
 }

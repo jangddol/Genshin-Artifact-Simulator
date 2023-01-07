@@ -1,3 +1,6 @@
+#ifndef GENSHINARTIFACTTOP_HH
+#define GENSHINARTIFACTTOP_HH
+
 #include "header/RandomInitialization.hh"
 #include "src/Character.cc"
 #include "src/Artifact.cc"
@@ -14,3 +17,6 @@
 #include "header/Artifact/ArtCrown.hh"
 #include "src/Character/Ningguang.cc"
 #include "src/Character/Kokomi.cc"
+#include "src/Simulator.cc"
+
+#endif

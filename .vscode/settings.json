@@ -66,7 +66,8 @@
         "stop_token": "cpp",
         "thread": "cpp",
         "Simulator_copy.C": "cpp",
-        "Simulator_Kokomi.C": "cpp"
+        "Simulator_Kokomi.C": "cpp",
+        "Simulator_Ningguang.C": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
