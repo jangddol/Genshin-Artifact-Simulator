@@ -51,6 +51,9 @@ public:
 	Stat GetResonanceStat()          { return mResonanceStat; }
 	void SetResonanceStat(Stat stat) { mResonanceStat = stat; bPossibleExceptArtifact = false; }
 
+	double GetTargetEC() { return mTargetEC; }
+	void   SetTargetEC(double targetEC) { mTargetEC = targetEC; }
+	
 	void SetArtifact(ArtFlower* flower, ArtFeather* feather, ArtClock* clock, ArtCup* cup, ArtCrown* crown);
 	Artifact* GetArtFlower()						{ return fArtFlower; }
 	void      SetArtFlower(ArtFlower* artFlower)	{ fArtFlower = artFlower; }

@@ -3,7 +3,7 @@
 
 
 #include "Stat.hh"
-
+#include <string>
 
 class Weapon
 {
@@ -15,7 +15,10 @@ public:
 	Stat GetSubStat() { return mSubStat; }
 	Stat GetSubSubStat() { return mSubSubStat; }
 
+	string GetName() { return mWeaponName; }
+	
 protected:
+	string mWeaponName;
 	Stat mMainStat;
 	Stat mSubStat;
 	Stat mSubSubStat;

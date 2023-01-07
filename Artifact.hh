@@ -57,7 +57,7 @@ private:
 	std::vector<int> GenerateStartOpt(std::vector<int> cummulatedWeight);
 	void             UpgradeSubOption(std::vector<int> startOptList, bool whether4OptStart);
 
-	int mMainType;
+	int mMainType = 0;
 
 	Stat mMainStat;
 	Stat mSubStat;

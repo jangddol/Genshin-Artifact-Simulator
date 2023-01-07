@@ -21,12 +21,6 @@ void PrintArtifact(Artifact artifact)
 }
 
 
-void Artifact::FullMainOption(int mainType)
-{
-	mMainStat.SetOption(mainType, MAXMAINOPTIONLIST[mainType]);
-}
-
-
 int Artifact::UseCummulatedWeight(vector<int> cummulatedWeight)
 {
 	// generate random integer from 0 to the sum of probability table
@@ -61,8 +55,8 @@ void Artifact::SetMainType(int mainType)
 void Artifact::GenerateMainOption()
 {
 	int selectedInt = UseCummulatedWeight(mCummulatedWeight);
-	mMainType = selectedInt;
-	FullMainOption(selectedInt); //////////// 안묶여있는게 좀 그렇네요.
+	// if (selectedInt > 100) cout << "1" << endl;
+	SetMainType(selectedInt);
 }
 
 

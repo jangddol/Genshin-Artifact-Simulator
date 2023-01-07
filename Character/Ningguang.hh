@@ -20,9 +20,6 @@ public:
 
 	double GetDamage() { return GetDamage(this->GetStat()); }
 	double GetDamage(Stat stat);
-
-private:
-
 };
 
 #endif
