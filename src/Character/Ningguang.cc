@@ -1,4 +1,4 @@
-#include "Ningguang.hh"
+#include "../../header/Character/Ningguang.hh"
 
 
 double Ningguang::GetDamage(Stat stat)

@@ -1,4 +1,4 @@
-#include "Character.hh"
+#include "../header/Character.hh"
 #include <algorithm>
 #include <iostream>
 #include <ctime>
@@ -103,7 +103,7 @@ void Character::InitializationExceptArtifact()
 
 double Character::GetDamage(Stat stat)
 {
-    cout << "not called" << endl;
+    std::cout << "not called" << std::endl;
     
     double AP = stat.GetAttackPer();
     double ATK = stat.GetAttack();
@@ -232,7 +232,7 @@ void Character::MakeScoreFunction()
     double damArray[10] = { 0 }; // 각 옵션이 추가되었을 때의 데미지를 기록할 어레이를 만든다. (damArray[10])
 
     Stat tempStat = GenerateStatExceptSubOpt(); // 성유물이 초기화된 새로운 스탯을 생성한다.
-    cout << "tempStat generated" << endl;
+    std::cout << "tempStat generated" << std::endl;
     double startDamage = GetDamage(tempStat); // 현재 스펙을 기록한다.
 
     Stat tempStatArray[10] = { tempStat, tempStat, tempStat, tempStat, tempStat,
@@ -242,28 +242,28 @@ void Character::MakeScoreFunction()
 
     for (int i = 0; i < 45; i++) // for문으로 45회동안, 
     {
-        cout << "part1" << endl;
+        std::cout << "part1" << std::endl;
 
         double beforeDamage = GetDamage(tempStat); // 현재 스탯에 대한 데미지를 기록하고,
         double difEC = mTargetEC - tempStat.GetOption(4); // 현재 원충이 원충요구수치보다 낮은지 체크한다.
         bool whetherNotEnoughEC = (difEC > 0);
 
-        cout << i + 1 << "-th difEC & whetherNotEnoughEC : " << difEC << ", " << whetherNotEnoughEC << endl;
-        cout << "part2" << endl;
+        std::cout << i + 1 << "-th difEC & whetherNotEnoughEC : " << difEC << ", " << whetherNotEnoughEC << std::endl;
+        std::cout << "part2" << std::endl;
 
         if (i < 20)
         {
             // 원충이 들어가야 하면 원충을 넣는다.
             if (whetherNotEnoughEC && (5 - mainOp[4] > numArray[4]))
             {
-                cout << "part2-1" << endl;
+                std::cout << "part2-1" << std::endl;
                 tempStat.AddOption(4, PLUSARRAY[4]);
                 numArray[4] += 1;
             }
             else // 그렇지 않다면
             {
                 // 10개의 부옵에 대해서 하나씩 추가하면 점수가 어떻게 되는지 확인한다.
-                cout << "part2-2" << endl;
+                std::cout << "part2-2" << std::endl;
                 for (int j = 0; j < 10; j++) 
                 {
                     tempStatArray[j] = tempStat;
@@ -275,24 +275,24 @@ void Character::MakeScoreFunction()
                 // 가장 점수가 높은 스탯에 대해서 ((5 - 주옵여부) 보다 적게 채웠는가?)를 확인하고 채운다.
                     // 불가능한 경우
                         // 다음 점수가 높은 스탯에 대해서 확인한다. (최대 5회 반복)
-                cout << "part2-3" << endl;
+                std::cout << "part2-3" << std::endl;
                 for (int j = 1; j <= 5; j++)
                 {
-                    cout << "part2-3-1" << endl;
+                    std::cout << "part2-3-1" << std::endl;
                     int largeStat = FindNthLargestOption(damArray, j);
-                    cout << "part2-3-2" << endl;
+                    std::cout << "part2-3-2" << std::endl;
                     if (5 - mainOp[largeStat] > numArray[largeStat])
                     {
-                        cout << "part2-3-2-1" << endl;
+                        std::cout << "part2-3-2-1" << std::endl;
                         if ((damArray[largeStat] == damArray[4]) && (5 - mainOp[4] > numArray[4])) largeStat = 4;
                         tempStat.AddOption(largeStat, PLUSARRAY[largeStat]);
-                        cout << i + 1 << "-th Added Stat : " << STATSTRING[largeStat] << endl;
-                        cout << "part2-3-2-2" << endl;
+                        std::cout << i + 1 << "-th Added Stat : " << STATSTRING[largeStat] << std::endl;
+                        std::cout << "part2-3-2-2" << std::endl;
                         numArray[largeStat] += 1;
-                        cout << "part2-3-2-3" << endl;
+                        std::cout << "part2-3-2-3" << std::endl;
                         break;
                     }
-                    cout << "part2-3-3" << endl;
+                    std::cout << "part2-3-3" << std::endl;
                 }
             }
         }
@@ -319,7 +319,7 @@ void Character::MakeScoreFunction()
                     if (30 - mainOp[largeStat] != numArray[largeStat])
                     {
                         tempStat.AddOption(largeStat, PLUSARRAY[largeStat]);
-                        cout << i << "-th Added Stat : " << STATSTRING[largeStat] << endl;
+                        std::cout << i << "-th Added Stat : " << STATSTRING[largeStat] << std::endl;
                         numArray[largeStat] += 1;
                         break;
                     }
@@ -327,7 +327,7 @@ void Character::MakeScoreFunction()
             }
         }
 
-        cout << "part3" << endl;
+        std::cout << "part3" << std::endl;
 
         tempStat.Initialization();
         mSavedFunction[i + 1] = GetDamage(tempStat);

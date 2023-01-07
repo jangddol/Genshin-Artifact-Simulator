@@ -1,4 +1,4 @@
-#include "Kokomi.hh"
+#include "../../header/Character/Kokomi.hh"
 
 
 double Kokomi::GetDamage(Stat stat)

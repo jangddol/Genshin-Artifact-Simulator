@@ -1,7 +1,9 @@
 #ifndef ARTCROWN_HH
 #define ARTCROWN_HH
 
+
 #include "../Artifact.hh"
+
 
 class ArtCrown : public Artifact
 {

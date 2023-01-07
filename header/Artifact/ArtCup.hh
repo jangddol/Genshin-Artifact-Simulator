@@ -1,7 +1,9 @@
 #ifndef ARTCUP_HH
 #define ARTCUP_HH
 
+
 #include "../Artifact.hh"
+
 
 class ArtCup : public Artifact
 {

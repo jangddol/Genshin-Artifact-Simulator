@@ -1,7 +1,9 @@
 #ifndef KOKOMI_HH
 #define KOKOMI_HH
 
+
 #include "../Character.hh"
+
 
 class Kokomi : public Character
 {
