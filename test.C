@@ -1,27 +1,45 @@
-class Parent
+#include <vector>
+#include <array>
+#include "top.hh"
+
+
+using namespace std;
+
+
+class tempArray
 {
 public:
-    Parent(){}
-    ~Parent(){}
+    tempArray()
+    {
+        mArray = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    }
+    ~tempArray()
+    {
+    }
 
-    void PrintTemp(){ cout << mTemp << endl; }
+    void   SetZero() { for (int i = 0; i < 10; i++) mArray[i] = 0.; }
+    double GetElement(int index) { return mArray[index]; }
+    void   SetElement(int index, double amount) { mArray[index] = amount; }
 
-protected:
-    int mTemp = 0;
-
+private:
+    std::array<double, 10> mArray;
 };
 
-class Child : public Parent
-{
-public:
-    Child(){ mTemp = 1; }
-    ~Child(){}
-};
 
 void test()
 {
-    Child tempChild = Child();
-    tempChild.PrintTemp();
-    Parent tempParent = *(Parent*)&tempChild;
-    tempParent.PrintTemp();
+    int N = 10000000;
+    for (int j = 0; j < N; j++)
+    {
+        Stat* temp = new Stat();
+        for (int i = 0; i < 10; i++)
+        {
+            PrintStat(*temp);
+        }
+        delete temp;
+        for (int i = 0; i < 10; i++)
+        {
+            PrintStat(*temp);
+        }
+    }
 }

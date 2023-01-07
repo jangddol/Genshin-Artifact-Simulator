@@ -1,7 +1,9 @@
 #ifndef ARTFEATHER_HH
 #define ARTFEATHER_HH
 
+
 #include "../Artifact.hh"
+
 
 class ArtFeather : public Artifact
 {

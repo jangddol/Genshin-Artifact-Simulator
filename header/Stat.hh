@@ -8,10 +8,10 @@
 
 std::vector<string> BASESTATSTRING = {"Base ATK", "Base HP", "Base DEF"};
 std::vector<string> STATSTRING
-	= {"Critical Rate", "Critical Bonus", "ATK%", "ATK", "Element Charge", 
-		"HP%", "HP", "Element Mastery", "DEF%", "DEF",
-		"Pyro Bonus", "Electro Bonus", "Cryo Bonus", "Hydro Bonus", "Anymo Bonus",
-		"Geo Bonus", "Phys Bonus", "Dendro Bonus", "Heal Bonus", "Normal Attack Bonus", 
+	= {"CR", "CB", "ATK%", "ATK", "EC", 
+		"HP%", "HP", "EM", "DEF%", "DEF",
+		"Pyro", "Elec", "Cryo", "Hydro", "Anymo",
+		"Geo", "Phys", "Dendro", "Heal", "Normal Attack Bonus", 
 		"Strong Attack Bonus", "Dodge Attack Bonus", "E Skill Bonus", "Q Skill Bonus", "Total ATK",
 		"Total HP", "Total DEF", "Resist Cut", "DEF Cut", "Monster Resist",
 		"Resist Coef", "DEF Coef", "Lv", "Monster Lv", "Lv Coef"};
@@ -25,6 +25,7 @@ public:
 
 	void SetZero();
 	void Initialization();
+	void InitializationFast();
 
 	void SetOption(int index, double amount) { mStat[index] = amount; }
 	void AddOption(int index, double amount) { mStat[index] += amount; }

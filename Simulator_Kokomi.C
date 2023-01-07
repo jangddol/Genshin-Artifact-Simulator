@@ -66,7 +66,7 @@ Artifact* GenRandArtf_5()
 
 Artifact* GenerateRandomArtifact()
 {
-	// 20% ÃˆÂ®Â·Ã¼Â·ÃŽ ÂºÃŽÃ€Â§Â¸Â¦ Â°Ã¡ÃÂ¤.
+	// 20% È®·ü·Î ºÎÀ§¸¦ °áÁ¤.
 	// int temp = gRandom->Integer(5);
 	int temp = uni(rng);
 
@@ -266,8 +266,20 @@ bool CheckWhetherAppendAndDelete(Character* character, Artifact* gennedArtifact,
 			if (isNeed2Delete)
 			{
 				EraseSuperArtifactList(ArtifactSuperList, numType, i);
+
+				// cout << "before deleted" << endl;
+				// PrintArtifact(*selectedList[i]);
+
 				delete selectedList[i];
+
+				// cout << "after deleted" << endl;
+				// PrintArtifact(*selectedList[i]);
+
 				selectedList.erase(selectedList.begin() + i);
+
+				// cout << "after erased" << endl;
+				// PrintArtifact(*selectedList[i]);
+
 				i--;
 			}
 		}
@@ -357,12 +369,12 @@ double CalLoopArtifact(Character* character, Artifact* gennedArtifact, SuperArti
 }
 
 
-void Simulator()
+void Simulator_Kokomi()
 {
 	gStyle->SetOptStat(kFALSE);
 	gRandom->SetSeed(0);
 
-	MemoryOfDust* weapon = new MemoryOfDust();
+	EverlastingMoonglow* weapon = new EverlastingMoonglow();
 	cout << "weapon generated" << endl;
 
 	ArtFlower* artinit1 = new ArtFlower();
@@ -371,16 +383,13 @@ void Simulator()
 	ArtCup* artinit4 = new ArtCup();
 	ArtCrown* artinit5 = new ArtCrown();
 
-	Character* simChar = new Ningguang(weapon, artinit1, artinit2, artinit3, artinit4, artinit5);
+	Character* simChar = new Kokomi(weapon, artinit1, artinit2, artinit3, artinit4, artinit5);
 	cout << "character generated" << endl;
 	
 	Stat artSetStat = Stat();
     artSetStat.SetZero();
-    artSetStat.SetAttackPer(18);
-    artSetStat.SetQBonus(20);
-	  cout << "artifact set effect generated" << endl;
+    artSetStat.SetHealBonus(15);
     simChar->SetArtSetStat(artSetStat);
-	  cout << "artifact set effect set" << endl;
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
@@ -400,13 +409,12 @@ void Simulator()
 								<< simChar->GetEffection(8) << ", "
 								<< simChar->GetEffection(9) << endl;
 
-	vector<Artifact> ArtifactList1 = {};
-	vector<Artifact> ArtifactList2 = {};
-	vector<Artifact> ArtifactList3 = {};
-	vector<Artifact> ArtifactList4 = {};
-	vector<Artifact> ArtifactList5 = {};
-	vector<vector<Artifact>> ArtifactSuperList 
-		= { ArtifactList1, ArtifactList2, ArtifactList3, ArtifactList4, ArtifactList5 };
+	SuperArtifactList artifactSuperList;
+	artifactSuperList.flower = {};
+	artifactSuperList.feather = {};
+	artifactSuperList.clock = {};
+	artifactSuperList.cup = {};
+	artifactSuperList.crown = {};
 
 
 	// simulation number
@@ -417,8 +425,8 @@ void Simulator()
 	
 	// maxDamage, binNum
 	int binNum = 100;
-	double minDamage = 100000.;
-	double maxDamage = 300000.;
+	double minDamage = 50000.;
+	double maxDamage = 200000.;
 
 	// Nth-histogram
 	

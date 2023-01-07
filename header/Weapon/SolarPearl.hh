@@ -19,6 +19,8 @@ public:
         mSubSubStat.SetOption(19, 40.);
         mSubSubStat.SetOption(22, 40.);
         mSubSubStat.SetOption(23, 40.);
+
+        mWeaponName = "Solar Pearl";
     }
 	~SolarPearl() {}
 

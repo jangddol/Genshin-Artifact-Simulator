@@ -1,33 +1,27 @@
-#include "RandomInitialization.hh"
-#include "Artifact.hh"
+#include "../header/RandomInitialization.hh"
+#include "../header/Artifact.hh"
 #include <algorithm>
 #include <iostream>
 
 
 void PrintArtifact(Artifact artifact)
 {
-    cout << "Artifact Type      : " << artifact.GetType() << endl;
-    cout << "Artifact Main Stat : " << STATSTRING[artifact.GetMainType()] << " = " << artifact.GetMainStat().GetOption(artifact.GetMainType()) << endl;
-    cout << "Artifcat Sub Stat  : " << STATSTRING[0] << " = " << artifact.GetSubStat().GetOption(0) << endl;
-    cout << "                   : " << STATSTRING[1] << " = " << artifact.GetSubStat().GetOption(1) << endl;
-    cout << "                   : " << STATSTRING[2] << " = " << artifact.GetSubStat().GetOption(2) << endl;
-    cout << "                   : " << STATSTRING[3] << " = " << artifact.GetSubStat().GetOption(3) << endl;
-    cout << "                   : " << STATSTRING[4] << " = " << artifact.GetSubStat().GetOption(4) << endl;
-    cout << "                   : " << STATSTRING[5] << " = " << artifact.GetSubStat().GetOption(5) << endl;
-    cout << "                   : " << STATSTRING[6] << " = " << artifact.GetSubStat().GetOption(6) << endl;
-    cout << "                   : " << STATSTRING[7] << " = " << artifact.GetSubStat().GetOption(7) << endl;
-    cout << "                   : " << STATSTRING[8] << " = " << artifact.GetSubStat().GetOption(8) << endl;
-    cout << "                   : " << STATSTRING[9] << " = " << artifact.GetSubStat().GetOption(9) << endl;
+    std::cout << "Artifact Type      : " << artifact.GetType() << std::endl;
+    std::cout << "Artifact Main Stat : " << STATSTRING[artifact.GetMainType()] << " = " << artifact.GetMainStat().GetOption(artifact.GetMainType()) << std::endl;
+    std::cout << "Artifcat Sub Stat  : " << STATSTRING[0] << " = " << artifact.GetSubStat().GetOption(0) << std::endl;
+    std::cout << "                   : " << STATSTRING[1] << " = " << artifact.GetSubStat().GetOption(1) << std::endl;
+    std::cout << "                   : " << STATSTRING[2] << " = " << artifact.GetSubStat().GetOption(2) << std::endl;
+    std::cout << "                   : " << STATSTRING[3] << " = " << artifact.GetSubStat().GetOption(3) << std::endl;
+    std::cout << "                   : " << STATSTRING[4] << " = " << artifact.GetSubStat().GetOption(4) << std::endl;
+    std::cout << "                   : " << STATSTRING[5] << " = " << artifact.GetSubStat().GetOption(5) << std::endl;
+    std::cout << "                   : " << STATSTRING[6] << " = " << artifact.GetSubStat().GetOption(6) << std::endl;
+    std::cout << "                   : " << STATSTRING[7] << " = " << artifact.GetSubStat().GetOption(7) << std::endl;
+    std::cout << "                   : " << STATSTRING[8] << " = " << artifact.GetSubStat().GetOption(8) << std::endl;
+    std::cout << "                   : " << STATSTRING[9] << " = " << artifact.GetSubStat().GetOption(9) << std::endl;
 }
 
 
-void Artifact::FullMainOption(int mainType)
-{
-	mMainStat.SetOption(mainType, MAXMAINOPTIONLIST[mainType]);
-}
-
-
-int Artifact::UseCummulatedWeight(vector<int> cummulatedWeight)
+int Artifact::UseCummulatedWeight(std::vector<int> cummulatedWeight)
 {
 	// generate random integer from 0 to the sum of probability table
 	int length = cummulatedWeight.size();
@@ -61,19 +55,19 @@ void Artifact::SetMainType(int mainType)
 void Artifact::GenerateMainOption()
 {
 	int selectedInt = UseCummulatedWeight(mCummulatedWeight);
-	mMainType = selectedInt;
-	FullMainOption(selectedInt); //////////// 안묶여있는게 좀 그렇네요.
+	// if (selectedInt > 100) cout << "1" << endl;
+	SetMainType(selectedInt);
 }
 
 
-vector<int> Artifact::GenerateCummulatedWeight()
+std::vector<int> Artifact::GenerateCummulatedWeight()
 {	
-	vector<int> returnList(10);
+	std::vector<int> returnList(10);
 	for (int i = 0; i < 10; i++)
 	{
 		returnList[i] = SUBOPTPROB[i];
 	} 
-	if ((mMainType >= 0) && (mMainType < 10)) returnList[mMainType] = 0;
+	if ((mMainType >= 0) && (mMainType < 10) && (mMainType != 3) && (mMainType != 6)) returnList[mMainType] = 0;
 	for (int i = 1; i < 10; i++)
 	{
 		returnList[i] += returnList[i - 1];
@@ -104,7 +98,7 @@ bool CheckIsThereIn(int element, int* list, int length)
 }
 
 
-bool CheckIsThereIn(int element, vector<int> list)
+bool CheckIsThereIn(int element, std::vector<int> list)
 {
 	bool returnBool = false;
 	int length = list.size();
@@ -120,9 +114,9 @@ bool CheckIsThereIn(int element, vector<int> list)
 }
 
 
-vector<int> Artifact::GenerateStartOpt(vector<int> cummulatedWeight)
+std::vector<int> Artifact::GenerateStartOpt(std::vector<int> cummulatedWeight)
 {
-	vector<int> returnList(4);
+	std::vector<int> returnList = { -1, -1, -1, -1 };
 	returnList[0] = UseCummulatedWeight(cummulatedWeight);
 	for (int i = 1; i < 4; i++)
 	{
@@ -137,7 +131,7 @@ vector<int> Artifact::GenerateStartOpt(vector<int> cummulatedWeight)
 }
 
 
-void Artifact::UpgradeSubOption(vector<int> startOptList, bool whether4OptStart)
+void Artifact::UpgradeSubOption(std::vector<int> startOptList, bool whether4OptStart)
 {
 	int numUpgrade = 4;
 	if (whether4OptStart) numUpgrade = 5;
@@ -162,7 +156,7 @@ void Artifact::UpgradeSubOption(vector<int> startOptList, bool whether4OptStart)
 
 void Artifact::GenerateSubOption()
 {
-	vector<int> subCummulatedWeight = GenerateCummulatedWeight();
+	std::vector<int> subCummulatedWeight = GenerateCummulatedWeight();
 		// 1. 메인옵션을 확인해서 확률표에서 해당 부분을 0으로 만든다.
 			// 1-1. 이걸 가지고 cummulatedWeight을 만든다.
 				// This cummulatedWeight is for subOption
@@ -170,8 +164,7 @@ void Artifact::GenerateSubOption()
 
 	bool whether4OptStart = Selected3or4OptStart();
 		// 2. 처음에 3개인지 4개인지 고른다. -> 8개 or 9개
-
-	vector<int> startOptList = GenerateStartOpt(subCummulatedWeight);
+	std::vector<int> startOptList = GenerateStartOpt(subCummulatedWeight);
 		// 3. 처음 옵션 4개가 무엇인지 결정한다. 4개를 겹치지 않게 생성한다.
 
 	UpgradeSubOption(startOptList, whether4OptStart);
@@ -181,6 +174,8 @@ void Artifact::GenerateSubOption()
 
 void Artifact::Generation()
 {
+	mMainStat.SetZero();
+	mSubStat.SetZero();
 	GenerateMainOption(); // 메인옵션 : 부위마다 다름.
 	GenerateSubOption(); // 부옵션 : 부위마다, 메인옵션마다 다름.
 }
@@ -188,6 +183,8 @@ void Artifact::Generation()
 
 void Artifact::Generation(int mainType)
 {
+	mMainStat.SetZero();
+	mSubStat.SetZero();
 	SetMainType(mainType);
 	GenerateSubOption();
 }

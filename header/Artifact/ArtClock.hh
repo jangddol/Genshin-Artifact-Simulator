@@ -1,7 +1,9 @@
 #ifndef ARTCLOCK_HH
 #define ARTCLOCK_HH
 
+
 #include "../Artifact.hh"
+
 
 class ArtClock : public Artifact
 {
