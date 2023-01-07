@@ -67,7 +67,9 @@
         "thread": "cpp",
         "Simulator_copy.C": "cpp",
         "Simulator_Kokomi.C": "cpp",
-        "Simulator_Ningguang.C": "cpp"
+        "Simulator_Ningguang.C": "cpp",
+        "condition_variable": "cpp",
+        "mutex": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

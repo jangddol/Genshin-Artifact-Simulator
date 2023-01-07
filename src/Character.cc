@@ -15,22 +15,20 @@ void Character::Initialization()
 
 
 double ARTINITSTART, ARTINITFINISH;
-double ARTINITTIMELIST[5] = { 0. };
-
 void Character::ArtifactInitialization()
 {
     ARTINITSTART = clock();
     
-    Stat FlowerMainStat = fArtFlower->GetMainStat();
-    Stat FlowerSubStat = fArtFlower->GetSubStat();
-    Stat FeatherMainStat = fArtFeather->GetMainStat();
-    Stat FeatherSubStat = fArtFeather->GetSubStat();
-    Stat ClockMainStat = fArtClock->GetMainStat();
-    Stat ClockSubStat = fArtClock->GetSubStat();
-    Stat CupMainStat = fArtCup->GetMainStat();
-    Stat CupSubStat = fArtCup->GetSubStat();
-    Stat CrownMainStat = fArtCrown->GetMainStat();
-    Stat CrownSubStat = fArtCrown->GetSubStat();
+    Stat FlowerMainStat = mArtFlower->GetMainStat();
+    Stat FlowerSubStat = mArtFlower->GetSubStat();
+    Stat FeatherMainStat = mArtFeather->GetMainStat();
+    Stat FeatherSubStat = mArtFeather->GetSubStat();
+    Stat ClockMainStat = mArtClock->GetMainStat();
+    Stat ClockSubStat = mArtClock->GetSubStat();
+    Stat CupMainStat = mArtCup->GetMainStat();
+    Stat CupSubStat = mArtCup->GetSubStat();
+    Stat CrownMainStat = mArtCrown->GetMainStat();
+    Stat CrownSubStat = mArtCrown->GetSubStat();
 
     ARTINITFINISH = clock();
 	ARTINITTIMELIST[0] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
@@ -44,9 +42,9 @@ void Character::ArtifactInitialization()
 
     mStat.AddOption(6, FlowerMainStat.GetOption(6));
     mStat.AddOption(3, FeatherMainStat.GetOption(3));
-    mStat.AddOption(fArtClock->GetMainType(), ClockMainStat.GetOption(fArtClock->GetMainType()));
-    mStat.AddOption(fArtCup->GetMainType(), CupMainStat.GetOption(fArtCup->GetMainType()));
-    mStat.AddOption(fArtCrown->GetMainType(), CrownMainStat.GetOption(fArtCrown->GetMainType()));
+    mStat.AddOption(mArtClock->GetMainType(), ClockMainStat.GetOption(mArtClock->GetMainType()));
+    mStat.AddOption(mArtCup->GetMainType(), CupMainStat.GetOption(mArtCup->GetMainType()));
+    mStat.AddOption(mArtCrown->GetMainType(), CrownMainStat.GetOption(mArtCrown->GetMainType()));
 
     ARTINITFINISH = clock();
 	ARTINITTIMELIST[2] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
@@ -103,8 +101,6 @@ void Character::InitializationExceptArtifact()
 
 double Character::GetDamage(Stat stat)
 {
-    std::cout << "not called" << std::endl;
-    
     double AP = stat.GetAttackPer();
     double ATK = stat.GetAttack();
     double BaseATK = stat.GetBaseAttack();
@@ -161,11 +157,11 @@ Stat Character::GenerateStatExceptSubOpt()
     Stat WeaponMainStat = mWeapon->GetMainStat();
     Stat WeaponSubStat = mWeapon->GetSubStat();
     Stat WeaponSubSubStat = mWeapon->GetSubSubStat();
-    Stat FlowerMainStat = fArtFlower->GetMainStat();
-    Stat FeatherMainStat = fArtFeather->GetMainStat();
-    Stat ClockMainStat = fArtClock->GetMainStat();
-    Stat CupMainStat = fArtCup->GetMainStat();
-    Stat CrownMainStat = fArtCrown->GetMainStat();
+    Stat FlowerMainStat = mArtFlower->GetMainStat();
+    Stat FeatherMainStat = mArtFeather->GetMainStat();
+    Stat ClockMainStat = mArtClock->GetMainStat();
+    Stat CupMainStat = mArtCup->GetMainStat();
+    Stat CrownMainStat = mArtCrown->GetMainStat();
 
     for (int i = 0; i < 35; i++)
     {
@@ -192,47 +188,32 @@ Stat Character::GenerateStatExceptSubOpt()
 }
 
 
-struct Point{
-    double x;
-    int y;
-};
-
-
-bool cmp(const Point &p1, const Point &p2){
-    if(p1.x < p2.x){
-        return true;
-    }
-    else{
-        return false;
-    }
-}
-
-
 int FindNthLargestOption(double damArray[], int nth)
 {
-    Point tempList[10];
+    std::vector<std::pair<double, int>> tempList;
+    tempList.reserve(10);
     for (int i = 0; i < 10; i++)
     {
-        tempList[i].x = damArray[i];
-        tempList[i].y = i;
+        tempList.emplace_back(damArray[i], i);
     }
-    std::sort(tempList, tempList+10, cmp);
-    return tempList[10 - nth].y;
+    std::sort(tempList.begin(), tempList.end(), [](const auto& a, const auto& b){
+        return a.first > b.first;
+    });
+    return tempList[nth - 1].second;
 }
 
 
 void Character::MakeScoreFunction()
 {
-    int mainOp[10] = { 0 }; // 메인옵션에 무엇무엇이 있는지 확인한다. (mainOp[10])
-    if (fArtClock->GetMainType() < 10) mainOp[fArtClock->GetMainType()] = 1;
-    if (fArtCup->GetMainType() < 10) mainOp[fArtCup->GetMainType()] = 1;
-    if (fArtCrown->GetMainType() < 10) mainOp[fArtCrown->GetMainType()] = 1;
+    int mainOp[10] = { 0 }; // It will be checked which main option is activated.
+    if (mArtClock->GetMainType() < 10) mainOp[mArtClock->GetMainType()] = 1;
+    if (mArtCup->GetMainType() < 10) mainOp[mArtCup->GetMainType()] = 1;
+    if (mArtCrown->GetMainType() < 10) mainOp[mArtCrown->GetMainType()] = 1;
 
-    int numArray[10] = { 0 }; // 각 옵션이 몇번 들어갔는지 기록한 어레이를 만든다. (numArray[10])
-    double damArray[10] = { 0 }; // 각 옵션이 추가되었을 때의 데미지를 기록할 어레이를 만든다. (damArray[10])
+    int numArray[10] = { 0 }; // It will be recorded in this array how many times each option is added.
+    double damArray[10] = { 0 }; // It will be recorded in this array how much damage will be if each option is added.
 
     Stat tempStat = GenerateStatExceptSubOpt(); // 성유물이 초기화된 새로운 스탯을 생성한다.
-    std::cout << "tempStat generated" << std::endl;
     double startDamage = GetDamage(tempStat); // 현재 스펙을 기록한다.
 
     Stat tempStatArray[10] = { tempStat, tempStat, tempStat, tempStat, tempStat,
@@ -242,28 +223,21 @@ void Character::MakeScoreFunction()
 
     for (int i = 0; i < 45; i++) // for문으로 45회동안, 
     {
-        std::cout << "part1" << std::endl;
-
-        double beforeDamage = GetDamage(tempStat); // 현재 스탯에 대한 데미지를 기록하고,
-        double difEC = mTargetEC - tempStat.GetOption(4); // 현재 원충이 원충요구수치보다 낮은지 체크한다.
+        double beforeDamage = GetDamage(tempStat); // record the damage.
+        double difEC = mTargetEC - tempStat.GetOption(4); // check the element charge is enough or not.
         bool whetherNotEnoughEC = (difEC > 0);
-
-        std::cout << i + 1 << "-th difEC & whetherNotEnoughEC : " << difEC << ", " << whetherNotEnoughEC << std::endl;
-        std::cout << "part2" << std::endl;
 
         if (i < 20)
         {
-            // 원충이 들어가야 하면 원충을 넣는다.
+            // If the element charge is not enouth, add element charge.
             if (whetherNotEnoughEC && (5 - mainOp[4] > numArray[4]))
             {
-                std::cout << "part2-1" << std::endl;
                 tempStat.AddOption(4, PLUSARRAY[4]);
                 numArray[4] += 1;
             }
-            else // 그렇지 않다면
+            else // If impossible,
             {
-                // 10개의 부옵에 대해서 하나씩 추가하면 점수가 어떻게 되는지 확인한다.
-                std::cout << "part2-2" << std::endl;
+                // record how much damage will be if each option is added at damArray.
                 for (int j = 0; j < 10; j++) 
                 {
                     tempStatArray[j] = tempStat;
@@ -273,26 +247,18 @@ void Character::MakeScoreFunction()
                 }
 
                 // 가장 점수가 높은 스탯에 대해서 ((5 - 주옵여부) 보다 적게 채웠는가?)를 확인하고 채운다.
-                    // 불가능한 경우
+                    // If impossible,
                         // 다음 점수가 높은 스탯에 대해서 확인한다. (최대 5회 반복)
-                std::cout << "part2-3" << std::endl;
                 for (int j = 1; j <= 5; j++)
                 {
-                    std::cout << "part2-3-1" << std::endl;
                     int largeStat = FindNthLargestOption(damArray, j);
-                    std::cout << "part2-3-2" << std::endl;
                     if (5 - mainOp[largeStat] > numArray[largeStat])
                     {
-                        std::cout << "part2-3-2-1" << std::endl;
                         if ((damArray[largeStat] == damArray[4]) && (5 - mainOp[4] > numArray[4])) largeStat = 4;
                         tempStat.AddOption(largeStat, PLUSARRAY[largeStat]);
-                        std::cout << i + 1 << "-th Added Stat : " << STATSTRING[largeStat] << std::endl;
-                        std::cout << "part2-3-2-2" << std::endl;
                         numArray[largeStat] += 1;
-                        std::cout << "part2-3-2-3" << std::endl;
                         break;
                     }
-                    std::cout << "part2-3-3" << std::endl;
                 }
             }
         }
@@ -319,16 +285,12 @@ void Character::MakeScoreFunction()
                     if (30 - mainOp[largeStat] != numArray[largeStat])
                     {
                         tempStat.AddOption(largeStat, PLUSARRAY[largeStat]);
-                        std::cout << i << "-th Added Stat : " << STATSTRING[largeStat] << std::endl;
                         numArray[largeStat] += 1;
                         break;
                     }
                 }
             }
         }
-
-        std::cout << "part3" << std::endl;
-
         tempStat.Initialization();
         mSavedFunction[i + 1] = GetDamage(tempStat);
     }
@@ -337,32 +299,42 @@ void Character::MakeScoreFunction()
 
 double Character::GetScore()
 {
-    double spec = GetDamage();
-    if (mSavedFunction[0] == spec) return 0.;
+    double score = 0;
+    double damage = GetDamage();
 
-    double score;
+    // Return 0 if the saved function is equal to the damage
+    if (mSavedFunction[0] == damage)
+    {
+        return 0;
+    }
+
+    // Find the score by iterating through the saved function array
     for (int i = 0; i < 45; i++)
     {
-        if ((mSavedFunction[i] < spec) && (spec <= mSavedFunction[i + 1]))
+        if ((mSavedFunction[i] < damage) && (damage <= mSavedFunction[i + 1]))
         {
-            score = i + (spec - mSavedFunction[i]) / (mSavedFunction[i + 1] - mSavedFunction[i]);
-            if (mTargetEC - mStat.GetElementCharge() > 0)
-            {
-                score -= (mTargetEC - mStat.GetElementCharge()) / 6.4800001680851;
-            }
+            score = i + (damage - mSavedFunction[i]) / (mSavedFunction[i + 1] - mSavedFunction[i]);
             break;
         }
     }
-	return score;
+
+    // Adjust the score based on the element charge
+    double elementChargeDifference = mTargetEC - mStat.GetElementCharge();
+    if (elementChargeDifference > 0)
+    {
+        score -= elementChargeDifference / 6.4800001680851;
+    }
+
+    return score;
 }
 
 
 void Character::SetArtifact(ArtFlower* flower, ArtFeather* feather, ArtClock* clock, 
 							ArtCup* cup, ArtCrown* crown)
 {
-	fArtFlower = flower;
-	fArtFeather = feather;
-	fArtClock = clock;
-	fArtCup = cup;
-	fArtCrown = crown;
+	mArtFlower = flower;
+	mArtFeather = feather;
+	mArtClock = clock;
+	mArtCup = cup;
+	mArtCrown = crown;
 }
