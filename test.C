@@ -3,23 +3,39 @@
 
 using namespace std;
 
+
+class tempArray
+{
+public:
+    tempArray()
+    {
+        mArray = new double[10];
+        SetZero();
+    }
+    ~tempArray()
+    {
+        delete mArray;
+    }
+
+    void   SetZero() { for (int i = 0; i < 10; i++) mArray[i] = 0.; }
+    double GetElement(int index) { return mArray[index]; }
+    void   SetElement(int index, double amount) { mArray[index] = amount; }
+
+private:
+    double* mArray;
+};
+
+
 void test()
 {
-    vector<double> tempVec = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
-
-    int count = 0;
-    for (int i = 0; i < tempVec.size(); i++)
+    tempArray* temp = new tempArray();
+    for (int i = 0; i < 10; i++)
     {
-        if (tempVec.at(i) == 4)
-        {
-            tempVec.erase(tempVec.begin() + i);
-            i--;
-        }
-        cout << tempVec.size() << endl;
+        cout << temp->GetElement(i) << endl;
     }
-    
-    for (int i = 0; i < tempVec.size(); i++)
+    delete temp;
+    for (int i = 0; i < 10; i++)
     {
-        cout << tempVec.at(i) << endl;
+        cout << temp->GetElement(i) << endl;
     }
 }
