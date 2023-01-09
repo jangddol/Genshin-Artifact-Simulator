@@ -9,7 +9,7 @@
             "args": [
                 "-l",
                 "-q",
-                "Simulator.C"
+                "Simulator_Multithread.C"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

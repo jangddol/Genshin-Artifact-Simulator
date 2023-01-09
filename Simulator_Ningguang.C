@@ -2,9 +2,17 @@
 #include "TH2D.h"
 #include "TCanvas.h"
 #include "TFile.h"
+#include "TGraph.h"
+#include "TF1.h"
 
 
 using namespace std;
+
+
+double logXperX(double* x, double* p)
+{
+	return p[1] * TMath::Log(x[0]) * TMath::Power(x[0], p[0]);
+}
 
 
 void Simulator_Ningguang()
@@ -37,10 +45,10 @@ void Simulator_Ningguang()
 	simChar->MakeEffectionArray();
 
 	// simulation number
-	int simNum = 1000;
+	int simNum = 300;
 	
 	// the number of artifacts to get
-	constexpr int artifactNum = 900; // 4.7925 per day (150 ~ month)
+	constexpr int artifactNum = 300; // 4.7925 per day (150 ~ month)
 	
 	// maxDamage, binNum
 	int binNum = 100;
@@ -50,12 +58,40 @@ void Simulator_Ningguang()
     Simulator* simulator = new Simulator();
     simulator->SetCharacter(simChar);
 
-	// Plot Part
+	// Get Result
 	TH2D* VisualHistogram = simulator->RunSimulation(simNum, artifactNum, binNum, minDamage, maxDamage);
 
-	cout << "Appendable Rate : " << simulator->GetAppendableRate() << endl;
+	// Set TGraph for appendableRate
+	vector<double> appendableRate = simulator->GetAppendableRate();
+	TGraph* gAR = new TGraph();
+	for (int i = 0; i < appendableRate.size(); i++)
+	{
+		gAR->SetPoint(i, (double)(i + 1), appendableRate[i]);
+	}
 
-	TCanvas* can1 = new TCanvas("canvas", "canvas", 1200, 800);
+	// fitting
+	TF1* fitFunc1 = new TF1("fit2", logXperX, 100, artifactNum, 2);
+	fitFunc1->SetParameters(-1, 1);
+	fitFunc1->SetParNames("Power", "Amplitude");
+	gAR->Fit(fitFunc1);
+
+	// Plot part
+	TCanvas* can1 = new TCanvas("appendableRate", "appendableRate", 1200, 800);
+	gPad->SetLeftMargin(0.12);
+	gPad->SetBottomMargin(0.12);
+	gPad->SetRightMargin(0.08);
+	gPad->SetTopMargin(0.05);
+
+	TH1D* hFrame = new TH1D("hFrame", "", 100, 0, artifactNum);
+	hFrame->GetXaxis()->SetTitle("artifact number");
+	hFrame->GetYaxis()->SetTitle("appendable Rate");
+	hFrame->Draw();
+	gAR->Draw("lSAME");
+	fitFunc1->SetLineColor(3);
+	fitFunc1->Draw("lSAME");
+
+
+	TCanvas* can2 = new TCanvas("Distribution", "Distribution", 1200, 800);
 	gPad->SetLeftMargin(0.12);
 	gPad->SetBottomMargin(0.12);
 	gPad->SetRightMargin(0.08);

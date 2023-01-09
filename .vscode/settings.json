@@ -69,7 +69,9 @@
         "Simulator_Kokomi.C": "cpp",
         "Simulator_Ningguang.C": "cpp",
         "condition_variable": "cpp",
-        "mutex": "cpp"
+        "mutex": "cpp",
+        "engulfinglightning": "cpp",
+        "Simulator_Multithread.C": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
