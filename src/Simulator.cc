@@ -20,16 +20,6 @@
 #include "TH2D.h"
 
 
-struct SuperArtifactList
-{
-	std::vector<ArtFlower*> flower;
-	std::vector<ArtFeather*> feather;
-	std::vector<ArtClock*> clock;
-	std::vector<ArtCup*> cup;
-	std::vector<ArtCrown*> crown;
-};
-
-
 Artifact* GenRandArtf_1()
 {
 	ArtFlower* tempArtf = new ArtFlower();
@@ -77,7 +67,6 @@ Artifact* GenRandArtf_5()
 
 Artifact* GenerateRandomArtifact()
 {
-	// int temp = gRandom->Integer(5);
 	int temp = uni(rng);
 
 	switch (temp)
@@ -98,7 +87,7 @@ Artifact* GenerateRandomArtifact()
 
 bool CheckEffectiveOption(Character* character, int index)
 {
-	if (character->GetEffection(index) > 0) return true;
+	if (character->GetEffection(index) > 1.e-5) return true;
 	else return false;
 }
 
@@ -118,7 +107,7 @@ void MakeEffectiveOptionList(int* oEffectiveList, int& oSize, Character* charact
 }
 
 
-bool CheckBetterSubOpt(Stat betterOpt, Stat worseOpt, int effectiveList[], int effListSize)
+bool CheckBetterSubOpt(Stat betterOpt, Stat worseOpt, int effectiveList[], int effListSize, Character* character)
 {
 	int betterOptNum = 0;
 	for (int j = 0; j < effListSize; j++)
@@ -225,12 +214,12 @@ bool CheckWhetherAppendAndDelete(Character* character, Artifact* gennedArtifact,
         if (selectedList[i]->GetMainType() == gennedArtifact->GetMainType())
         {
             Stat tempSubOpt = selectedList[i]->GetSubStat();
-            if (CheckBetterSubOpt(tempSubOpt, gennedSubOpt, effectiveList, effListSize))
+            if (CheckBetterSubOpt(tempSubOpt, gennedSubOpt, effectiveList, effListSize, character))
             {
                 // Existing artifact is better, do not append the generated artifact
                 whetherAppend = false;
             }
-            else if (CheckBetterSubOpt(gennedSubOpt, tempSubOpt, effectiveList, effListSize))
+            else if (CheckBetterSubOpt(gennedSubOpt, tempSubOpt, effectiveList, effListSize, character))
             {
                 // Generated artifact is better, delete the existing artifact
                 EraseSuperArtifactList(ArtifactSuperList, gennedArtifact->GetType(), i);
@@ -240,6 +229,7 @@ bool CheckWhetherAppendAndDelete(Character* character, Artifact* gennedArtifact,
             }
         }
     }
+	
 
     return whetherAppend;
 }
@@ -261,11 +251,10 @@ void AppendArtifactList(Artifact* gennedArtifact, SuperArtifactList& ArtifactSup
 }
 
 
-double CALLOOPTIMELIST[2] = { 0. };
-double CALLOOPSTART, CALLOOPFINISH;
-double CalLoopArtifact(Character* character, Artifact* gennedArtifact, SuperArtifactList ArtifactSuperList,
+double Simulator::CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList ArtifactSuperList,
 	ArtFlower* &oFlower, ArtFeather* &oFeather, ArtClock* &oClock, ArtCup* &oCup, ArtCrown* &oCrown)
 {
+	double CALLOOPSTART, CALLOOPFINISH;
 	// Set the generated artifact as the only artifact in the loop list for its type
     SuperArtifactList loopList = ArtifactSuperList;
     switch (gennedArtifact->GetType())
@@ -294,29 +283,29 @@ double CalLoopArtifact(Character* character, Artifact* gennedArtifact, SuperArti
 	bestDamage = 0;
 	for (int i1 = 0; i1 < loopList.flower.size(); i1++)
 	{
-		character->SetArtFlower(loopList.flower[i1]);
+		mCharacter->SetArtFlower(loopList.flower[i1]);
 		for (int i2 = 0; i2 < loopList.feather.size(); i2++)
 		{
-			character->SetArtFeather(loopList.feather[i2]);
+			mCharacter->SetArtFeather(loopList.feather[i2]);
 			for (int i3 = 0; i3 < loopList.clock.size(); i3++)
 			{
-				character->SetArtClock(loopList.clock[i3]);
+				mCharacter->SetArtClock(loopList.clock[i3]);
 				for (int i4 = 0; i4 < loopList.cup.size(); i4++)
 				{
-					character->SetArtCup(loopList.cup[i4]);
+					mCharacter->SetArtCup(loopList.cup[i4]);
 					for (int i5 = 0; i5 < loopList.crown.size(); i5++)
 					{
-						character->SetArtCrown(loopList.crown[i5]);
+						mCharacter->SetArtCrown(loopList.crown[i5]);
 						
 						// Initialize the character
 						CALLOOPSTART = clock();
-						character->Initialization();
+						mCharacter->Initialization();
 						CALLOOPFINISH = clock();
 						CALLOOPTIMELIST[0] += (double)(CALLOOPFINISH - CALLOOPSTART) / CLOCKS_PER_SEC;
 						
 						// Calculate the damage
 						CALLOOPSTART = CALLOOPFINISH;
-						tempDamage = character->GetDamage();
+						tempDamage = mCharacter->GetDamage();
 						CALLOOPFINISH = clock();
 						CALLOOPTIMELIST[1] += (double)(CALLOOPFINISH - CALLOOPSTART) / CLOCKS_PER_SEC;
 
@@ -340,7 +329,7 @@ double CalLoopArtifact(Character* character, Artifact* gennedArtifact, SuperArti
 
 
 TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double minDamage, double maxDamage, 
-    bool seeLastArtifact, bool seeTimeConsumption)
+    bool seeLastArtifact, bool seeTimeConsumption, TString histName)
 {
 	SuperArtifactList artifactSuperList;
 
@@ -348,18 +337,18 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
     TH1D* N_Histogram[artifactNum];
     for (int i = 0; i < artifactNum; i++)
     {
-        N_Histogram[i] = new TH1D(Form("%d-th trial", i+1), "", binNum, minDamage, maxDamage);
+        N_Histogram[i] = new TH1D(histName + Form(" %d-th trial", i+1), histName + Form(" %d-th trial", i+1), binNum, minDamage, maxDamage);
     }
 	
 	// Code Execution Time Evaluation
 	double TIMELIST[4] = { 0. };
 	double start, finish;
     for (int i = 0; i < 2; i++) CALLOOPTIMELIST[i] = 0.;
-    for (int i = 0; i < 5; i++) ARTINITTIMELIST[i] = 0.;
+    // for (int i = 0; i < 5; i++) artInitTimeList[i] = 0.;
 
-	// Appendable Rate
-	int Nominator = 0;
-	int Denominator = simNum * artifactNum;
+	mAppendableRate = {};
+	mAppendableRate.reserve(artifactNum);
+	mAppendableRate.resize(artifactNum);
 
 	// Simulation Part
 	for (int i = 0; i < simNum; i++)
@@ -377,7 +366,10 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
 		ArtClock* bestClock = new ArtClock();
 		ArtCup* bestCup = new ArtCup();
 		ArtCrown* bestCrown = new ArtCrown();
-		
+
+		// Appendable Rate
+		int numAppend = 0;
+
 		for (int j = 0; j < artifactNum; j++)
 		{
 			ArtFlower* bestTryFlower = new ArtFlower();
@@ -399,7 +391,7 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
 			if (whetherAppend)
 			{				
 				start = clock(); 
-				double comparedDamage = CalLoopArtifact(mCharacter, gennedArtifact, artifactSuperList,
+				double comparedDamage = CalLoopArtifact(gennedArtifact, artifactSuperList,
 											bestTryFlower, bestTryFeather, bestTryClock, bestTryCup, bestTryCrown);
 				finish  = clock();
 				TIMELIST[2] += (double)(finish - start) / CLOCKS_PER_SEC;
@@ -418,10 +410,14 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
 				AppendArtifactList(gennedArtifact, artifactSuperList);
 				finish  = clock();
 				TIMELIST[3] += (double)(finish - start) / CLOCKS_PER_SEC;
+
+				numAppend++;
 			}
 			else delete gennedArtifact;
 
 			N_Histogram[j]->Fill(bestDamage);
+
+			mAppendableRate[j] += (double)numAppend;
 
 			double beforePercent = (double)(i * artifactNum + j - 1)/(double)(simNum * artifactNum) * 100.;
 			double percent = (double)(i * artifactNum + j)/(double)(simNum * artifactNum) * 100.;
@@ -441,12 +437,6 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
             std::cout << "============== Character Stat ===============" << std::endl;
             PrintStat(mCharacter->GetStat());
         }
-		
-		Nominator += artifactSuperList.flower.size();
-		Nominator += artifactSuperList.feather.size();
-		Nominator += artifactSuperList.clock.size();
-		Nominator += artifactSuperList.cup.size();
-		Nominator += artifactSuperList.crown.size();
 
 		for (int j = 0; j < artifactSuperList.flower.size(); j++) delete artifactSuperList.flower[j];
 		for (int j = 0; j < artifactSuperList.feather.size(); j++) delete artifactSuperList.feather[j];
@@ -455,18 +445,23 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
 		for (int j = 0; j < artifactSuperList.crown.size(); j++) delete artifactSuperList.crown[j];
 	}
 
-	mAppendableRate = (double)Nominator / (double)Denominator;
+	for (int i = 0; i < artifactNum; i++)
+	{
+		mAppendableRate[i] /= (double)(i + 1);
+		mAppendableRate[i] /= (double)simNum;
+	}
 
     if (seeTimeConsumption)
     {
         std::cout << TIMELIST[0] << "s, " << TIMELIST[1] << "s, " << TIMELIST[2] << "s, " << TIMELIST[3] << "s" << std::endl;
         std::cout << CALLOOPTIMELIST[0] << "s, " << CALLOOPTIMELIST[1] << "s" << std::endl;
-        std::cout << ARTINITTIMELIST[0] << "s, " << ARTINITTIMELIST[1] << "s, " << ARTINITTIMELIST[2] << "s, "
-        << ARTINITTIMELIST[3] << "s, " << ARTINITTIMELIST[4] << "s" << std::endl;
+        // std::cout << artInitTimeList[0] << "s, " << artInitTimeList[1] << "s, " << artInitTimeList[2] << "s, "
+        // << artInitTimeList[3] << "s, " << artInitTimeList[4] << "s" << std::endl;
     }
 
 	// TH2D remake Part
-	TH2D* VisualHistogram = new TH2D("Visual", "", artifactNum, 0, artifactNum, binNum, minDamage, maxDamage);
+	if (histName == "") histName = "Visual";
+	TH2D* VisualHistogram = new TH2D(histName, histName, artifactNum, 0, artifactNum, binNum, minDamage, maxDamage);
 	for (int i = 0; i < artifactNum; i++)
 	{
 		for (int j = 0; j < binNum; j++)

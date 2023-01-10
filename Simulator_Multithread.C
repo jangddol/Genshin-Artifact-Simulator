@@ -9,7 +9,7 @@ using namespace std;
 
 
 // the number of artifacts to get
-constexpr int SIMNUM = 100;
+constexpr int SIMNUM = 1000;
 constexpr int artifactNum = 300; // 4.7925 per day (150 ~ month)
 
 // maxDamage, binNum
@@ -105,12 +105,12 @@ void Simulator_Multithread()
 	// 	thread.join();
 	// }
 
-
 	for (int i = 0; i < numThreads; i++)
 	{
 		TFile* f = new TFile(Form("MultiThread_%u.root", i), "read");
 		TH2D readHist = *((TH2D*)f->Get(Form("Visual-%d", i)));
 		f->Close();
+		remove(Form("MultiThread_%u.root", i));
 		HistogramArray.push_back(readHist);
 	}
 

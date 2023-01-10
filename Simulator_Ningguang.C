@@ -23,10 +23,15 @@ void Simulator_Ningguang()
 	MemoryOfDust* weapon = new MemoryOfDust();
 
 	ArtFlower* artinit1 = new ArtFlower();
+	artinit1->SetMainType(6);
 	ArtFeather* artinit2 = new ArtFeather();
+	artinit2->SetMainType(3);
 	ArtClock* artinit3 = new ArtClock();
+	artinit3->SetMainType(2);
 	ArtCup* artinit4 = new ArtCup();
+	artinit4->SetMainType(15);
 	ArtCrown* artinit5 = new ArtCrown();
+	artinit5->SetMainType(1);
 	
     Character* simChar = new Ningguang(weapon, artinit1, artinit2, artinit3, artinit4, artinit5);
 
@@ -43,9 +48,11 @@ void Simulator_Ningguang()
     simChar->SetResonanceStat(resonanceStat);
 
 	simChar->MakeEffectionArray();
+	simChar->MakeScoreFunction();
+	cout << "28 score : " << simChar->GetScoreFunction(28) << endl;
 
 	// simulation number
-	int simNum = 300;
+	int simNum = 100;
 	
 	// the number of artifacts to get
 	constexpr int artifactNum = 300; // 4.7925 per day (150 ~ month)

@@ -1,0 +1,27 @@
+#ifndef ENGULFINGLIGHTNING_HH
+#define ENGULFINGLIGHTNING_HH
+
+
+#include "../Weapon.hh"
+
+
+class EngulfingLightning : public Weapon
+{
+public:
+	EngulfingLightning()
+    {
+        mMainStat.SetZero();
+        mSubStat.SetZero();
+        mSubSubStat.SetZero();
+
+        mMainStat.SetBaseOption(0, 608.);
+        mSubStat.SetHPPer(49.6);
+        mSubSubStat.SetHealBonus(10.);
+
+        mWeaponName = "Engulfing Lightning";
+    }
+	~EngulfingLightning() {}
+
+};
+
+#endif

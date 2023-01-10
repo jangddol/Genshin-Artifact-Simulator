@@ -14,10 +14,11 @@ void Character::Initialization()
 }
 
 
-double ARTINITSTART, ARTINITFINISH;
+
 void Character::ArtifactInitialization()
 {
-    ARTINITSTART = clock();
+    // double ARTINITSTART, ARTINITFINISH;
+    // ARTINITSTART = clock();
     
     Stat FlowerMainStat = mArtFlower->GetMainStat();
     Stat FlowerSubStat = mArtFlower->GetSubStat();
@@ -30,15 +31,15 @@ void Character::ArtifactInitialization()
     Stat CrownMainStat = mArtCrown->GetMainStat();
     Stat CrownSubStat = mArtCrown->GetSubStat();
 
-    ARTINITFINISH = clock();
-	ARTINITTIMELIST[0] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
-    ARTINITSTART = ARTINITFINISH;
+    // ARTINITFINISH = clock();
+	// artInitTimeList[0] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
+    // ARTINITSTART = ARTINITFINISH;
 
     mStat = mStatExceptArtifact;
 
-    ARTINITFINISH = clock();
-	ARTINITTIMELIST[1] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
-    ARTINITSTART = ARTINITFINISH;
+    // ARTINITFINISH = clock();
+	// artInitTimeList[1] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
+    // ARTINITSTART = ARTINITFINISH;
 
     mStat.AddOption(6, FlowerMainStat.GetOption(6));
     mStat.AddOption(3, FeatherMainStat.GetOption(3));
@@ -46,9 +47,9 @@ void Character::ArtifactInitialization()
     mStat.AddOption(mArtCup->GetMainType(), CupMainStat.GetOption(mArtCup->GetMainType()));
     mStat.AddOption(mArtCrown->GetMainType(), CrownMainStat.GetOption(mArtCrown->GetMainType()));
 
-    ARTINITFINISH = clock();
-	ARTINITTIMELIST[2] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
-    ARTINITSTART = ARTINITFINISH;
+    // ARTINITFINISH = clock();
+	// artInitTimeList[2] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
+    // ARTINITSTART = ARTINITFINISH;
 
     for (int i = 0; i < 10; i++)
     {
@@ -59,14 +60,14 @@ void Character::ArtifactInitialization()
         mStat.AddOption(i, CrownSubStat.GetOption(i));
     }
 
-    ARTINITFINISH = clock();
-	ARTINITTIMELIST[3] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
-    ARTINITSTART = ARTINITFINISH;
+    // ARTINITFINISH = clock();
+	// artInitTimeList[3] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
+    // ARTINITSTART = ARTINITFINISH;
 
     mStat.InitializationFast();
 
-    ARTINITFINISH = clock();
-	ARTINITTIMELIST[4] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
+    // ARTINITFINISH = clock();
+	// artInitTimeList[4] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
 }
 
 
@@ -123,15 +124,9 @@ void Character::MakeEffectionArray()
 
     double startDamage = GetDamage(tempStat); // 현재 스펙을 기록한다.
 
-    for (int j = 0; j < 10; j++)
+    for (int j = 0; j < 19; j++)
     {
-        tempStatArray[j].AddOption(j, PLUSARRAY[j]);
-        tempStatArray[j].Initialization();
-        mEffectionArray[j] = GetDamage(tempStatArray[j]) - startDamage;
-    }
-    for (int j = 10; j < 19; j++)
-    {
-        tempStatArray[j].AddOption(j, 10.);
+        tempStatArray[j].AddOption(j, 1.);
         tempStatArray[j].Initialization();
         mEffectionArray[j] = GetDamage(tempStatArray[j]) - startDamage;
     }

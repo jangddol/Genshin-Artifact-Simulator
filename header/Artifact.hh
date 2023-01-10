@@ -6,7 +6,7 @@
 #include <vector>
 
 
-double ARTINITTIMELIST[5] = { 0. }; // global
+// double artInitTimeList[5] = { 0. }; // global
 constexpr double MAXMAINOPTIONLIST[19]
 		= { 31.1, 62.2, 46.6, 311., 51.8,
 			46.6, 4780., 187., 58.3, 0.,
