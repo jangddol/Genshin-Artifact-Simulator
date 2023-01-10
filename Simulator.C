@@ -4,6 +4,9 @@
 #include <vector>
 #include <algorithm>
 #include <ctime>
+#include "TH1D.h"
+#include "TH2D.h"
+#include "TCanvas.h"
 
 
 using namespace std;
@@ -66,7 +69,7 @@ Artifact* GenRandArtf_5()
 
 Artifact* GenerateRandomArtifact()
 {
-	// 20% È®·ü·Î ºÎÀ§¸¦ °áÁ¤.
+	// 20% È®·ü·Î ºÎ??§¸¦ °áÁ¤.
 	// int temp = gRandom->Integer(5);
 	int temp = uni(rng);
 
@@ -110,13 +113,11 @@ void MakeEffectiveOptionList(int* oEffectiveList, int& oSize, Character* charact
 
 bool CheckBetterSubOpt(Stat betterOpt, Stat worseOpt, int effectiveList[], int effListSize)
 {
-	int betterOptNum = 0;
 	for (int j = 0; j < effListSize; j++)
 	{
-		if (betterOpt.GetOption(effectiveList[j]) >= worseOpt.GetOption(effectiveList[j])) betterOptNum++;
+		if (betterOpt.GetOption(effectiveList[j]) < worseOpt.GetOption(effectiveList[j])) return false;
 	}
-	if (betterOptNum == effListSize) return true;
-	else return false;
+	return true;
 }
 
 
@@ -378,9 +379,9 @@ void Simulator()
     artSetStat.SetZero();
     artSetStat.SetAttackPer(18);
     artSetStat.SetQBonus(20);
-	  cout << "artifact set effect generated" << endl;
+	cout << "artifact set effect generated" << endl;
     simChar->SetArtSetStat(artSetStat);
-	  cout << "artifact set effect set" << endl;
+	cout << "artifact set effect set" << endl;
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
@@ -400,20 +401,14 @@ void Simulator()
 								<< simChar->GetEffection(8) << ", "
 								<< simChar->GetEffection(9) << endl;
 
-	vector<Artifact> ArtifactList1 = {};
-	vector<Artifact> ArtifactList2 = {};
-	vector<Artifact> ArtifactList3 = {};
-	vector<Artifact> ArtifactList4 = {};
-	vector<Artifact> ArtifactList5 = {};
-	vector<vector<Artifact>> ArtifactSuperList 
-		= { ArtifactList1, ArtifactList2, ArtifactList3, ArtifactList4, ArtifactList5 };
 
+	SuperArtifactList artifactSuperList = SuperArtifactList();
 
 	// simulation number
 	int simNum = 100;
 	
 	// the number of artifacts to get
-	constexpr int artifactNum = 600; // 4.7925 per day (150 ~ month)
+	constexpr int artifactNum = 300; // 4.7925 per day (150 ~ month)
 	
 	// maxDamage, binNum
 	int binNum = 100;

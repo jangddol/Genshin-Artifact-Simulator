@@ -25,7 +25,9 @@ int Artifact::UseCummulatedWeight(std::vector<int> cummulatedWeight)
 {
 	// generate random integer from 0 to the sum of probability table
 	int length = cummulatedWeight.size();
-	int tempInt = gRandom->Integer(cummulatedWeight[length - 1]) + 1;
+
+	std::uniform_int_distribution<int> uniTemp(0, cummulatedWeight[length - 1] - 1); // Guaranteed unbiased
+	int tempInt = uniTemp(rng) + 1;
 
 	int selectedInt = 0;
 	int beforeElement = 0;
