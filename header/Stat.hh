@@ -8,8 +8,8 @@
 
 std::vector<string> BASESTATSTRING = {"Base ATK", "Base HP", "Base DEF"};
 std::vector<string> STATSTRING
-	= {"CR", "CB", "ATK%", "ATK", "EC", 
-		"HP%", "HP", "EM", "DEF%", "DEF",
+	= {"CR", "CB", "ATK%%", "ATK", "EC", 
+		"HP%%", "HP", "EM", "DEF%%", "DEF",
 		"Pyro", "Elec", "Cryo", "Hydro", "Anymo",
 		"Geo", "Phys", "Dendro", "Heal", "Normal Attack Bonus", 
 		"Strong Attack Bonus", "Dodge Attack Bonus", "E Skill Bonus", "Q Skill Bonus", "Total ATK",

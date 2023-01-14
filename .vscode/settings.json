@@ -74,7 +74,9 @@
         "Simulator_Multithread.C": "cpp",
         "terminalOutputTest.C": "cpp",
         "list": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "Simulator_Multithread copy.C": "cpp",
+        "Simulator_Raiden.C": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

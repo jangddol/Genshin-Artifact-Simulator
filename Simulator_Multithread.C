@@ -180,12 +180,12 @@ void Simulator_Multithread()
 
 	// simulation number
 	// the number of artifacts to get
-	int simNum = 560;
-	int artifactNum = 600; // 4.7925 per day (150 ~ month)
+	int simNum = 5000;
+	int artifactNum = 900; // 4.7925 per day (150 ~ month)
 
 	// maxDamage, binNum
 	int binNum = 100;
-	double minDamage = 0.;
+	double minDamage = 100000.;
 	double maxDamage = 300000.;
 	
     Simulator* simulator = new Simulator();

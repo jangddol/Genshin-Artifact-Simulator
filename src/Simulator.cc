@@ -371,16 +371,16 @@ double Simulator::CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList Ar
                         mCharacter->SetArtCrown(crown);
 						
 						// Initialize the character
-						CALLOOPSTART = std::chrono::system_clock::now();
+						// CALLOOPSTART = std::chrono::system_clock::now();
 						mCharacter->Initialization();
-						CALLOOPFINISH = std::chrono::system_clock::now();
-						mCalLoopTimeList[0] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
+						// CALLOOPFINISH = std::chrono::system_clock::now();
+						// mCalLoopTimeList[0] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
 						
 						// Calculate the damage
-						CALLOOPSTART = CALLOOPFINISH;
+						// CALLOOPSTART = CALLOOPFINISH;
 						tempDamage = mCharacter->GetDamage();
-						CALLOOPFINISH = std::chrono::system_clock::now();
-						mCalLoopTimeList[1] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
+						// CALLOOPFINISH = std::chrono::system_clock::now();
+						// mCalLoopTimeList[1] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
 
 						// Update the best damage and artifact combination if necessary
 						if (tempDamage > bestDamage)

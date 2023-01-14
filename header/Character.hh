@@ -36,6 +36,7 @@ public:
 	virtual Character* Clone() { return new Character(this); }
 	~Character() {}
 
+	virtual void DoFeedback() {}
 	void Initialization();
 	void ArtifactInitialization();
 	void InitializationExceptArtifact();
@@ -54,6 +55,9 @@ public:
 	Stat       GetStat()                      { return mStat; }
 	void       SetStat(Stat stat)             { mStat = stat; bPossibleExceptArtifact = false; }
 	Stat       GetCharacterStat()             { return mCharacterStat; }
+	Stat       GetFeedbackedStat()            { return mFeedbackedStat; }
+	void       SetFeedbackedStat(Stat stat;)  { mFeedbackedStat = stat; }
+	void       AddFeedbackedStat(int index, double amount) { mFeedbackedStat.AddOption(index, amount); }
 	ArtSetStat GetArtSetStat()                { return mArtSetStat; }
 	void       SetArtSetStat(ArtSetStat stat) { mArtSetStat = stat; bPossibleExceptArtifact = false; }
 	Stat       GetResonanceStat()             { return mResonanceStat; }
@@ -97,6 +101,7 @@ private:
 
 	Stat        mStat;
 	Stat        mCharacterStat;
+	Stat        mFeedbackedStat;
 	double      mTargetEC;
 	Weapon*     mWeapon;
 	ArtFlower*  mArtFlower;

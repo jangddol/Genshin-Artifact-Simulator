@@ -10,6 +10,7 @@
 #include "header/Weapon/SolarPearl.hh"
 #include "header/Weapon/MemoryOfDust.hh"
 #include "header/Weapon/EverlastingMoonglow.hh"
+#include "header/Weapon/EngulfingLightning.hh"
 #include "header/Artifact/ArtFlower.hh"
 #include "header/Artifact/ArtFeather.hh"
 #include "header/Artifact/ArtClock.hh"

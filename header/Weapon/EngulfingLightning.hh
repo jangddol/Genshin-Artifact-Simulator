@@ -27,12 +27,12 @@ public:
     {
         double extraEC = character->GetStat().GetElementCharge();
         double feedbackAP = std::min((extraEC * ECCoef), 80);
-        character->AddCharacterStat(2, feedbackAP);
+        character->AddFeedbackedStat(2, feedbackAP);
         cout << 1 << endl;
     }
 
 private:
-    static double ECCoef = 0.28
+    double ECCoef = 0.28;
 };
 
 #endif
