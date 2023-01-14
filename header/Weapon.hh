@@ -3,13 +3,27 @@
 
 
 #include "Stat.hh"
+#include "Character.hh"
 #include <string>
+
+
+class Character;
+
 
 class Weapon
 {
 public:
 	Weapon() {}
+	Weapon(Weapon* weapon)
+	{ 
+		mWeaponName = weapon->GetName();
+		mMainStat = weapon->GetMainStat();
+		mSubStat = weapon->GetSubStat();
+		mSubSubStat = weapon->GetSubSubStat();
+	}
 	~Weapon() {}
+
+	virtual void DoFeedback(Character* character) {}
 
 	Stat GetMainStat() { return mMainStat; }
 	Stat GetSubStat() { return mSubStat; }

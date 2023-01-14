@@ -35,7 +35,7 @@ void Simulator_Ningguang()
 	
     Character* simChar = new Ningguang(weapon, artinit1, artinit2, artinit3, artinit4, artinit5);
 
-    Stat artSetStat = Stat();
+    ArtSetStat artSetStat = ArtSetStat();
     artSetStat.SetZero();
     artSetStat.SetAttackPer(18);
     artSetStat.SetQBonus(20);

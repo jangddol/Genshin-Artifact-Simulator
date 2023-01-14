@@ -4,6 +4,31 @@
 #include <ctime>
 
 
+Character::Character(Character *character)
+{
+    SetWeapon(new Weapon(character->GetWeapon()));
+    SetArtFlower(new ArtFlower(character->GetArtFlower()));
+    SetArtFeather(new ArtFeather(character->GetArtFeather()));
+    SetArtClock(new ArtClock(character->GetArtClock()));
+    SetArtCup(new ArtCup(character->GetArtCup()));
+    SetArtCrown(new ArtCrown(character->GetArtCrown()));
+    
+    mArtSetStat = character->GetArtSetStat();
+    mResonanceStat = character->GetResonanceStat();
+    mTargetEC = character->GetTargetEC();
+    mCharacterStat = character->GetCharacterStat();
+    for (int i = 0; i < 19; i++)
+    {
+        mEffectionArray[i] = character->GetEffection(i);
+    }
+    for (int i = 0; i < 46; i++)
+    {
+        mSavedFunction[i] = character->GetScoreFunction(i);
+    }
+    Initialization();
+}
+
+
 void Character::Initialization()
 {
     if (!bPossibleExceptArtifact)

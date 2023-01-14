@@ -22,6 +22,8 @@ public:
 		SetCharacterBaseStat(1, 13471.);
 		SetCharacterBaseStat(2, 657.);
 	}
+	Kokomi(Kokomi* other) : Character(other) {}
+	Character* Clone() { return new Kokomi(this); }
 	~Kokomi() {}
 
 	double GetDamage() { return GetDamage(this->GetStat()); }

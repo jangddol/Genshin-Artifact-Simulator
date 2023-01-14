@@ -71,7 +71,10 @@
         "condition_variable": "cpp",
         "mutex": "cpp",
         "engulfinglightning": "cpp",
-        "Simulator_Multithread.C": "cpp"
+        "Simulator_Multithread.C": "cpp",
+        "terminalOutputTest.C": "cpp",
+        "list": "cpp",
+        "chrono": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

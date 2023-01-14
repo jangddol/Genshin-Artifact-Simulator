@@ -14,10 +14,29 @@
 #include <iostream>
 #include <cstdio>
 #include <vector>
+#include <thread>
+#include <mutex>
 #include <algorithm>
 #include <ctime>
+#include <chrono>
+#include <string>
+#include <stdarg.h>
 #include "TH1D.h"
 #include "TH2D.h"
+
+
+bool DEBUGMODE = false;
+
+
+void printToCoordinates(int y, int x, const char* format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    printf("\033[%d;%dH", y, x);
+    vprintf(format, args);
+    va_end(args);
+    fflush(stdout);
+}
 
 
 Artifact* GenRandArtf_1()
@@ -107,15 +126,72 @@ void MakeEffectiveOptionList(int* oEffectiveList, int& oSize, Character* charact
 }
 
 
+bool CheckWhetherElementIsIn(int element, int List[], int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        if (List[i] == element) return true;
+    }
+    return false;
+}
+
+
 bool CheckBetterSubOpt(Stat betterOpt, Stat worseOpt, int effectiveList[], int effListSize, Character* character)
 {
-	int betterOptNum = 0;
-	for (int j = 0; j < effListSize; j++)
+	// CR
+	if (CheckWhetherElementIsIn(0, effectiveList, effListSize))
 	{
-		if (betterOpt.GetOption(effectiveList[j]) >= worseOpt.GetOption(effectiveList[j])) betterOptNum++;
+		if (betterOpt.GetOption(0) < worseOpt.GetOption(0)) return false;
 	}
-	if (betterOptNum == effListSize) return true;
-	else return false;
+	// CB
+	if (CheckWhetherElementIsIn(1, effectiveList, effListSize))
+	{
+		if (betterOpt.GetOption(1) < worseOpt.GetOption(1)) return false;
+	}
+	// ATK, AP
+	if (CheckWhetherElementIsIn(2, effectiveList, effListSize))
+	{
+		double betterAP = betterOpt.GetOption(2);
+		double betterATK = betterOpt.GetOption(3);
+		double worseAP = worseOpt.GetOption(2);
+		double worseATK = worseOpt.GetOption(3);
+		double betterTotATKeffection = betterAP * effectiveList[2] + betterATK * effectiveList[3];
+		double worseTotATKeffection = worseAP * effectiveList[2] + worseATK * effectiveList[3];
+		if (betterTotATKeffection < worseTotATKeffection) return false;
+	}
+	// EC
+	if (character->GetTargetEC() > 100 + character->GetWeapon()->GetSubStat().GetElementCharge())
+	{
+		if (betterOpt.GetOption(4) < worseOpt.GetOption(4)) return false;
+	}
+	// HP, HPP
+	if (CheckWhetherElementIsIn(5, effectiveList, effListSize))
+	{
+		double betterHPP = betterOpt.GetOption(5);
+		double betterHP = betterOpt.GetOption(6);
+		double worseHPP = worseOpt.GetOption(5);
+		double worseHP = worseOpt.GetOption(6);
+		double betterTotHPeffection = betterHPP * effectiveList[2] + betterHP * effectiveList[3];
+		double worseTotHPeffection = worseHPP * effectiveList[2] + worseHP * effectiveList[3];
+		if (betterTotHPeffection < worseTotHPeffection) return false;
+	}
+	// EM
+	if (CheckWhetherElementIsIn(7, effectiveList, effListSize))
+	{
+		if (betterOpt.GetOption(7) < worseOpt.GetOption(7)) return false;
+	}
+	// DEF, DP
+	if (CheckWhetherElementIsIn(8, effectiveList, effListSize))
+	{
+		double betterDP = betterOpt.GetOption(2);
+		double betterDEF = betterOpt.GetOption(3);
+		double worseDP = worseOpt.GetOption(2);
+		double worseDEF = worseOpt.GetOption(3);
+		double betterTotDEFeffection = betterDP * effectiveList[2] + betterDEF * effectiveList[3];
+		double worseTotDEFeffection = worseDP * effectiveList[2] + worseDEF * effectiveList[3];
+		if (betterTotDEFeffection < worseTotDEFeffection) return false;
+	}
+	return true;
 }
 
 
@@ -252,9 +328,9 @@ void AppendArtifactList(Artifact* gennedArtifact, SuperArtifactList& ArtifactSup
 
 
 double Simulator::CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList ArtifactSuperList,
-	ArtFlower* &oFlower, ArtFeather* &oFeather, ArtClock* &oClock, ArtCup* &oCup, ArtCrown* &oCrown)
+	ArtifactBundle& bestTryArtifacts)
 {
-	double CALLOOPSTART, CALLOOPFINISH;
+	std::chrono::system_clock::time_point CALLOOPSTART, CALLOOPFINISH;
 	// Set the generated artifact as the only artifact in the loop list for its type
     SuperArtifactList loopList = ArtifactSuperList;
     switch (gennedArtifact->GetType())
@@ -281,6 +357,48 @@ double Simulator::CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList Ar
 
 	double tempDamage, bestDamage;
 	bestDamage = 0;
+
+
+	std::for_each(loopList.flower.begin(), loopList.flower.end(), [&](ArtFlower* flower) {
+        mCharacter->SetArtFlower(flower);
+		std::for_each(loopList.feather.begin(), loopList.feather.end(), [&](ArtFeather* feather) {
+            mCharacter->SetArtFeather(feather);
+			std::for_each(loopList.clock.begin(), loopList.clock.end(), [&](ArtClock* clock) {
+                mCharacter->SetArtClock(clock);
+				std::for_each(loopList.cup.begin(), loopList.cup.end(), [&](ArtCup* cup) {
+                    mCharacter->SetArtCup(cup);
+					std::for_each(loopList.crown.begin(), loopList.crown.end(), [&](ArtCrown* crown) {
+                        mCharacter->SetArtCrown(crown);
+						
+						// Initialize the character
+						CALLOOPSTART = std::chrono::system_clock::now();
+						mCharacter->Initialization();
+						CALLOOPFINISH = std::chrono::system_clock::now();
+						mCalLoopTimeList[0] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
+						
+						// Calculate the damage
+						CALLOOPSTART = CALLOOPFINISH;
+						tempDamage = mCharacter->GetDamage();
+						CALLOOPFINISH = std::chrono::system_clock::now();
+						mCalLoopTimeList[1] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
+
+						// Update the best damage and artifact combination if necessary
+						if (tempDamage > bestDamage)
+						{
+							bestDamage = tempDamage;
+							bestTryArtifacts.flower = flower;
+							bestTryArtifacts.feather = feather;
+							bestTryArtifacts.clock = clock;
+							bestTryArtifacts.cup = cup;
+							bestTryArtifacts.crown = crown;
+						}
+                    });
+                });
+            });
+        });
+    });
+
+	/*
 	for (int i1 = 0; i1 < loopList.flower.size(); i1++)
 	{
 		mCharacter->SetArtFlower(loopList.flower[i1]);
@@ -298,53 +416,99 @@ double Simulator::CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList Ar
 						mCharacter->SetArtCrown(loopList.crown[i5]);
 						
 						// Initialize the character
-						CALLOOPSTART = clock();
+						CALLOOPSTART = std::chrono::system_clock::now();
 						mCharacter->Initialization();
-						CALLOOPFINISH = clock();
-						CALLOOPTIMELIST[0] += (double)(CALLOOPFINISH - CALLOOPSTART) / CLOCKS_PER_SEC;
+						CALLOOPFINISH = std::chrono::system_clock::now();
+						mCalLoopTimeList[0] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
 						
 						// Calculate the damage
 						CALLOOPSTART = CALLOOPFINISH;
 						tempDamage = mCharacter->GetDamage();
-						CALLOOPFINISH = clock();
-						CALLOOPTIMELIST[1] += (double)(CALLOOPFINISH - CALLOOPSTART) / CLOCKS_PER_SEC;
+						CALLOOPFINISH = std::chrono::system_clock::now();
+						mCalLoopTimeList[1] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
 
 						// Update the best damage and artifact combination if necessary
 						if (tempDamage > bestDamage)
 						{
 							bestDamage = tempDamage;
-							oFlower = loopList.flower[i1];
-							oFeather = loopList.feather[i2];
-							oClock = loopList.clock[i3];
-							oCup = loopList.cup[i4];
-							oCrown = loopList.crown[i5];
+							bestTryArtifacts.flower = loopList.flower[i1];
+							bestTryArtifacts.feather = loopList.feather[i2];
+							bestTryArtifacts.clock = loopList.clock[i3];
+							bestTryArtifacts.cup = loopList.cup[i4];
+							bestTryArtifacts.crown = loopList.crown[i5];
 						}
 					}
 				}
 			}
 		}
 	}
+	*/
 	return bestDamage;
 }
 
 
-TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double minDamage, double maxDamage, 
-    bool seeLastArtifact, bool seeTimeConsumption, TString histName)
+void Simulator::PrintLastArtifacts(int trialNum, double bestDamage, ArtifactBundle bestArtifacts)
+{
+	if (mSeeLastArtifact)
+	{
+		std::cout << trialNum << "-th result =============================================" << std::endl;
+		std::cout << "bestDamage : " << bestDamage << std::endl;
+		std::cout << "============== Last Artifacts ===============" << std::endl;
+		PrintArtifact(*(bestArtifacts.flower));
+		PrintArtifact(*(bestArtifacts.feather));
+		PrintArtifact(*(bestArtifacts.clock));
+		PrintArtifact(*(bestArtifacts.cup));
+		PrintArtifact(*(bestArtifacts.crown));
+		std::cout << "============== Character Stat ===============" << std::endl;
+		PrintStat(mCharacter->GetStat());
+	}
+}
+
+
+void Simulator::PrintTimeConsumption()
+{
+	if (mSeeTimeConsumption && !mWorkerMode)
+    {
+        std::cout << mTimeList[0] << "s, " << mTimeList[1] << "s, " << mTimeList[2] << "s, " << mTimeList[3] << "s" << std::endl;
+        std::cout << mCalLoopTimeList[0] << "s, " << mCalLoopTimeList[1] << "s" << std::endl;
+    }
+}
+
+
+void Simulator::PrintProgress(int trial, int nowArtNum, int simNum, int artifactNum)
+{
+	double beforePercent = (double)(trial * artifactNum + nowArtNum - 1)/(double)(simNum * artifactNum) * 100.;
+	double percent = (double)(trial * artifactNum + nowArtNum)/(double)(simNum * artifactNum) * 100.;
+	if (!mWorkerMode)
+	{
+		if ((int)beforePercent != (int)percent) std::cout << (int)percent << "% end" << std::endl;
+	}
+	else
+	{
+		int firstColumnWidth = 18;
+		int columnWidth = 9;
+		if (((int)beforePercent != (int)percent) && !DEBUGMODE)
+		{
+			printToCoordinates(2, 1 + firstColumnWidth + mWorkerID * columnWidth, "|%d %%", (int)percent);
+		}
+	}
+
+}
+
+
+TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double minDamage, double maxDamage,
+								TString histName)
 {
 	SuperArtifactList artifactSuperList;
 
 	// Histogram array to store results of each simulation run
-    TH1D* N_Histogram[artifactNum];
-    for (int i = 0; i < artifactNum; i++)
-    {
-        N_Histogram[i] = new TH1D(histName + Form(" %d-th trial", i+1), histName + Form(" %d-th trial", i+1), binNum, minDamage, maxDamage);
-    }
-	
+    if (histName == "") histName = "SIMULATOR_RUNSIMULATION_RESULT";
+	TH2D* VisualHistogram = new TH2D(histName, "", artifactNum, 0, artifactNum, binNum, minDamage, maxDamage);
+
 	// Code Execution Time Evaluation
-	double TIMELIST[4] = { 0. };
-	double start, finish;
-    for (int i = 0; i < 2; i++) CALLOOPTIMELIST[i] = 0.;
-    // for (int i = 0; i < 5; i++) artInitTimeList[i] = 0.;
+	for (int i = 0; i < 4; i++) mTimeList[i] = 0.;
+	for (int i = 0; i < 2; i++) mCalLoopTimeList[i] = 0.;
+	std::chrono::system_clock::time_point start, finish;
 
 	mAppendableRate = {};
 	mAppendableRate.reserve(artifactNum);
@@ -353,96 +517,59 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
 	// Simulation Part
 	for (int i = 0; i < simNum; i++)
 	{
+		// trial initialization
 		double bestDamage = 0;
-		
-		artifactSuperList.flower = {};
-		artifactSuperList.feather = {};
-		artifactSuperList.clock = {};
-		artifactSuperList.cup = {};
-		artifactSuperList.crown = {};
-
-		ArtFlower* bestFlower = new ArtFlower();
-		ArtFeather* bestFeather = new ArtFeather();
-		ArtClock* bestClock = new ArtClock();
-		ArtCup* bestCup = new ArtCup();
-		ArtCrown* bestCrown = new ArtCrown();
-
-		// Appendable Rate
-		int numAppend = 0;
+		artifactSuperList.Clear();
+		ArtifactBundle bestArtifacts;
+		int numAppend = 0; // for Appendable Rate
 
 		for (int j = 0; j < artifactNum; j++)
 		{
-			ArtFlower* bestTryFlower = new ArtFlower();
-			ArtFeather* bestTryFeather = new ArtFeather();
-			ArtClock* bestTryClock = new ArtClock();
-			ArtCup* bestTryCup = new ArtCup();
-			ArtCrown* bestTryCrown = new ArtCrown();
+			ArtifactBundle bestTryArtifacts;
 			
-			start = clock(); 
+			start = std::chrono::system_clock::now();
 			Artifact* gennedArtifact = GenerateRandomArtifact();
-			finish  = clock();
-			TIMELIST[0] += (double)(finish - start) / CLOCKS_PER_SEC;
+			finish  = std::chrono::system_clock::now();
+			mTimeList[0] += std::chrono::duration<double>(finish - start).count();
 
 			start = finish; 
 			bool whetherAppend = CheckWhetherAppendAndDelete(mCharacter, gennedArtifact, artifactSuperList);
-			finish  = clock();
-			TIMELIST[1] += (double)(finish - start) / CLOCKS_PER_SEC;
+			finish  = std::chrono::system_clock::now();
+			mTimeList[1] += std::chrono::duration<double>(finish - start).count();
 
 			if (whetherAppend)
 			{				
-				start = clock(); 
-				double comparedDamage = CalLoopArtifact(gennedArtifact, artifactSuperList,
-											bestTryFlower, bestTryFeather, bestTryClock, bestTryCup, bestTryCrown);
-				finish  = clock();
-				TIMELIST[2] += (double)(finish - start) / CLOCKS_PER_SEC;
+				start = std::chrono::system_clock::now(); 
+				double comparedDamage = CalLoopArtifact(gennedArtifact, artifactSuperList, bestTryArtifacts);
+				finish  = std::chrono::system_clock::now();
+				mTimeList[2] += std::chrono::duration<double>(finish - start).count();
 
 				if (comparedDamage >= bestDamage)
 				{
 					bestDamage = comparedDamage;
-					bestFlower = bestTryFlower;
-					bestFeather = bestTryFeather;
-					bestClock = bestTryClock;
-					bestCup = bestTryCup;
-					bestCrown = bestTryCrown;
+					bestArtifacts = bestTryArtifacts;
 				}
 				
 				start = finish; 
 				AppendArtifactList(gennedArtifact, artifactSuperList);
-				finish  = clock();
-				TIMELIST[3] += (double)(finish - start) / CLOCKS_PER_SEC;
+				finish  = std::chrono::system_clock::now();
+				mTimeList[3] += std::chrono::duration<double>(finish - start).count();
 
 				numAppend++;
 			}
 			else delete gennedArtifact;
 
-			N_Histogram[j]->Fill(bestDamage);
+			VisualHistogram->Fill(j + 0.5, bestDamage);
+			// N_Histogram[j]->Fill(bestDamage);
 
 			mAppendableRate[j] += (double)numAppend;
 
-			double beforePercent = (double)(i * artifactNum + j - 1)/(double)(simNum * artifactNum) * 100.;
-			double percent = (double)(i * artifactNum + j)/(double)(simNum * artifactNum) * 100.;
-			if ((int)beforePercent != (int)percent) std::cout << (int)percent << "% end" << std::endl;
+			PrintProgress(i, j, simNum, artifactNum);
 		}
 
-        if (seeLastArtifact)
-        {
-            std::cout << i << "-th result =============================================" << std::endl;
-            std::cout << "bestDamage : " << bestDamage << std::endl;
-            std::cout << "============== Last Artifacts ===============" << std::endl;
-            PrintArtifact(*bestFlower);
-            PrintArtifact(*bestFeather);
-            PrintArtifact(*bestClock);
-            PrintArtifact(*bestCup);
-            PrintArtifact(*bestCrown);
-            std::cout << "============== Character Stat ===============" << std::endl;
-            PrintStat(mCharacter->GetStat());
-        }
+		PrintLastArtifacts(i, bestDamage, bestArtifacts);
 
-		for (int j = 0; j < artifactSuperList.flower.size(); j++) delete artifactSuperList.flower[j];
-		for (int j = 0; j < artifactSuperList.feather.size(); j++) delete artifactSuperList.feather[j];
-		for (int j = 0; j < artifactSuperList.clock.size(); j++) delete artifactSuperList.clock[j];
-		for (int j = 0; j < artifactSuperList.cup.size(); j++) delete artifactSuperList.cup[j];
-		for (int j = 0; j < artifactSuperList.crown.size(); j++) delete artifactSuperList.crown[j];
+		artifactSuperList.DeleteAll();
 	}
 
 	for (int i = 0; i < artifactNum; i++)
@@ -451,24 +578,165 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
 		mAppendableRate[i] /= (double)simNum;
 	}
 
-    if (seeTimeConsumption)
-    {
-        std::cout << TIMELIST[0] << "s, " << TIMELIST[1] << "s, " << TIMELIST[2] << "s, " << TIMELIST[3] << "s" << std::endl;
-        std::cout << CALLOOPTIMELIST[0] << "s, " << CALLOOPTIMELIST[1] << "s" << std::endl;
-        // std::cout << artInitTimeList[0] << "s, " << artInitTimeList[1] << "s, " << artInitTimeList[2] << "s, "
-        // << artInitTimeList[3] << "s, " << artInitTimeList[4] << "s" << std::endl;
-    }
+	PrintTimeConsumption();
 
-	// TH2D remake Part
-	if (histName == "") histName = "Visual";
-	TH2D* VisualHistogram = new TH2D(histName, histName, artifactNum, 0, artifactNum, binNum, minDamage, maxDamage);
-	for (int i = 0; i < artifactNum; i++)
+	if (DEBUGMODE) cout << "VisualHistogram->GetBinContent(artifactNum, (int)(0.7*binNum))" << VisualHistogram->GetBinContent(artifactNum, (int)(0.7*binNum)) << endl;
+
+    return VisualHistogram;
+}
+
+
+void Simulator::SimulationWorker(int workerID, int simNum, int artifactNum, int binNum, double minDamage, double maxDamage)
+{
+	mCharacter->MakeEffectionArray();
+	// simulation number
+	simNum = simNum / mNumThread;
+	
+	SetWorkerID(workerID);
+
+	TString histName = Form("SIMULATOR_RUNSIMULATION_RESULT-%d", workerID);
+
+	if (DEBUGMODE) cout << "histName : " << histName << endl;
+
+	TH2D* VisualHistogram = RunSimulation(simNum, artifactNum, binNum, minDamage, maxDamage, histName);
+	// printToCoordinates(13 + workerID, 1, "mTimeList Pointer : %p", mTimeList);
+	if (DEBUGMODE) cout << "Histogram Generation Done." << endl;
+	// printToCoordinates(13 + workerID, 21, "mTimeList Pointer : %p", mTimeList);
+	mSimulationResult = VisualHistogram;
+}
+
+
+TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binNum, double minDamage, double maxDamage)
+{
+	#ifdef _MSC_VER
+		system("cls");
+	#else
+		if (!DEBUGMODE) system("clear");
+	#endif
+	
+	std::vector<TH2D*> HistogramArray = {};
+
+	// Copy the number of numThread Characters from character.
+		// The Copy Constructor of Character is made.
+			// In the copy constructor of character, the copy one of ARtifact and Weapon is used.
+				// The Copy Constructor of Artifact is made.
+			// The Unit Test Code of these Copy Constructor is needed.
+	std::vector<Character*> characterVector;
+	characterVector.reserve(mNumThread);
+	for (int i = 0; i < mNumThread; i++)
 	{
-		for (int j = 0; j < binNum; j++)
+		characterVector.push_back(mCharacter->Clone());
+	}
+	// These Characters is to be the memeber of Simulators (number of them = numThread)
+	std::vector<Simulator> simulatorVector;
+	simulatorVector.reserve(mNumThread);
+	for (int i = 0; i < mNumThread; i++)
+	{
+		simulatorVector.push_back(Simulator());
+		simulatorVector[i].SetCharacter(characterVector[i]);
+		simulatorVector[i].SetWorkerMode(true);
+		simulatorVector[i].SetNumThread(mNumThread);
+		simulatorVector[i].SetSeeLastArtifact(mSeeLastArtifact);
+		simulatorVector[i].SetSeeTimeConsumption(mSeeTimeConsumption);
+	}
+
+	if (DEBUGMODE)
+	{
+		for (int i = 0; i < mNumThread; i++)
 		{
-			VisualHistogram->SetBinContent(i + 1, j + 1, N_Histogram[i]->GetBinContent(j + 1));
+			cout << "Character Pointer" << characterVector[i] << endl;
+			cout << "Simulaotr Pointer" << &(simulatorVector[i]) << endl;
 		}
 	}
 
-    return VisualHistogram;
+	// terminal clear for Info Print out
+	
+	int firstColumnWidth = 18;
+	int columnWidth = 9;
+	if (!DEBUGMODE)
+	{
+		printToCoordinates(1, 1, "ThreadNum");
+		printToCoordinates(2, 1, "Progress");
+		printToCoordinates(3, 1, "Time Consumption");
+		printToCoordinates(4, 1, "  Worker");
+		printToCoordinates(5, 1, "    Generation");
+		printToCoordinates(6, 1, "    CheckAppend");
+		printToCoordinates(7, 1, "    CalLoop");
+		printToCoordinates(8, 1, "    Append");
+		printToCoordinates(9, 1, "  CalLoop");
+		printToCoordinates(10, 1, "    Initialization");
+		printToCoordinates(11, 1, "    Damage Calc.");
+		for (int i = 0; i < mNumThread; i++)
+		{
+			printToCoordinates(1, 1 + firstColumnWidth + i * columnWidth, "|# %d", i + 1);
+		}
+	}
+	
+
+	// 이들은 각각 쓰레드 안에서 SimulationWorker를 발동한다.
+	// SimulationWorker는 2d-Histogram을 simulatorVector[i]에 남기고 죽는다.
+	std::vector<std::thread> threads;
+	for (int i = 0; i < mNumThread; i++)
+	{
+		threads.push_back(std::thread(&Simulator::SimulationWorker, &(simulatorVector[i]),
+										i, simNum, artifactNum, binNum, minDamage, maxDamage));
+	}
+	for (auto& thread : threads) {
+		thread.join();
+	}
+	
+	// Info Print out.
+	
+	if (!DEBUGMODE) 
+	{
+		for (int i = 0; i < mNumThread; i++)
+		{
+			printToCoordinates(5, 1 + firstColumnWidth + i * columnWidth, "|%.1f s", simulatorVector[i].GetTimeList(0));
+			printToCoordinates(6, 1 + firstColumnWidth + i * columnWidth, "|%.1f s", simulatorVector[i].GetTimeList(1));
+			printToCoordinates(7, 1 + firstColumnWidth + i * columnWidth, "|%.1f s", simulatorVector[i].GetTimeList(2));
+			printToCoordinates(8, 1 + firstColumnWidth + i * columnWidth, "|%.1f s", simulatorVector[i].GetTimeList(3));
+			printToCoordinates(10, 1 + firstColumnWidth + i * columnWidth, "|%.1f s", simulatorVector[i].GetCalLoopTimeList(0));
+			printToCoordinates(11, 1 + firstColumnWidth + i * columnWidth, "|%.1f s", simulatorVector[i].GetCalLoopTimeList(1));
+		}
+	}
+
+	// 생성된 AppendRate도 여기로 넘겨준다.
+	std::vector<double> tempVector(artifactNum);
+	for (int i = 0; i < mNumThread; i++)
+	{
+		std::vector<double> ithAppendableRate = simulatorVector[i].GetAppendableRate();
+		for (int j = 0; j < artifactNum; j++)
+		{
+			tempVector[j] += (double)ithAppendableRate[j] / (double)mNumThread;
+		}
+	}
+	mAppendableRate = tempVector;
+	
+	if (DEBUGMODE)
+	{
+		cout << "tempVector : size = " << tempVector.size() << endl;
+		cout << "tempVector : first element = " << tempVector[0] << endl;
+		for (int i = 0; i < mNumThread; i++)
+		cout << Form("simulatorVector[%d].GetSimulationResult() : ", i) << simulatorVector[i].GetSimulationResult() << endl;
+	}
+
+	if (DEBUGMODE) cout << "10" << endl;
+	// Sum over of all histograms
+	for (int i = 0; i < mNumThread; i++)
+	{
+		HistogramArray.push_back(simulatorVector[i].GetSimulationResult());
+	}
+
+	if (DEBUGMODE) cout << "11" << endl;
+
+	TH2D* VisualHistogram = new TH2D("VisualHistogram", "", artifactNum, 0, artifactNum, binNum, minDamage, maxDamage);
+	for (int i = 0; i < mNumThread; i++)
+	{
+		VisualHistogram->Add(HistogramArray[i]);
+	}
+
+	if (DEBUGMODE) cout << "12" << endl;
+
+	printToCoordinates(12, 1, "");
+	return VisualHistogram;
 }

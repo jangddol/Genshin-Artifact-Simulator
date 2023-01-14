@@ -4,6 +4,7 @@
 #include "Stat.hh"
 #include "Weapon.hh"
 #include "Artifact.hh"
+#include "ArtSetStat.hh"
 #include "Artifact/ArtFlower.hh"
 #include "Artifact/ArtFeather.hh"
 #include "Artifact/ArtClock.hh"
@@ -18,6 +19,10 @@ constexpr double PLUSARRAY[10] = { 3.88999991118908, 7.76999965310097, 5.8299999
 									23.1499996185303 };
 
 
+class Weapon;
+class ArtSetStat;
+
+
 class Character
 {
 public:
@@ -27,6 +32,8 @@ public:
 		SetArtifact(flower, feather, clock, cup, crown);
 		mTargetEC = 100.;
 	}
+	Character(Character* character);
+	virtual Character* Clone() { return new Character(this); }
 	~Character() {}
 
 	void Initialization();
@@ -44,27 +51,28 @@ public:
 	Weapon* GetWeapon()               { return mWeapon; }
 	void    SetWeapon(Weapon* weapon) { mWeapon = weapon; bPossibleExceptArtifact = false; }
 
-	Stat GetStat()                   { return mStat; }
-	void SetStat(Stat stat)          { mStat = stat; bPossibleExceptArtifact = false; }
-	Stat GetArtSetStat()             { return mArtSetStat; }
-	void SetArtSetStat(Stat stat)    { mArtSetStat = stat; bPossibleExceptArtifact = false; }
-	Stat GetResonanceStat()          { return mResonanceStat; }
-	void SetResonanceStat(Stat stat) { mResonanceStat = stat; bPossibleExceptArtifact = false; }
+	Stat       GetStat()                      { return mStat; }
+	void       SetStat(Stat stat)             { mStat = stat; bPossibleExceptArtifact = false; }
+	Stat       GetCharacterStat()             { return mCharacterStat; }
+	ArtSetStat GetArtSetStat()                { return mArtSetStat; }
+	void       SetArtSetStat(ArtSetStat stat) { mArtSetStat = stat; bPossibleExceptArtifact = false; }
+	Stat       GetResonanceStat()             { return mResonanceStat; }
+	void       SetResonanceStat(Stat stat)    { mResonanceStat = stat; bPossibleExceptArtifact = false; }
 
 	double GetTargetEC() { return mTargetEC; }
 	void   SetTargetEC(double targetEC) { mTargetEC = targetEC; }
 	
 	void SetArtifact(ArtFlower* flower, ArtFeather* feather, ArtClock* clock, ArtCup* cup, ArtCrown* crown);
-	Artifact* GetArtFlower()						{ return mArtFlower; }
-	void      SetArtFlower(ArtFlower* artFlower)	{ mArtFlower = artFlower; }
-	Artifact* GetArtFeather()						{ return mArtFeather; }
-	void      SetArtFeather(ArtFeather* artFeather)	{ mArtFeather = artFeather; }
-	Artifact* GetArtClock()							{ return mArtClock; }
-	void      SetArtClock(ArtClock* artClock)		{ mArtClock = artClock; }
-	Artifact* GetArtCup()							{ return mArtCup; }
-	void      SetArtCup(ArtCup* artCup)				{ mArtCup = artCup; }
-	Artifact* GetArtCrown()							{ return mArtCrown; }
-	void      SetArtCrown(ArtCrown* artCrown)		{ mArtCrown = artCrown; }
+	ArtFlower*  GetArtFlower()							{ return mArtFlower; }
+	void        SetArtFlower(ArtFlower* artFlower)		{ mArtFlower = artFlower; }
+	ArtFeather* GetArtFeather()							{ return mArtFeather; }
+	void        SetArtFeather(ArtFeather* artFeather)	{ mArtFeather = artFeather; }
+	ArtClock*   GetArtClock()							{ return mArtClock; }
+	void        SetArtClock(ArtClock* artClock)			{ mArtClock = artClock; }
+	ArtCup*     GetArtCup()								{ return mArtCup; }
+	void        SetArtCup(ArtCup* artCup)				{ mArtCup = artCup; }
+	ArtCrown*   GetArtCrown()							{ return mArtCrown; }
+	void        SetArtCrown(ArtCrown* artCrown)			{ mArtCrown = artCrown; }
 	// Skill GetPSkill() { return mPSkill; }
 	// void  SetPSkill(Skill pSkill) { mPSkill = pSkill; }
 	// Skill GetESkill() { return mESkill; }
@@ -80,6 +88,7 @@ protected:
 
 private:
 	Stat        GenerateStatExceptSubOpt();
+
 	Stat        mStatExceptArtifact;
 	bool        bPossibleExceptArtifact = false;
 
@@ -95,7 +104,7 @@ private:
 	ArtClock*   mArtClock;
 	ArtCup*     mArtCup;
 	ArtCrown*   mArtCrown;
-	Stat        mArtSetStat;
+	ArtSetStat  mArtSetStat;
 	Stat        mResonanceStat;
 	// Skill mPSkill;
 	// Skill mESkill;

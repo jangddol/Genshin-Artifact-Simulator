@@ -18,6 +18,8 @@ public:
 		SetCharacterBaseStat(1, 9787.);
 		SetCharacterBaseStat(2, 573.);
 	}
+	Ningguang(Ningguang* other) : Character(other) {}
+	Character* Clone() { return new Ningguang(this); }
 	~Ningguang() {}
 
 	double GetDamage() { return GetDamage(this->GetStat()); }

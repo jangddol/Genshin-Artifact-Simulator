@@ -31,6 +31,7 @@ class Artifact
 {
 public:
 	Artifact() {}
+	Artifact(Artifact* artifact);
 	~Artifact() {}
 
 	void Generation();
@@ -44,7 +45,7 @@ public:
 
 protected:
 	int mType = 0;
-	std::vector<int> mProbabiltyWeight;
+	std::vector<int> mProbabilityWeight;
 	std::vector<int> mCummulatedWeight;
 
 private:
