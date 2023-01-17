@@ -25,11 +25,11 @@ Character::Character(Character *character)
     {
         mSavedFunction[i] = character->GetScoreFunction(i);
     }
-    Initialization();
+    Update();
 }
 
 
-void Character::Initialization()
+void Character::Update()
 {
     if (!bPossibleExceptArtifact)
     {
@@ -42,9 +42,6 @@ void Character::Initialization()
 
 void Character::ArtifactInitialization()
 {
-    // double ARTINITSTART, ARTINITFINISH;
-    // ARTINITSTART = clock();
-    
     Stat FlowerMainStat = mArtFlower->GetMainStat();
     Stat FlowerSubStat = mArtFlower->GetSubStat();
     Stat FeatherMainStat = mArtFeather->GetMainStat();
@@ -56,25 +53,13 @@ void Character::ArtifactInitialization()
     Stat CrownMainStat = mArtCrown->GetMainStat();
     Stat CrownSubStat = mArtCrown->GetSubStat();
 
-    // ARTINITFINISH = clock();
-	// artInitTimeList[0] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
-    // ARTINITSTART = ARTINITFINISH;
-
     mStat = mStatExceptArtifact;
-
-    // ARTINITFINISH = clock();
-	// artInitTimeList[1] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
-    // ARTINITSTART = ARTINITFINISH;
 
     mStat.AddOption(6, FlowerMainStat.GetOption(6));
     mStat.AddOption(3, FeatherMainStat.GetOption(3));
     mStat.AddOption(mArtClock->GetMainType(), ClockMainStat.GetOption(mArtClock->GetMainType()));
     mStat.AddOption(mArtCup->GetMainType(), CupMainStat.GetOption(mArtCup->GetMainType()));
     mStat.AddOption(mArtCrown->GetMainType(), CrownMainStat.GetOption(mArtCrown->GetMainType()));
-
-    // ARTINITFINISH = clock();
-	// artInitTimeList[2] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
-    // ARTINITSTART = ARTINITFINISH;
 
     for (int i = 0; i < 10; i++)
     {
@@ -85,14 +70,14 @@ void Character::ArtifactInitialization()
         mStat.AddOption(i, CrownSubStat.GetOption(i));
     }
 
-    // ARTINITFINISH = clock();
-	// artInitTimeList[3] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
-    // ARTINITSTART = ARTINITFINISH;
+    mFeedbackedStat.SetZero();
+    mWeapon->DoFeedback(this);
+    mArtSetStat->DoFeedback(this);
+    this->DoFeedback();
 
-    mStat.InitializationFast();
+    for (int i = 0; i < 35; i++) mStat.AddOption(i, mFeedbackedStat.GetOption(i));
 
-    // ARTINITFINISH = clock();
-	// artInitTimeList[4] += (double)(ARTINITFINISH - ARTINITSTART) / CLOCKS_PER_SEC;
+    mStat.Initialization();
 }
 
 
@@ -112,7 +97,7 @@ void Character::InitializationExceptArtifact()
         mStatExceptArtifact.AddOption(i, WeaponMainStat.GetOption(i));
         mStatExceptArtifact.AddOption(i, WeaponSubStat.GetOption(i));
         mStatExceptArtifact.AddOption(i, WeaponSubSubStat.GetOption(i));
-        mStatExceptArtifact.AddOption(i, mArtSetStat.GetOption(i));
+        mStatExceptArtifact.AddOption(i, mArtSetStat->GetOption(i));
         mStatExceptArtifact.AddOption(i, mResonanceStat.GetOption(i));
     }
     for (int i = 0; i < 3; i++)
@@ -152,8 +137,9 @@ void Character::MakeEffectionArray()
     for (int j = 0; j < 19; j++)
     {
         tempStatArray[j].AddOption(j, 1.);
-        tempStatArray[j].Initialization();
-        mEffectionArray[j] = GetDamage(tempStatArray[j]) - startDamage;
+        SetStat(tempStatArray[j]);
+        Update();
+        mEffectionArray[j] = GetDamage() - startDamage;
     }
 }
 
@@ -195,7 +181,7 @@ Stat Character::GenerateStatExceptSubOpt()
         returnStat.AddOption(i, ClockMainStat.GetOption(i));
         returnStat.AddOption(i, CupMainStat.GetOption(i));
         returnStat.AddOption(i, CrownMainStat.GetOption(i));
-        returnStat.AddOption(i, mArtSetStat.GetOption(i));
+        returnStat.AddOption(i, mArtSetStat->GetOption(i));
         returnStat.AddOption(i, mResonanceStat.GetOption(i));
     }
     for (int i = 0; i < 3; i++)

@@ -33,7 +33,7 @@ void testCharacter()
 
     character->SetArtifact(flower, feather, clock, cup, crown);
 
-    character->Initialization();
+    character->Update();
     character->MakeEffectionArray();
 
     for (int i = 0; i < 19; i++)

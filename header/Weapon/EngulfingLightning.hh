@@ -25,10 +25,9 @@ public:
 
     void DoFeedback(Character* character)
     {
-        double extraEC = character->GetStat().GetElementCharge();
-        double feedbackAP = std::min((extraEC * ECCoef), 80);
+        double extraEC = character->GetStat().GetElementCharge() - 100.;
+        double feedbackAP = std::min((extraEC * ECCoef), 80.);
         character->AddFeedbackedStat(2, feedbackAP);
-        cout << 1 << endl;
     }
 
 private:

@@ -32,12 +32,23 @@ public:
 		SetArtifact(flower, feather, clock, cup, crown);
 		mTargetEC = 100.;
 	}
+	Character(Weapon* weapon)
+	{
+		ArtFlower* flower = new ArtFlower();
+		ArtFeather* feather = new ArtFeather();
+		ArtClock* clock = new ArtClock();
+		ArtCup* cup = new ArtCup();
+		ArtCrown* crown = new ArtCrown();
+		mWeapon = weapon;
+		SetArtifact(flower, feather, clock, cup, crown);
+		mTargetEC = 100.;
+	}
 	Character(Character* character);
 	virtual Character* Clone() { return new Character(this); }
 	~Character() {}
 
 	virtual void DoFeedback() {}
-	void Initialization();
+	void Update();
 	void ArtifactInitialization();
 	void InitializationExceptArtifact();
 
@@ -52,16 +63,16 @@ public:
 	Weapon* GetWeapon()               { return mWeapon; }
 	void    SetWeapon(Weapon* weapon) { mWeapon = weapon; bPossibleExceptArtifact = false; }
 
-	Stat       GetStat()                      { return mStat; }
-	void       SetStat(Stat stat)             { mStat = stat; bPossibleExceptArtifact = false; }
-	Stat       GetCharacterStat()             { return mCharacterStat; }
-	Stat       GetFeedbackedStat()            { return mFeedbackedStat; }
-	void       SetFeedbackedStat(Stat stat;)  { mFeedbackedStat = stat; }
-	void       AddFeedbackedStat(int index, double amount) { mFeedbackedStat.AddOption(index, amount); }
-	ArtSetStat GetArtSetStat()                { return mArtSetStat; }
-	void       SetArtSetStat(ArtSetStat stat) { mArtSetStat = stat; bPossibleExceptArtifact = false; }
-	Stat       GetResonanceStat()             { return mResonanceStat; }
-	void       SetResonanceStat(Stat stat)    { mResonanceStat = stat; bPossibleExceptArtifact = false; }
+	Stat        GetStat()                       { return mStat; }
+	void        SetStat(Stat stat)              { mStat = stat; bPossibleExceptArtifact = false; }
+	Stat        GetCharacterStat()              { return mCharacterStat; }
+	Stat        GetFeedbackedStat()             { return mFeedbackedStat; }
+	void        SetFeedbackedStat(Stat stat)    { mFeedbackedStat = stat; }
+	void        AddFeedbackedStat(int index, double amount) { mFeedbackedStat.AddOption(index, amount); }
+	ArtSetStat* GetArtSetStat()                 { return mArtSetStat; }
+	void        SetArtSetStat(ArtSetStat* stat) { mArtSetStat = stat; bPossibleExceptArtifact = false; }
+	Stat        GetResonanceStat()              { return mResonanceStat; }
+	void        SetResonanceStat(Stat stat)     { mResonanceStat = stat; bPossibleExceptArtifact = false; }
 
 	double GetTargetEC() { return mTargetEC; }
 	void   SetTargetEC(double targetEC) { mTargetEC = targetEC; }
@@ -109,7 +120,7 @@ private:
 	ArtClock*   mArtClock;
 	ArtCup*     mArtCup;
 	ArtCrown*   mArtCrown;
-	ArtSetStat  mArtSetStat;
+	ArtSetStat* mArtSetStat;
 	Stat        mResonanceStat;
 	// Skill mPSkill;
 	// Skill mESkill;

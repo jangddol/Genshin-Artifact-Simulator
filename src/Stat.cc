@@ -30,18 +30,12 @@ void Stat::SetZero()
 
 void Stat::Initialization()
 {
-	InitializationFast();
-	CalResistCoef();
-	CalDefenseCoef();
-	CalLevelCoef();
-}
-
-
-void Stat::InitializationFast()
-{
 	CalTotalAttack();
 	CalTotalHP();
 	CalTotalDefense();
+	CalResistCoef();
+	CalDefenseCoef();
+	CalLevelCoef();
 }
 
 

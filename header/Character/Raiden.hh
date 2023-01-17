@@ -25,9 +25,12 @@ public:
 	Character* Clone() { return new Raiden(this); }
 	~Raiden() {}
 
-    void DoFeedback() { this->AddFeedbackedStat(11, this->GetStat().GetElementCharge()); }
-	double GetDamage() { return GetDamage(this->GetStat()); }
-	double GetDamage(Stat stat);
+    void DoFeedback()
+	{
+		double EC = this->GetStat().GetElementCharge();
+		double elecBonus = (EC - 100.) * 0.4;
+		this->AddFeedbackedStat(11, elecBonus);
+	}
 };
 
 #endif

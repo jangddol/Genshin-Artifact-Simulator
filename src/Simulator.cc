@@ -371,16 +371,16 @@ double Simulator::CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList Ar
                         mCharacter->SetArtCrown(crown);
 						
 						// Initialize the character
-						// CALLOOPSTART = std::chrono::system_clock::now();
-						mCharacter->Initialization();
-						// CALLOOPFINISH = std::chrono::system_clock::now();
-						// mCalLoopTimeList[0] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
+						CALLOOPSTART = std::chrono::system_clock::now();
+						mCharacter->Update();
+						CALLOOPFINISH = std::chrono::system_clock::now();
+						mCalLoopTimeList[0] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
 						
 						// Calculate the damage
-						// CALLOOPSTART = CALLOOPFINISH;
+						CALLOOPSTART = CALLOOPFINISH;
 						tempDamage = mCharacter->GetDamage();
-						// CALLOOPFINISH = std::chrono::system_clock::now();
-						// mCalLoopTimeList[1] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
+						CALLOOPFINISH = std::chrono::system_clock::now();
+						mCalLoopTimeList[1] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
 
 						// Update the best damage and artifact combination if necessary
 						if (tempDamage > bestDamage)
@@ -417,7 +417,7 @@ double Simulator::CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList Ar
 						
 						// Initialize the character
 						CALLOOPSTART = std::chrono::system_clock::now();
-						mCharacter->Initialization();
+						mCharacter->Update();
 						CALLOOPFINISH = std::chrono::system_clock::now();
 						mCalLoopTimeList[0] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
 						
@@ -664,7 +664,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 		printToCoordinates(7, 1, "    CalLoop");
 		printToCoordinates(8, 1, "    Append");
 		printToCoordinates(9, 1, "  CalLoop");
-		printToCoordinates(10, 1, "    Initialization");
+		printToCoordinates(10, 1, "    Update");
 		printToCoordinates(11, 1, "    Damage Calc.");
 		for (int i = 0; i < mNumThread; i++)
 		{

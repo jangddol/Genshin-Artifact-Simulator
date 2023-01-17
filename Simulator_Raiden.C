@@ -1,61 +1,50 @@
 #include "top.hh"
-#include "TH2D.h"
-#include "TCanvas.h"
-#include "TFile.h"
+// #include "TH2D.h"
+// #include "TCanvas.h"
+// #include "TFile.h"
 #include <thread>
 
 
 using namespace std;
 
 
-void Simulator_Multithread()
+void Simulator_Raiden()
 {
-	gStyle->SetOptStat(kFALSE);
+	gStyle->SetOptStat(false);
 	gRandom->SetSeed(0);
 
-	cout << std::thread::hardware_concurrency() << endl;
-
 	EngulfingLightning* weapon = new EngulfingLightning();
-
-	ArtFlower* artinit1 = new ArtFlower();
-	ArtFeather* artinit2 = new ArtFeather();
-	ArtClock* artinit3 = new ArtClock();
-	ArtCup* artinit4 = new ArtCup();
-	ArtCrown* artinit5 = new ArtCrown();
 	
-    Ningguang* simChar = new Ningguang(weapon, artinit1, artinit2, artinit3, artinit4, artinit5);
+    Raiden* simChar = new Raiden(weapon);
 
-    ArtSetStat artSetStat = ArtSetStat();
-    artSetStat.SetZero();
-    artSetStat.SetAttackPer(18);
-    artSetStat.SetQBonus(20);
+    EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
     simChar->SetArtSetStat(artSetStat);
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
-    resonanceStat.SetResistCut(20.);
-    resonanceStat.SetGeoBonus(15.);
+    resonanceStat.SetAttackPer(25.);
     simChar->SetResonanceStat(resonanceStat);
 
 	simChar->MakeEffectionArray();
 
 	// simulation number
 	// the number of artifacts to get
-	int simNum = 100;
-	int artifactNum = 300; // 4.7925 per day (150 ~ month)
+	int simNum = 1;
+	int artifactNum = 600; // 4.7925 per day (150 ~ month)
 
 	// maxDamage, binNum
 	int binNum = 100;
-	double minDamage = 100000.;
-	double maxDamage = 300000.;
+	double minDamage = 0.;
+	double maxDamage = 8000.;
 	
     Simulator* simulator = new Simulator();
     simulator->SetCharacter(simChar);
-	simulator->SetNumThread(8);
-	simulator->SetSeeLastArtifact(false);
+	// simulator->SetNumThread(8); default : max
+	simulator->SetSeeLastArtifact(true);
 	simulator->SetSeeTimeConsumption(true);
 
-	TH2D* VisualHistogram = simulator->RunSimulationMultiThreads(simNum, artifactNum, binNum, minDamage, maxDamage);
+	// TH2D* VisualHistogram = simulator->RunSimulationMultiThreads(simNum, artifactNum, binNum, minDamage, maxDamage);
+	TH2D* VisualHistogram = simulator->RunSimulation(simNum, artifactNum, binNum, minDamage, maxDamage);
 
 	int numContent = 0;
 	for (int i = 0; i < artifactNum; i++)

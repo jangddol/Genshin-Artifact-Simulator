@@ -5,11 +5,11 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "C:/root_v6.24.06/bin/root.exe",
+            "program": "C:/root_v6.26.10/bin/root.exe",
             "args": [
                 "-l",
                 "-q",
-                "Simulator_Multithread.C"
+                "testRaiden.C"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

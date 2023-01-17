@@ -6,6 +6,7 @@
 #include "TH2D.h"
 #include "TString.h"
 #include <vector>
+#include <thread>
 
 
 struct ArtifactBundle
@@ -45,7 +46,7 @@ public:
 class Simulator
 {
 public:
-    Simulator() {}
+    Simulator() { mNumThread = std::thread::hardware_concurrency(); }
     ~Simulator() {}
 
     TH2D* RunSimulation(int simNum, int artifactNum, int binNum, double minDamage, double maxDamage, TString histName = "");
@@ -81,7 +82,7 @@ private:
 
     void SimulationWorker(int workerID, int simNum, int artifactNum, int binNum, double minDamage, double maxDamage);
     
-    int mNumThread = 1;
+    int mNumThread;
 
     bool mSeeLastArtifact = false;
     bool mSeeTimeConsumption = false;
