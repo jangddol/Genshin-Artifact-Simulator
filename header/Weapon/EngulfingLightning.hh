@@ -16,14 +16,13 @@ public:
         mSubSubStat.SetZero();
 
         mMainStat.SetBaseOption(0, 608.);
-        mSubStat.SetHPPer(49.6);
-        mSubSubStat.SetHealBonus(10.);
+        mSubStat.SetElementCharge(55.1);
 
         mWeaponName = "Engulfing Lightning";
     }
-	~EngulfingLightning() {}
+	~EngulfingLightning() override {}
 
-    void DoFeedback(Character* character)
+    void DoFeedback(Character* character) override
     {
         double extraEC = character->GetStat().GetElementCharge() - 100.;
         double feedbackAP = std::min((extraEC * ECCoef), 80.);

@@ -20,7 +20,7 @@ public:
 
         mWeaponName = "Memory of Dust";
     }
-	~MemoryOfDust(){}
+	~MemoryOfDust() override {}
 };
 
 #endif

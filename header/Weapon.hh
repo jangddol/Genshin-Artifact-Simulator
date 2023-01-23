@@ -21,7 +21,7 @@ public:
 		mSubStat = weapon->GetSubStat();
 		mSubSubStat = weapon->GetSubSubStat();
 	}
-	~Weapon() {}
+	virtual ~Weapon() {}
 
 	virtual void DoFeedback(Character* character) {}
 

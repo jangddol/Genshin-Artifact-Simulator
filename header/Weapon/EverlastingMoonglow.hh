@@ -20,7 +20,7 @@ public:
 
         mWeaponName = "Everlasting Moonglow";
     }
-	~EverlastingMoonglow() {}
+	~EverlastingMoonglow() override {}
 
 };
 

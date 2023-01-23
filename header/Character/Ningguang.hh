@@ -19,11 +19,11 @@ public:
 		SetCharacterBaseStat(2, 573.);
 	}
 	Ningguang(Ningguang* other) : Character(other) {}
-	Character* Clone() { return new Ningguang(this); }
-	~Ningguang() {}
+	Character* Clone() override { return new Ningguang(this); }
+	~Ningguang() override {}
 
-	double GetDamage() { return GetDamage(this->GetStat()); }
-	double GetDamage(Stat stat);
+	double GetDamage() override { return GetDamage(this->GetStat()); }
+	double GetDamage(Stat stat) override;
 };
 
 #endif

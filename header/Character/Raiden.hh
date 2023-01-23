@@ -22,10 +22,10 @@ public:
 		SetCharacterBaseStat(2, 789.);
 	}
 	Raiden(Raiden* other) : Character(other) {}
-	Character* Clone() { return new Raiden(this); }
-	~Raiden() {}
+	Character* Clone() override { return new Raiden(this); }
+	~Raiden() override {}
 
-    void DoFeedback()
+    void DoFeedback() override
 	{
 		double EC = this->GetStat().GetElementCharge();
 		double elecBonus = (EC - 100.) * 0.4;

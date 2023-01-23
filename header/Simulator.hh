@@ -47,7 +47,7 @@ class Simulator
 {
 public:
     Simulator() { mNumThread = std::thread::hardware_concurrency(); }
-    ~Simulator() {}
+    virtual ~Simulator() {}
 
     TH2D* RunSimulation(int simNum, int artifactNum, int binNum, double minDamage, double maxDamage, TString histName = "");
 

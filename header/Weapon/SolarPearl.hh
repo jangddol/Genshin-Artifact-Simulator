@@ -22,7 +22,7 @@ public:
 
         mWeaponName = "Solar Pearl";
     }
-	~SolarPearl() {}
+	~SolarPearl() override {}
 
 };
 

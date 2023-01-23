@@ -10,6 +10,7 @@
 #include "../header/Artifact/ArtClock.hh"
 #include "../header/Artifact/ArtCup.hh"
 #include "../header/Artifact/ArtCrown.hh"
+#include "../PrintToCoordinates.hh"
 
 #include <iostream>
 #include <cstdio>
@@ -26,17 +27,6 @@
 
 
 bool DEBUGMODE = false;
-
-
-void printToCoordinates(int y, int x, const char* format, ...)
-{
-    va_list args;
-    va_start(args, format);
-    printf("\033[%d;%dH", y, x);
-    vprintf(format, args);
-    va_end(args);
-    fflush(stdout);
-}
 
 
 Artifact* GenRandArtf_1()
@@ -398,51 +388,6 @@ double Simulator::CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList Ar
         });
     });
 
-	/*
-	for (int i1 = 0; i1 < loopList.flower.size(); i1++)
-	{
-		mCharacter->SetArtFlower(loopList.flower[i1]);
-		for (int i2 = 0; i2 < loopList.feather.size(); i2++)
-		{
-			mCharacter->SetArtFeather(loopList.feather[i2]);
-			for (int i3 = 0; i3 < loopList.clock.size(); i3++)
-			{
-				mCharacter->SetArtClock(loopList.clock[i3]);
-				for (int i4 = 0; i4 < loopList.cup.size(); i4++)
-				{
-					mCharacter->SetArtCup(loopList.cup[i4]);
-					for (int i5 = 0; i5 < loopList.crown.size(); i5++)
-					{
-						mCharacter->SetArtCrown(loopList.crown[i5]);
-						
-						// Initialize the character
-						CALLOOPSTART = std::chrono::system_clock::now();
-						mCharacter->Update();
-						CALLOOPFINISH = std::chrono::system_clock::now();
-						mCalLoopTimeList[0] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
-						
-						// Calculate the damage
-						CALLOOPSTART = CALLOOPFINISH;
-						tempDamage = mCharacter->GetDamage();
-						CALLOOPFINISH = std::chrono::system_clock::now();
-						mCalLoopTimeList[1] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
-
-						// Update the best damage and artifact combination if necessary
-						if (tempDamage > bestDamage)
-						{
-							bestDamage = tempDamage;
-							bestTryArtifacts.flower = loopList.flower[i1];
-							bestTryArtifacts.feather = loopList.feather[i2];
-							bestTryArtifacts.clock = loopList.clock[i3];
-							bestTryArtifacts.cup = loopList.cup[i4];
-							bestTryArtifacts.crown = loopList.crown[i5];
-						}
-					}
-				}
-			}
-		}
-	}
-	*/
 	return bestDamage;
 }
 

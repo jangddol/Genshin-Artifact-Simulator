@@ -24,7 +24,7 @@ public:
 		mCummulatedWeight
 		= { 5, 10, 21, 21, 21, 32, 32, 34, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 50 };
 	}
-	~ArtCrown() {}
+	~ArtCrown() override {}
 };
 
 #endif

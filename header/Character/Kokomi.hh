@@ -23,11 +23,11 @@ public:
 		SetCharacterBaseStat(2, 657.);
 	}
 	Kokomi(Kokomi* other) : Character(other) {}
-	Character* Clone() { return new Kokomi(this); }
-	~Kokomi() {}
+	Character* Clone() override { return new Kokomi(this); }
+	~Kokomi() override {}
 
-	double GetDamage() { return GetDamage(this->GetStat()); }
-	double GetDamage(Stat stat);
+	double GetDamage() override { return GetDamage(this->GetStat()); }
+	double GetDamage(Stat stat) override;
 };
 
 #endif
