@@ -2,12 +2,13 @@
 #define STAT_HH
 
 
+#include <array>
 #include <vector>
 #include <string>
 
 
-std::vector<string> BASESTATSTRING = {"Base ATK", "Base HP", "Base DEF"};
-std::vector<string> STATSTRING
+std::array<std::string, 3> BASESTATSTRING = {"Base ATK", "Base HP", "Base DEF"};
+std::array<std::string, 35> STATSTRING
 	= {"CR", "CB", "ATK%%", "ATK", "EC", 
 		"HP%%", "HP", "EM", "DEF%%", "DEF",
 		"Pyro", "Elec", "Cryo", "Hydro", "Anymo",
@@ -21,7 +22,7 @@ class Stat
 {
 public:
 	Stat() {};
-	~Stat() {};
+	virtual ~Stat() {};
 
 	void SetZero();
 	void Initialization();
@@ -114,7 +115,7 @@ public:
 	void   SetBaseDefense(double baseDEF) { mBaseStat[2] = baseDEF; }
 
 private:
-	double mStat[35] = { 0. };
+	std::array<double, 35> mStat = { 0. };
 	// 0:치확, 1:치피, 2:공퍼, 3:깡공, 4:원충, 5:HP퍼, 6:깡HP, 7:원마, 8:방퍼, 9:깡방
 	// 10:불원소, 11:번개원소, 12:얼음원소, 13:물원소, 14:바람원소, 15:바위원소, 16:물리피해, 17:풀피해
 	// 18:치유보너스
@@ -123,7 +124,7 @@ private:
 	// 27:내성깎 28:방깎, 29:몬스터내성, 30:내성계수, 31:방어력계수
 	// 32:레벨, 33:몬스터레벨, 34:레벨계수
 
-	double mBaseStat[3] = { 0. };
+	std::array<double, 3> mBaseStat = { 0. };
 	// 0:공격력, 1:HP, 2:방어력
 };
 

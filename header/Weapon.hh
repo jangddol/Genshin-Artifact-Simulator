@@ -21,6 +21,7 @@ public:
 		mSubStat = weapon->GetSubStat();
 		mSubSubStat = weapon->GetSubSubStat();
 	}
+	virtual Weapon* Clone() { return new Weapon(this); }
 	virtual ~Weapon() {}
 
 	virtual void DoFeedback(Character* character) {}

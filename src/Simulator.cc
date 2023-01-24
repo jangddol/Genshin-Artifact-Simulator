@@ -305,11 +305,11 @@ void AppendArtifactList(Artifact* gennedArtifact, SuperArtifactList& ArtifactSup
 {
 	int numType = gennedArtifact->GetType();
 
-	if      (numType == 1) ArtifactSuperList.flower.push_back((ArtFlower*)gennedArtifact);
-	else if (numType == 2) ArtifactSuperList.feather.push_back((ArtFeather*)gennedArtifact);
-	else if (numType == 3) ArtifactSuperList.clock.push_back((ArtClock*)gennedArtifact);
-	else if (numType == 4) ArtifactSuperList.cup.push_back((ArtCup*)gennedArtifact);
-	else if (numType == 5) ArtifactSuperList.crown.push_back((ArtCrown*)gennedArtifact);
+	if      (numType == 1) ArtifactSuperList.flower.emplace_back((ArtFlower*)gennedArtifact);
+	else if (numType == 2) ArtifactSuperList.feather.emplace_back((ArtFeather*)gennedArtifact);
+	else if (numType == 3) ArtifactSuperList.clock.emplace_back((ArtClock*)gennedArtifact);
+	else if (numType == 4) ArtifactSuperList.cup.emplace_back((ArtCup*)gennedArtifact);
+	else if (numType == 5) ArtifactSuperList.crown.emplace_back((ArtCrown*)gennedArtifact);
 	else
 	{
 		std::cout << "Error : gennedArtifact has wrong Type (@ AppendArtifactList)" << std::endl; 
@@ -570,14 +570,14 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	characterVector.reserve(mNumThread);
 	for (int i = 0; i < mNumThread; i++)
 	{
-		characterVector.push_back(mCharacter->Clone());
+		characterVector.emplace_back(mCharacter->Clone());
 	}
 	// These Characters is to be the memeber of Simulators (number of them = numThread)
 	std::vector<Simulator> simulatorVector;
 	simulatorVector.reserve(mNumThread);
 	for (int i = 0; i < mNumThread; i++)
 	{
-		simulatorVector.push_back(Simulator());
+		simulatorVector.emplace_back(Simulator());
 		simulatorVector[i].SetCharacter(characterVector[i]);
 		simulatorVector[i].SetWorkerMode(true);
 		simulatorVector[i].SetNumThread(mNumThread);
@@ -623,7 +623,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	std::vector<std::thread> threads;
 	for (int i = 0; i < mNumThread; i++)
 	{
-		threads.push_back(std::thread(&Simulator::SimulationWorker, &(simulatorVector[i]),
+		threads.emplace_back(std::thread(&Simulator::SimulationWorker, &(simulatorVector[i]),
 										i, simNum, artifactNum, binNum, minDamage, maxDamage));
 	}
 	for (auto& thread : threads) {
@@ -669,7 +669,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	// Sum over of all histograms
 	for (int i = 0; i < mNumThread; i++)
 	{
-		HistogramArray.push_back(simulatorVector[i].GetSimulationResult());
+		HistogramArray.emplace_back(simulatorVector[i].GetSimulationResult());
 	}
 
 	if (DEBUGMODE) cout << "11" << endl;

@@ -22,8 +22,7 @@ public:
 	Character* Clone() override { return new Ningguang(this); }
 	~Ningguang() override {}
 
-	double GetDamage() override { return GetDamage(this->GetStat()); }
-	double GetDamage(Stat stat) override;
+	double GetDamageWithStat(Stat stat) override;
 };
 
 #endif

@@ -20,6 +20,8 @@ public:
 
         mWeaponName = "Engulfing Lightning";
     }
+    EngulfingLightning(Weapon* weapon) : Weapon(weapon) {}
+    Weapon* Clone() override { return new EngulfingLightning(this); }
 	~EngulfingLightning() override {}
 
     void DoFeedback(Character* character) override

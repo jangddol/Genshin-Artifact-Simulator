@@ -51,7 +51,7 @@ void testCharacter()
     Stat charStat = character->GetStat();
     cout << "========== Character Total Stat ==========" << endl;
     PrintStat(charStat);
-    double damage = character->GetDamage();
+    double damage = character->GetDamageWithStat();
     cout << "Damage : " << damage << endl;
 
     PrintArtifact(*flower);

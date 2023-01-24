@@ -20,6 +20,9 @@ public:
 
         mWeaponName = "Memory of Dust";
     }
+    MemoryOfDust(Weapon* weapon) : Weapon(weapon) {}
+    Weapon* Clone() override { return new MemoryOfDust(this); }
+
 	~MemoryOfDust() override {}
 };
 

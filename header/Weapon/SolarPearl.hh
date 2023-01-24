@@ -22,6 +22,9 @@ public:
 
         mWeaponName = "Solar Pearl";
     }
+    SolarPearl(Weapon* weapon) : Weapon(weapon) {}
+    Weapon* Clone() override { return new SolarPearl(this); }
+
 	~SolarPearl() override {}
 
 };

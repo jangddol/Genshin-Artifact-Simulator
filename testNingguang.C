@@ -1,16 +1,15 @@
 #include "top.hh"
-#include "PrintToCoordinates.hh"
 
 
 using namespace std;
 
 
-void testRaiden()
+void testNingguang()
 {
     gStyle->SetOptStat(false);
 	gRandom->SetSeed(0);
 
-	EngulfingLightning* weapon = new EngulfingLightning();
+	MemoryOfDust* weapon = new MemoryOfDust();
 
 	ArtFlower* artinit1 = new ArtFlower();
 	ArtFeather* artinit2 = new ArtFeather();
@@ -26,7 +25,7 @@ void testRaiden()
     artinit5->Generation();
     artinit5->SetMainType(0);
 	
-    Raiden* simChar = new Raiden(weapon, artinit1, artinit2, artinit3, artinit4, artinit5);
+    Ningguang* simChar = new Ningguang(weapon, artinit1, artinit2, artinit3, artinit4, artinit5);
 
     EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
     simChar->SetArtSetStat(artSetStat);

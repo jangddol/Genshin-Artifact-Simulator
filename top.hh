@@ -19,7 +19,7 @@
 #include "header/ArtSetStat/EmblemOfSeveredFate.hh"
 #include "src/Character/Ningguang.cc"
 #include "src/Character/Kokomi.cc"
-#include "header/character/Raiden.hh"
+#include "src/Character/Raiden.cc"
 #include "src/Simulator.cc"
 
 #endif

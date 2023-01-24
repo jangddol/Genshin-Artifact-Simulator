@@ -25,6 +25,8 @@ public:
 	Character* Clone() override { return new Raiden(this); }
 	~Raiden() override {}
 
+	double GetDamageWithStat(Stat stat) override;
+
     void DoFeedback() override
 	{
 		double EC = this->GetStat().GetElementCharge();
