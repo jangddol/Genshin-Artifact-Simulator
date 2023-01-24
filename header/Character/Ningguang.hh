@@ -8,8 +8,8 @@
 class Ningguang : public Character
 {
 public:
-	Ningguang(Weapon* weapon, ArtFlower* flower, ArtFeather* feather, ArtClock* clock, ArtCup* cup, ArtCrown* crown) 
-	: Character(weapon, flower, feather, clock, cup, crown)
+	Ningguang(Weapon* weapon, ArtSetStat* artSetStat, ArtFlower* flower, ArtFeather* feather, ArtClock* clock, ArtCup* cup, ArtCrown* crown) 
+	: Character(weapon, artSetStat, flower, feather, clock, cup, crown)
 	{
 		SetBasicCharacterStat();
 		AddCharacterStat(15, 24.); // Geo Bonus

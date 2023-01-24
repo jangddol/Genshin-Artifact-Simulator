@@ -31,9 +31,6 @@ public:
 	void AddOption(int index, double amount) { mStat[index] += amount; }
 	double GetOption(int index) { return mStat[index]; }
 
-	Stat GetSubOpt();
-	void SetSubOpt(const double subOptArray[10]);
-
 	void   SetCriticalRate(double CR) { mStat[0] = CR; }
 	double GetCriticalRate() { return mStat[0]; }
 	void   SetCriticalBonus(double CB) { mStat[1] = CB; }

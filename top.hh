@@ -16,6 +16,7 @@
 #include "header/Artifact/ArtClock.hh"
 #include "header/Artifact/ArtCup.hh"
 #include "header/Artifact/ArtCrown.hh"
+#include "src/ArtSetStat.cc"
 #include "header/ArtSetStat/EmblemOfSeveredFate.hh"
 #include "src/Character/Ningguang.cc"
 #include "src/Character/Kokomi.cc"

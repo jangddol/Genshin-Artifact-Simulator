@@ -39,32 +39,6 @@ void Stat::Initialization()
 }
 
 
-void Stat::SetSubOpt(const double subOptArray[10])
-{
-	for (int i = 0; i < 10; i++)
-	{
-		mStat[i] = subOptArray[i];
-	}
-}
-
-
-Stat Stat::GetSubOpt()
-{
-	Stat tempStat = Stat();
-	tempStat.SetCriticalRate(mStat[0]);
-	tempStat.SetCriticalBonus(mStat[1]);
-	tempStat.SetAttackPer(mStat[2]);
-	tempStat.SetAttack(mStat[3]);
-	tempStat.SetElementCharge(mStat[4]);
-	tempStat.SetHPPer(mStat[5]);
-	tempStat.SetHP(mStat[6]);
-	tempStat.SetElementalMastery(mStat[7]);
-	tempStat.SetDefensePer(mStat[8]);
-	tempStat.SetDefense(mStat[9]);
-	return tempStat;
-}
-
-
 void Stat::CalResistCoef()
 {
 	double monsterResist = GetMonsterResist();

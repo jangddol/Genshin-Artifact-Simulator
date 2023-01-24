@@ -8,10 +8,10 @@
 class EmblemOfSeveredFate : public ArtSetStat
 {
 public:
-    EmblemOfSeveredFate()
+    EmblemOfSeveredFate() : ArtSetStat()
     {
         SetZero();
-        SetElementCharge(20.);
+        SetOption(4, 20.); // EC
     }
     ~EmblemOfSeveredFate() override {}
 

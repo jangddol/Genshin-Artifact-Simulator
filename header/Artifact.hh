@@ -42,7 +42,10 @@ public:
 
 	Stat GetMainStat() { return mMainStat; }
 	Stat GetSubStat() { return mSubStat; }
-	void SetSubStat(Stat stat) { mSubStat = stat; }
+	void SetSubStat(Stat stat) { mSubStat = stat; AlertModified(); }
+
+	void SaveCharacterPointer(Character* character);
+	void DeleteCharacterPointer(Character* character);
 
 protected:
 	int mType = 0;
@@ -58,6 +61,9 @@ private:
 	bool               Selected3or4OptStart();
 	std::array<int, 4> GenerateStartOpt(std::vector<int> cummulatedWeight);
 	void               UpgradeSubOption(std::array<int, 4> startOptList, bool whether4OptStart);
+
+	void AlertModified();
+    std::vector<Character*> mCharactersUsingThis = {};
 
 	int mMainType = 0;
 

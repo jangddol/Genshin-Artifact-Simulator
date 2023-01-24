@@ -59,6 +59,7 @@ void Artifact::SetMainType(int mainType)
 	mMainStat.SetZero();
 	mMainStat.SetOption(mainType, MAXMAINOPTIONLIST[mainType]);
 	mMainType = mainType;
+	AlertModified();
 }
 
 
@@ -172,6 +173,7 @@ void Artifact::Generation()
 	mSubStat.SetZero();
 	GenerateMainOption(); // 메인옵션 : 부위마다 다름.
 	GenerateSubOption(); // 부옵션 : 부위마다, 메인옵션마다 다름.
+	AlertModified();
 }
 
 
@@ -181,4 +183,35 @@ void Artifact::Generation(int mainType)
 	mSubStat.SetZero();
 	SetMainType(mainType);
 	GenerateSubOption();
+	AlertModified();
+}
+
+
+void Artifact::SaveCharacterPointer(Character* character)
+{
+    mCharactersUsingThis.emplace_back(character);
+}
+
+
+void Artifact::DeleteCharacterPointer(Character* character)
+{
+    int index = 0;
+    int size = mCharactersUsingThis.size();
+    for(int i = 0; i < size; i++)
+    {
+        if (mCharactersUsingThis[index] == character)
+        {
+            mCharactersUsingThis.erase(mCharactersUsingThis.begin() + index);
+        }
+        else index++;
+    }
+}
+
+
+void Artifact::AlertModified()
+{
+	for(auto& character : mCharactersUsingThis)
+    {
+        character->ConfirmArtifactMainStatModified();
+	}
 }
