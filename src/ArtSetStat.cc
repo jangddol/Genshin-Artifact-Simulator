@@ -22,6 +22,22 @@ void ArtSetStat::DeleteCharacterPointer(Character* character)
 }
 
 
+bool ArtSetStat::IsUsingThis(Character* character)
+{
+	bool returnBool = false;
+	int length = mCharactersUsingThis.size();
+	for (int i = 0; i < length; i++)
+	{
+		if (character == mCharactersUsingThis[i])
+		{
+			returnBool = true;
+			break;
+		}
+	}
+	return returnBool;
+}
+
+
 void ArtSetStat::AlertModified()
 {
     for(auto& character : mCharactersUsingThis)

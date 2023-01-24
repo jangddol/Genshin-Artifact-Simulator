@@ -26,6 +26,8 @@ public:
 	void   SetOption(int index, double amount) { mStat.SetOption(index, amount); AlertModified(); }
 	void   AddOption(int index, double amount) { mStat.AddOption(index, amount); AlertModified(); }
 
+    bool IsUsingThis(Character* character);
+
 private:
     void AlertModified();
 
