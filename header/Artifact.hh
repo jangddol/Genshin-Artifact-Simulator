@@ -47,6 +47,8 @@ public:
 	void SaveCharacterPointer(Character* character);
 	void DeleteCharacterPointer(Character* character);
 
+	bool IsUsingThis(Character* character);
+
 protected:
 	int mType = 0;
 	std::vector<int> mProbabilityWeight;

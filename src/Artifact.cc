@@ -94,6 +94,22 @@ bool Artifact::Selected3or4OptStart()
 }
 
 
+bool Artifact::IsUsingThis(Character* character)
+{
+	bool returnBool = false;
+	int length = mCharactersUsingThis.size();
+	for (int i = 0; i < length; i++)
+	{
+		if (character == mCharactersUsingThis[i])
+		{
+			returnBool = true;
+			break;
+		}
+	}
+	return returnBool;
+}
+
+
 bool CheckIsThereIn(int element, std::array<int, 4> list)
 {
 	bool returnBool = false;

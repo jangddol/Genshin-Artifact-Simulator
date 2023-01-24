@@ -35,7 +35,7 @@ public:
 	}
 	Character(Character* character);
 	virtual Character* Clone() { return new Character(this); }
-	virtual ~Character() {}
+	virtual ~Character();
 
 	// Stat Update & UpdateState
 	virtual void DoFeedback() {}

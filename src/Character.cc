@@ -4,7 +4,6 @@
 #include <ctime>
 
 
-void PrintStat(Stat stat);
 Character::Character(Character *character)
 {
     SetWeapon(character->GetWeapon()->Clone());
@@ -16,6 +15,7 @@ Character::Character(Character *character)
 
     SetArtSetStat(character->GetArtSetStat());
     SetResonanceStat(character->GetResonanceStat());
+    
     mTargetEC = character->GetTargetEC();
     mCharacterStat = character->GetCharacterStat(); // TODO: SetCharacterStat을 분화해서 통째로 넣는거랑 아닌걸아 둘다 만들기
     mUpdateState = 0; // TODO: 위에꺼 완료되면 이거 없애기
@@ -28,6 +28,17 @@ Character::Character(Character *character)
         mSavedFunction[i] = character->GetScoreFunction(i);
     }
     Update();
+}
+
+
+Character::~Character()
+{
+    mArtSetStat->DeleteCharacterPointer(this);
+    mArtFlower->DeleteCharacterPointer(this);
+    mArtFeather->DeleteCharacterPointer(this);
+    mArtClock->DeleteCharacterPointer(this);
+    mArtCup->DeleteCharacterPointer(this);
+    mArtCrown->DeleteCharacterPointer(this);
 }
 
 
