@@ -89,7 +89,7 @@ std::vector<int> Artifact::GenerateCummulatedWeight()
 
 bool Artifact::Selected3or4OptStart()
 {
-	if (uni(rng) == 0) return true;
+	if (uni5(rng) == 0) return true;
 	else return false;
 }
 

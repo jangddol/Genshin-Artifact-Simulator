@@ -76,7 +76,7 @@ Artifact* GenRandArtf_5()
 
 Artifact* GenerateRandomArtifact()
 {
-	int temp = uni(rng);
+	int temp = uni5(rng);
 
 	switch (temp)
 	{
