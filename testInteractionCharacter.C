@@ -91,7 +91,7 @@ void testCopyConstructor()
 	
     EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
 
-    Raiden simChar = Raiden(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
+    Raiden simChar(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
@@ -155,7 +155,7 @@ void testMoveConstructor()
 	
     EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
 
-    Raiden simChar = Raiden(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
+    Raiden simChar(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
@@ -179,19 +179,14 @@ void testMoveConstructor()
     cout << "artinit5 is not used : " << !(artinit5->IsUsingThis(&simChar)) << endl;
     cout << "artSetStat is not used : " << !(artSetStat->IsUsingThis(&simChar)) << endl;
 
-    // and movedChar has copied artifacts. Therefore, movedChar doesn't use artinit.
-    cout << "artinit1 is not used at movedChar : " << !(artinit1->IsUsingThis(&movedChar)) << endl;
-    cout << "artinit2 is not used at movedChar : " << !(artinit2->IsUsingThis(&movedChar)) << endl;
-    cout << "artinit3 is not used at movedChar : " << !(artinit3->IsUsingThis(&movedChar)) << endl;
-    cout << "artinit4 is not used at movedChar : " << !(artinit4->IsUsingThis(&movedChar)) << endl;
-    cout << "artinit5 is not used at movedChar : " << !(artinit5->IsUsingThis(&movedChar)) << endl;
+    // 'move' is not need to copy the artifacts. Therefore, movedChar uses artinits.
+    cout << "artinit1 is used at movedChar : " << artinit1->IsUsingThis(&movedChar) << endl;
+    cout << "artinit2 is used at movedChar : " << artinit2->IsUsingThis(&movedChar) << endl;
+    cout << "artinit3 is used at movedChar : " << artinit3->IsUsingThis(&movedChar) << endl;
+    cout << "artinit4 is used at movedChar : " << artinit4->IsUsingThis(&movedChar) << endl;
+    cout << "artinit5 is used at movedChar : " << artinit5->IsUsingThis(&movedChar) << endl;
+    cout << "artSetStat is used at movedChar : " << artSetStat->IsUsingThis(&movedChar) << endl;
 
-    // but movedChar should have the artifacts which have same value with artinits.
-    cout << "artinit1 is same with one of movedChar : " << IsSameArtifactValue(artinit1, movedChar.GetArtFlower()) << endl;
-    cout << "artinit2 is same with one of movedChar : " << IsSameArtifactValue(artinit2, movedChar.GetArtFeather()) << endl;
-    cout << "artinit3 is same with one of movedChar : " << IsSameArtifactValue(artinit3, movedChar.GetArtClock()) << endl;
-    cout << "artinit4 is same with one of movedChar : " << IsSameArtifactValue(artinit4, movedChar.GetArtCup()) << endl;
-    cout << "artinit5 is same with one of movedChar : " << IsSameArtifactValue(artinit5, movedChar.GetArtCrown()) << endl;
 }
 
 
@@ -218,7 +213,7 @@ void testCopyAssignment()
 	
     EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
 
-    Raiden simChar = Raiden(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
+    Raiden simChar(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
@@ -231,7 +226,27 @@ void testCopyAssignment()
     cout << "artinit4 is used : " << artinit4->IsUsingThis(&simChar) << endl;
     cout << "artinit5 is used : " << artinit5->IsUsingThis(&simChar) << endl;
 
-    Raiden copiedChar = simChar;
+    EngulfingLightning* tempweapon = new EngulfingLightning();
+
+	ArtFlower* tempartinit1 = new ArtFlower();
+	ArtFeather* tempartinit2 = new ArtFeather();
+	ArtClock* tempartinit3 = new ArtClock();
+	ArtCup* tempartinit4 = new ArtCup();
+	ArtCrown* tempartinit5 = new ArtCrown();
+
+    tempartinit1->Generation();
+    tempartinit2->Generation();
+    tempartinit3->Generation();
+    tempartinit3->SetMainType(4);
+    tempartinit4->Generation();
+    tempartinit4->SetMainType(2);
+    tempartinit5->Generation();
+    tempartinit5->SetMainType(0);
+	
+    EmblemOfSeveredFate* tempartSetStat = new EmblemOfSeveredFate();
+
+    Raiden copiedChar(tempweapon, tempartSetStat, tempartinit1, tempartinit2, tempartinit3, tempartinit4, tempartinit5);
+    copiedChar = simChar;
 
     cout << "artinit1 is used : " << artinit1->IsUsingThis(&simChar) << endl;
     cout << "artinit2 is used : " << artinit2->IsUsingThis(&simChar) << endl;
@@ -293,7 +308,27 @@ void testMoveAssignment()
     cout << "artinit4 is used : " << artinit4->IsUsingThis(&simChar) << endl;
     cout << "artinit5 is used : " << artinit5->IsUsingThis(&simChar) << endl;
 
-    Raiden movedChar = std::move(simChar);
+    EngulfingLightning* tempweapon = new EngulfingLightning();
+
+	ArtFlower* tempartinit1 = new ArtFlower();
+	ArtFeather* tempartinit2 = new ArtFeather();
+	ArtClock* tempartinit3 = new ArtClock();
+	ArtCup* tempartinit4 = new ArtCup();
+	ArtCrown* tempartinit5 = new ArtCrown();
+
+    tempartinit1->Generation();
+    tempartinit2->Generation();
+    tempartinit3->Generation();
+    tempartinit3->SetMainType(4);
+    tempartinit4->Generation();
+    tempartinit4->SetMainType(2);
+    tempartinit5->Generation();
+    tempartinit5->SetMainType(0);
+	
+    EmblemOfSeveredFate* tempartSetStat = new EmblemOfSeveredFate();
+
+    Raiden movedChar(tempweapon, tempartSetStat, tempartinit1, tempartinit2, tempartinit3, tempartinit4, tempartinit5);
+    movedChar = std::move(simChar);
 
     // simChar is transferred to R-Value by std::move. Therefore, artinit1 should be not used in simChar.
     cout << "artinit1 is not used : " << !(artinit1->IsUsingThis(&simChar)) << endl;
@@ -303,19 +338,13 @@ void testMoveAssignment()
     cout << "artinit5 is not used : " << !(artinit5->IsUsingThis(&simChar)) << endl;
     cout << "artSetStat is not used : " << !(artSetStat->IsUsingThis(&simChar)) << endl;
 
-    // and movedChar has copied artifacts. Therefore, movedChar doesn't use artinit.
-    cout << "artinit1 is not used at movedChar : " << !(artinit1->IsUsingThis(&movedChar)) << endl;
-    cout << "artinit2 is not used at movedChar : " << !(artinit2->IsUsingThis(&movedChar)) << endl;
-    cout << "artinit3 is not used at movedChar : " << !(artinit3->IsUsingThis(&movedChar)) << endl;
-    cout << "artinit4 is not used at movedChar : " << !(artinit4->IsUsingThis(&movedChar)) << endl;
-    cout << "artinit5 is not used at movedChar : " << !(artinit5->IsUsingThis(&movedChar)) << endl;
-
-    // but movedChar should have the artifacts which have same value with artinits.
-    cout << "artinit1 is same with one of movedChar : " << IsSameArtifactValue(artinit1, movedChar.GetArtFlower()) << endl;
-    cout << "artinit2 is same with one of movedChar : " << IsSameArtifactValue(artinit2, movedChar.GetArtFeather()) << endl;
-    cout << "artinit3 is same with one of movedChar : " << IsSameArtifactValue(artinit3, movedChar.GetArtClock()) << endl;
-    cout << "artinit4 is same with one of movedChar : " << IsSameArtifactValue(artinit4, movedChar.GetArtCup()) << endl;
-    cout << "artinit5 is same with one of movedChar : " << IsSameArtifactValue(artinit5, movedChar.GetArtCrown()) << endl;
+    // 'move' is not need to copy the artifacts. Therefore, movedChar uses artinits.
+    cout << "artinit1 is used at movedChar : " << artinit1->IsUsingThis(&movedChar) << endl;
+    cout << "artinit2 is used at movedChar : " << artinit2->IsUsingThis(&movedChar) << endl;
+    cout << "artinit3 is used at movedChar : " << artinit3->IsUsingThis(&movedChar) << endl;
+    cout << "artinit4 is used at movedChar : " << artinit4->IsUsingThis(&movedChar) << endl;
+    cout << "artinit5 is used at movedChar : " << artinit5->IsUsingThis(&movedChar) << endl;
+    cout << "artSetStat is used at movedChar : " << artSetStat->IsUsingThis(&movedChar) << endl;
 }
 
 
@@ -417,19 +446,134 @@ void testArtifactSetter()
 
 void testArtSetStatSetter()
 {
+    cout << "========== testArtSetStatSetter ==========" << endl;
 
+    EngulfingLightning* weapon = new EngulfingLightning();
+
+	ArtFlower* artinit1 = new ArtFlower();
+	ArtFeather* artinit2 = new ArtFeather();
+	ArtClock* artinit3 = new ArtClock();
+	ArtCup* artinit4 = new ArtCup();
+	ArtCrown* artinit5 = new ArtCrown();
+
+    artinit1->Generation();
+    artinit2->Generation();
+    artinit3->Generation();
+    artinit3->SetMainType(4);
+    artinit4->Generation();
+    artinit4->SetMainType(2);
+    artinit5->Generation();
+    artinit5->SetMainType(0);
+	
+    EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
+
+    // first setter
+    Raiden* simChar = new Raiden(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
+
+    Stat resonanceStat = Stat();
+    resonanceStat.SetZero();
+    resonanceStat.SetAttackPer(25.);
+    simChar->SetResonanceStat(resonanceStat);
+
+
+    // Check for first setter
+    cout << "artSetStat is used : " << artSetStat->IsUsingThis(simChar) << endl;
+
+    ArtSetStat* newArtSetStat = new ArtSetStat();
+
+    // second setter
+    simChar->SetArtSetStat(newArtSetStat);
+
+
+    // Check for second setter
+    cout << "artSetStat is not used : " << !(artSetStat->IsUsingThis(simChar)) << endl;
+    cout << "newArtSetStat is used : " << newArtSetStat->IsUsingThis(simChar) << endl;
 }
 
 
 void testArtifactModification()
 {
+    cout << "========== testArtifactModification ==========" << endl;
 
+    EngulfingLightning* weapon = new EngulfingLightning();
+
+	ArtFlower* artinit1 = new ArtFlower();
+	ArtFeather* artinit2 = new ArtFeather();
+	ArtClock* artinit3 = new ArtClock();
+	ArtCup* artinit4 = new ArtCup();
+	ArtCrown* artinit5 = new ArtCrown();
+
+    artinit1->Generation();
+    artinit2->Generation();
+    artinit3->Generation();
+    artinit3->SetMainType(4);
+    artinit4->Generation();
+    artinit4->SetMainType(2);
+    artinit5->Generation();
+    artinit5->SetMainType(0);
+	
+    EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
+
+    // first setter
+    Raiden* simChar = new Raiden(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
+
+    Stat resonanceStat = Stat();
+    resonanceStat.SetZero();
+    resonanceStat.SetAttackPer(25.);
+    simChar->SetResonanceStat(resonanceStat);
+
+    cout << "updateState before Update is 0 : " << (0 == simChar->GetUpdateState()) << endl;
+
+    simChar->Update();
+
+    cout << "updateState after Update is 5 : " << (5 == simChar->GetUpdateState()) << endl;
+
+    artinit1->SetSubStat(Stat());
+
+    cout << "updateState after artifact modification is 3 : " << (3 == simChar->GetUpdateState()) << endl;
 }
 
 
 void testArtSetStatModification()
 {
+    cout << "========== testArtSetStatModification ==========" << endl;
 
+    EngulfingLightning* weapon = new EngulfingLightning();
+
+	ArtFlower* artinit1 = new ArtFlower();
+	ArtFeather* artinit2 = new ArtFeather();
+	ArtClock* artinit3 = new ArtClock();
+	ArtCup* artinit4 = new ArtCup();
+	ArtCrown* artinit5 = new ArtCrown();
+
+    artinit1->Generation();
+    artinit2->Generation();
+    artinit3->Generation();
+    artinit3->SetMainType(4);
+    artinit4->Generation();
+    artinit4->SetMainType(2);
+    artinit5->Generation();
+    artinit5->SetMainType(0);
+	
+    EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
+
+    // first setter
+    Raiden* simChar = new Raiden(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
+
+    Stat resonanceStat = Stat();
+    resonanceStat.SetZero();
+    resonanceStat.SetAttackPer(25.);
+    simChar->SetResonanceStat(resonanceStat);
+
+    cout << "updateState before Update is 0 : " << (0 == simChar->GetUpdateState()) << endl;
+
+    simChar->Update();
+
+    cout << "updateState after Update is 5 : " << (5 == simChar->GetUpdateState()) << endl;
+
+    artSetStat->SetOption(0, 0);
+
+    cout << "updateState after artSetStat modification is 2 : " << (2 == simChar->GetUpdateState()) << endl;
 }
 
 

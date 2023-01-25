@@ -11,9 +11,7 @@ void testCharacter()
     ArtCup* cup = new ArtCup();
     ArtCrown* crown = new ArtCrown();
 
-    Ningguang* character = new Ningguang(weapon, flower, feather, clock, cup, crown);
-
-    Stat artSetStat = Stat();
+    ArtSetStat artSetStat = ArtSetStat();
     artSetStat.SetZero();
     artSetStat.SetAttackPer(18);
     artSetStat.SetQBonus(20);
@@ -25,13 +23,13 @@ void testCharacter()
     resonanceStat.SetGeoBonus(15.);
     character->SetResonanceStat(resonanceStat);
 
+    Ningguang* character = new Ningguang(weapon, artSetStat, flower, feather, clock, cup, crown);
+
     flower->SetMainType(6);
     feather->SetMainType(3);
     clock->SetMainType(2);
     cup->SetMainType(15);
     crown->SetMainType(0);
-
-    character->SetArtifact(flower, feather, clock, cup, crown);
 
     character->Update();
     character->MakeEffectionArray();

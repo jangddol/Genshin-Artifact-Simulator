@@ -17,7 +17,7 @@ Character::Character(Character *character)
     SetResonanceStat(character->GetResonanceStat());
     
     mTargetEC = character->GetTargetEC();
-    mCharacterStat = character->GetCharacterStat(); // TODO: SetCharacterStat을 분화해서 통째로 넣는거랑 아닌걸아 둘다 만들기
+    mCharacterStat = character->GetCharacterStat(); // TODO: SetCharacterStat을 분화해서 통째로 넣는거랑 아닌거랑 둘다 만들기
     mUpdateState = 0; // TODO: 위에꺼 완료되면 이거 없애기
     for (int i = 0; i < 19; i++)
     {
@@ -28,6 +28,77 @@ Character::Character(Character *character)
         mSavedFunction[i] = character->GetScoreFunction(i);
     }
     Update();
+}
+
+
+Character::Character(Character& character)
+{
+    SetWeapon(character.GetWeapon());
+    SetArtFlower(character.GetArtFlower());
+    SetArtFeather(character.GetArtFeather());
+    SetArtClock(character.GetArtClock());
+    SetArtCup(character.GetArtCup());
+    SetArtCrown(character.GetArtCrown());
+    SetArtSetStat(character.GetArtSetStat());
+    SetResonanceStat(character.GetResonanceStat());
+    
+    mTargetEC = character.GetTargetEC();
+    mCharacterStat = character.GetCharacterStat(); // TODO: SetCharacterStat을 분화해서 통째로 넣는거랑 아닌거랑 둘다 만들기
+    mUpdateState = 0; // TODO: 위에꺼 완료되면 이거 없애기
+    for (int i = 0; i < 19; i++)
+    {
+        mEffectionArray[i] = character.GetEffection(i);
+    }
+    for (int i = 0; i < 46; i++)
+    {
+        mSavedFunction[i] = character.GetScoreFunction(i);
+    }
+    Update();
+}
+
+Character::Character(Character&& character)
+{
+    SetWeapon(character.GetWeapon());
+    SetArtFlower(character.GetArtFlower());
+    SetArtFeather(character.GetArtFeather());
+    SetArtClock(character.GetArtClock());
+    SetArtCup(character.GetArtCup());
+    SetArtCrown(character.GetArtCrown());
+    SetArtSetStat(character.GetArtSetStat());
+    SetResonanceStat(character.GetResonanceStat());
+    
+    mTargetEC = character.GetTargetEC();
+    mCharacterStat = character.GetCharacterStat(); // TODO: SetCharacterStat을 분화해서 통째로 넣는거랑 아닌거랑 둘다 만들기
+    mUpdateState = 0; // TODO: 위에꺼 완료되면 이거 없애기
+    for (int i = 0; i < 19; i++)
+    {
+        mEffectionArray[i] = character.GetEffection(i);
+    }
+    for (int i = 0; i < 46; i++)
+    {
+        mSavedFunction[i] = character.GetScoreFunction(i);
+    }
+    Update();
+}
+
+
+Character& Character::operator = (Character &character)
+{
+    if(&character == this)
+    {
+        return * this;
+    }
+    return * this;
+}
+
+
+Character& Character::operator = (Character &&character)
+{
+    if(&character == this)
+    {
+        return * this;
+    }
+    return * this;
 }
 
 

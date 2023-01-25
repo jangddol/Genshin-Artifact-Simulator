@@ -77,7 +77,11 @@
     "chrono": "cpp",
     "Simulator_Multithread copy.C": "cpp",
     "Simulator_Raiden.C": "cpp",
-    "testRaiden.C": "cpp"
+    "testRaiden.C": "cpp",
+    "span": "cpp",
+    "testInteractionCharacterArtifact.C": "cpp",
+    "testInteractionCharacter.C": "cpp",
+    "testNingguang.C": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled",
   "C_Cpp_Runner.msvcBatchPath": "",

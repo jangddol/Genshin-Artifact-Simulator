@@ -34,6 +34,10 @@ public:
 		SetArtSetStat(artSetStat);
 	}
 	Character(Character* character);
+	Character(Character& character);
+	Character(Character&& character);
+	Character& operator = (Character &character);
+	Character& operator = (Character &&character);
 	virtual Character* Clone() { return new Character(this); }
 	virtual ~Character();
 
@@ -45,6 +49,7 @@ public:
 	void ConfirmArtSetStatModified();
 	void ConfirmArtifactMainStatModified();
 	void ConfirmArtifactSubStatModified();
+	int  GetUpdateState() { return mUpdateState; }
 
 	// Damage and EffectionArray, Score Function
 	double GetDamage() { return this->GetDamageWithStat(mStat); }

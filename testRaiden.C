@@ -17,6 +17,7 @@ void testRaiden()
 	ArtClock* artinit3 = new ArtClock();
 	ArtCup* artinit4 = new ArtCup();
 	ArtCrown* artinit5 = new ArtCrown();
+
     artinit1->Generation();
     artinit2->Generation();
     artinit3->Generation();
@@ -26,10 +27,9 @@ void testRaiden()
     artinit5->Generation();
     artinit5->SetMainType(0);
 	
-    Raiden* simChar = new Raiden(weapon, artinit1, artinit2, artinit3, artinit4, artinit5);
-
     EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
-    simChar->SetArtSetStat(artSetStat);
+
+    Raiden* simChar = new Raiden(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
@@ -37,7 +37,7 @@ void testRaiden()
     simChar->SetResonanceStat(resonanceStat);
 
     simChar->Update();
-	simChar->MakeEffectionArray();
+    simChar->MakeEffectionArray();
     simChar->MakeScoreFunction();
 
     // Stat AfterUpdateFromCharcterResonance
