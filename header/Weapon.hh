@@ -14,23 +14,23 @@ class Weapon
 {
 public:
 	Weapon() {}
-	Weapon(Weapon* weapon)
+	Weapon(const Weapon* weapon)
 	{ 
 		mWeaponName = weapon->GetName();
 		mMainStat = weapon->GetMainStat();
 		mSubStat = weapon->GetSubStat();
 		mSubSubStat = weapon->GetSubSubStat();
 	}
-	virtual Weapon* Clone() { return new Weapon(this); }
+	virtual Weapon* Clone() const { return new Weapon(this); }
 	virtual ~Weapon() {}
 
-	virtual void DoFeedback(Character* character) {}
+	virtual void DoFeedback (Character* character) const {}
 
-	Stat GetMainStat() { return mMainStat; }
-	Stat GetSubStat() { return mSubStat; }
-	Stat GetSubSubStat() { return mSubSubStat; }
+	Stat GetMainStat() const { return mMainStat; }
+	Stat GetSubStat() const { return mSubStat; }
+	Stat GetSubSubStat() const { return mSubSubStat; }
 
-	string GetName() { return mWeaponName; }
+	string GetName() const { return mWeaponName; }
 	
 protected:
 	string mWeaponName;

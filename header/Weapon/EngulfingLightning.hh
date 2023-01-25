@@ -20,11 +20,11 @@ public:
 
         mWeaponName = "Engulfing Lightning";
     }
-    EngulfingLightning(Weapon* weapon) : Weapon(weapon) {}
-    Weapon* Clone() override { return new EngulfingLightning(this); }
+    EngulfingLightning(const Weapon* weapon) : Weapon(weapon) {}
+    Weapon* Clone() const override { return new EngulfingLightning(this); }
 	~EngulfingLightning() override {}
 
-    void DoFeedback(Character* character) override
+    void DoFeedback(Character* character) const override
     {
         double extraEC = character->GetStat().GetElementCharge() - 100.;
         double feedbackAP = std::min((extraEC * ECCoef), 80.);
