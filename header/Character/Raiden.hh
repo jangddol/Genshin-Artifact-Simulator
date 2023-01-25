@@ -37,6 +37,12 @@ public:
 		double elecBonus = (EC - 100.) * 0.4;
 		this->AddFeedbackedStat(11, elecBonus);
 	}
+
+	double GetTotalPartyEnergy() const { return mTotalPartyEnergy; }
+	void   SetTotalPartyEnergy(double totalPartyEnergy) { mTotalPartyEnergy = totalPartyEnergy; }
+
+private:
+	double mTotalPartyEnergy = 310.;
 };
 
 #endif
