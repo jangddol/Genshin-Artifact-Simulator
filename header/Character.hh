@@ -49,56 +49,64 @@ public:
 	void ConfirmArtSetStatModified();
 	void ConfirmArtifactMainStatModified();
 	void ConfirmArtifactSubStatModified();
-	int  GetUpdateState() { return mUpdateState; }
+	int  GetUpdateState() const { return mUpdateState; }
 
 	// Damage and EffectionArray, Score Function
-	double GetDamage() { return this->GetDamageWithStat(mStat); }
-	virtual double GetDamageWithStat(Stat stat);
+	double GetDamage() const { return this->GetDamageWithStat(mStat); }
+	virtual double GetDamageWithStat(Stat stat) const;
 	void MakeEffectionArray();
 	void MakeScoreFunction();
-	double GetScoreFunction(int index) { return mSavedFunction[index]; }
-	double GetScore();
-	double GetEffection(int index) { return mEffectionArray[index]; }
+	double GetScoreFunction(int index) const { return mSavedFunction[index]; }
+	double GetScore() const;
+	double GetEffection(int index) const { return mEffectionArray[index]; }
 
 	// Stat
-	Stat GetStat()          { return mStat; }
+	Stat GetStat() const    { return mStat; }
 	void SetStat(Stat stat) { mStat = stat; mUpdateState = ARTIFACTSUBSTATUPDATED; }
 
 	// Character Stat
-	Stat GetCharacterStat() { return mCharacterStat; }
+	Stat GetCharacterStat() const { return mCharacterStat; }
 
 	// Resonance Stat
-	Stat GetResonanceStat()          { return mResonanceStat; }
+	Stat GetResonanceStat() const    { return mResonanceStat; }
 	void SetResonanceStat(Stat stat) { mResonanceStat = stat; ConfirmResonanceStatModified(); }
 
 	// Weapon
 	Weapon* GetWeapon()               { return mWeapon; }
+	string  GetWeaponName() const     { return mWeapon->GetName(); }
+	Weapon* CopyWeapon() const        { return mWeapon->Clone(); }
 	void    SetWeapon(Weapon* weapon) { mWeapon = weapon; ConfirmWeaponStatModified(); }
 
 	// ArtSetStat
 	ArtSetStat* GetArtSetStat() { return mArtSetStat; }
+	ArtSetStat* CopyArtSetStat() const { return new ArtSetStat(mArtSetStat); }
 	void        SetArtSetStat(ArtSetStat* stat);
 
 	// Artifact
 	void        SetArtifact(ArtFlower* flower, ArtFeather* feather, ArtClock* clock, ArtCup* cup, ArtCrown* crown);
 	ArtFlower*  GetArtFlower() { return mArtFlower; }
+	ArtFlower*  CopyArtFlower() const { return new ArtFlower(mArtFlower); }
 	void        SetArtFlower(ArtFlower* artFlower);
 	ArtFeather* GetArtFeather() { return mArtFeather; }
+	ArtFeather* CopyArtFeather() const { return new ArtFeather(mArtFeather); }
 	void        SetArtFeather(ArtFeather* artFeather);
 	ArtClock*   GetArtClock() { return mArtClock; }
+	ArtClock *  CopyArtClock() const { return new ArtClock(mArtClock); }
 	void        SetArtClock(ArtClock* artClock);
 	ArtCup*     GetArtCup() { return mArtCup; }
+	ArtCup*     CopyArtCup() const { return new ArtCup(mArtCup); }
 	void        SetArtCup(ArtCup* artCup);
 	ArtCrown*   GetArtCrown() { return mArtCrown; }
+	ArtCrown*   CopyArtCrown() const { return new ArtCrown(mArtCrown); }
 	void        SetArtCrown(ArtCrown* artCrown);
 
 	// Feedbacked Stat
-	Stat GetFeedbackedStat()             { return mFeedbackedStat; }
+	Stat GetFeedbackedStat() const       { return mFeedbackedStat; }
 	void SetFeedbackedStat(Stat stat)    { mFeedbackedStat = stat; }
 	void AddFeedbackedStat(int index, double amount) { mFeedbackedStat.AddOption(index, amount); }
 
 	// TargetEC
-	double GetTargetEC()                { return mTargetEC; }
+	double GetTargetEC() const          { return mTargetEC; }
 	void   SetTargetEC(double targetEC) { mTargetEC = targetEC; }
 	
 	// Skill GetPSkill() { return mPSkill; }
@@ -108,11 +116,11 @@ public:
 	// Skill GetQSkill() { return mQSkill; }
 	// void  SetQSkill(Skill qSkill) { mQSkill = qSkill; }
 
-	Stat GetStatAfterUpdateFromCharacterResonance() { return mStatAfterUpdateFromCharacterResonance; }
-	Stat GetStatAfterUpdateFromWeapon() { return mStatAfterUpdateFromWeapon; }
-	Stat GetStatAfterUpdateFromArtSetStat() { return mStatAfterUpdateFromArtSetStat; }
-	Stat GetStatAfterUpdateFromArtifactMainStat() { return mStatAfterUpdateFromArtifactMainStat; }
-	Stat GetStatAfterUpdateFromArtifactSubStat() { return mStatAfterUpdateFromArtifactSubStat; }
+	Stat GetStatAfterUpdateFromCharacterResonance() const { return mStatAfterUpdateFromCharacterResonance; }
+	Stat GetStatAfterUpdateFromWeapon() const { return mStatAfterUpdateFromWeapon; }
+	Stat GetStatAfterUpdateFromArtSetStat() const { return mStatAfterUpdateFromArtSetStat; }
+	Stat GetStatAfterUpdateFromArtifactMainStat() const { return mStatAfterUpdateFromArtifactMainStat; }
+	Stat GetStatAfterUpdateFromArtifactSubStat() const { return mStatAfterUpdateFromArtifactSubStat; }
 
 protected:
 	void SetBasicCharacterStat();

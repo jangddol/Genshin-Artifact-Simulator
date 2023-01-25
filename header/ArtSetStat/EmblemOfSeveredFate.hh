@@ -13,6 +13,7 @@ public:
         SetZero();
         SetOption(4, 20.); // EC
     }
+    ArtSetStat* Clone() const override { return new EmblemOfSeveredFate(*this); }
     ~EmblemOfSeveredFate() override {}
 
     void DoFeedback(Character* character) const override

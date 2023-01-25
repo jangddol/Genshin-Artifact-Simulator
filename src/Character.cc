@@ -6,12 +6,12 @@
 
 Character::Character(Character *character)
 {
-    SetWeapon(character->GetWeapon()->Clone());
-    SetArtFlower(new ArtFlower(character->GetArtFlower()));
-    SetArtFeather(new ArtFeather(character->GetArtFeather()));
-    SetArtClock(new ArtClock(character->GetArtClock()));
-    SetArtCup(new ArtCup(character->GetArtCup()));
-    SetArtCrown(new ArtCrown(character->GetArtCrown()));
+    SetWeapon(character->CopyWeapon());
+    SetArtFlower(character->CopyArtFlower());
+    SetArtFeather(character->CopyArtFeather());
+    SetArtClock(character->CopyArtClock());
+    SetArtCup(character->CopyArtCup());
+    SetArtCrown(character->CopyArtCrown());
 
     SetArtSetStat(character->GetArtSetStat());
     SetResonanceStat(character->GetResonanceStat());
@@ -33,12 +33,12 @@ Character::Character(Character *character)
 
 Character::Character(Character& character)
 {
-    SetWeapon(character.GetWeapon());
-    SetArtFlower(character.GetArtFlower());
-    SetArtFeather(character.GetArtFeather());
-    SetArtClock(character.GetArtClock());
-    SetArtCup(character.GetArtCup());
-    SetArtCrown(character.GetArtCrown());
+    SetWeapon(character.CopyWeapon());
+    SetArtFlower(character.CopyArtFlower());
+    SetArtFeather(character.CopyArtFeather());
+    SetArtClock(character.CopyArtClock());
+    SetArtCup(character.CopyArtCup());
+    SetArtCrown(character.CopyArtCrown());
     SetArtSetStat(character.GetArtSetStat());
     SetResonanceStat(character.GetResonanceStat());
     
@@ -58,12 +58,12 @@ Character::Character(Character& character)
 
 Character::Character(Character&& character)
 {
-    SetWeapon(character.GetWeapon());
-    SetArtFlower(character.GetArtFlower());
-    SetArtFeather(character.GetArtFeather());
-    SetArtClock(character.GetArtClock());
-    SetArtCup(character.GetArtCup());
-    SetArtCrown(character.GetArtCrown());
+    SetWeapon(character.CopyWeapon());
+    SetArtFlower(character.CopyArtFlower());
+    SetArtFeather(character.CopyArtFeather());
+    SetArtClock(character.CopyArtClock());
+    SetArtCup(character.CopyArtCup());
+    SetArtCrown(character.CopyArtCrown());
     SetArtSetStat(character.GetArtSetStat());
     SetResonanceStat(character.GetResonanceStat());
     
@@ -294,7 +294,7 @@ void Character::ConfirmArtifactSubStatModified()
 }
 
 
-double Character::GetDamageWithStat(Stat stat)
+double Character::GetDamageWithStat(Stat stat) const
 {
     double AP = stat.GetAttackPer();
     double ATK = stat.GetAttack();
@@ -478,7 +478,7 @@ void Character::MakeScoreFunction()
 }
 
 
-double Character::GetScore()
+double Character::GetScore() const
 {
     double score = 0;
     double damage = GetDamage();

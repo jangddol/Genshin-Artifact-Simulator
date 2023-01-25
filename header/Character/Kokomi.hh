@@ -26,7 +26,7 @@ public:
 	Character* Clone() override { return new Kokomi(this); }
 	~Kokomi() override {}
 
-	double GetDamageWithStat(Stat stat) override;
+	double GetDamageWithStat(Stat stat) const override;
 };
 
 #endif

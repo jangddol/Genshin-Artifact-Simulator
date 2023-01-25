@@ -29,7 +29,7 @@ public:
 	Character* Clone() override { return new Raiden(this); }
 	~Raiden() override {}
 
-	double GetDamageWithStat(Stat stat) override;
+	double GetDamageWithStat(Stat stat) const override;
 
     void DoFeedback() override
 	{

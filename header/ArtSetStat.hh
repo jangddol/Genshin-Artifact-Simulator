@@ -12,6 +12,8 @@ class ArtSetStat
 {
 public:
     ArtSetStat() {}
+    ArtSetStat(const ArtSetStat* artSetStat) { mStat = artSetStat->GetStat(); }
+    virtual ArtSetStat* Clone() const { return new ArtSetStat(*this); }
     virtual ~ArtSetStat() {}
 
     virtual void DoFeedback(Character* character) const {}
@@ -21,6 +23,8 @@ public:
 
 	void   SetZero() {mStat.SetZero(); AlertModified(); }
 	void   Initialization() { mStat.Update(); AlertModified(); }
+
+    Stat   GetStat() const { return mStat; }
 
     double GetOption(int index) const { return mStat.GetOption(index); }
 	void   SetOption(int index, double amount) { mStat.SetOption(index, amount); AlertModified(); }

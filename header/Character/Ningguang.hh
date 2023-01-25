@@ -22,7 +22,7 @@ public:
 	Character* Clone() override { return new Ningguang(this); }
 	~Ningguang() override {}
 
-	double GetDamageWithStat(Stat stat) override;
+	double GetDamageWithStat(Stat stat) const override;
 };
 
 #endif
