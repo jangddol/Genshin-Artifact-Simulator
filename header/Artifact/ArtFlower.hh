@@ -11,10 +11,16 @@ public:
 	ArtFlower()
 	{
 		mType = 1;
-		mProbabiltyWeight = { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		mProbabilityWeight = { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		mCummulatedWeight = { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 	}
-	~ArtFlower() {}
+	ArtFlower(ArtFlower* artflower) : Artifact(artflower)
+	{
+		mType = 1;
+		mProbabilityWeight = { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		mCummulatedWeight = { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+	}
+	~ArtFlower() override {}
 };
 
 #endif

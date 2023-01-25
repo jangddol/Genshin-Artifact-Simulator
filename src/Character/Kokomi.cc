@@ -1,7 +1,7 @@
 #include "../../header/Character/Kokomi.hh"
 
 
-double Kokomi::GetDamage(Stat stat)
+double Kokomi::GetDamageWithStat(Stat stat)
 {   
     double totalHP = stat.GetTotalHP();
     double totalATK = stat.GetTotalAttack();

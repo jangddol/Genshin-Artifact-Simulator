@@ -5,7 +5,7 @@ class Skill
 {
 public:
 	Skill() {}
-	~Skill() {}
+	virtual ~Skill() {}
 
 private:
 

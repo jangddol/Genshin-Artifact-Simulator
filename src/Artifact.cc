@@ -21,11 +21,21 @@ void PrintArtifact(Artifact artifact)
 }
 
 
+Artifact::Artifact(Artifact *artifact)
+{
+	mMainStat = artifact->GetMainStat();
+	mSubStat = artifact->GetSubStat();
+	mMainType = artifact->GetMainType();
+}
+
+
 int Artifact::UseCummulatedWeight(std::vector<int> cummulatedWeight)
 {
 	// generate random integer from 0 to the sum of probability table
 	int length = cummulatedWeight.size();
-	int tempInt = gRandom->Integer(cummulatedWeight[length - 1]) + 1;
+	
+	std::uniform_int_distribution<int> uniTemp(0, cummulatedWeight[length - 1] - 1); // Guaranteed unbiased
+	int tempInt = uniTemp(rng) + 1;
 
 	int selectedInt = 0;
 	int beforeElement = 0;
@@ -49,6 +59,7 @@ void Artifact::SetMainType(int mainType)
 	mMainStat.SetZero();
 	mMainStat.SetOption(mainType, MAXMAINOPTIONLIST[mainType]);
 	mMainType = mainType;
+	AlertModified();
 }
 
 
@@ -83,10 +94,26 @@ bool Artifact::Selected3or4OptStart()
 }
 
 
-bool CheckIsThereIn(int element, int* list, int length)
+bool Artifact::IsUsingThis(Character* character)
 {
 	bool returnBool = false;
+	int length = mCharactersUsingThis.size();
 	for (int i = 0; i < length; i++)
+	{
+		if (character == mCharactersUsingThis[i])
+		{
+			returnBool = true;
+			break;
+		}
+	}
+	return returnBool;
+}
+
+
+bool CheckIsThereIn(int element, std::array<int, 4> list)
+{
+	bool returnBool = false;
+	for (int i = 0; i < 4; i++)
 	{
 		if (element == list[i])
 		{
@@ -98,25 +125,9 @@ bool CheckIsThereIn(int element, int* list, int length)
 }
 
 
-bool CheckIsThereIn(int element, std::vector<int> list)
+std::array<int, 4> Artifact::GenerateStartOpt(std::vector<int> cummulatedWeight)
 {
-	bool returnBool = false;
-	int length = list.size();
-	for (int i = 0; i < length; i++)
-	{
-		if (element == list[i])
-		{
-			returnBool = true;
-			break;
-		}
-	}
-	return returnBool;
-}
-
-
-std::vector<int> Artifact::GenerateStartOpt(std::vector<int> cummulatedWeight)
-{
-	std::vector<int> returnList = { -1, -1, -1, -1 };
+	std::array<int, 4> returnList = { -1, -1, -1, -1 };
 	returnList[0] = UseCummulatedWeight(cummulatedWeight);
 	for (int i = 1; i < 4; i++)
 	{
@@ -131,7 +142,7 @@ std::vector<int> Artifact::GenerateStartOpt(std::vector<int> cummulatedWeight)
 }
 
 
-void Artifact::UpgradeSubOption(std::vector<int> startOptList, bool whether4OptStart)
+void Artifact::UpgradeSubOption(std::array<int, 4> startOptList, bool whether4OptStart)
 {
 	int numUpgrade = 4;
 	if (whether4OptStart) numUpgrade = 5;
@@ -164,7 +175,7 @@ void Artifact::GenerateSubOption()
 
 	bool whether4OptStart = Selected3or4OptStart();
 		// 2. 처음에 3개인지 4개인지 고른다. -> 8개 or 9개
-	std::vector<int> startOptList = GenerateStartOpt(subCummulatedWeight);
+	std::array<int, 4> startOptList = GenerateStartOpt(subCummulatedWeight);
 		// 3. 처음 옵션 4개가 무엇인지 결정한다. 4개를 겹치지 않게 생성한다.
 
 	UpgradeSubOption(startOptList, whether4OptStart);
@@ -178,6 +189,7 @@ void Artifact::Generation()
 	mSubStat.SetZero();
 	GenerateMainOption(); // 메인옵션 : 부위마다 다름.
 	GenerateSubOption(); // 부옵션 : 부위마다, 메인옵션마다 다름.
+	AlertModified();
 }
 
 
@@ -187,4 +199,35 @@ void Artifact::Generation(int mainType)
 	mSubStat.SetZero();
 	SetMainType(mainType);
 	GenerateSubOption();
+	AlertModified();
+}
+
+
+void Artifact::SaveCharacterPointer(Character* character)
+{
+    mCharactersUsingThis.emplace_back(character);
+}
+
+
+void Artifact::DeleteCharacterPointer(Character* character)
+{
+    int index = 0;
+    int size = mCharactersUsingThis.size();
+    for(int i = 0; i < size; i++)
+    {
+        if (mCharactersUsingThis[index] == character)
+        {
+            mCharactersUsingThis.erase(mCharactersUsingThis.begin() + index);
+        }
+        else index++;
+    }
+}
+
+
+void Artifact::AlertModified()
+{
+	for(auto& character : mCharactersUsingThis)
+    {
+        character->ConfirmArtifactMainStatModified();
+	}
 }

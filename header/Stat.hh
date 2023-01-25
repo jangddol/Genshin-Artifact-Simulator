@@ -2,14 +2,15 @@
 #define STAT_HH
 
 
+#include <array>
 #include <vector>
 #include <string>
 
 
-std::vector<string> BASESTATSTRING = {"Base ATK", "Base HP", "Base DEF"};
-std::vector<string> STATSTRING
-	= {"CR", "CB", "ATK%", "ATK", "EC", 
-		"HP%", "HP", "EM", "DEF%", "DEF",
+std::array<std::string, 3> BASESTATSTRING = {"Base ATK", "Base HP", "Base DEF"};
+std::array<std::string, 35> STATSTRING
+	= {"CR", "CB", "ATK%%", "ATK", "EC", 
+		"HP%%", "HP", "EM", "DEF%%", "DEF",
 		"Pyro", "Elec", "Cryo", "Hydro", "Anymo",
 		"Geo", "Phys", "Dendro", "Heal", "Normal Attack Bonus", 
 		"Strong Attack Bonus", "Dodge Attack Bonus", "E Skill Bonus", "Q Skill Bonus", "Total ATK",
@@ -21,101 +22,97 @@ class Stat
 {
 public:
 	Stat() {};
-	~Stat() {};
+	virtual ~Stat() {};
 
 	void SetZero();
 	void Initialization();
-	void InitializationFast();
 
 	void SetOption(int index, double amount) { mStat[index] = amount; }
 	void AddOption(int index, double amount) { mStat[index] += amount; }
 	double GetOption(int index) { return mStat[index]; }
 
-	Stat GetSubOpt();
-	void SetSubOpt(const double subOptArray[10]);
-
-	void SetCriticalRate(double CR) { mStat[0] = CR; }
+	void   SetCriticalRate(double CR) { mStat[0] = CR; }
 	double GetCriticalRate() { return mStat[0]; }
-	void SetCriticalBonus(double CB) { mStat[1] = CB; }
+	void   SetCriticalBonus(double CB) { mStat[1] = CB; }
 	double GetCriticalBonus() { return mStat[1]; }
-	void SetAttackPer(double AP) { mStat[2] = AP; }
+	void   SetAttackPer(double AP) { mStat[2] = AP; }
 	double GetAttackPer() { return mStat[2]; }
-	void SetAttack(double attack) { mStat[3] = attack; }
+	void   SetAttack(double attack) { mStat[3] = attack; }
 	double GetAttack() { return mStat[3]; }
-	void SetElementCharge(double EC) { mStat[4] = EC; }
+	void   SetElementCharge(double EC) { mStat[4] = EC; }
 	double GetElementCharge() { return mStat[4]; }
-	void SetHPPer(double HPP) { mStat[5] = HPP; }
+	void   SetHPPer(double HPP) { mStat[5] = HPP; }
 	double GetHPPer() { return mStat[5]; }
-	void SetHP(double HP) { mStat[6] = HP; }
+	void   SetHP(double HP) { mStat[6] = HP; }
 	double GetHP() { return mStat[6]; }
-	void SetElementalMastery(double EM) { mStat[7] = EM; }
+	void   SetElementalMastery(double EM) { mStat[7] = EM; }
 	double GetElementalMastery() { return mStat[7]; }
-	void SetDefensePer(double DP) { mStat[8] = DP; }
+	void   SetDefensePer(double DP) { mStat[8] = DP; }
 	double GetDefensePer() { return mStat[8]; }
-	void SetDefense(double defense) { mStat[9] = defense; }
+	void   SetDefense(double defense) { mStat[9] = defense; }
 	double GetDefense() { return mStat[9]; }
-	void SetPiroBonus(double piroBonus) { mStat[10] = piroBonus; }
+	void   SetPiroBonus(double piroBonus) { mStat[10] = piroBonus; }
 	double GetPiroBonus() { return mStat[10]; }
-	void SetElectroBonus(double electroBonus) { mStat[11] = electroBonus; }
+	void   SetElectroBonus(double electroBonus) { mStat[11] = electroBonus; }
 	double GetElectroBonus() { return mStat[11]; }
-	void SetCryoBonus(double cryoBonus) { mStat[12] = cryoBonus; }
+	void   SetCryoBonus(double cryoBonus) { mStat[12] = cryoBonus; }
 	double GetCryoBonus() { return mStat[12]; }
-	void SetHydroBonus(double hydroBonus) { mStat[13] = hydroBonus; }
+	void   SetHydroBonus(double hydroBonus) { mStat[13] = hydroBonus; }
 	double GetHydroBonus() { return mStat[13]; }
-	void SetAnemoBonus(double anemoBonus) { mStat[14] = anemoBonus; }
+	void   SetAnemoBonus(double anemoBonus) { mStat[14] = anemoBonus; }
 	double GetAnemoBonus() { return mStat[14]; }
-	void SetGeoBonus(double geoBonus) { mStat[15] = geoBonus; }
+	void   SetGeoBonus(double geoBonus) { mStat[15] = geoBonus; }
 	double GetGeoBonus() { return mStat[15]; }
-	void SetPhysicalBonus(double physicalBonus) { mStat[16] = physicalBonus; }
+	void   SetPhysicalBonus(double physicalBonus) { mStat[16] = physicalBonus; }
 	double GetPhysicalBonus() { return mStat[16]; }
-	void SetDendroBonus(double dendroBonus) { mStat[17] = dendroBonus; }
+	void   SetDendroBonus(double dendroBonus) { mStat[17] = dendroBonus; }
 	double GetDendroBonus() { return mStat[17]; }
-	void SetHealBonus(double healBonus) { mStat[18] = healBonus; }
+	void   SetHealBonus(double healBonus) { mStat[18] = healBonus; }
 	double GetHealBonus() { return mStat[18]; }
-	void SetNormalAttackBonus(double normalAttackBonus) { mStat[19] = normalAttackBonus; }
+	void   SetNormalAttackBonus(double normalAttackBonus) { mStat[19] = normalAttackBonus; }
 	double GetNormalAttackBonus() { return mStat[19]; }
-	void SetStrongAttackBonus(double strongAttackBonus) { mStat[20] = strongAttackBonus; }
+	void   SetStrongAttackBonus(double strongAttackBonus) { mStat[20] = strongAttackBonus; }
 	double GetStrongAttackBonus() { return mStat[20]; }
-	void SetFlungeAttackBonus(double flungeAttackBonus) { mStat[21] = flungeAttackBonus; }
+	void   SetFlungeAttackBonus(double flungeAttackBonus) { mStat[21] = flungeAttackBonus; }
 	double GetFlungeAttackBonus() { return mStat[21]; }
-	void SetEBonus(double eBonus) { mStat[22] = eBonus; }
+	void   SetEBonus(double eBonus) { mStat[22] = eBonus; }
 	double GetEBonus() { return mStat[22]; }
-	void SetQBonus(double qBonus) { mStat[23] = qBonus; }
+	void   SetQBonus(double qBonus) { mStat[23] = qBonus; }
 	double GetQBonus() { return mStat[23]; }
-	void CalTotalAttack() { mStat[24] = mBaseStat[0] * (1 + mStat[2] / 100.) + mStat[3]; } // BaseATK + AP + ATK
+	void   CalTotalAttack() { mStat[24] = mBaseStat[0] * (1. + mStat[2] / 100.) + mStat[3]; } // BaseATK * (1 + AP / 100) + ATK
 	double GetTotalAttack() { return mStat[24]; }
-	void CalTotalHP() { mStat[25] = mBaseStat[1] * (1 + mStat[5] / 100.) + mStat[6]; } // BaseHP + HPP + HP
+	void   CalTotalHP() { mStat[25] = mBaseStat[1] * (1. + mStat[5] / 100.) + mStat[6]; } // BaseHP * (1 + HPP / 100) + HP
 	double GetTotalHP() { return mStat[25]; }
-	void CalTotalDefense() { mStat[26] = mBaseStat[2] * (1 + mStat[8] / 100.) + mStat[9]; } // BaseDF + DFP + DF
+	void   CalTotalDefense() { mStat[26] = mBaseStat[2] * (1. + mStat[8] / 100.) + mStat[9]; } // BaseDF * (1 + DFP / 100) + DF
 	double GetTotalDefense() { return mStat[26]; }
-	void SetResistCut(double resistCut) { mStat[27] = resistCut; }
+	void   SetResistCut(double resistCut) { mStat[27] = resistCut; }
 	double GetResistCut() { return mStat[27]; }
-	void SetDefenseCut(double defenseCut) { mStat[28] = defenseCut; }
+	void   SetDefenseCut(double defenseCut) { mStat[28] = defenseCut; }
 	double GetDefenseCut() { return mStat[28]; }
-	void SetMonsterResist(double monsterResist) { mStat[29] = monsterResist; }
+	void   SetMonsterResist(double monsterResist) { mStat[29] = monsterResist; }
 	double GetMonsterResist() { return mStat[29]; }
-	void CalResistCoef();
+	void   CalResistCoef();
 	double GetResistCoef() { return mStat[30]; }
-	void CalDefenseCoef();
+	void   CalDefenseCoef();
 	double GetDefenseCoef() { return mStat[31]; }
-	void SetLevel(int level) { mStat[32] = (double)level; }
+	void   SetLevel(int level) { mStat[32] = (double)level; }
 	double GetLevel() { return (int)mStat[32]; }
-	void SetMonsterLevel(int monsterLevel) { mStat[33] = monsterLevel; }
+	void   SetMonsterLevel(int monsterLevel) { mStat[33] = monsterLevel; }
 	double GetMonsterLevel() { return mStat[33]; }
-	void CalLevelCoef();
+	void   CalLevelCoef();
 	double GetLevelCoef() { return mStat[34]; }
 
 	double GetBaseOption(int index) { return mBaseStat[index]; }
-	void SetBaseOption(int index, double amount) { mBaseStat[index] = amount; }
+	void   SetBaseOption(int index, double amount) { mBaseStat[index] = amount; }
 	double GetBaseAttack() { return mBaseStat[0]; }
-	void SetBaseAttack(double baseATK) { mBaseStat[0] = baseATK; }
+	void   SetBaseAttack(double baseATK) { mBaseStat[0] = baseATK; }
 	double GetBaseHP() { return mBaseStat[1]; }
-	void SetBaseHP(double baseHP) { mBaseStat[1] = baseHP; }
+	void   SetBaseHP(double baseHP) { mBaseStat[1] = baseHP; }
 	double GetBaseDefense() { return mBaseStat[2]; }
-	void SetBaseDefense(double baseDEF) { mBaseStat[2] = baseDEF; }
+	void   SetBaseDefense(double baseDEF) { mBaseStat[2] = baseDEF; }
 
 private:
-	double mStat[35] = { 0. };
+	std::array<double, 35> mStat = { 0. };
 	// 0:치확, 1:치피, 2:공퍼, 3:깡공, 4:원충, 5:HP퍼, 6:깡HP, 7:원마, 8:방퍼, 9:깡방
 	// 10:불원소, 11:번개원소, 12:얼음원소, 13:물원소, 14:바람원소, 15:바위원소, 16:물리피해, 17:풀피해
 	// 18:치유보너스
@@ -124,7 +121,7 @@ private:
 	// 27:내성깎 28:방깎, 29:몬스터내성, 30:내성계수, 31:방어력계수
 	// 32:레벨, 33:몬스터레벨, 34:레벨계수
 
-	double mBaseStat[3] = { 0. };
+	std::array<double, 3> mBaseStat = { 0. };
 	// 0:공격력, 1:HP, 2:방어력
 };
 
