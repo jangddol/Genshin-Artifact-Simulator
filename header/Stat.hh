@@ -25,90 +25,90 @@ public:
 	virtual ~Stat() {};
 
 	void SetZero();
-	void Initialization();
+	void Update();
 
 	void SetOption(int index, double amount) { mStat[index] = amount; }
 	void AddOption(int index, double amount) { mStat[index] += amount; }
-	double GetOption(int index) { return mStat[index]; }
+	double GetOption(int index) const { return mStat[index]; }
 
 	void   SetCriticalRate(double CR) { mStat[0] = CR; }
-	double GetCriticalRate() { return mStat[0]; }
+	double GetCriticalRate() const { return mStat[0]; }
 	void   SetCriticalBonus(double CB) { mStat[1] = CB; }
-	double GetCriticalBonus() { return mStat[1]; }
+	double GetCriticalBonus() const { return mStat[1]; }
 	void   SetAttackPer(double AP) { mStat[2] = AP; }
-	double GetAttackPer() { return mStat[2]; }
+	double GetAttackPer() const { return mStat[2]; }
 	void   SetAttack(double attack) { mStat[3] = attack; }
-	double GetAttack() { return mStat[3]; }
+	double GetAttack() const { return mStat[3]; }
 	void   SetElementCharge(double EC) { mStat[4] = EC; }
-	double GetElementCharge() { return mStat[4]; }
+	double GetElementCharge() const { return mStat[4]; }
 	void   SetHPPer(double HPP) { mStat[5] = HPP; }
-	double GetHPPer() { return mStat[5]; }
+	double GetHPPer() const { return mStat[5]; }
 	void   SetHP(double HP) { mStat[6] = HP; }
-	double GetHP() { return mStat[6]; }
+	double GetHP() const { return mStat[6]; }
 	void   SetElementalMastery(double EM) { mStat[7] = EM; }
-	double GetElementalMastery() { return mStat[7]; }
+	double GetElementalMastery() const { return mStat[7]; }
 	void   SetDefensePer(double DP) { mStat[8] = DP; }
-	double GetDefensePer() { return mStat[8]; }
+	double GetDefensePer() const { return mStat[8]; }
 	void   SetDefense(double defense) { mStat[9] = defense; }
-	double GetDefense() { return mStat[9]; }
+	double GetDefense() const { return mStat[9]; }
 	void   SetPiroBonus(double piroBonus) { mStat[10] = piroBonus; }
-	double GetPiroBonus() { return mStat[10]; }
+	double GetPiroBonus() const { return mStat[10]; }
 	void   SetElectroBonus(double electroBonus) { mStat[11] = electroBonus; }
-	double GetElectroBonus() { return mStat[11]; }
+	double GetElectroBonus() const { return mStat[11]; }
 	void   SetCryoBonus(double cryoBonus) { mStat[12] = cryoBonus; }
-	double GetCryoBonus() { return mStat[12]; }
+	double GetCryoBonus() const { return mStat[12]; }
 	void   SetHydroBonus(double hydroBonus) { mStat[13] = hydroBonus; }
-	double GetHydroBonus() { return mStat[13]; }
+	double GetHydroBonus() const { return mStat[13]; }
 	void   SetAnemoBonus(double anemoBonus) { mStat[14] = anemoBonus; }
-	double GetAnemoBonus() { return mStat[14]; }
+	double GetAnemoBonus() const { return mStat[14]; }
 	void   SetGeoBonus(double geoBonus) { mStat[15] = geoBonus; }
-	double GetGeoBonus() { return mStat[15]; }
+	double GetGeoBonus() const { return mStat[15]; }
 	void   SetPhysicalBonus(double physicalBonus) { mStat[16] = physicalBonus; }
-	double GetPhysicalBonus() { return mStat[16]; }
+	double GetPhysicalBonus() const { return mStat[16]; }
 	void   SetDendroBonus(double dendroBonus) { mStat[17] = dendroBonus; }
-	double GetDendroBonus() { return mStat[17]; }
+	double GetDendroBonus() const { return mStat[17]; }
 	void   SetHealBonus(double healBonus) { mStat[18] = healBonus; }
-	double GetHealBonus() { return mStat[18]; }
+	double GetHealBonus() const { return mStat[18]; }
 	void   SetNormalAttackBonus(double normalAttackBonus) { mStat[19] = normalAttackBonus; }
-	double GetNormalAttackBonus() { return mStat[19]; }
+	double GetNormalAttackBonus() const { return mStat[19]; }
 	void   SetStrongAttackBonus(double strongAttackBonus) { mStat[20] = strongAttackBonus; }
-	double GetStrongAttackBonus() { return mStat[20]; }
+	double GetStrongAttackBonus() const { return mStat[20]; }
 	void   SetFlungeAttackBonus(double flungeAttackBonus) { mStat[21] = flungeAttackBonus; }
-	double GetFlungeAttackBonus() { return mStat[21]; }
+	double GetFlungeAttackBonus() const { return mStat[21]; }
 	void   SetEBonus(double eBonus) { mStat[22] = eBonus; }
-	double GetEBonus() { return mStat[22]; }
+	double GetEBonus() const { return mStat[22]; }
 	void   SetQBonus(double qBonus) { mStat[23] = qBonus; }
-	double GetQBonus() { return mStat[23]; }
+	double GetQBonus() const { return mStat[23]; }
 	void   CalTotalAttack() { mStat[24] = mBaseStat[0] * (1. + mStat[2] / 100.) + mStat[3]; } // BaseATK * (1 + AP / 100) + ATK
-	double GetTotalAttack() { return mStat[24]; }
+	double GetTotalAttack() const { return mStat[24]; }
 	void   CalTotalHP() { mStat[25] = mBaseStat[1] * (1. + mStat[5] / 100.) + mStat[6]; } // BaseHP * (1 + HPP / 100) + HP
-	double GetTotalHP() { return mStat[25]; }
+	double GetTotalHP() const { return mStat[25]; }
 	void   CalTotalDefense() { mStat[26] = mBaseStat[2] * (1. + mStat[8] / 100.) + mStat[9]; } // BaseDF * (1 + DFP / 100) + DF
-	double GetTotalDefense() { return mStat[26]; }
+	double GetTotalDefense() const { return mStat[26]; }
 	void   SetResistCut(double resistCut) { mStat[27] = resistCut; }
-	double GetResistCut() { return mStat[27]; }
+	double GetResistCut() const { return mStat[27]; }
 	void   SetDefenseCut(double defenseCut) { mStat[28] = defenseCut; }
-	double GetDefenseCut() { return mStat[28]; }
+	double GetDefenseCut() const { return mStat[28]; }
 	void   SetMonsterResist(double monsterResist) { mStat[29] = monsterResist; }
-	double GetMonsterResist() { return mStat[29]; }
+	double GetMonsterResist() const { return mStat[29]; }
 	void   CalResistCoef();
-	double GetResistCoef() { return mStat[30]; }
+	double GetResistCoef() const { return mStat[30]; }
 	void   CalDefenseCoef();
-	double GetDefenseCoef() { return mStat[31]; }
+	double GetDefenseCoef() const { return mStat[31]; }
 	void   SetLevel(int level) { mStat[32] = (double)level; }
-	double GetLevel() { return (int)mStat[32]; }
+	double GetLevel() const { return (int)mStat[32]; }
 	void   SetMonsterLevel(int monsterLevel) { mStat[33] = monsterLevel; }
-	double GetMonsterLevel() { return mStat[33]; }
+	double GetMonsterLevel() const { return mStat[33]; }
 	void   CalLevelCoef();
-	double GetLevelCoef() { return mStat[34]; }
+	double GetLevelCoef() const { return mStat[34]; }
 
-	double GetBaseOption(int index) { return mBaseStat[index]; }
+	double GetBaseOption(int index) const { return mBaseStat[index]; }
 	void   SetBaseOption(int index, double amount) { mBaseStat[index] = amount; }
-	double GetBaseAttack() { return mBaseStat[0]; }
+	double GetBaseAttack() const { return mBaseStat[0]; }
 	void   SetBaseAttack(double baseATK) { mBaseStat[0] = baseATK; }
-	double GetBaseHP() { return mBaseStat[1]; }
+	double GetBaseHP() const { return mBaseStat[1]; }
 	void   SetBaseHP(double baseHP) { mBaseStat[1] = baseHP; }
-	double GetBaseDefense() { return mBaseStat[2]; }
+	double GetBaseDefense() const { return mBaseStat[2]; }
 	void   SetBaseDefense(double baseDEF) { mBaseStat[2] = baseDEF; }
 
 private:

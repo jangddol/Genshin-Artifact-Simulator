@@ -20,7 +20,7 @@ public:
     void   DeleteCharacterPointer(Character* chraracter);
 
 	void   SetZero() {mStat.SetZero(); AlertModified(); }
-	void   Initialization() { mStat.Initialization(); AlertModified(); }
+	void   Initialization() { mStat.Update(); AlertModified(); }
 
     double GetOption(int index) { return mStat.GetOption(index); }
 	void   SetOption(int index, double amount) { mStat.SetOption(index, amount); AlertModified(); }

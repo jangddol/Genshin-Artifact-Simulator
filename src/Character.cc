@@ -121,9 +121,9 @@ void Character::Update()
         // ArtSetStat
         // Artifact Main Stat
         // Artifact Sub Stat
-        // Stat Initialization
+        // Stat Update
         // Feedback
-        // Stat Initialization Once Again
+        // Stat Update Once Again
 
     if (mUpdateState < CHARACTERRESONANCEUPDATED)
     {
@@ -151,9 +151,9 @@ void Character::Update()
         mUpdateState = ARTIFACTSUBSTATUPDATED;
     }
     mStat = mStatAfterUpdateFromArtifactSubStat;
-    mStat.Initialization();
+    mStat.Update();
     UpdateFromFeedback();
-    mStat.Initialization();
+    mStat.Update();
 }
 
 

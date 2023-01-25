@@ -5,6 +5,6 @@ void testStat()
 {
     Stat stat = Stat();
     stat.SetZero();
-    stat.Initialization();
+    stat.Update();
     PrintStat(stat);
 }

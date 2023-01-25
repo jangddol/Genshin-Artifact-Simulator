@@ -28,7 +28,7 @@ void Stat::SetZero()
 }
 
 
-void Stat::Initialization()
+void Stat::Update()
 {
 	CalTotalAttack();
 	CalTotalHP();
