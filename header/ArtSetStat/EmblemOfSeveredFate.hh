@@ -15,7 +15,7 @@ public:
     }
     ~EmblemOfSeveredFate() override {}
 
-    void DoFeedback(Character* character) override
+    void DoFeedback(Character* character) const override
     {
         double EC = character->GetStat().GetElementCharge();
         double qBonus = std::min(EC * 0.25, 75.);

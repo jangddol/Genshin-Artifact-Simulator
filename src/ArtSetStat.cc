@@ -22,7 +22,7 @@ void ArtSetStat::DeleteCharacterPointer(Character* character)
 }
 
 
-bool ArtSetStat::IsUsingThis(Character* character)
+bool ArtSetStat::IsUsingThis(Character* character) const
 {
 	bool returnBool = false;
 	int length = mCharactersUsingThis.size();

@@ -14,7 +14,7 @@ public:
     ArtSetStat() {}
     virtual ~ArtSetStat() {}
 
-    virtual void DoFeedback(Character* character) {}
+    virtual void DoFeedback(Character* character) const {}
 
     void   SaveCharacterPointer(Character* character);
     void   DeleteCharacterPointer(Character* chraracter);
@@ -22,11 +22,11 @@ public:
 	void   SetZero() {mStat.SetZero(); AlertModified(); }
 	void   Initialization() { mStat.Update(); AlertModified(); }
 
-    double GetOption(int index) { return mStat.GetOption(index); }
+    double GetOption(int index) const { return mStat.GetOption(index); }
 	void   SetOption(int index, double amount) { mStat.SetOption(index, amount); AlertModified(); }
 	void   AddOption(int index, double amount) { mStat.AddOption(index, amount); AlertModified(); }
 
-    bool IsUsingThis(Character* character);
+    bool   IsUsingThis(Character* character) const;
 
 private:
     void AlertModified();
