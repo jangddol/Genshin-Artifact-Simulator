@@ -317,7 +317,7 @@ void AppendArtifactList(Artifact* gennedArtifact, SuperArtifactList& ArtifactSup
 }
 
 
-double Simulator::CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList ArtifactSuperList,
+double Simulator::CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList& ArtifactSuperList,
 	ArtifactBundle& bestTryArtifacts)
 {
 	std::chrono::system_clock::time_point CALLOOPSTART, CALLOOPFINISH;
@@ -392,7 +392,7 @@ double Simulator::CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList Ar
 }
 
 
-void Simulator::PrintLastArtifacts(int trialNum, double bestDamage, ArtifactBundle bestArtifacts)
+void Simulator::PrintLastArtifacts(int trialNum, double bestDamage, const ArtifactBundle& bestArtifacts) const
 {
 	if (mSeeLastArtifact)
 	{
@@ -410,7 +410,7 @@ void Simulator::PrintLastArtifacts(int trialNum, double bestDamage, ArtifactBund
 }
 
 
-void Simulator::PrintTimeConsumption()
+void Simulator::PrintTimeConsumption() const
 {
 	if (mSeeTimeConsumption && !mWorkerMode)
     {
@@ -420,7 +420,7 @@ void Simulator::PrintTimeConsumption()
 }
 
 
-void Simulator::PrintProgress(int trial, int nowArtNum, int simNum, int artifactNum)
+void Simulator::PrintProgress(int trial, int nowArtNum, int simNum, int artifactNum) const
 {
 	double beforePercent = (double)(trial * artifactNum + nowArtNum - 1)/(double)(simNum * artifactNum) * 100.;
 	double percent = (double)(trial * artifactNum + nowArtNum)/(double)(simNum * artifactNum) * 100.;

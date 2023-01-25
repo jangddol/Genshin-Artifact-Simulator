@@ -25,7 +25,7 @@ void testRaiden()
     artinit4->Generation();
     artinit4->SetMainType(2);
     artinit5->Generation();
-    artinit5->SetMainType(0);
+    artinit5->SetMainType(1);
 	
     EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
 

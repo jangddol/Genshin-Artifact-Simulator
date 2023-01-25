@@ -56,23 +56,23 @@ public:
 
     Character* GetCharacter() { return mCharacter; }
     void       SetCharacter(Character* character) { mCharacter = character; }
-    int        GetNumThread() { return mNumThread; }
+    int        GetNumThread() const { return mNumThread; }
     void       SetNumThread(int numThread) { mNumThread = numThread; }
     
     void SetWorkerMode(bool workerMode) { mWorkerMode = workerMode; if (workerMode) mSeeLastArtifact = false; }
     void SetSeeTimeConsumption(bool seeTimeConsumption) { mSeeTimeConsumption = seeTimeConsumption; }
     void SetSeeLastArtifact(bool seeLastArtifact) { mSeeLastArtifact = seeLastArtifact; }
 
-    std::vector<double> GetAppendableRate() { return mAppendableRate; }
-    double GetCalLoopTimeList(int index) { return mCalLoopTimeList[index]; }
-    double GetTimeList(int index) { return mTimeList[index]; }
+    std::vector<double> GetAppendableRate() const { return mAppendableRate; }
+    double GetCalLoopTimeList(int index) const { return mCalLoopTimeList[index]; }
+    double GetTimeList(int index) const { return mTimeList[index]; }
 private:
-    double CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList ArtifactSuperList,
+    double CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList& ArtifactSuperList,
                             ArtifactBundle& bestTryArtifacts);
 
-    void PrintLastArtifacts(int trialNum, double bestDamage, ArtifactBundle bestArtifacts);
-    void PrintTimeConsumption();
-    void PrintProgress(int trial, int nowArtNum, int simNum, int artifactNum);
+    void PrintLastArtifacts(int trialNum, double bestDamage, const ArtifactBundle& bestArtifacts) const;
+    void PrintTimeConsumption() const;
+    void PrintProgress(int trial, int nowArtNum, int simNum, int artifactNum) const;
 
     Character* mCharacter;
     std::vector<double> mAppendableRate;
