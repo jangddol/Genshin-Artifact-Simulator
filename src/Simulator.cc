@@ -399,11 +399,11 @@ void Simulator::PrintLastArtifacts(int trialNum, double bestDamage, const Artifa
 		std::cout << trialNum << "-th result =============================================" << std::endl;
 		std::cout << "bestDamage : " << bestDamage << std::endl;
 		std::cout << "============== Last Artifacts ===============" << std::endl;
-		PrintArtifact(*(bestArtifacts.flower));
-		PrintArtifact(*(bestArtifacts.feather));
-		PrintArtifact(*(bestArtifacts.clock));
-		PrintArtifact(*(bestArtifacts.cup));
-		PrintArtifact(*(bestArtifacts.crown));
+		PrintArtifact(bestArtifacts.flower);
+		PrintArtifact(bestArtifacts.feather);
+		PrintArtifact(bestArtifacts.clock);
+		PrintArtifact(bestArtifacts.cup);
+		PrintArtifact(bestArtifacts.crown);
 		std::cout << "============== Character Stat ===============" << std::endl;
 		PrintStat(mCharacter->GetStat());
 	}

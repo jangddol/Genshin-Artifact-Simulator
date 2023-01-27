@@ -13,12 +13,14 @@ public:
 		mType = 1;
 		mProbabilityWeight = { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		mCummulatedWeight = { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+		SetMainType(6);
 	}
 	ArtFlower(ArtFlower* artflower) : Artifact(artflower)
 	{
 		mType = 1;
 		mProbabilityWeight = { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		mCummulatedWeight = { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+		SetMainType(6);
 	}
 	~ArtFlower() override {}
 };

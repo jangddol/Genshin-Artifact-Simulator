@@ -4,20 +4,20 @@
 #include <iostream>
 
 
-void PrintArtifact(Artifact artifact)
+void PrintArtifact(Artifact* artifact)
 {
-    std::cout << "Artifact Type      : " << artifact.GetType() << std::endl;
-    std::cout << "Artifact Main Stat : " << STATSTRING[artifact.GetMainType()] << " = " << artifact.GetMainStat().GetOption(artifact.GetMainType()) << std::endl;
-    std::cout << "Artifcat Sub Stat  : " << STATSTRING[0] << " = " << artifact.GetSubStat().GetOption(0) << std::endl;
-    std::cout << "                   : " << STATSTRING[1] << " = " << artifact.GetSubStat().GetOption(1) << std::endl;
-    std::cout << "                   : " << STATSTRING[2] << " = " << artifact.GetSubStat().GetOption(2) << std::endl;
-    std::cout << "                   : " << STATSTRING[3] << " = " << artifact.GetSubStat().GetOption(3) << std::endl;
-    std::cout << "                   : " << STATSTRING[4] << " = " << artifact.GetSubStat().GetOption(4) << std::endl;
-    std::cout << "                   : " << STATSTRING[5] << " = " << artifact.GetSubStat().GetOption(5) << std::endl;
-    std::cout << "                   : " << STATSTRING[6] << " = " << artifact.GetSubStat().GetOption(6) << std::endl;
-    std::cout << "                   : " << STATSTRING[7] << " = " << artifact.GetSubStat().GetOption(7) << std::endl;
-    std::cout << "                   : " << STATSTRING[8] << " = " << artifact.GetSubStat().GetOption(8) << std::endl;
-    std::cout << "                   : " << STATSTRING[9] << " = " << artifact.GetSubStat().GetOption(9) << std::endl;
+    std::cout << "Artifact Type      : " << artifact->GetType() << std::endl;
+    std::cout << "Artifact Main Stat : " << STATSTRING[artifact->GetMainType()] << " = " << artifact->GetMainStat().GetOption(artifact->GetMainType()) << std::endl;
+    std::cout << "Artifcat Sub Stat  : " << STATSTRING[0] << " = " << artifact->GetSubStat().GetOption(0) << std::endl;
+    std::cout << "                   : " << STATSTRING[1] << " = " << artifact->GetSubStat().GetOption(1) << std::endl;
+    std::cout << "                   : " << STATSTRING[2] << " = " << artifact->GetSubStat().GetOption(2) << std::endl;
+    std::cout << "                   : " << STATSTRING[3] << " = " << artifact->GetSubStat().GetOption(3) << std::endl;
+    std::cout << "                   : " << STATSTRING[4] << " = " << artifact->GetSubStat().GetOption(4) << std::endl;
+    std::cout << "                   : " << STATSTRING[5] << " = " << artifact->GetSubStat().GetOption(5) << std::endl;
+    std::cout << "                   : " << STATSTRING[6] << " = " << artifact->GetSubStat().GetOption(6) << std::endl;
+    std::cout << "                   : " << STATSTRING[7] << " = " << artifact->GetSubStat().GetOption(7) << std::endl;
+    std::cout << "                   : " << STATSTRING[8] << " = " << artifact->GetSubStat().GetOption(8) << std::endl;
+    std::cout << "                   : " << STATSTRING[9] << " = " << artifact->GetSubStat().GetOption(9) << std::endl;
 }
 
 
@@ -94,7 +94,7 @@ bool Artifact::Selected3or4OptStart()
 }
 
 
-bool Artifact::IsUsingThis(Character* character)
+bool Artifact::IsUsingThis(Character* character) const
 {
 	bool returnBool = false;
 	int length = mCharactersUsingThis.size();

@@ -36,18 +36,18 @@ public:
 
 	void Generation();
 	void Generation(int mainType);
-	virtual int GetType() { return mType; }
-	int GetMainType() { return mMainType; }
+	int GetType() const { return mType; }
+	int GetMainType() const { return mMainType; }
 	void SetMainType(int mainType);
 
-	Stat GetMainStat() { return mMainStat; }
-	Stat GetSubStat() { return mSubStat; }
+	Stat GetMainStat() const { return mMainStat; }
+	Stat GetSubStat() const { return mSubStat; }
 	void SetSubStat(Stat stat) { mSubStat = stat; AlertModified(); }
 
 	void SaveCharacterPointer(Character* character);
 	void DeleteCharacterPointer(Character* character);
 
-	bool IsUsingThis(Character* character);
+	bool IsUsingThis(Character* character) const;
 
 protected:
 	int mType = 0;
