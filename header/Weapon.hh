@@ -30,10 +30,10 @@ public:
 	Stat GetSubStat() const { return mSubStat; }
 	Stat GetSubSubStat() const { return mSubSubStat; }
 
-	string GetName() const { return mWeaponName; }
+	std::string GetName() const { return mWeaponName; }
 	
 protected:
-	string mWeaponName;
+	std::string mWeaponName;
 	Stat mMainStat;
 	Stat mSubStat;
 	Stat mSubSubStat;
