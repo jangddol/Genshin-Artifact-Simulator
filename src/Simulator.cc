@@ -392,6 +392,8 @@ double Simulator::CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList& A
 }
 
 
+void PrintArtifact(const Artifact* artifact);
+void PrintStat(const Stat& stat);
 void Simulator::PrintLastArtifacts(int trialNum, double bestDamage, const ArtifactBundle& bestArtifacts) const
 {
 	if (mSeeLastArtifact)
@@ -430,11 +432,9 @@ void Simulator::PrintProgress(int trial, int nowArtNum, int simNum, int artifact
 	}
 	else
 	{
-		int firstColumnWidth = 18;
-		int columnWidth = 9;
 		if (((int)beforePercent != (int)percent) && !DEBUGMODE)
 		{
-			printToCoordinates(2, 1 + firstColumnWidth + mWorkerID * columnWidth, "|%d %%", (int)percent);
+			printToCoordinates(2, 1 + FIRSTCOLUMNWIDTH + mWorkerID * COLUMNWIDTH, "|%d %%", (int)percent);
 		}
 	}
 
@@ -525,7 +525,7 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
 
 	PrintTimeConsumption();
 
-	if (DEBUGMODE) cout << "VisualHistogram->GetBinContent(artifactNum, (int)(0.7*binNum))" << VisualHistogram->GetBinContent(artifactNum, (int)(0.7*binNum)) << endl;
+	if (DEBUGMODE) std::cout << "VisualHistogram->GetBinContent(artifactNum, (int)(0.7*binNum))" << VisualHistogram->GetBinContent(artifactNum, (int)(0.7*binNum)) << std::endl;
 
     return VisualHistogram;
 }
@@ -541,11 +541,11 @@ void Simulator::SimulationWorker(int workerID, int simNum, int artifactNum, int 
 
 	TString histName = Form("SIMULATOR_RUNSIMULATION_RESULT-%d", workerID);
 
-	if (DEBUGMODE) cout << "histName : " << histName << endl;
+	if (DEBUGMODE) std::cout << "histName : " << histName << std::endl;
 
 	TH2D* VisualHistogram = RunSimulation(simNum, artifactNum, binNum, minDamage, maxDamage, histName);
 	// printToCoordinates(13 + workerID, 1, "mTimeList Pointer : %p", mTimeList);
-	if (DEBUGMODE) cout << "Histogram Generation Done." << endl;
+	if (DEBUGMODE) std::cout << "Histogram Generation Done." << std::endl;
 	// printToCoordinates(13 + workerID, 21, "mTimeList Pointer : %p", mTimeList);
 	mSimulationResult = VisualHistogram;
 }
@@ -589,15 +589,13 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	{
 		for (int i = 0; i < mNumThread; i++)
 		{
-			cout << "Character Pointer" << characterVector[i] << endl;
-			cout << "Simulaotr Pointer" << &(simulatorVector[i]) << endl;
+			std::cout << "Character Pointer" << characterVector[i] << std::endl;
+			std::cout << "Simulaotr Pointer" << &(simulatorVector[i]) << std::endl;
 		}
 	}
 
 	// terminal clear for Info Print out
 	
-	int firstColumnWidth = 18;
-	int columnWidth = 9;
 	if (!DEBUGMODE)
 	{
 		printToCoordinates(1, 1, "ThreadNum");
@@ -613,7 +611,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 		printToCoordinates(11, 1, "    Damage Calc.");
 		for (int i = 0; i < mNumThread; i++)
 		{
-			printToCoordinates(1, 1 + firstColumnWidth + i * columnWidth, "|# %d", i + 1);
+			printToCoordinates(1, 1 + FIRSTCOLUMNWIDTH + i * COLUMNWIDTH, "|# %d", i + 1);
 		}
 	}
 	
@@ -636,12 +634,12 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	{
 		for (int i = 0; i < mNumThread; i++)
 		{
-			printToCoordinates(5, 1 + firstColumnWidth + i * columnWidth, "|%.1f s", simulatorVector[i].GetTimeList(0));
-			printToCoordinates(6, 1 + firstColumnWidth + i * columnWidth, "|%.1f s", simulatorVector[i].GetTimeList(1));
-			printToCoordinates(7, 1 + firstColumnWidth + i * columnWidth, "|%.1f s", simulatorVector[i].GetTimeList(2));
-			printToCoordinates(8, 1 + firstColumnWidth + i * columnWidth, "|%.1f s", simulatorVector[i].GetTimeList(3));
-			printToCoordinates(10, 1 + firstColumnWidth + i * columnWidth, "|%.1f s", simulatorVector[i].GetCalLoopTimeList(0));
-			printToCoordinates(11, 1 + firstColumnWidth + i * columnWidth, "|%.1f s", simulatorVector[i].GetCalLoopTimeList(1));
+			printToCoordinates(5, 1 + FIRSTCOLUMNWIDTH + i * COLUMNWIDTH, "|%.1f s", simulatorVector[i].GetTimeList(0));
+			printToCoordinates(6, 1 + FIRSTCOLUMNWIDTH + i * COLUMNWIDTH, "|%.1f s", simulatorVector[i].GetTimeList(1));
+			printToCoordinates(7, 1 + FIRSTCOLUMNWIDTH + i * COLUMNWIDTH, "|%.1f s", simulatorVector[i].GetTimeList(2));
+			printToCoordinates(8, 1 + FIRSTCOLUMNWIDTH + i * COLUMNWIDTH, "|%.1f s", simulatorVector[i].GetTimeList(3));
+			printToCoordinates(10, 1 + FIRSTCOLUMNWIDTH + i * COLUMNWIDTH, "|%.1f s", simulatorVector[i].GetCalLoopTimeList(0));
+			printToCoordinates(11, 1 + FIRSTCOLUMNWIDTH + i * COLUMNWIDTH, "|%.1f s", simulatorVector[i].GetCalLoopTimeList(1));
 		}
 	}
 
@@ -659,20 +657,20 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	
 	if (DEBUGMODE)
 	{
-		cout << "tempVector : size = " << tempVector.size() << endl;
-		cout << "tempVector : first element = " << tempVector[0] << endl;
+		std::cout << "tempVector : size = " << tempVector.size() << std::endl;
+		std::cout << "tempVector : first element = " << tempVector[0] << std::endl;
 		for (int i = 0; i < mNumThread; i++)
-		cout << Form("simulatorVector[%d].GetSimulationResult() : ", i) << simulatorVector[i].GetSimulationResult() << endl;
+		std::cout << Form("simulatorVector[%d].GetSimulationResult() : ", i) << simulatorVector[i].GetSimulationResult() << std::endl;
 	}
 
-	if (DEBUGMODE) cout << "10" << endl;
+	if (DEBUGMODE) std::cout << "10" << std::endl;
 	// Sum over of all histograms
 	for (int i = 0; i < mNumThread; i++)
 	{
 		HistogramArray.emplace_back(simulatorVector[i].GetSimulationResult());
 	}
 
-	if (DEBUGMODE) cout << "11" << endl;
+	if (DEBUGMODE) std::cout << "11" << std::endl;
 
 	TH2D* VisualHistogram = new TH2D("VisualHistogram", "", artifactNum, 0, artifactNum, binNum, minDamage, maxDamage);
 	for (int i = 0; i < mNumThread; i++)
@@ -680,7 +678,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 		VisualHistogram->Add(HistogramArray[i]);
 	}
 
-	if (DEBUGMODE) cout << "12" << endl;
+	if (DEBUGMODE) std::cout << "12" << std::endl;
 
 	printToCoordinates(12, 1, "");
 	return VisualHistogram;
