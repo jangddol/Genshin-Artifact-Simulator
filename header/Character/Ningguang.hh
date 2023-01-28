@@ -18,7 +18,7 @@ public:
 		SetCharacterBaseStat(1, 9787.);
 		SetCharacterBaseStat(2, 573.);
 	}
-	Ningguang(const Ningguang* other) : Character(other) {}
+	Ningguang(const Ningguang* other) : Character(other) { Update(); }
 	Character* Clone() const override { return new Ningguang(this); }
 	~Ningguang() override {}
 

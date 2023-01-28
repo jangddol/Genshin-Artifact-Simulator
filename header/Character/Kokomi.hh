@@ -22,7 +22,7 @@ public:
 		SetCharacterBaseStat(1, 13471.);
 		SetCharacterBaseStat(2, 657.);
 	}
-	Kokomi(const Kokomi* other) : Character(other) {}
+	Kokomi(const Kokomi* other) : Character(other) { Update(); }
 	Character* Clone() const override { return new Kokomi(this); }
 	~Kokomi() override {}
 

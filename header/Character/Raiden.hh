@@ -21,9 +21,9 @@ public:
 		SetCharacterBaseStat(1, 12907.);
 		SetCharacterBaseStat(2, 789.);
 	}
-	Raiden(const Raiden* other) : Character(other) {}
-	Raiden(const Raiden& other) : Character(other) {}
-	Raiden(Raiden&& other) : Character(other) {}
+	Raiden(const Raiden* other) : Character(other) { Update(); }
+	Raiden(const Raiden& other) : Character(other) { Update(); }
+	Raiden(Raiden&& other) : Character(other) { Update(); }
 	Raiden& operator = (const Raiden& other) { return * this; }
 	Raiden& operator = (Raiden&& other) { return * this; }
 	Character* Clone() const override { return new Raiden(this); }
@@ -42,7 +42,7 @@ public:
 	void   SetTotalPartyEnergy(double totalPartyEnergy) { mTotalPartyEnergy = totalPartyEnergy; }
 
 private:
-	double mTotalPartyEnergy = 310.;
+	double mTotalPartyEnergy = 220.;
 };
 
 #endif
