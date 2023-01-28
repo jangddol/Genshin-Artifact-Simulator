@@ -203,7 +203,7 @@ void Artifact::Generation(int mainType)
 }
 
 
-void Artifact::SaveCharacterPointer(const Character* character)
+void Artifact::SaveCharacterPointer(Character* character)
 {
     mCharactersUsingThis.emplace_back(character);
 }

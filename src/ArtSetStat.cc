@@ -1,7 +1,7 @@
 #include "../header/ArtSetStat.hh"
 
 
-void ArtSetStat::SaveCharacterPointer(const Character* character)
+void ArtSetStat::SaveCharacterPointer(Character* character)
 {
     mCharactersUsingThis.emplace_back(character);
 }

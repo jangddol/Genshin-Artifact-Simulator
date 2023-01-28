@@ -18,7 +18,7 @@ public:
 
     virtual void DoFeedback(Character* character) const {}
 
-    void   SaveCharacterPointer(const Character* character);
+    void   SaveCharacterPointer(Character* character);
     void   DeleteCharacterPointer(const Character* chraracter);
 
 	void   SetZero() {mStat.SetZero(); AlertModified(); }

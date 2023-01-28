@@ -44,7 +44,7 @@ public:
 	Stat GetSubStat() const { return mSubStat; }
 	void SetSubStat(const Stat& stat) { mSubStat = stat; AlertModified(); }
 
-	void SaveCharacterPointer(const Character* character);
+	void SaveCharacterPointer(Character* character);
 	void DeleteCharacterPointer(const Character* character);
 
 	bool IsUsingThis(const Character* character) const;
