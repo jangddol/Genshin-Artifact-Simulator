@@ -1,7 +1,7 @@
 #include "../../header/Character/Ningguang.hh"
 
 
-double Ningguang::GetDamage(Stat stat)
+double Ningguang::GetDamageWithStat(const Stat& stat) const
 {   
     double CR = stat.GetCriticalRate();
     if (CR > 100) CR = 100.;

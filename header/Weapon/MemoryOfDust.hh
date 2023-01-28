@@ -20,7 +20,9 @@ public:
 
         mWeaponName = "Memory of Dust";
     }
-	~MemoryOfDust(){}
+    MemoryOfDust(const Weapon* weapon) : Weapon(weapon) {}
+    Weapon* Clone() const override { return new MemoryOfDust(this); }
+	~MemoryOfDust() override {}
 };
 
 #endif

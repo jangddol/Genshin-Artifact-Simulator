@@ -8,8 +8,8 @@
 class Kokomi : public Character
 {
 public:
-	Kokomi(Weapon* weapon, ArtFlower* flower, ArtFeather* feather, ArtClock* clock, ArtCup* cup, ArtCrown* crown) 
-	: Character(weapon, flower, feather, clock, cup, crown)
+	Kokomi(Weapon* weapon, ArtSetStat* artSetStat, ArtFlower* flower, ArtFeather* feather, ArtClock* clock, ArtCup* cup, ArtCrown* crown) 
+	: Character(weapon, artSetStat, flower, feather, clock, cup, crown)
 	{
 		SetBasicCharacterStat();
 
@@ -22,10 +22,11 @@ public:
 		SetCharacterBaseStat(1, 13471.);
 		SetCharacterBaseStat(2, 657.);
 	}
-	~Kokomi() {}
+	Kokomi(const Kokomi* other) : Character(other) { Update(); }
+	Character* Clone() const override { return new Kokomi(this); }
+	~Kokomi() override {}
 
-	double GetDamage() { return GetDamage(this->GetStat()); }
-	double GetDamage(Stat stat);
+	double GetDamageWithStat(const Stat& stat) const override;
 };
 
 #endif

@@ -20,8 +20,9 @@ public:
 
         mWeaponName = "Everlasting Moonglow";
     }
-	~EverlastingMoonglow() {}
-
+    EverlastingMoonglow(const Weapon* weapon) : Weapon(weapon) {}
+    Weapon* Clone() const override { return new EverlastingMoonglow(this); }
+	~EverlastingMoonglow() override {}
 };
 
 #endif

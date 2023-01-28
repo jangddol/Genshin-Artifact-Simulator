@@ -11,10 +11,18 @@ public:
 	ArtFeather()
 	{
 		mType = 2;
-		mProbabiltyWeight = { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		mProbabilityWeight = { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		mCummulatedWeight = { 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+		SetMainType(3);
 	}
-	~ArtFeather() {}
+	ArtFeather(const ArtFeather* artfeather) : Artifact(artfeather)
+	{
+		mType = 2;
+		mProbabilityWeight = { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		mCummulatedWeight = { 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+		SetMainType(3);
+	}
+	~ArtFeather() override {}
 };
 
 #endif

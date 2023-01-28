@@ -22,8 +22,9 @@ public:
 
         mWeaponName = "Solar Pearl";
     }
-	~SolarPearl() {}
-
+    SolarPearl(const Weapon* weapon) : Weapon(weapon) {}
+    Weapon* Clone() const override { return new SolarPearl(this); }
+	~SolarPearl() override {}
 };
 
 #endif
