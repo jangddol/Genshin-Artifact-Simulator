@@ -294,7 +294,7 @@ void Character::ConfirmArtifactSubStatModified()
 }
 
 
-double Character::GetDamageWithStat(Stat stat) const
+double Character::GetDamageWithStat(const Stat& stat) const
 {
     double AP = stat.GetAttackPer();
     double ATK = stat.GetAttack();
@@ -466,13 +466,13 @@ void Character::MakeScoreFunction()
         }
 
         tempCharacter->GetArtFlower()->SetSubStat(tempSubStat);
-        cout << "========== " << i << "-th ArtFlowerSubStat ==========" << endl;
-        PrintStat(tempCharacter->GetArtFlower()->GetSubStat());
-        cout << "========== " << i << "-th tempSubStat ==========" << endl;
-        PrintStat(tempSubStat);
-        tempCharacter->Update();
-        cout << "========== " << i << "-th tempCharacter mStat ==========" << endl;
-        PrintStat(tempCharacter->GetStat());
+        // cout << "========== " << i << "-th ArtFlowerSubStat ==========" << endl;
+        // PrintStat(tempCharacter->GetArtFlower()->GetSubStat());
+        // cout << "========== " << i << "-th tempSubStat ==========" << endl;
+        // PrintStat(tempSubStat);
+        // tempCharacter->Update();
+        // cout << "========== " << i << "-th tempCharacter mStat ==========" << endl;
+        // PrintStat(tempCharacter->GetStat());
         mSavedFunction[i + 1] = tempCharacter->GetDamage();
     }
 }

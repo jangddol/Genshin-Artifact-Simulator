@@ -83,7 +83,7 @@
     "testInteractionCharacter.C": "cpp",
     "testNingguang.C": "cpp"
   },
-  "C_Cpp.errorSquiggles": "disabled",
+  "C_Cpp.errorSquiggles": "enabled",
   "C_Cpp_Runner.msvcBatchPath": "",
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

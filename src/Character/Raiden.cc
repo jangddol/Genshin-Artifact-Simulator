@@ -1,7 +1,7 @@
 #include "../../header/Character/Raiden.hh"
 
 
-double Raiden::GetDamageWithStat(Stat stat) const
+double Raiden::GetDamageWithStat(const Stat& stat) const
 {
     double CR = stat.GetCriticalRate();
     if (CR > 100) CR = 100.;

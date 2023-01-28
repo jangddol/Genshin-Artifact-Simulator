@@ -21,15 +21,15 @@ public:
 		SetCharacterBaseStat(1, 12907.);
 		SetCharacterBaseStat(2, 789.);
 	}
-	Raiden(Raiden* other) : Character(other) {}
-	Raiden(Raiden& other) : Character(other) {}
+	Raiden(const Raiden* other) : Character(other) {}
+	Raiden(const Raiden& other) : Character(other) {}
 	Raiden(Raiden&& other) : Character(other) {}
-	Raiden& operator = (Raiden& other) { return * this; }
+	Raiden& operator = (const Raiden& other) { return * this; }
 	Raiden& operator = (Raiden&& other) { return * this; }
-	Character* Clone() override { return new Raiden(this); }
+	Character* Clone() const override { return new Raiden(this); }
 	~Raiden() override {}
 
-	double GetDamageWithStat(Stat stat) const override;
+	double GetDamageWithStat(const Stat& stat) const override;
 
     void DoFeedback() override
 	{
