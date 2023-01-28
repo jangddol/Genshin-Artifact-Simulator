@@ -16,7 +16,7 @@ public:
         mSubSubStat.SetZero();
 
         mMainStat.SetBaseOption(0, 608.);
-        mSubStat.SetElementCharge(55.1);
+        mSubStat.SetElementCharge(85.1); // 55.1 + 30
 
         mWeaponName = "Engulfing Lightning";
     }
