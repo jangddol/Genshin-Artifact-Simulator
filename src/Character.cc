@@ -4,7 +4,7 @@
 #include <ctime>
 
 
-Character::Character(Character *character)
+Character::Character(const Character *character)
 {
     SetWeapon(character->CopyWeapon());
     SetArtFlower(character->CopyArtFlower());
@@ -13,7 +13,7 @@ Character::Character(Character *character)
     SetArtCup(character->CopyArtCup());
     SetArtCrown(character->CopyArtCrown());
 
-    SetArtSetStat(character->GetArtSetStat());
+    SetArtSetStat(character->CopyArtSetStat());
     SetResonanceStat(character->GetResonanceStat());
     
     mTargetEC = character->GetTargetEC();
@@ -31,7 +31,7 @@ Character::Character(Character *character)
 }
 
 
-Character::Character(Character& character)
+Character::Character(const Character& character)
 {
     SetWeapon(character.CopyWeapon());
     SetArtFlower(character.CopyArtFlower());
@@ -39,7 +39,7 @@ Character::Character(Character& character)
     SetArtClock(character.CopyArtClock());
     SetArtCup(character.CopyArtCup());
     SetArtCrown(character.CopyArtCrown());
-    SetArtSetStat(character.GetArtSetStat());
+    SetArtSetStat(character.CopyArtSetStat());
     SetResonanceStat(character.GetResonanceStat());
     
     mTargetEC = character.GetTargetEC();
@@ -82,7 +82,7 @@ Character::Character(Character&& character)
 }
 
 
-Character& Character::operator = (Character &character)
+Character& Character::operator = (const Character &character)
 {
     if(&character == this)
     {
@@ -159,15 +159,26 @@ void Character::Update()
 
 void Character::UpdateFromCharacterResonance()
 {
+	// 캐릭터 옵션 : 0 ~ 34, b0 ~ b2
     mStatAfterUpdateFromCharacterResonance.SetZero();
     for (int i = 0; i < 35; i++)
     {
         mStatAfterUpdateFromCharacterResonance.AddOption(i, mCharacterStat.GetOption(i));
-        mStatAfterUpdateFromCharacterResonance.AddOption(i, mResonanceStat.GetOption(i));
     }
     for (int i = 0; i < 3; i++)
     {
         mStatAfterUpdateFromCharacterResonance.SetBaseOption(i, mCharacterStat.GetBaseOption(i));
+    }
+
+	// 공명 : 0, 2, 5, 7, 10 ~ 17, 27
+    mStatAfterUpdateFromCharacterResonance.AddOption(0, mResonanceStat.GetOption(0));
+    mStatAfterUpdateFromCharacterResonance.AddOption(2, mResonanceStat.GetOption(2));
+    mStatAfterUpdateFromCharacterResonance.AddOption(5, mResonanceStat.GetOption(5));
+    mStatAfterUpdateFromCharacterResonance.AddOption(7, mResonanceStat.GetOption(7));
+    mStatAfterUpdateFromCharacterResonance.AddOption(27, mResonanceStat.GetOption(27));
+    for (int i = 10; i < 19; i++)
+    {
+        mStatAfterUpdateFromCharacterResonance.AddOption(i, mResonanceStat.GetOption(i));
     }
 }
 
@@ -177,41 +188,55 @@ void Character::UpdateFromWeapon()
     Stat WeaponMainStat = mWeapon->GetMainStat();
     Stat WeaponSubStat = mWeapon->GetSubStat();
     Stat WeaponSubSubStat = mWeapon->GetSubSubStat();
-
+    
     mStatAfterUpdateFromWeapon = mStatAfterUpdateFromCharacterResonance;
-    for (int i = 0; i < 35; i++)
+
+    // 무기 주옵 : b0
+    mStatAfterUpdateFromWeapon.SetBaseOption(0, mStatAfterUpdateFromWeapon.GetBaseOption(0) + WeaponMainStat.GetBaseOption(0));
+
+	// 무기 부옵 : 0 ~ 18 // 완전히 배제된 것은 아님
+    for (int i = 0; i < 19; i++)
     {
-        mStatAfterUpdateFromWeapon.AddOption(i, WeaponMainStat.GetOption(i));
         mStatAfterUpdateFromWeapon.AddOption(i, WeaponSubStat.GetOption(i));
+    }
+
+	// 무기 부부옵 : 0 ~ 23, 27, 28 // 완전히 배제된 것은 아님
+    for (int i = 0; i < 24; i++)
+    {
         mStatAfterUpdateFromWeapon.AddOption(i, WeaponSubSubStat.GetOption(i));
     }
-    for (int i = 0; i < 3; i++)
-    {
-        mStatAfterUpdateFromWeapon.SetBaseOption(i, mStatAfterUpdateFromWeapon.GetBaseOption(i) + WeaponMainStat.GetBaseOption(i));
-    }
+    mStatAfterUpdateFromWeapon.AddOption(27, WeaponSubSubStat.GetOption(27));
+    mStatAfterUpdateFromWeapon.AddOption(28, WeaponSubSubStat.GetOption(28));
+
 }
 
 
 void Character::UpdateFromArtSetStat()
 {
     mStatAfterUpdateFromArtSetStat = mStatAfterUpdateFromWeapon;
-    for (int i = 0; i < 35; i++)
+
+	// 성유물 세트 : 0 ~ 23, 27, 28 // 완전히 배제된 것은 아님
+    for (int i = 0; i < 24; i++)
     {
         mStatAfterUpdateFromArtSetStat.AddOption(i, mArtSetStat->GetOption(i));
     }
-	mStatAfterUpdateFromArtSetStat;
+    mStatAfterUpdateFromArtSetStat.AddOption(27, mArtSetStat->GetOption(27));
+    mStatAfterUpdateFromArtSetStat.AddOption(28, mArtSetStat->GetOption(28));
 }
 
 
 void Character::UpdateFromArtifactMainStat()
 {
+    mStatAfterUpdateFromArtifactMainStat = mStatAfterUpdateFromArtSetStat;
+    
+    // 성유물 주옵 : 0 ~ 8, 10 ~ 18
+    
     Stat FlowerMainStat = mArtFlower->GetMainStat();
     Stat FeatherMainStat = mArtFeather->GetMainStat();
     Stat ClockMainStat = mArtClock->GetMainStat();
     Stat CupMainStat = mArtCup->GetMainStat();
     Stat CrownMainStat = mArtCrown->GetMainStat();
     
-    mStatAfterUpdateFromArtifactMainStat = mStatAfterUpdateFromArtSetStat;
     mStatAfterUpdateFromArtifactMainStat.AddOption(6, FlowerMainStat.GetOption(6));
     mStatAfterUpdateFromArtifactMainStat.AddOption(3, FeatherMainStat.GetOption(3));
     mStatAfterUpdateFromArtifactMainStat.AddOption(mArtClock->GetMainType(), ClockMainStat.GetOption(mArtClock->GetMainType()));
@@ -222,13 +247,16 @@ void Character::UpdateFromArtifactMainStat()
 
 void Character::UpdateFromArtifactSubStat()
 {
+    mStatAfterUpdateFromArtifactSubStat = mStatAfterUpdateFromArtifactMainStat;
+    
+    // 성유물 부옵 : 0 ~ 9
+    
     Stat FlowerSubStat = mArtFlower->GetSubStat();
     Stat FeatherSubStat = mArtFeather->GetSubStat();
     Stat ClockSubStat = mArtClock->GetSubStat();
     Stat CupSubStat = mArtCup->GetSubStat();
     Stat CrownSubStat = mArtCrown->GetSubStat();
 
-    mStatAfterUpdateFromArtifactSubStat = mStatAfterUpdateFromArtifactMainStat;
     for (int i = 0; i < 10; i++)
     {
         mStatAfterUpdateFromArtifactSubStat.AddOption(i, FlowerSubStat.GetOption(i));
