@@ -3,6 +3,8 @@
 #include "TCanvas.h"
 #include "TFile.h"
 #include <thread>
+#include "TStyle.h"
+#include "TRandom.h"
 
 
 using namespace std;

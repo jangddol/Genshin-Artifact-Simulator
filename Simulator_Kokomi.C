@@ -3,6 +3,9 @@
 #include "TCanvas.h"
 #include "TFile.h"
 #include "TGraph.h"
+#include "TStyle.h"
+#include "TRandom.h"
+#include "TF1.h"
 
 
 using namespace std;
@@ -28,13 +31,14 @@ void Simulator_Kokomi()
 	ArtCup* artinit4 = new ArtCup();
 	ArtCrown* artinit5 = new ArtCrown();
 
-	Character* simChar = new Kokomi(weapon, artinit1, artinit2, artinit3, artinit4, artinit5);
+	ArtSetStat* artSetStat = new ArtSetStat();
+    artSetStat->SetZero();
+    artSetStat->SetOption(18, 15);
+
+	Character* simChar = new Kokomi(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
 	cout << "character generated" << endl;
 	
-	Stat artSetStat = Stat();
-    artSetStat.SetZero();
-    artSetStat.SetHealBonus(15);
-    simChar->SetArtSetStat(artSetStat);
+
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();

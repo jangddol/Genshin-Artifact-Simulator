@@ -1,7 +1,9 @@
 #include "top.hh"
-// #include "TH2D.h"
-// #include "TCanvas.h"
-// #include "TFile.h"
+#include "TH2D.h"
+#include "TCanvas.h"
+#include "TFile.h"
+#include "TStyle.h"
+#include "TRandom.h"
 #include <thread>
 
 
@@ -21,10 +23,9 @@ void Simulator_Raiden()
 	ArtCup* artinit4 = new ArtCup();
 	ArtCrown* artinit5 = new ArtCrown();
 	
-    Raiden* simChar = new Raiden(weapon, artinit1, artinit2, artinit3, artinit4, artinit5);
-
     EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
-    simChar->SetArtSetStat(artSetStat);
+
+    Raiden* simChar = new Raiden(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
@@ -35,22 +36,22 @@ void Simulator_Raiden()
 
 	// simulation number
 	// the number of artifacts to get
-	int simNum = 1;
-	int artifactNum = 600; // 4.7925 per day (150 ~ month)
+	int simNum = 10000;
+	int artifactNum = 900; // 4.7925 per day (150 ~ month)
 
 	// maxDamage, binNum
 	int binNum = 100;
-	double minDamage = 0.;
-	double maxDamage = 8000.;
+	double minDamage = 100000.;
+	double maxDamage = 300000.;
 	
     Simulator* simulator = new Simulator();
     simulator->SetCharacter(simChar);
 	// simulator->SetNumThread(8); default : max
-	simulator->SetSeeLastArtifact(true);
+	simulator->SetSeeLastArtifact(false);
 	simulator->SetSeeTimeConsumption(true);
 
-	// TH2D* VisualHistogram = simulator->RunSimulationMultiThreads(simNum, artifactNum, binNum, minDamage, maxDamage);
-	TH2D* VisualHistogram = simulator->RunSimulation(simNum, artifactNum, binNum, minDamage, maxDamage);
+	TH2D* VisualHistogram = simulator->RunSimulationMultiThreads(simNum, artifactNum, binNum, minDamage, maxDamage);
+	// TH2D* VisualHistogram = simulator->RunSimulation(simNum, artifactNum, binNum, minDamage, maxDamage);
 
 	int numContent = 0;
 	for (int i = 0; i < artifactNum; i++)

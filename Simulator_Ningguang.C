@@ -4,6 +4,8 @@
 #include "TFile.h"
 #include "TGraph.h"
 #include "TF1.h"
+#include "TStyle.h"
+#include "TRandom.h"
 
 
 using namespace std;
@@ -33,13 +35,14 @@ void Simulator_Ningguang()
 	ArtCrown* artinit5 = new ArtCrown();
 	artinit5->SetMainType(1);
 	
-    Character* simChar = new Ningguang(weapon, artinit1, artinit2, artinit3, artinit4, artinit5);
+	ArtSetStat* artSetStat = new ArtSetStat();
+    artSetStat->SetZero();
+    artSetStat->SetOption(2, 18.);
+    artSetStat->SetOption(23, 20.);
 
-    ArtSetStat artSetStat = ArtSetStat();
-    artSetStat.SetZero();
-    artSetStat.SetAttackPer(18);
-    artSetStat.SetQBonus(20);
-    simChar->SetArtSetStat(artSetStat);
+    Character* simChar = new Ningguang(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
+
+    
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
