@@ -31,7 +31,7 @@ class Artifact
 {
 public:
 	Artifact() {}
-	Artifact(Artifact* artifact);
+	Artifact(const Artifact* artifact);
 	virtual ~Artifact() {}
 
 	void Generation();
@@ -42,12 +42,12 @@ public:
 
 	Stat GetMainStat() const { return mMainStat; }
 	Stat GetSubStat() const { return mSubStat; }
-	void SetSubStat(Stat stat) { mSubStat = stat; AlertModified(); }
+	void SetSubStat(const Stat& stat) { mSubStat = stat; AlertModified(); }
 
-	void SaveCharacterPointer(Character* character);
-	void DeleteCharacterPointer(Character* character);
+	void SaveCharacterPointer(const Character* character);
+	void DeleteCharacterPointer(const Character* character);
 
-	bool IsUsingThis(Character* character) const;
+	bool IsUsingThis(const Character* character) const;
 
 protected:
 	int mType = 0;

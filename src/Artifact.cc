@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-void PrintArtifact(Artifact* artifact)
+void PrintArtifact(const Artifact* artifact)
 {
     std::cout << "Artifact Type      : " << artifact->GetType() << std::endl;
     std::cout << "Artifact Main Stat : " << STATSTRING[artifact->GetMainType()] << " = " << artifact->GetMainStat().GetOption(artifact->GetMainType()) << std::endl;
@@ -21,7 +21,7 @@ void PrintArtifact(Artifact* artifact)
 }
 
 
-Artifact::Artifact(Artifact *artifact)
+Artifact::Artifact(const Artifact* artifact)
 {
 	mMainStat = artifact->GetMainStat();
 	mSubStat = artifact->GetSubStat();
@@ -94,7 +94,7 @@ bool Artifact::Selected3or4OptStart()
 }
 
 
-bool Artifact::IsUsingThis(Character* character) const
+bool Artifact::IsUsingThis(const Character* character) const
 {
 	bool returnBool = false;
 	int length = mCharactersUsingThis.size();
@@ -203,13 +203,13 @@ void Artifact::Generation(int mainType)
 }
 
 
-void Artifact::SaveCharacterPointer(Character* character)
+void Artifact::SaveCharacterPointer(const Character* character)
 {
     mCharactersUsingThis.emplace_back(character);
 }
 
 
-void Artifact::DeleteCharacterPointer(Character* character)
+void Artifact::DeleteCharacterPointer(const Character* character)
 {
     int index = 0;
     int size = mCharactersUsingThis.size();

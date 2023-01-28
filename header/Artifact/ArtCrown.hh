@@ -16,7 +16,7 @@ public:
 		mCummulatedWeight
 		= { 5, 10, 21, 21, 21, 32, 32, 34, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 50 };
 	}
-	ArtCrown(ArtCrown* artcrown) : Artifact(artcrown)
+	ArtCrown(const ArtCrown* artcrown) : Artifact(artcrown)
 	{
 		mType = 5;
 		mProbabilityWeight

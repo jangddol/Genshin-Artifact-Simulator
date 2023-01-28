@@ -15,7 +15,7 @@ public:
 		mCummulatedWeight = { 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 		SetMainType(3);
 	}
-	ArtFeather(ArtFeather* artfeather) : Artifact(artfeather)
+	ArtFeather(const ArtFeather* artfeather) : Artifact(artfeather)
 	{
 		mType = 2;
 		mProbabilityWeight = { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };

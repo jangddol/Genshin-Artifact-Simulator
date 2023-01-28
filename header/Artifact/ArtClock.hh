@@ -16,7 +16,7 @@ public:
 		mCummulatedWeight
 			= { 0, 0, 8, 8, 11, 19, 19, 22, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 };
 	}
-	ArtClock(ArtClock* artclock) : Artifact(artclock)
+	ArtClock(const ArtClock* artclock) : Artifact(artclock)
 	{
 		mType = 3;
 		mProbabilityWeight
