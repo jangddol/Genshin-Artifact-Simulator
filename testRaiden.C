@@ -18,13 +18,13 @@ void testRaiden()
 	ArtCup* artinit4 = new ArtCup();
 	ArtCrown* artinit5 = new ArtCrown();
 
-    artinit1->Generation();
-    artinit2->Generation();
-    artinit3->Generation();
+    artinit1->SetSubStat(Stat());
+    artinit2->SetSubStat(Stat());
+    artinit3->SetSubStat(Stat());
     artinit3->SetMainType(4);
-    artinit4->Generation();
+    artinit4->SetSubStat(Stat());
     artinit4->SetMainType(2);
-    artinit5->Generation();
+    artinit5->SetSubStat(Stat());
     artinit5->SetMainType(1);
 	
     EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
