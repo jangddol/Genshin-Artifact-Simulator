@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-void PrintStat(Stat stat)
+void PrintStat(const Stat& stat)
 {
     for (int i = 0; i < 35; i++)
     {

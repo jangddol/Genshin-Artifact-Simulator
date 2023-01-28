@@ -4,6 +4,7 @@
 
 #include "Stat.hh"
 #include <vector>
+#include "Character.hh"
 
 
 // double artInitTimeList[5] = { 0. }; // global
