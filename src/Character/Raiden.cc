@@ -15,7 +15,7 @@ double Raiden::GetDamageWithStat(const Stat& stat) const
     double defenseCoef = stat.GetDefenseCoef();
     double levelCoef = stat.GetLevelCoef();
     
-    double wonryuk = std::min(mTotalPartyEnergy * 0.19 + 6., 60.);
+    double wonryuk = std::min(mTotalPartyEnergy * 0.19 + 12., 60.);
     double burstDamage = 6.41 + wonryuk * 0.0622; // busrt, Qlv = 8
     double qAttackDamage = 11.04 + wonryuk * 0.1508;
     // qAttackDamage = 70.6% * 3 + 69.4% * 3 + 85% * 3
