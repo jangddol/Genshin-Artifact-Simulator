@@ -33,12 +33,12 @@ public:
 		mTargetEC = 100.;
 		SetArtSetStat(artSetStat);
 	}
-	Character(Character* character);
-	Character(Character& character);
+	Character(const Character* character);
+	Character(const Character& character);
 	Character(Character&& character);
-	Character& operator = (Character &character);
+	Character& operator = (const Character &character);
 	Character& operator = (Character &&character);
-	virtual Character* Clone() { return new Character(this); }
+	virtual Character* Clone() const { return new Character(this); }
 	virtual ~Character();
 
 	// Stat Update & UpdateState
@@ -53,7 +53,7 @@ public:
 
 	// Damage and EffectionArray, Score Function
 	double GetDamage() const { return this->GetDamageWithStat(mStat); }
-	virtual double GetDamageWithStat(Stat stat) const;
+	virtual double GetDamageWithStat(const Stat& stat) const;
 	void MakeEffectionArray();
 	void MakeScoreFunction();
 	double GetScoreFunction(int index) const { return mSavedFunction[index]; }
@@ -62,18 +62,18 @@ public:
 
 	// Stat
 	Stat GetStat() const    { return mStat; }
-	void SetStat(Stat stat) { mStat = stat; mUpdateState = ARTIFACTSUBSTATUPDATED; }
+	void SetStat(const Stat& stat) { mStat = stat; mUpdateState = ARTIFACTSUBSTATUPDATED; }
 
 	// Character Stat
 	Stat GetCharacterStat() const { return mCharacterStat; }
 
 	// Resonance Stat
 	Stat GetResonanceStat() const    { return mResonanceStat; }
-	void SetResonanceStat(Stat stat) { mResonanceStat = stat; ConfirmResonanceStatModified(); }
+	void SetResonanceStat(const Stat& stat) { mResonanceStat = stat; ConfirmResonanceStatModified(); }
 
 	// Weapon
 	Weapon* GetWeapon()               { return mWeapon; }
-	string  GetWeaponName() const     { return mWeapon->GetName(); }
+	std::string  GetWeaponName() const     { return mWeapon->GetName(); }
 	Weapon* CopyWeapon() const        { return mWeapon->Clone(); }
 	void    SetWeapon(Weapon* weapon) { mWeapon = weapon; ConfirmWeaponStatModified(); }
 
@@ -102,7 +102,7 @@ public:
 
 	// Feedbacked Stat
 	Stat GetFeedbackedStat() const       { return mFeedbackedStat; }
-	void SetFeedbackedStat(Stat stat)    { mFeedbackedStat = stat; }
+	void SetFeedbackedStat(const Stat& stat)    { mFeedbackedStat = stat; }
 	void AddFeedbackedStat(int index, double amount) { mFeedbackedStat.AddOption(index, amount); }
 
 	// TargetEC

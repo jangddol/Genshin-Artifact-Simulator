@@ -1,13 +1,13 @@
 #include "../header/ArtSetStat.hh"
 
 
-void ArtSetStat::SaveCharacterPointer(Character* character)
+void ArtSetStat::SaveCharacterPointer(const Character* character)
 {
     mCharactersUsingThis.emplace_back(character);
 }
 
 
-void ArtSetStat::DeleteCharacterPointer(Character* character)
+void ArtSetStat::DeleteCharacterPointer(const Character* character)
 {
     int index = 0;
     int size = mCharactersUsingThis.size();
@@ -22,7 +22,7 @@ void ArtSetStat::DeleteCharacterPointer(Character* character)
 }
 
 
-bool ArtSetStat::IsUsingThis(Character* character) const
+bool ArtSetStat::IsUsingThis(const Character* character) const
 {
 	bool returnBool = false;
 	int length = mCharactersUsingThis.size();
@@ -38,7 +38,7 @@ bool ArtSetStat::IsUsingThis(Character* character) const
 }
 
 
-void ArtSetStat::AlertModified()
+void ArtSetStat::AlertModified() const
 {
     for(auto& character : mCharactersUsingThis)
     {

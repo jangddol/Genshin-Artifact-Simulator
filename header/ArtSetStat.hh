@@ -18,11 +18,11 @@ public:
 
     virtual void DoFeedback(Character* character) const {}
 
-    void   SaveCharacterPointer(Character* character);
-    void   DeleteCharacterPointer(Character* chraracter);
+    void   SaveCharacterPointer(const Character* character);
+    void   DeleteCharacterPointer(const Character* chraracter);
 
 	void   SetZero() {mStat.SetZero(); AlertModified(); }
-	void   Initialization() { mStat.Update(); AlertModified(); }
+	void   Update() { mStat.Update(); AlertModified(); }
 
     Stat   GetStat() const { return mStat; }
 
@@ -30,10 +30,10 @@ public:
 	void   SetOption(int index, double amount) { mStat.SetOption(index, amount); AlertModified(); }
 	void   AddOption(int index, double amount) { mStat.AddOption(index, amount); AlertModified(); }
 
-    bool   IsUsingThis(Character* character) const;
+    bool   IsUsingThis(const Character* character) const;
 
 private:
-    void AlertModified();
+    void AlertModified() const;
 
     std::vector<Character*> mCharactersUsingThis = {};
 
