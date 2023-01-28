@@ -1,5 +1,7 @@
 #include "top.hh"
 #include "PrintToCoordinates.hh"
+#include "TRandom.h"
+#include "TStyle.h"
 
 
 using namespace std;
@@ -79,6 +81,10 @@ void testRaiden()
     PrintStat(simChar->GetStat());
     cout << "========== Character Damage ==========" << endl;
     cout << simChar->GetDamage() << endl;
-    
+
+    cout << "========== Cloned Character Stat ==========" << endl;
+    PrintStat(simChar->Clone()->GetStat());
+    cout << "========== Cloned Character Damage ==========" << endl;
+    cout << simChar->Clone()->GetDamage() << endl;
 
 }

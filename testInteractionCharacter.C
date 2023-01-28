@@ -1,6 +1,8 @@
 #include "top.hh"
 
 
+using namespace std;
+
 void testConstructor()
 {
     cout << "========== testConstructor ==========" << endl;
