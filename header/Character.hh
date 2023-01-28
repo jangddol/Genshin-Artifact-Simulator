@@ -79,7 +79,7 @@ public:
 
 	// ArtSetStat
 	ArtSetStat* GetArtSetStat() { return mArtSetStat; }
-	ArtSetStat* CopyArtSetStat() const { return new ArtSetStat(mArtSetStat); }
+	ArtSetStat* CopyArtSetStat() const { return mArtSetStat->Clone(); }
 	void        SetArtSetStat(ArtSetStat* stat);
 
 	// Artifact

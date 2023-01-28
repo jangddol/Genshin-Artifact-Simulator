@@ -346,7 +346,7 @@ void Character::MakeEffectionArray()
     for (int i = 0; i < 19; i++)
     {
         tempCharacter = this->Clone();
-        tempResonanceStat = mResonanceStat;
+        tempResonanceStat = this->GetResonanceStat();
         tempResonanceStat.AddOption(i, 1.);
         tempCharacter->SetResonanceStat(tempResonanceStat);
         tempCharacter->Update();
