@@ -17,8 +17,8 @@ Character::Character(const Character *character)
     SetResonanceStat(character->GetResonanceStat());
     
     mTargetEC = character->GetTargetEC();
-    mCharacterStat = character->GetCharacterStat(); // TODO: SetCharacterStatÀ» ºĞÈ­ÇØ¼­ ÅëÂ°·Î ³Ö´Â°Å¶û ¾Æ´Ñ°Å¶û µÑ´Ù ¸¸µé±â
-    mUpdateState = 0; // TODO: À§¿¡²¨ ¿Ï·áµÇ¸é ÀÌ°Å ¾ø¾Ö±â
+    mCharacterStat = character->GetCharacterStat(); // TODO: SetCharacterStatì„ ë¶„í™”í•´ì„œ í†µì§¸ë¡œ ë„£ëŠ”ê±°ë‘ ì•„ë‹Œê±°ë‘ ë‘˜ë‹¤ ë§Œë“¤ê¸°
+    mUpdateState = 0; // TODO: ìœ„ì—êº¼ ì™„ë£Œë˜ë©´ ì´ê±° ì—†ì• ê¸°
     for (int i = 0; i < 19; i++)
     {
         mEffectionArray[i] = character->GetEffection(i);
@@ -43,8 +43,8 @@ Character::Character(const Character& character)
     SetResonanceStat(character.GetResonanceStat());
     
     mTargetEC = character.GetTargetEC();
-    mCharacterStat = character.GetCharacterStat(); // TODO: SetCharacterStatÀ» ºĞÈ­ÇØ¼­ ÅëÂ°·Î ³Ö´Â°Å¶û ¾Æ´Ñ°Å¶û µÑ´Ù ¸¸µé±â
-    mUpdateState = 0; // TODO: À§¿¡²¨ ¿Ï·áµÇ¸é ÀÌ°Å ¾ø¾Ö±â
+    mCharacterStat = character.GetCharacterStat(); // TODO: SetCharacterStatì„ ë¶„í™”í•´ì„œ í†µì§¸ë¡œ ë„£ëŠ”ê±°ë‘ ì•„ë‹Œê±°ë‘ ë‘˜ë‹¤ ë§Œë“¤ê¸°
+    mUpdateState = 0; // TODO: ìœ„ì—êº¼ ì™„ë£Œë˜ë©´ ì´ê±° ì—†ì• ê¸°
     for (int i = 0; i < 19; i++)
     {
         mEffectionArray[i] = character.GetEffection(i);
@@ -68,8 +68,8 @@ Character::Character(Character&& character)
     SetResonanceStat(character.GetResonanceStat());
     
     mTargetEC = character.GetTargetEC();
-    mCharacterStat = character.GetCharacterStat(); // TODO: SetCharacterStatÀ» ºĞÈ­ÇØ¼­ ÅëÂ°·Î ³Ö´Â°Å¶û ¾Æ´Ñ°Å¶û µÑ´Ù ¸¸µé±â
-    mUpdateState = 0; // TODO: À§¿¡²¨ ¿Ï·áµÇ¸é ÀÌ°Å ¾ø¾Ö±â
+    mCharacterStat = character.GetCharacterStat(); // TODO: SetCharacterStatì„ ë¶„í™”í•´ì„œ í†µì§¸ë¡œ ë„£ëŠ”ê±°ë‘ ì•„ë‹Œê±°ë‘ ë‘˜ë‹¤ ë§Œë“¤ê¸°
+    mUpdateState = 0; // TODO: ìœ„ì—êº¼ ì™„ë£Œë˜ë©´ ì´ê±° ì—†ì• ê¸°
     for (int i = 0; i < 19; i++)
     {
         mEffectionArray[i] = character.GetEffection(i);
@@ -159,7 +159,7 @@ void Character::Update()
 
 void Character::UpdateFromCharacterResonance()
 {
-	// Ä³¸¯ÅÍ ¿É¼Ç : 0 ~ 34, b0 ~ b2
+	// ìºë¦­í„° ì˜µì…˜ : 0 ~ 34, b0 ~ b2
     mStatAfterUpdateFromCharacterResonance.SetZero();
     for (int i = 0; i < 35; i++)
     {
@@ -170,7 +170,7 @@ void Character::UpdateFromCharacterResonance()
         mStatAfterUpdateFromCharacterResonance.SetBaseOption(i, mCharacterStat.GetBaseOption(i));
     }
 
-	// °ø¸í : 0, 2, 5, 7, 10 ~ 17, 27
+	// ê³µëª… : 0, 2, 5, 7, 10 ~ 17, 27
     mStatAfterUpdateFromCharacterResonance.AddOption(0, mResonanceStat.GetOption(0));
     mStatAfterUpdateFromCharacterResonance.AddOption(2, mResonanceStat.GetOption(2));
     mStatAfterUpdateFromCharacterResonance.AddOption(5, mResonanceStat.GetOption(5));
@@ -191,16 +191,16 @@ void Character::UpdateFromWeapon()
     
     mStatAfterUpdateFromWeapon = mStatAfterUpdateFromCharacterResonance;
 
-    // ¹«±â ÁÖ¿É : b0
+    // ë¬´ê¸° ì£¼ì˜µ : b0
     mStatAfterUpdateFromWeapon.SetBaseOption(0, mStatAfterUpdateFromWeapon.GetBaseOption(0) + WeaponMainStat.GetBaseOption(0));
 
-	// ¹«±â ºÎ¿É : 0 ~ 18 // ¿ÏÀüÈ÷ ¹èÁ¦µÈ °ÍÀº ¾Æ´Ô
+	// ë¬´ê¸° ë¶€ì˜µ : 0 ~ 18 // ì™„ì „íˆ ë°°ì œëœ ê²ƒì€ ì•„ë‹˜
     for (int i = 0; i < 19; i++)
     {
         mStatAfterUpdateFromWeapon.AddOption(i, WeaponSubStat.GetOption(i));
     }
 
-	// ¹«±â ºÎºÎ¿É : 0 ~ 23, 27, 28 // ¿ÏÀüÈ÷ ¹èÁ¦µÈ °ÍÀº ¾Æ´Ô
+	// ë¬´ê¸° ë¶€ë¶€ì˜µ : 0 ~ 23, 27, 28 // ì™„ì „íˆ ë°°ì œëœ ê²ƒì€ ì•„ë‹˜
     for (int i = 0; i < 24; i++)
     {
         mStatAfterUpdateFromWeapon.AddOption(i, WeaponSubSubStat.GetOption(i));
@@ -215,7 +215,7 @@ void Character::UpdateFromArtSetStat()
 {
     mStatAfterUpdateFromArtSetStat = mStatAfterUpdateFromWeapon;
 
-	// ¼ºÀ¯¹° ¼¼Æ® : 0 ~ 23, 27, 28 // ¿ÏÀüÈ÷ ¹èÁ¦µÈ °ÍÀº ¾Æ´Ô
+	// ì„±ìœ ë¬¼ ì„¸íŠ¸ : 0 ~ 23, 27, 28 // ì™„ì „íˆ ë°°ì œëœ ê²ƒì€ ì•„ë‹˜
     for (int i = 0; i < 24; i++)
     {
         mStatAfterUpdateFromArtSetStat.AddOption(i, mArtSetStat->GetOption(i));
@@ -229,7 +229,7 @@ void Character::UpdateFromArtifactMainStat()
 {
     mStatAfterUpdateFromArtifactMainStat = mStatAfterUpdateFromArtSetStat;
     
-    // ¼ºÀ¯¹° ÁÖ¿É : 0 ~ 8, 10 ~ 18
+    // ì„±ìœ ë¬¼ ì£¼ì˜µ : 0 ~ 8, 10 ~ 18
     
     Stat FlowerMainStat = mArtFlower->GetMainStat();
     Stat FeatherMainStat = mArtFeather->GetMainStat();
@@ -249,7 +249,7 @@ void Character::UpdateFromArtifactSubStat()
 {
     mStatAfterUpdateFromArtifactSubStat = mStatAfterUpdateFromArtifactMainStat;
     
-    // ¼ºÀ¯¹° ºÎ¿É : 0 ~ 9
+    // ì„±ìœ ë¬¼ ë¶€ì˜µ : 0 ~ 9
     
     Stat FlowerSubStat = mArtFlower->GetSubStat();
     Stat FeatherSubStat = mArtFeather->GetSubStat();
@@ -339,18 +339,27 @@ double Character::GetDamageWithStat(const Stat& stat) const
 void Character::MakeEffectionArray()
 {
     Character* tempCharacter;
-    Stat tempResonanceStat; // °è»ê¿¡ ÇÊ¿äÇÑ ºÎ¿É Ãß°¡´Â ResonanceStatÀ¸·Î ÇÑ´Ù.
-                                        // ÀÌÀ¯´Â, ±×³É StatÀÌ¶ó¼­ Á¢±ÙÀÌ ÆíÇÔ.
-                                        // Update°¡ ¿À·¡°É¸®±ä ÇÏÁö¸¸, ½É°¢ÇÏÁø ¾ÊÀ½.
-    double defaultDamage = GetDamage(); // ÇöÀç ½ºÆåÀ» ±â·ÏÇÑ´Ù.
+    ArtSetStat* tempArtSetStat; // ê³„ì‚°ì— í•„ìš”í•œ ë¶€ì˜µ ì¶”ê°€ëŠ” ResonanceStatìœ¼ë¡œ í•œë‹¤.
+                                        // ì´ìœ ëŠ”, ê·¸ëƒ¥ Statì´ë¼ì„œ ì ‘ê·¼ì´ í¸í•¨.
+                                        // Updateê°€ ì˜¤ë˜ê±¸ë¦¬ê¸´ í•˜ì§€ë§Œ, ì‹¬ê°í•˜ì§„ ì•ŠìŒ.
+                                    // 230131
+                                        // ResonanceStat ì— ëŒ€í•œ Update Optimization ê³¼ì •ì—ì„œ
+                                        // ê¹¡ì˜µê³¼ ì¹˜í”¼ê°€ ì‚¬ìš©ë˜ì§€ ì•ŠëŠ” ê²ƒ ë•Œë¬¸ì—
+                                        // ì´ í•¨ìˆ˜ê°€ ë§ê°€ì§. 
+                                        // 0 ~ 18 ëª¨ë‘ ì‚¬ìš©ë˜ëŠ” ê²ƒì„ ì‚¬ìš©í•´ì•¼í•œë‹¤.
+                                        // ArtSetStatì´ ë§ëŠ” ë“¯ í•˜ë‹¤.
+
+
+    double defaultDamage = GetDamage(); // í˜„ì¬ ìŠ¤í™ì„ ê¸°ë¡í•œë‹¤.
     for (int i = 0; i < 19; i++)
     {
         tempCharacter = this->Clone();
-        tempResonanceStat = this->GetResonanceStat();
-        tempResonanceStat.AddOption(i, 1.);
-        tempCharacter->SetResonanceStat(tempResonanceStat);
+        tempArtSetStat = this->CopyArtSetStat();
+        tempArtSetStat->AddOption(i, 1.);
+        tempCharacter->SetArtSetStat(tempArtSetStat);
         tempCharacter->Update();
-        mEffectionArray[i] = tempCharacter->GetDamage() - defaultDamage; // TODO: Raiden¿¡¼­ À½¼ö°¡ ³ª¿È.
+        mEffectionArray[i] = tempCharacter->GetDamage() - defaultDamage;
+        delete tempArtSetStat;
     }
 }
 
@@ -382,7 +391,7 @@ int FindNthLargestOption(std::array<double, 10> damArray, int nth)
 }
 
 
-// TODO: ÀÌÁ¦ StatExceptSubOpt°¡ ÀÛµ¿ÇÏÁö ¾Ê´Â´Ù. µû¶ó¼­ ¼ºÀ¯¹° ºÎ¿ÉÀ» °Çµå·Á¼­ ÇÏ´Â ¹æ¹ıÀ» Ã£¾Æ¾ß ÇÑ´Ù.
+// TODO: ì´ì œ StatExceptSubOptê°€ ì‘ë™í•˜ì§€ ì•ŠëŠ”ë‹¤. ë”°ë¼ì„œ ì„±ìœ ë¬¼ ë¶€ì˜µì„ ê±´ë“œë ¤ì„œ í•˜ëŠ” ë°©ë²•ì„ ì°¾ì•„ì•¼ í•œë‹¤.
 void Character::MakeScoreFunction()
 {
     std::array<int, 10> mainOp = { 0 }; // It will be checked which main option is activated.
@@ -394,9 +403,9 @@ void Character::MakeScoreFunction()
     std::array<double, 10> damArray = { 0. }; // It will be recorded in this array how much damage will be if each option is added.
 
     Character* tempCharacter;
-    std::array<Stat, 10> tempSubStatArray; // Flower¿¡¸¸ Àû¿ëµÉ °ÍÀÌ´Ù.
+    std::array<Stat, 10> tempSubStatArray; // Flowerì—ë§Œ ì ìš©ë  ê²ƒì´ë‹¤.
 
-    // Character¸¦ 10°³¸¦ º¹»çÇÑ ´ÙÀ½¿¡, °¢ Character¿¡°Ô ºÎ¿ÉÀÌ ÀüºÎ ºñ¾îÀÖ´Â Artifact¸¦ ÁØ´Ù.
+    // Characterë¥¼ 10ê°œë¥¼ ë³µì‚¬í•œ ë‹¤ìŒì—, ê° Characterì—ê²Œ ë¶€ì˜µì´ ì „ë¶€ ë¹„ì–´ìˆëŠ” Artifactë¥¼ ì¤€ë‹¤.
     ArtFlower* emptyFlower = new ArtFlower(this->GetArtFlower());
     emptyFlower->SetSubStat(Stat());
     ArtFeather* emptyFeather = new ArtFeather(this->GetArtFeather());
@@ -420,7 +429,7 @@ void Character::MakeScoreFunction()
     tempCharacter->Update();
     mSavedFunction[0] = tempCharacter->GetDamage();
 
-    for (int i = 0; i < 45; i++) // for¹®À¸·Î 45È¸µ¿¾È, 
+    for (int i = 0; i < 45; i++) // forë¬¸ìœ¼ë¡œ 45íšŒë™ì•ˆ, 
     {
         double difEC = mTargetEC - tempCharacter->GetStat().GetOption(4); // check the element charge is enough or not.
         bool whetherNotEnoughEC = difEC > 0;
@@ -445,9 +454,9 @@ void Character::MakeScoreFunction()
                     damArray[j] = tempCharacter->GetDamage();
                 }
 
-                // °¡Àå Á¡¼ö°¡ ³ôÀº ½ºÅÈ¿¡ ´ëÇØ¼­ ((5 - ÁÖ¿É¿©ºÎ) º¸´Ù Àû°Ô Ã¤¿ü´Â°¡?)¸¦ È®ÀÎÇÏ°í Ã¤¿î´Ù.
+                // ê°€ì¥ ì ìˆ˜ê°€ ë†’ì€ ìŠ¤íƒ¯ì— ëŒ€í•´ì„œ ((5 - ì£¼ì˜µì—¬ë¶€) ë³´ë‹¤ ì ê²Œ ì±„ì› ëŠ”ê°€?)ë¥¼ í™•ì¸í•˜ê³  ì±„ìš´ë‹¤.
                     // If impossible,
-                        // ´ÙÀ½ Á¡¼ö°¡ ³ôÀº ½ºÅÈ¿¡ ´ëÇØ¼­ È®ÀÎÇÑ´Ù. (ÃÖ´ë 5È¸ ¹İº¹)
+                        // ë‹¤ìŒ ì ìˆ˜ê°€ ë†’ì€ ìŠ¤íƒ¯ì— ëŒ€í•´ì„œ í™•ì¸í•œë‹¤. (ìµœëŒ€ 5íšŒ ë°˜ë³µ)
                 for (int j = 1; j <= 5; j++)
                 {
                     int largeStat = FindNthLargestOption(damArray, j);
