@@ -393,7 +393,6 @@ double Simulator::CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList& A
 
 
 void PrintArtifact(const Artifact* artifact);
-void PrintStat(const Stat& stat);
 void Simulator::PrintLastArtifacts(int trialNum, double bestDamage, const ArtifactBundle& bestArtifacts) const
 {
 	if (mSeeLastArtifact)

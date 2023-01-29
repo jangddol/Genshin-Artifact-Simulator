@@ -383,7 +383,6 @@ int FindNthLargestOption(std::array<double, 10> damArray, int nth)
 
 
 // TODO: 이제 StatExceptSubOpt가 작동하지 않는다. 따라서 성유물 부옵을 건드려서 하는 방법을 찾아야 한다.
-void PrintStat(Stat stat);
 void Character::MakeScoreFunction()
 {
     std::array<int, 10> mainOp = { 0 }; // It will be checked which main option is activated.
