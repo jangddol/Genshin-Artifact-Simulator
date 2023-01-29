@@ -50,6 +50,8 @@ public:
 
 	bool IsUsingThis(const Character* character) const;
 
+	virtual std::vector<int> GetPossibleMainOption() const = 0;
+
 protected:
 	int mType = 0;
 	std::vector<int> mProbabilityWeight;

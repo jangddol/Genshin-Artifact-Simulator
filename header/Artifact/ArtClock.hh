@@ -25,6 +25,8 @@ public:
 			= { 0, 0, 8, 8, 11, 19, 19, 22, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 };
 	}
 	~ArtClock() override {}
+
+	std::vector<int> GetPossibleMainOption() const override { return {2, 4, 5, 7, 8}; }
 };
 
 #endif
