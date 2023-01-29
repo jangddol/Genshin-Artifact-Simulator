@@ -36,8 +36,8 @@ void Simulator_Raiden()
 
 	// simulation number
 	// the number of artifacts to get
-	int simNum = 10000;
-	int artifactNum = 1800; // 4.7925 per day (150 ~ month)
+	int simNum = 100;
+	int artifactNum = 300; // 4.7925 per day (150 ~ month)
 
 	// maxDamage, binNum
 	int binNum = 100;

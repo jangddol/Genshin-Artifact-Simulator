@@ -87,8 +87,8 @@ Artifact* GenerateRandomArtifact()
 	case 4: return GenRandArtf_5();
 	default:
 		{
-			std::cout << "Error : gRandom occur some errors at GenerateRandomArtifact : temp = " << temp << std::endl;
-			return new Artifact();
+			assert(0);
+			return new ArtFlower();
 		}
 	}
 }
@@ -615,8 +615,8 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	}
 	
 
-	// ÀÌµéÀº °¢°¢ ¾²·¹µå ¾È¿¡¼­ SimulationWorker¸¦ ¹ßµ¿ÇÑ´Ù.
-	// SimulationWorker´Â 2d-HistogramÀ» simulatorVector[i]¿¡ ³²±â°í Á×´Â´Ù.
+	// ì´ë“¤ì€ ê°ê° ì“°ë ˆë“œ ì•ˆì—ì„œ SimulationWorkerë¥¼ ë°œë™í•œë‹¤.
+	// SimulationWorkerëŠ” 2d-Histogramì„ simulatorVector[i]ì— ë‚¨ê¸°ê³  ì£½ëŠ”ë‹¤.
 	std::vector<std::thread> threads;
 	for (int i = 0; i < mNumThread; i++)
 	{
@@ -642,7 +642,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 		}
 	}
 
-	// »ý¼ºµÈ AppendRateµµ ¿©±â·Î ³Ñ°ÜÁØ´Ù.
+	// ìƒì„±ëœ AppendRateë„ ì—¬ê¸°ë¡œ ë„˜ê²¨ì¤€ë‹¤.
 	std::vector<double> tempVector(artifactNum);
 	for (int i = 0; i < mNumThread; i++)
 	{
