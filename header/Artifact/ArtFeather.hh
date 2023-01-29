@@ -24,7 +24,7 @@ public:
 	}
 	~ArtFeather() override {}
 
-	std::vector<int> GetPossibleMainOption() const override { return {3}; }
+	static std::vector<int> GetPossibleMainOption() { return {3}; }
 
 };
 

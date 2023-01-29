@@ -50,7 +50,7 @@ public:
 
 	bool IsUsingThis(const Character* character) const;
 
-	virtual std::vector<int> GetPossibleMainOption() const = 0;
+	static std::vector<int> GetPossibleMainOption() { return {}; };
 
 protected:
 	int mType = 0;

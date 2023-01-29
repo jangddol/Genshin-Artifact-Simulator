@@ -24,7 +24,7 @@ public:
 	}
 	~ArtFlower() override {}
 
-	std::vector<int> GetPossibleMainOption() const override { return {6}; }
+	static std::vector<int> GetPossibleMainOption() { return {6}; }
 
 };
 

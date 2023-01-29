@@ -26,7 +26,7 @@ public:
 	}
 	~ArtCup() override {}
 
-	std::vector<int> GetPossibleMainOption() const override { return {2, 5, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17}; }
+	static std::vector<int> GetPossibleMainOption() { return {2, 5, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17}; }
 
 };
 

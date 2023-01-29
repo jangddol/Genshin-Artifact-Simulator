@@ -26,7 +26,7 @@ public:
 	}
 	~ArtClock() override {}
 
-	std::vector<int> GetPossibleMainOption() const override { return {2, 4, 5, 7, 8}; }
+	static std::vector<int> GetPossibleMainOption() { return {2, 4, 5, 7, 8}; }
 };
 
 #endif
