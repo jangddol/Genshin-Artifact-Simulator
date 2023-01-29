@@ -74,7 +74,7 @@ void Simulator_Raiden()
 	VisualHistogram->GetZaxis()->SetTitle("Count");
 	VisualHistogram->Draw("COL4Z");
 
-	TFile* file = new TFile("GenshinArtifactSimulator_Multithread.root", "recreate");
+	TFile* file = new TFile("GenshinArtifactSimulator_Raiden.root", "recreate");
 	VisualHistogram->Write();
 	file->Close();
 }
