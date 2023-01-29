@@ -52,10 +52,9 @@ void Simulator_Ningguang()
 
 	simChar->MakeEffectionArray();
 	simChar->MakeScoreFunction();
-	cout << "28 score : " << simChar->GetScoreFunction(28) << endl;
 
 	// simulation number
-	int simNum = 100;
+	int simNum = 10000;
 	
 	// the number of artifacts to get
 	constexpr int artifactNum = 300; // 4.7925 per day (150 ~ month)
@@ -67,9 +66,12 @@ void Simulator_Ningguang()
 
     Simulator* simulator = new Simulator();
     simulator->SetCharacter(simChar);
+	// simulator->SetNumThread(8); default : max
+	simulator->SetSeeLastArtifact(false);
+	simulator->SetSeeTimeConsumption(true);
 
-	// Get Result
-	TH2D* VisualHistogram = simulator->RunSimulation(simNum, artifactNum, binNum, minDamage, maxDamage);
+	TH2D* VisualHistogram = simulator->RunSimulationMultiThreads(simNum, artifactNum, binNum, minDamage, maxDamage);
+	// TH2D* VisualHistogram = simulator->RunSimulation(simNum, artifactNum, binNum, minDamage, maxDamage);
 
 	// Set TGraph for appendableRate
 	vector<double> appendableRate = simulator->GetAppendableRate();
@@ -115,4 +117,6 @@ void Simulator_Ningguang()
 	TFile* file = new TFile("GenshinArtifactSimulator_Ningguang.root", "recreate");
 	VisualHistogram->Write();
 	file->Close();
+
+	cout << "28 score : " << simChar->GetScoreFunction(28) << endl;
 }

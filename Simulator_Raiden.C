@@ -37,7 +37,7 @@ void Simulator_Raiden()
 	// simulation number
 	// the number of artifacts to get
 	int simNum = 10000;
-	int artifactNum = 900; // 4.7925 per day (150 ~ month)
+	int artifactNum = 1800; // 4.7925 per day (150 ~ month)
 
 	// maxDamage, binNum
 	int binNum = 100;
@@ -69,6 +69,7 @@ void Simulator_Raiden()
 	gPad->SetRightMargin(0.08);
 	gPad->SetTopMargin(0.05);
 	
+	VisualHistogram->SetName("Visual");
 	VisualHistogram->GetXaxis()->SetTitle("The number of artifact to get");
 	VisualHistogram->GetYaxis()->SetTitle("Damage");
 	VisualHistogram->GetZaxis()->SetTitle("Count");
