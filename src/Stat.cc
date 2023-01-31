@@ -2,6 +2,19 @@
 #include <iostream>
 
 
+void PrintStat(const Stat& stat)
+{
+    for (int i = 0; i < 35; i++)
+    {
+        std::cout << STATSTRING[i] << " : " << stat.GetOption(i) << std::endl;
+    }
+    for (int i = 0; i < 3; i++)
+    {
+        std::cout << BASESTATSTRING[i] << " : " << stat.GetBaseOption(i) << std::endl;
+    }
+}
+
+
 void Stat::SetZero()
 {
 	for (int i = 0; i < 35 ; i++)

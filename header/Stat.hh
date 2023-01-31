@@ -7,9 +7,8 @@
 #include <vector>
 #include <string>
 
-
-std::array<std::string, 3> BASESTATSTRING = {"Base ATK", "Base HP", "Base DEF"};
-std::array<std::string, 35> STATSTRING
+static std::array<std::string, 3> BASESTATSTRING = {"Base ATK", "Base HP", "Base DEF"};
+static std::array<std::string, 35> STATSTRING
 	= {"CR", "CB", "ATK%%", "ATK", "EC", 
 		"HP%%", "HP", "EM", "DEF%%", "DEF",
 		"Pyro", "Elec", "Cryo", "Hydro", "Anymo",
@@ -136,17 +135,7 @@ private:
 };
 
 
-void PrintStat(const Stat& stat)
-{
-    for (int i = 0; i < 35; i++)
-    {
-        std::cout << STATSTRING[i] << " : " << stat.GetOption(i) << std::endl;
-    }
-    for (int i = 0; i < 3; i++)
-    {
-        std::cout << BASESTATSTRING[i] << " : " << stat.GetBaseOption(i) << std::endl;
-    }
-}
+void PrintStat(const Stat& stat);
 
 
 #endif
