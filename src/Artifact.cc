@@ -34,18 +34,17 @@ int Artifact::UseCummulatedWeight(std::vector<int> cummulatedWeight)
 	// generate random integer from 0 to the sum of probability table
 	int length = cummulatedWeight.size();
 	
-	std::uniform_int_distribution<int> uniTemp(0, cummulatedWeight[length - 1] - 1); // Guaranteed unbiased
-	int tempInt = uniTemp(rng) + 1;
+	int tempInt = GetRdUni(cummulatedWeight[length - 1] - 1) + 1;
 
 	int selectedInt = 0;
 	int beforeElement = 0;
 	int nowElement = 0;
-	for (int i = 0; i < length; i++) // for¹®À» µ¹¸®¸é¼­ ´ë¼Òºñ±³¸¦ ÇÑ´Ù.
+	for (int i = 0; i < length; i++) // forï¿½ëˆ§ï§ê¾©ë±½ å ìˆì¦¼ï¿½ëµ³ï¿½ë¥ëŠºå ì„í£ å ì™ì˜™å ì™ì˜™ï¿½êº–ï¿½ëœ®è¢ã‰êºï¿½ëª´å ï¿½ å ìˆë¦½å ìˆë¼„.
 	{
 		nowElement = cummulatedWeight[i];
 		if (tempInt > beforeElement && tempInt <= nowElement)
 		{
-			selectedInt = i; // ·£´ı int¸¦ °¡Áö°í ¾î´À ÁÖ¿ÉÀÎÁö °áÁ¤ÇÑ´Ù.
+			selectedInt = i; // å ìŒì‚å ìˆì‘ intï¿½ëª´å ï¿½ æ¶ì‰ì˜™ç­Œìš‘ì˜™ï¿½ï¿½â‘¨ì˜™ å ìˆì„ å ìˆë®„ é›…ëš¯ëˆ˜ï¿½ê¸¿å ìŒëµ¥ç­Œìš‘ì˜™ é‡ê»‰í€£ï¿½ì Ÿå ìˆë¦½å ìˆë¼„.
 			break;
 		}
 		beforeElement = nowElement;
@@ -89,7 +88,7 @@ std::vector<int> Artifact::GenerateCummulatedWeight()
 
 bool Artifact::Selected3or4OptStart()
 {
-	if (uni5(rng) == 0) return true;
+	if (GetRdUni5() == 0) return true;
 	else return false;
 }
 
@@ -147,19 +146,19 @@ void Artifact::UpgradeSubOption(std::array<int, 4> startOptList, bool whether4Op
 	int numUpgrade = 4;
 	if (whether4OptStart) numUpgrade = 5;
 
-	// °¢°¢ 1È¸¾¿
+	// ê°ê° 1íšŒì”©
 	for (int i = 0; i < 4; i++)
 	{
 		int optIndex = startOptList[i];
-		double randomStat = OPTIONARRAY[optIndex][uni4(rng)];
+		double randomStat = OPTIONARRAY[optIndex][GetRdUni4()];
 		mSubStat.AddOption(optIndex, randomStat);
 	}
 
-	// ·£´ıÀ¸·Î numUpgrade¸¸Å­
+	// ëœë¤ìœ¼ë¡œ numUpgradeë§Œí¼
 	for (int i = 0; i < numUpgrade; i++)
 	{
-		int randomIndex = startOptList[uni4(rng)];
-		double randomStat = OPTIONARRAY[randomIndex][uni4(rng)];
+		int randomIndex = startOptList[GetRdUni4()];
+		double randomStat = OPTIONARRAY[randomIndex][GetRdUni4()];
 		mSubStat.AddOption(randomIndex, randomStat);
 	}
 }
@@ -168,18 +167,18 @@ void Artifact::UpgradeSubOption(std::array<int, 4> startOptList, bool whether4Op
 void Artifact::GenerateSubOption()
 {
 	std::vector<int> subCummulatedWeight = GenerateCummulatedWeight();
-		// 1. ¸ŞÀÎ¿É¼ÇÀ» È®ÀÎÇØ¼­ È®·üÇ¥¿¡¼­ ÇØ´ç ºÎºĞÀ» 0À¸·Î ¸¸µç´Ù.
-			// 1-1. ÀÌ°É °¡Áö°í cummulatedWeightÀ» ¸¸µç´Ù.
+		// 1. ç­Œë¡«ë—„ï¿½ëµ¥å ìŒê¸¿å ìˆï¿½âˆ½ì˜™ï¿½ë±½ å ìŒë„‡å ìŒëµ¥å ìˆí‰¸å ì„í£ å ìŒë„‡ï¿½ëª´é†«ë¤¿ã”å ìˆí“ å ì„í£ å ìˆí‰¸å ìˆë¼£ ï¿½ê²«å ì½ê²«è¢â‘¹ë±½ 0å ìŒëªµåš¥âˆ½ì˜™ ç­Œë¾ìŠ¢è«­ë¸ì˜™ï¿½ë¼„.
+			// 1-1. å ìŒëµ æ¤°ê¾¬ì˜™ æ¶ì‰ì˜™ç­Œìš‘ì˜™ï¿½ï¿½â‘¨ì˜™ cummulatedWeightå ìŒë±½ ç­Œë¾ìŠ¢è«­ë¸ì˜™ï¿½ë¼„.
 				// This cummulatedWeight is for subOption
 				// Therefore the length of cummulatedWeight is 10.
 
 	bool whether4OptStart = Selected3or4OptStart();
-		// 2. Ã³À½¿¡ 3°³ÀÎÁö 4°³ÀÎÁö °í¸¥´Ù. -> 8°³ or 9°³
+		// 2. ç­Œï½Œê¼·ï¿½ë²‰å ìˆí“  3æ¶ì†ë®‡ï¿½ëµ¥ç­Œìš‘ì˜™ 4æ¶ì†ë®‡ï¿½ëµ¥ç­Œìš‘ì˜™ ï¿½ï¿½â‘¥ì¥“ï¿½ë€²å ìˆë¼„. -> 8æ¶ì‰ì˜™ or 9æ¶ì‰ì˜™
 	std::array<int, 4> startOptList = GenerateStartOpt(subCummulatedWeight);
-		// 3. Ã³À½ ¿É¼Ç 4°³°¡ ¹«¾ùÀÎÁö °áÁ¤ÇÑ´Ù. 4°³¸¦ °ãÄ¡Áö ¾Ê°Ô »ı¼ºÇÑ´Ù.
+		// 3. ç­Œï½Œê¼·ï¿½ë²‰ å ìŒê¸¿å ìˆï¿½ï¿½ 4æ¶ì†ë®„å ì™ì˜™ ï¿½ëˆ§ï¿½ë˜»æ¯“ìš¸ì˜™ï¿½ëµ¥ç­Œìš‘ì˜™ é‡ê»‰í€£ï¿½ì Ÿå ìˆë¦½å ìˆë¼„. 4æ¶ì†ë®†å ì™ì˜™ é‡ê»Šï¿½ï¿½ï¿½ë’„ç­Œìš‘ì˜™ å ìˆë¥«é‡ê»“ì˜™ å ì„ë¬¸å ì„ì‰å ìˆë¦½å ìˆë¼„.
 
 	UpgradeSubOption(startOptList, whether4OptStart);
-		// 4. ±âÁ¸ 4°³¸¦ ·£´ıÀ¸·Î °¢°¢ 1È¸ °íÁ¤¿¡ ·£´ıÀ¸·Î 4È¸ ¶Ç´Â 5È¸ Áõ°¡½ÃÅ²´Ù.
+		// 4. ç–«ê¿¸í€£ï¿½ï¿½ï¿½ 4æ¶ì†ë®†å ì™ì˜™ å ìŒì‚å ìˆì‘å ìŒëªµåš¥âˆ½ì˜™ æ¶ì„ë‚«è€Œï¿½ 1å ìŒë³ ï¿½ï¿½â‘¥ì¥™ï¿½ì Ÿå ìˆí“  å ìŒì‚å ìˆì‘å ìŒëªµåš¥âˆ½ì˜™ 4å ìŒë³ å ìŒêµ¢å ìˆë®‰ 5å ìŒë³ ç­Œì•¹ë¹“å ì™ì˜™å ìˆë»»å ì„í…šå ìˆë¼„.
 }
 
 
@@ -187,8 +186,8 @@ void Artifact::Generation()
 {
 	mMainStat.SetZero();
 	mSubStat.SetZero();
-	GenerateMainOption(); // ¸ŞÀÎ¿É¼Ç : ºÎÀ§¸¶´Ù ´Ù¸§.
-	GenerateSubOption(); // ºÎ¿É¼Ç : ºÎÀ§¸¶´Ù, ¸ŞÀÎ¿É¼Ç¸¶´Ù ´Ù¸§.
+	GenerateMainOption(); // ç­Œë¡«ë—„ï¿½ëµ¥å ìŒê¸¿å ìˆï¿½ï¿½ : ï¿½ê²«å ì™ì˜™ï¿½ë§„ç­Œë¾ëœ„ï¿½ë¼„ å ìˆë¼„ï¿½ëµ³å ï¿½.
+	GenerateSubOption(); // ï¿½ê²«å ì™ì˜™ï¿½ê¸¿å ìˆï¿½ï¿½ : ï¿½ê²«å ì™ì˜™ï¿½ë§„ç­Œë¾ëœ„ï¿½ë¼„, ç­Œë¡«ë—„ï¿½ëµ¥å ìŒê¸¿å ìˆï¿½âˆ½ì­•ï¿½ëœ„ï¿½ë¼„ å ìˆë¼„ï¿½ëµ³å ï¿½.
 	AlertModified();
 }
 

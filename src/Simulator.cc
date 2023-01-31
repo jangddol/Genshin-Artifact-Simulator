@@ -76,7 +76,7 @@ Artifact* GenRandArtf_5()
 
 Artifact* GenerateRandomArtifact()
 {
-	int temp = uni5(rng);
+	int temp = GetRdUni5();
 
 	switch (temp)
 	{
@@ -615,8 +615,8 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	}
 	
 
-	// 이들은 각각 쓰레드 안에서 SimulationWorker를 발동한다.
-	// SimulationWorker는 2d-Histogram을 simulatorVector[i]에 남기고 죽는다.
+	// �씠�뱾��� 媛곴컖 �벐�젅�뱶 �븞�뿉�꽌 SimulationWorker瑜� 諛쒕룞�븳�떎.
+	// SimulationWorker�뒗 2d-Histogram�쓣 simulatorVector[i]�뿉 �궓湲곌퀬 二쎈뒗�떎.
 	std::vector<std::thread> threads;
 	for (int i = 0; i < mNumThread; i++)
 	{
@@ -642,7 +642,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 		}
 	}
 
-	// 생성된 AppendRate도 여기로 넘겨준다.
+	// �깮�꽦�맂 AppendRate�룄 �뿬湲곕줈 �꽆寃⑥���떎.
 	std::vector<double> tempVector(artifactNum);
 	for (int i = 0; i < mNumThread; i++)
 	{
