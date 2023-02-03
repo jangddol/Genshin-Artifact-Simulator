@@ -188,7 +188,7 @@ bool CheckBetterSubOpt(Stat betterOpt, Stat worseOpt, int effectiveList[], int e
 std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtFlower*> flowerList)
 {
 	std::vector<Artifact*> returnVector(flowerList.size());
-	for (int i = 0; i < flowerList.size() ; i++) returnVector[i] = (Artifact*)flowerList[i];
+	for (std::size_t i = 0; i < flowerList.size() ; i++) returnVector[i] = (Artifact*)flowerList[i];
 	return returnVector;
 }
 
@@ -196,7 +196,7 @@ std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtFlower*> flower
 std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtFeather*> featherList)
 {
 	std::vector<Artifact*> returnVector(featherList.size());
-	for (int i = 0; i < featherList.size() ; i++) returnVector[i] = (Artifact*)featherList[i];
+	for (std::size_t i = 0; i < featherList.size() ; i++) returnVector[i] = (Artifact*)featherList[i];
 	return returnVector;
 }
 
@@ -204,7 +204,7 @@ std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtFeather*> feath
 std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtClock*> clockList)
 {
 	std::vector<Artifact*> returnVector(clockList.size());
-	for (int i = 0; i < clockList.size() ; i++) returnVector[i] = (Artifact*)clockList[i];
+	for (std::size_t i = 0; i < clockList.size() ; i++) returnVector[i] = (Artifact*)clockList[i];
 	return returnVector;
 }
 
@@ -212,7 +212,7 @@ std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtClock*> clockLi
 std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtCup*> cupList)
 {
 	std::vector<Artifact*> returnVector(cupList.size());
-	for (int i = 0; i < cupList.size() ; i++) returnVector[i] = (Artifact*)cupList[i];
+	for (std::size_t i = 0; i < cupList.size() ; i++) returnVector[i] = (Artifact*)cupList[i];
 	return returnVector;
 }
 
@@ -220,7 +220,7 @@ std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtCup*> cupList)
 std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtCrown*> crownList)
 {
 	std::vector<Artifact*> returnVector(crownList.size());
-	for (int i = 0; i < crownList.size() ; i++) returnVector[i] = (Artifact*)crownList[i];
+	for (std::size_t i = 0; i < crownList.size() ; i++) returnVector[i] = (Artifact*)crownList[i];
 	return returnVector;
 }
 
@@ -275,7 +275,7 @@ bool CheckWhetherAppendAndDelete(Character* character, Artifact* gennedArtifact,
     // Check whether the generated artifact should be appended to or deleted from the list
     bool whetherAppend = true;
     Stat gennedSubOpt = gennedArtifact->GetSubStat();
-    for (int i = 0; i < selectedList.size(); i++)
+    for (std::size_t i = 0; i < selectedList.size(); i++)
     {
         if (selectedList[i]->GetMainType() == gennedArtifact->GetMainType())
         {
@@ -615,8 +615,8 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	}
 	
 
-	// �씠�뱾��� 媛곴컖 �벐�젅�뱶 �븞�뿉�꽌 SimulationWorker瑜� 諛쒕룞�븳�떎.
-	// SimulationWorker�뒗 2d-Histogram�쓣 simulatorVector[i]�뿉 �궓湲곌퀬 二쎈뒗�떎.
+	// �뜝�럩逾졾뜝�럥援뜹뜝�룞�삕�뜝占� �뤆�룄�궖��뚳옙 �뜝�럥苡뷴뜝�럩�읉�뜝�럥援� �뜝�럥�닱�뜝�럥�뱺�뜝�럡�맋 SimulationWorker占쎈ご�뜝占� �뛾�룇裕녺뙴�쉻�삕�뇡�냲�삕占쎈펲.
+	// SimulationWorker�뜝�럥裕� 2d-Histogram�뜝�럩諭� simulatorVector[i]�뜝�럥�뱺 �뜝�럡�뀣�뼨轅명�쀯옙占쏙옙 �썒�슣�윥占쎈츎�뜝�럥堉�.
 	std::vector<std::thread> threads;
 	for (int i = 0; i < mNumThread; i++)
 	{
@@ -642,7 +642,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 		}
 	}
 
-	// �깮�꽦�맂 AppendRate�룄 �뿬湲곕줈 �꽆寃⑥���떎.
+	// �뜝�럡臾멨뜝�럡�뎽�뜝�럥彛� AppendRate�뜝�럥利� �뜝�럥�뿰�뼨轅명�▽빳占� �뜝�럡�맂�뇦爰용쳛�뜝�룞�삕�뜝�럥堉�.
 	std::vector<double> tempVector(artifactNum);
 	for (int i = 0; i < mNumThread; i++)
 	{
