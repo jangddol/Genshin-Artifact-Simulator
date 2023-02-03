@@ -20,6 +20,12 @@ constexpr double PLUSARRAY[10] = { 3.88999991118908, 7.76999965310097, 5.8299999
 
 
 class Weapon;
+class Artifact;
+class ArtFlower;
+class ArtFeather;
+class ArtClock;
+class ArtCup;
+class ArtCrown;
 class ArtSetStat;
 struct MainOptionsAndDamage
 {
