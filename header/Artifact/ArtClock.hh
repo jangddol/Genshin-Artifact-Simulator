@@ -5,6 +5,9 @@
 #include "../Artifact.hh"
 
 
+class Artifact;
+
+
 class ArtClock : public Artifact
 {
 public:
