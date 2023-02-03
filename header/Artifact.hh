@@ -50,6 +50,8 @@ public:
 
 	bool IsUsingThis(const Character* character) const;
 
+	static std::vector<int> GetPossibleMainOption() { return {}; };
+
 protected:
 	int mType = 0;
 	std::vector<int> mProbabilityWeight;
@@ -73,5 +75,9 @@ private:
 	Stat mMainStat;
 	Stat mSubStat;
 };
+
+
+void PrintArtifact(const Artifact* artifact);
+
 
 #endif

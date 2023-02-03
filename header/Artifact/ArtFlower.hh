@@ -23,6 +23,9 @@ public:
 		SetMainType(6);
 	}
 	~ArtFlower() override {}
+
+	static std::vector<int> GetPossibleMainOption() { return {6}; }
+
 };
 
 #endif

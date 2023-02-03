@@ -1,6 +1,23 @@
 #include "../../header/Character/Raiden.hh"
 
 
+Character* Raiden::Clone() const
+{
+    return new Raiden(this);
+}
+
+
+Raiden::~Raiden()
+{
+    GetArtSetStat()->DeleteCharacterPointer(this);
+    GetArtFlower()->DeleteCharacterPointer(this);
+    GetArtFeather()->DeleteCharacterPointer(this);
+    GetArtClock()->DeleteCharacterPointer(this);
+    GetArtCup()->DeleteCharacterPointer(this);
+    GetArtCrown()->DeleteCharacterPointer(this);
+}
+
+
 double Raiden::GetDamageWithStat(const Stat& stat) const
 {
     double CR = stat.GetCriticalRate();
@@ -30,4 +47,12 @@ double Raiden::GetDamageWithStat(const Stat& stat) const
     double totalEBonus = 100 + eBonus + elecBonus;
     double totalDamage = (burstDamage + qAttackDamage) * totalQBonus / 100. + eDamage * totalEBonus / 100.;
     return totalATK * (1 + CR * CB / 10000.) * defenseCoef * levelCoef * resistCoef * totalDamage;
+}
+
+
+void Raiden::DoFeedback()
+{
+    double EC = this->GetStat().GetElementCharge();
+    double elecBonus = (EC - 100.) * 0.4;
+    this->AddFeedbackedStat(11, elecBonus);
 }

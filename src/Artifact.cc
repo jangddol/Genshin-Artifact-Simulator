@@ -34,18 +34,19 @@ int Artifact::UseCummulatedWeight(std::vector<int> cummulatedWeight)
 	// generate random integer from 0 to the sum of probability table
 	int length = cummulatedWeight.size();
 	
-	std::uniform_int_distribution<int> uniTemp(0, cummulatedWeight[length - 1] - 1); // Guaranteed unbiased
-	int tempInt = uniTemp(rng) + 1;
+	int tempInt;
+	if (cummulatedWeight[length - 1] == 1) tempInt = 1;
+	else tempInt = GetRdUni(cummulatedWeight[length - 1]) + 1;
 
 	int selectedInt = 0;
 	int beforeElement = 0;
 	int nowElement = 0;
-	for (int i = 0; i < length; i++) // for���� �����鼭 ��Һ񱳸� �Ѵ�.
+	for (int i = 0; i < length; i++) // for占쎈닱筌뤾쑴諭� �뜝�럥利쇽옙逾놂옙�맓�듆�뜝�럡�맋 �뜝�룞�삕�뜝�룞�삕占쎄틬占쎈쑏熬곥룊爰랃옙紐닷뜝占� �뜝�럥由썲뜝�럥堉�.
 	{
 		nowElement = cummulatedWeight[i];
 		if (tempInt > beforeElement && tempInt <= nowElement)
 		{
-			selectedInt = i; // ���� int�� ������ ��� �ֿ����� �����Ѵ�.
+			selectedInt = i; // �뜝�럩�굩�뜝�럥�몓 int占쎈ご�뜝占� �뤆�룊�삕嶺뚯쉻�삕占쏙옙�뫅�삕 �뜝�럥�꽑�뜝�럥裕� �썒�슣�닔占쎄맙�뜝�럩逾η춯�쉻�삕 �뇦猿됲�ｏ옙�젧�뜝�럥由썲뜝�럥堉�.
 			break;
 		}
 		beforeElement = nowElement;
@@ -89,7 +90,7 @@ std::vector<int> Artifact::GenerateCummulatedWeight()
 
 bool Artifact::Selected3or4OptStart()
 {
-	if (uni5(rng) == 0) return true;
+	if (GetRdUni5() == 0) return true;
 	else return false;
 }
 
@@ -147,19 +148,19 @@ void Artifact::UpgradeSubOption(std::array<int, 4> startOptList, bool whether4Op
 	int numUpgrade = 4;
 	if (whether4OptStart) numUpgrade = 5;
 
-	// ���� 1ȸ��
+	// 媛곴컖 1�쉶�뵫
 	for (int i = 0; i < 4; i++)
 	{
 		int optIndex = startOptList[i];
-		double randomStat = OPTIONARRAY[optIndex][uni4(rng)];
+		double randomStat = OPTIONARRAY[optIndex][GetRdUni4()];
 		mSubStat.AddOption(optIndex, randomStat);
 	}
 
-	// �������� numUpgrade��ŭ
+	// �옖�뜡�쑝濡� numUpgrade留뚰겮
 	for (int i = 0; i < numUpgrade; i++)
 	{
-		int randomIndex = startOptList[uni4(rng)];
-		double randomStat = OPTIONARRAY[randomIndex][uni4(rng)];
+		int randomIndex = startOptList[GetRdUni4()];
+		double randomStat = OPTIONARRAY[randomIndex][GetRdUni4()];
 		mSubStat.AddOption(randomIndex, randomStat);
 	}
 }
@@ -168,18 +169,18 @@ void Artifact::UpgradeSubOption(std::array<int, 4> startOptList, bool whether4Op
 void Artifact::GenerateSubOption()
 {
 	std::vector<int> subCummulatedWeight = GenerateCummulatedWeight();
-		// 1. ���οɼ��� Ȯ���ؼ� Ȯ��ǥ���� �ش� �κ��� 0���� �����.
-			// 1-1. �̰� ������ cummulatedWeight�� �����.
+		// 1. 嶺뚮∥�뾼占쎈데�뜝�럩湲욕뜝�럥占썩댙�삕占쎈굵 �뜝�럩�꼪�뜝�럩逾ε뜝�럥�돵�뜝�럡�맋 �뜝�럩�꼪占쎈ご�넫琉욍걫�뜝�럥�뱺�뜝�럡�맋 �뜝�럥�돵�뜝�럥堉� 占쎄껀�뜝�띂寃ヨ쥈�뫗諭� 0�뜝�럩紐드슖�댙�삕 嶺뚮씭�뒧獄�釉앹삕占쎈펲.
+			// 1-1. �뜝�럩逾졿ㅀ袁ъ삕 �뤆�룊�삕嶺뚯쉻�삕占쏙옙�뫅�삕 cummulatedWeight�뜝�럩諭� 嶺뚮씭�뒧獄�釉앹삕占쎈펲.
 				// This cummulatedWeight is for subOption
 				// Therefore the length of cummulatedWeight is 10.
 
 	bool whether4OptStart = Selected3or4OptStart();
-		// 2. ó���� 3������ 4������ ������. -> 8�� or 9��
+		// 2. 嶺뚳퐣瑗뤄옙踰됧뜝�럥�뱺 3�뤆�룇裕뉛옙逾η춯�쉻�삕 4�뤆�룇裕뉛옙逾η춯�쉻�삕 占쏙옙�뫁伊볩옙��꿨뜝�럥堉�. -> 8�뤆�룊�삕 or 9�뤆�룊�삕
 	std::array<int, 4> startOptList = GenerateStartOpt(subCummulatedWeight);
-		// 3. ó�� �ɼ� 4���� �������� �����Ѵ�. 4���� ��ġ�� �ʰ� �����Ѵ�.
+		// 3. 嶺뚳퐣瑗뤄옙踰� �뜝�럩湲욕뜝�럥占쏙옙 4�뤆�룇裕꾢뜝�룞�삕 占쎈닱占쎈샍驪볦슱�삕占쎈데嶺뚯쉻�삕 �뇦猿됲�ｏ옙�젧�뜝�럥由썲뜝�럥堉�. 4�뤆�룇裕녶뜝�룞�삕 �뇦猿딉옙占쏙옙�뭵嶺뚯쉻�삕 �뜝�럥瑜ラ뇦猿볦삕 �뜝�럡臾멨뜝�럡�뎽�뜝�럥由썲뜝�럥堉�.
 
 	UpgradeSubOption(startOptList, whether4OptStart);
-		// 4. ���� 4���� �������� ���� 1ȸ ������ �������� 4ȸ �Ǵ� 5ȸ ������Ų��.
+		// 4. �뼨轅명�ｏ옙占쏙옙 4�뤆�룇裕녶뜝�룞�삕 �뜝�럩�굩�뜝�럥�몓�뜝�럩紐드슖�댙�삕 �뤆�룄�궖��뚳옙 1�뜝�럩�뤂 占쏙옙�뫁伊숋옙�젧�뜝�럥�뱺 �뜝�럩�굩�뜝�럥�몓�뜝�럩紐드슖�댙�삕 4�뜝�럩�뤂 �뜝�럩援℡뜝�럥裕� 5�뜝�럩�뤂 嶺뚯빘鍮볟뜝�룞�삕�뜝�럥六삣뜝�럡�뀣�뜝�럥堉�.
 }
 
 
@@ -187,8 +188,8 @@ void Artifact::Generation()
 {
 	mMainStat.SetZero();
 	mSubStat.SetZero();
-	GenerateMainOption(); // ���οɼ� : �������� �ٸ�.
-	GenerateSubOption(); // �οɼ� : ��������, ���οɼǸ��� �ٸ�.
+	GenerateMainOption(); // 嶺뚮∥�뾼占쎈데�뜝�럩湲욕뜝�럥占쏙옙 : 占쎄껀�뜝�룞�삕占쎈쭊嶺뚮씭�쐞占쎈펲 �뜝�럥堉꾬옙逾녑뜝占�.
+	GenerateSubOption(); // 占쎄껀�뜝�룞�삕占쎄맙�뜝�럥占쏙옙 : 占쎄껀�뜝�룞�삕占쎈쭊嶺뚮씭�쐞占쎈펲, 嶺뚮∥�뾼占쎈데�뜝�럩湲욕뜝�럥占썩댙彛뺧옙�쐞占쎈펲 �뜝�럥堉꾬옙逾녑뜝占�.
 	AlertModified();
 }
 

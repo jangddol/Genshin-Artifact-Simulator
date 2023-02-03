@@ -20,17 +20,27 @@ constexpr double PLUSARRAY[10] = { 3.88999991118908, 7.76999965310097, 5.8299999
 
 
 class Weapon;
+class Artifact;
+class ArtFlower;
+class ArtFeather;
+class ArtClock;
+class ArtCup;
+class ArtCrown;
 class ArtSetStat;
+struct MainOptionsAndDamage
+{
+    std::array<int, 3> mainOptions = {-1, -1, -1};
+    double damage = 0;
+};
 
 
 class Character
 {
 public:
 	Character(Weapon* weapon, ArtSetStat* artSetStat, ArtFlower* flower, ArtFeather* feather, ArtClock* clock, ArtCup* cup, ArtCrown* crown)
+	: mTargetEC{100.}, mWeapon{weapon}
 	{ 
-		mWeapon = weapon;
 		SetArtifact(flower, feather, clock, cup, crown);
-		mTargetEC = 100.;
 		SetArtSetStat(artSetStat);
 	}
 	Character(const Character* character);
@@ -38,11 +48,11 @@ public:
 	Character(Character&& character);
 	Character& operator = (const Character &character);
 	Character& operator = (Character &&character);
-	virtual Character* Clone() const { return new Character(this); }
+	virtual Character* Clone() const;
 	virtual ~Character();
 
 	// Stat Update & UpdateState
-	virtual void DoFeedback() {}
+	virtual void DoFeedback();
 	void Update();
 	void ConfirmResonanceStatModified();
 	void ConfirmWeaponStatModified();
@@ -51,7 +61,11 @@ public:
 	void ConfirmArtifactSubStatModified();
 	int  GetUpdateState() const { return mUpdateState; }
 
-	// Damage and EffectionArray, Score Function
+	// Set Manual Mode
+	void SetManualMode(bool isManualMode) { mIsManualMode = isManualMode; }
+	bool GetManualMode()                  { return mIsManualMode; }
+
+	// Damage and EffectionArray
 	double GetDamage() const { return this->GetDamageWithStat(mStat); }
 	virtual double GetDamageWithStat(const Stat& stat) const;
 	void MakeEffectionArray();
@@ -59,6 +73,10 @@ public:
 	double GetScoreFunction(int index) const { return mSavedFunction[index]; }
 	double GetScore() const;
 	double GetEffection(int index) const { return mEffectionArray[index]; }
+
+
+	// Artifact MainOption Optimization
+	std::array<MainOptionsAndDamage, 10> OptimizeMainOption() const;
 
 	// Stat
 	Stat GetStat() const    { return mStat; }
@@ -73,13 +91,13 @@ public:
 
 	// Weapon
 	Weapon* GetWeapon()               { return mWeapon; }
-	std::string  GetWeaponName() const     { return mWeapon->GetName(); }
-	Weapon* CopyWeapon() const        { return mWeapon->Clone(); }
+	std::string  GetWeaponName() const;
+	Weapon* CopyWeapon() const;
 	void    SetWeapon(Weapon* weapon) { mWeapon = weapon; ConfirmWeaponStatModified(); }
 
 	// ArtSetStat
 	ArtSetStat* GetArtSetStat() { return mArtSetStat; }
-	ArtSetStat* CopyArtSetStat() const { return mArtSetStat->Clone(); }
+	ArtSetStat* CopyArtSetStat() const;
 	void        SetArtSetStat(ArtSetStat* stat);
 
 	// Artifact
@@ -124,8 +142,9 @@ public:
 
 protected:
 	void SetBasicCharacterStat();
-	void SetCharacterStat(int index, double amount)     { mCharacterStat.SetOption(index, amount); }
-	void AddCharacterStat(int index, double amount)     { mCharacterStat.AddOption(index, amount); }
+	void SetCharacterStat(int index, double amount)     { mCharacterStat.SetOption(index, amount); mUpdateState = 0; }
+	void SetCharacterStat(const Stat& stat)             { mCharacterStat = stat; mUpdateState = 0; }
+	void AddCharacterStat(int index, double amount)     { mCharacterStat.AddOption(index, amount); mUpdateState = 0; }
 	void SetCharacterBaseStat(int index, double amount) { mCharacterStat.SetBaseOption(index, amount); }
 
 private:
@@ -149,6 +168,9 @@ private:
     constexpr static int ARTIFACTMAINSTATUPDATED = 4;
     constexpr static int ARTIFACTSUBSTATUPDATED = 5;
 
+	bool        mIsManualMode = false;
+
+	void        MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5);
 	double      mSavedFunction[46];
 	double      mEffectionArray[19];
 

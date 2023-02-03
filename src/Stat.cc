@@ -1,5 +1,6 @@
 #include "../header/Stat.hh"
 #include <iostream>
+#include <algorithm>
 
 
 void PrintStat(const Stat& stat)
@@ -17,14 +18,8 @@ void PrintStat(const Stat& stat)
 
 void Stat::SetZero()
 {
-	for (int i = 0; i < 35 ; i++)
-	{
-		mStat[i] = 0.;
-	}
-	for (int i = 0; i < 3 ; i++)
-	{
-		mBaseStat[i] = 0.;
-	}
+	mStat.fill(0);
+	mBaseStat.fill(0);
 }
 
 

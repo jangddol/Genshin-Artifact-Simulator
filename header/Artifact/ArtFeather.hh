@@ -23,6 +23,9 @@ public:
 		SetMainType(3);
 	}
 	~ArtFeather() override {}
+
+	static std::vector<int> GetPossibleMainOption() { return {3}; }
+
 };
 
 #endif

@@ -3,12 +3,12 @@
 
 
 #include <array>
+#include <iostream>
 #include <vector>
 #include <string>
 
-
-std::array<std::string, 3> BASESTATSTRING = {"Base ATK", "Base HP", "Base DEF"};
-std::array<std::string, 35> STATSTRING
+static std::array<std::string, 3> BASESTATSTRING = {"Base ATK", "Base HP", "Base DEF"};
+static std::array<std::string, 35> STATSTRING
 	= {"CR", "CB", "ATK%%", "ATK", "EC", 
 		"HP%%", "HP", "EM", "DEF%%", "DEF",
 		"Pyro", "Elec", "Cryo", "Hydro", "Anymo",
@@ -133,5 +133,9 @@ private:
 	std::array<double, 3> mBaseStat = { 0. };
 	// 0:공격력, 1:HP, 2:방어력
 };
+
+
+void PrintStat(const Stat& stat);
+
 
 #endif
