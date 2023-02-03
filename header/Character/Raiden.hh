@@ -26,17 +26,12 @@ public:
 	Raiden(Raiden&& other) : Character(other) { Update(); }
 	Raiden& operator = (const Raiden& other) { return * this; }
 	Raiden& operator = (Raiden&& other) { return * this; }
-	Character* Clone() const override { return new Raiden(this); }
-	~Raiden() override {}
+	virtual Character* Clone() const override;
+	virtual ~Raiden() override;
 
-	double GetDamageWithStat(const Stat& stat) const override;
+	virtual double GetDamageWithStat(const Stat& stat) const override;
 
-    void DoFeedback() override
-	{
-		double EC = this->GetStat().GetElementCharge();
-		double elecBonus = (EC - 100.) * 0.4;
-		this->AddFeedbackedStat(11, elecBonus);
-	}
+    virtual void DoFeedback() override;
 
 	double GetTotalPartyEnergy() const { return mTotalPartyEnergy; }
 	void   SetTotalPartyEnergy(double totalPartyEnergy) { mTotalPartyEnergy = totalPartyEnergy; }
