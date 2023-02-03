@@ -21,6 +21,11 @@ constexpr double PLUSARRAY[10] = { 3.88999991118908, 7.76999965310097, 5.8299999
 
 class Weapon;
 class ArtSetStat;
+struct MainOptionsAndDamage
+{
+    std::array<int, 3> mainOptions = {-1, -1, -1};
+    double damage = 0;
+};
 
 
 class Character
@@ -63,6 +68,10 @@ public:
 	double GetScoreFunction(int index) const { return mSavedFunction[index]; }
 	double GetScore() const;
 	double GetEffection(int index) const { return mEffectionArray[index]; }
+
+
+	// Artifact MainOption Optimization
+	std::array<MainOptionsAndDamage, 10> OptimizeMainOption() const;
 
 	// Stat
 	Stat GetStat() const    { return mStat; }
