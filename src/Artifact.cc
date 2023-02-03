@@ -34,17 +34,19 @@ int Artifact::UseCummulatedWeight(std::vector<int> cummulatedWeight)
 	// generate random integer from 0 to the sum of probability table
 	int length = cummulatedWeight.size();
 	
-	int tempInt = GetRdUni(cummulatedWeight[length - 1] - 1) + 1;
+	int tempInt;
+	if (cummulatedWeight[length - 1] == 1) tempInt = 1;
+	else tempInt = GetRdUni(cummulatedWeight[length - 1]) + 1;
 
 	int selectedInt = 0;
 	int beforeElement = 0;
 	int nowElement = 0;
-	for (int i = 0; i < length; i++) // for�눧紐꾩뱽 占쎈즼�뵳�됥늺占쎄퐣 占쏙옙占쏙옙�꺖�뜮袁㏉꺍�몴占� 占쎈립占쎈뼄.
+	for (int i = 0; i < length; i++) // for占쎈닱筌뤾쑴諭� �뜝�럥利쇽옙逾놂옙�맓�듆�뜝�럡�맋 �뜝�룞�삕�뜝�룞�삕占쎄틬占쎈쑏熬곥룊爰랃옙紐닷뜝占� �뜝�럥由썲뜝�럥堉�.
 	{
 		nowElement = cummulatedWeight[i];
 		if (tempInt > beforeElement && tempInt <= nowElement)
 		{
-			selectedInt = i; // 占쎌삏占쎈쑁 int�몴占� 揶쏉옙筌욑옙��⑨옙 占쎈선占쎈뮄 雅뚯눘�긿占쎌뵥筌욑옙 野껉퀣�젟占쎈립占쎈뼄.
+			selectedInt = i; // �뜝�럩�굩�뜝�럥�몓 int占쎈ご�뜝占� �뤆�룊�삕嶺뚯쉻�삕占쏙옙�뫅�삕 �뜝�럥�꽑�뜝�럥裕� �썒�슣�닔占쎄맙�뜝�럩逾η춯�쉻�삕 �뇦猿됲�ｏ옙�젧�뜝�럥由썲뜝�럥堉�.
 			break;
 		}
 		beforeElement = nowElement;
@@ -146,7 +148,7 @@ void Artifact::UpgradeSubOption(std::array<int, 4> startOptList, bool whether4Op
 	int numUpgrade = 4;
 	if (whether4OptStart) numUpgrade = 5;
 
-	// 각각 1회씩
+	// 媛곴컖 1�쉶�뵫
 	for (int i = 0; i < 4; i++)
 	{
 		int optIndex = startOptList[i];
@@ -154,7 +156,7 @@ void Artifact::UpgradeSubOption(std::array<int, 4> startOptList, bool whether4Op
 		mSubStat.AddOption(optIndex, randomStat);
 	}
 
-	// 랜덤으로 numUpgrade만큼
+	// �옖�뜡�쑝濡� numUpgrade留뚰겮
 	for (int i = 0; i < numUpgrade; i++)
 	{
 		int randomIndex = startOptList[GetRdUni4()];
@@ -167,18 +169,18 @@ void Artifact::UpgradeSubOption(std::array<int, 4> startOptList, bool whether4Op
 void Artifact::GenerateSubOption()
 {
 	std::vector<int> subCummulatedWeight = GenerateCummulatedWeight();
-		// 1. 筌롫뗄�뵥占쎌긿占쎈�∽옙�뱽 占쎌넇占쎌뵥占쎈퉸占쎄퐣 占쎌넇�몴醫뤿ご占쎈퓠占쎄퐣 占쎈퉸占쎈뼣 �겫占썽겫袁⑹뱽 0占쎌몵嚥∽옙 筌띾슢諭븝옙�뼄.
-			// 1-1. 占쎌뵠椰꾬옙 揶쏉옙筌욑옙��⑨옙 cummulatedWeight占쎌뱽 筌띾슢諭븝옙�뼄.
+		// 1. 嶺뚮∥�뾼占쎈데�뜝�럩湲욕뜝�럥占썩댙�삕占쎈굵 �뜝�럩�꼪�뜝�럩逾ε뜝�럥�돵�뜝�럡�맋 �뜝�럩�꼪占쎈ご�넫琉욍걫�뜝�럥�뱺�뜝�럡�맋 �뜝�럥�돵�뜝�럥堉� 占쎄껀�뜝�띂寃ヨ쥈�뫗諭� 0�뜝�럩紐드슖�댙�삕 嶺뚮씭�뒧獄�釉앹삕占쎈펲.
+			// 1-1. �뜝�럩逾졿ㅀ袁ъ삕 �뤆�룊�삕嶺뚯쉻�삕占쏙옙�뫅�삕 cummulatedWeight�뜝�럩諭� 嶺뚮씭�뒧獄�釉앹삕占쎈펲.
 				// This cummulatedWeight is for subOption
 				// Therefore the length of cummulatedWeight is 10.
 
 	bool whether4OptStart = Selected3or4OptStart();
-		// 2. 筌ｌ꼷�벉占쎈퓠 3揶쏆뮇�뵥筌욑옙 4揶쏆뮇�뵥筌욑옙 ��⑥쥓�뀲占쎈뼄. -> 8揶쏉옙 or 9揶쏉옙
+		// 2. 嶺뚳퐣瑗뤄옙踰됧뜝�럥�뱺 3�뤆�룇裕뉛옙逾η춯�쉻�삕 4�뤆�룇裕뉛옙逾η춯�쉻�삕 占쏙옙�뫁伊볩옙��꿨뜝�럥堉�. -> 8�뤆�룊�삕 or 9�뤆�룊�삕
 	std::array<int, 4> startOptList = GenerateStartOpt(subCummulatedWeight);
-		// 3. 筌ｌ꼷�벉 占쎌긿占쎈�� 4揶쏆뮄占쏙옙 �눧�똻毓울옙�뵥筌욑옙 野껉퀣�젟占쎈립占쎈뼄. 4揶쏆뮆占쏙옙 野껊���뒄筌욑옙 占쎈륫野껓옙 占쎄문占쎄쉐占쎈립占쎈뼄.
+		// 3. 嶺뚳퐣瑗뤄옙踰� �뜝�럩湲욕뜝�럥占쏙옙 4�뤆�룇裕꾢뜝�룞�삕 占쎈닱占쎈샍驪볦슱�삕占쎈데嶺뚯쉻�삕 �뇦猿됲�ｏ옙�젧�뜝�럥由썲뜝�럥堉�. 4�뤆�룇裕녶뜝�룞�삕 �뇦猿딉옙占쏙옙�뭵嶺뚯쉻�삕 �뜝�럥瑜ラ뇦猿볦삕 �뜝�럡臾멨뜝�럡�뎽�뜝�럥由썲뜝�럥堉�.
 
 	UpgradeSubOption(startOptList, whether4OptStart);
-		// 4. 疫꿸퀣��� 4揶쏆뮆占쏙옙 占쎌삏占쎈쑁占쎌몵嚥∽옙 揶쏄낫而� 1占쎌돳 ��⑥쥙�젟占쎈퓠 占쎌삏占쎈쑁占쎌몵嚥∽옙 4占쎌돳 占쎌굢占쎈뮉 5占쎌돳 筌앹빓占쏙옙占쎈뻻占쎄텚占쎈뼄.
+		// 4. �뼨轅명�ｏ옙占쏙옙 4�뤆�룇裕녶뜝�룞�삕 �뜝�럩�굩�뜝�럥�몓�뜝�럩紐드슖�댙�삕 �뤆�룄�궖��뚳옙 1�뜝�럩�뤂 占쏙옙�뫁伊숋옙�젧�뜝�럥�뱺 �뜝�럩�굩�뜝�럥�몓�뜝�럩紐드슖�댙�삕 4�뜝�럩�뤂 �뜝�럩援℡뜝�럥裕� 5�뜝�럩�뤂 嶺뚯빘鍮볟뜝�룞�삕�뜝�럥六삣뜝�럡�뀣�뜝�럥堉�.
 }
 
 
@@ -186,8 +188,8 @@ void Artifact::Generation()
 {
 	mMainStat.SetZero();
 	mSubStat.SetZero();
-	GenerateMainOption(); // 筌롫뗄�뵥占쎌긿占쎈�� : �겫占쏙옙�맄筌띾뜄�뼄 占쎈뼄�뵳占�.
-	GenerateSubOption(); // �겫占쏙옙�긿占쎈�� : �겫占쏙옙�맄筌띾뜄�뼄, 筌롫뗄�뵥占쎌긿占쎈�∽쭕�뜄�뼄 占쎈뼄�뵳占�.
+	GenerateMainOption(); // 嶺뚮∥�뾼占쎈데�뜝�럩湲욕뜝�럥占쏙옙 : 占쎄껀�뜝�룞�삕占쎈쭊嶺뚮씭�쐞占쎈펲 �뜝�럥堉꾬옙逾녑뜝占�.
+	GenerateSubOption(); // 占쎄껀�뜝�룞�삕占쎄맙�뜝�럥占쏙옙 : 占쎄껀�뜝�룞�삕占쎈쭊嶺뚮씭�쐞占쎈펲, 嶺뚮∥�뾼占쎈데�뜝�럩湲욕뜝�럥占썩댙彛뺧옙�쐞占쎈펲 �뜝�럥堉꾬옙逾녑뜝占�.
 	AlertModified();
 }
 
