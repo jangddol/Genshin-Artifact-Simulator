@@ -43,6 +43,14 @@ public:
 };
 
 
+enum ScoreIndex
+{
+    DAMAGE,
+    JANGDDOL,
+    MONKEYMAGIC
+};
+
+
 class Simulator
 {
 public:
@@ -62,11 +70,17 @@ public:
     void SetWorkerMode(bool workerMode) { mWorkerMode = workerMode; if (workerMode) mSeeLastArtifact = false; }
     void SetSeeTimeConsumption(bool seeTimeConsumption) { mSeeTimeConsumption = seeTimeConsumption; }
     void SetSeeLastArtifact(bool seeLastArtifact) { mSeeLastArtifact = seeLastArtifact; }
+    void SetScoreIndexMode(ScoreIndex scoreIndex) { mScoreIndex = scoreIndex; }
 
     std::vector<double> GetAppendableRate() const { return mAppendableRate; }
     double GetCalLoopTimeList(int index) const { return mCalLoopTimeList[index]; }
     double GetTimeList(int index) const { return mTimeList[index]; }
+
 private:
+    ScoreIndex mScoreIndex = DAMAGE;
+    double CalLoopArtifact_Damage(SuperArtifactList& loopList, ArtifactBundle& bestTryArtifacts);
+    double CalLoopArtifact_jangddolScore(SuperArtifactList& loopList, ArtifactBundle& bestTryArtifacts);
+    double CalLoopArtifact_MonkeyMagicScore(SuperArtifactList& loopList, ArtifactBundle& bestTryArtifacts);
     double CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList& ArtifactSuperList,
                             ArtifactBundle& bestTryArtifacts);
 

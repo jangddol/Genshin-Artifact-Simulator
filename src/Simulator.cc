@@ -317,10 +317,159 @@ void AppendArtifactList(Artifact* gennedArtifact, SuperArtifactList& ArtifactSup
 }
 
 
+double Simulator::CalLoopArtifact_Damage(SuperArtifactList& loopList, ArtifactBundle& bestTryArtifacts)
+{
+	std::chrono::system_clock::time_point CALLOOPSTART, CALLOOPFINISH;
+
+	double tempDamage;
+	double bestDamage = 0;
+
+	std::for_each(loopList.crown.begin(), loopList.crown.end(), [&](ArtCrown* crown) {
+        mCharacter->SetArtCrown(crown);
+		std::for_each(loopList.cup.begin(), loopList.cup.end(), [&](ArtCup* cup) {
+            mCharacter->SetArtCup(cup);
+			std::for_each(loopList.clock.begin(), loopList.clock.end(), [&](ArtClock* clock) {
+                mCharacter->SetArtClock(clock);
+				std::for_each(loopList.feather.begin(), loopList.feather.end(), [&](ArtFeather* feather) {
+                    mCharacter->SetArtFeather(feather);
+					std::for_each(loopList.flower.begin(), loopList.flower.end(), [&](ArtFlower* flower) {
+                        mCharacter->SetArtFlower(flower);
+						
+						// Initialize the character
+						CALLOOPSTART = std::chrono::system_clock::now();
+						mCharacter->Update();
+						CALLOOPFINISH = std::chrono::system_clock::now();
+						mCalLoopTimeList[0] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
+						
+						// Calculate the damage
+						CALLOOPSTART = CALLOOPFINISH;
+						tempDamage = mCharacter->GetDamage();
+						CALLOOPFINISH = std::chrono::system_clock::now();
+						mCalLoopTimeList[1] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
+
+						// Update the best damage and artifact combination if necessary
+						if (tempDamage > bestDamage)
+    {
+							bestDamage = tempDamage;
+							bestTryArtifacts.flower = flower;
+							bestTryArtifacts.feather = feather;
+							bestTryArtifacts.clock = clock;
+							bestTryArtifacts.cup = cup;
+							bestTryArtifacts.crown = crown;
+    }
+                    });
+                });
+            });
+        });
+    });
+
+	return bestDamage;
+}
+
+
+double Simulator::CalLoopArtifact_jangddolScore(SuperArtifactList& loopList, ArtifactBundle& bestTryArtifacts)
+{
+	std::chrono::system_clock::time_point CALLOOPSTART, CALLOOPFINISH;
+
+	double tempDamage;
+	double bestDamage = 0;
+
+	std::for_each(loopList.crown.begin(), loopList.crown.end(), [&](ArtCrown* crown) {
+        mCharacter->SetArtCrown(crown);
+		std::for_each(loopList.cup.begin(), loopList.cup.end(), [&](ArtCup* cup) {
+            mCharacter->SetArtCup(cup);
+			std::for_each(loopList.clock.begin(), loopList.clock.end(), [&](ArtClock* clock) {
+                mCharacter->SetArtClock(clock);
+				std::for_each(loopList.feather.begin(), loopList.feather.end(), [&](ArtFeather* feather) {
+                    mCharacter->SetArtFeather(feather);
+	std::for_each(loopList.flower.begin(), loopList.flower.end(), [&](ArtFlower* flower) {
+        mCharacter->SetArtFlower(flower);
+						
+						// Initialize the character
+						CALLOOPSTART = std::chrono::system_clock::now();
+						mCharacter->Update();
+						CALLOOPFINISH = std::chrono::system_clock::now();
+						mCalLoopTimeList[0] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
+						
+						// Calculate the damage
+						CALLOOPSTART = CALLOOPFINISH;
+						tempDamage = mCharacter->GetScore();
+						CALLOOPFINISH = std::chrono::system_clock::now();
+						mCalLoopTimeList[1] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
+
+						// Update the best damage and artifact combination if necessary
+						if (tempDamage > bestDamage)
+						{
+							bestDamage = tempDamage;
+							bestTryArtifacts.flower = flower;
+							bestTryArtifacts.feather = feather;
+							bestTryArtifacts.clock = clock;
+							bestTryArtifacts.cup = cup;
+							bestTryArtifacts.crown = crown;
+						}
+                    });
+                });
+            });
+        });
+    });
+	
+	return bestDamage;
+}
+
+
+double Simulator::CalLoopArtifact_MonkeyMagicScore(SuperArtifactList& loopList, ArtifactBundle& bestTryArtifacts)
+{
+	std::chrono::system_clock::time_point CALLOOPSTART, CALLOOPFINISH;
+
+	double tempDamage;
+	double bestDamage = 0;
+
+	std::for_each(loopList.crown.begin(), loopList.crown.end(), [&](ArtCrown* crown) {
+        mCharacter->SetArtCrown(crown);
+		std::for_each(loopList.cup.begin(), loopList.cup.end(), [&](ArtCup* cup) {
+            mCharacter->SetArtCup(cup);
+			std::for_each(loopList.clock.begin(), loopList.clock.end(), [&](ArtClock* clock) {
+                mCharacter->SetArtClock(clock);
+		std::for_each(loopList.feather.begin(), loopList.feather.end(), [&](ArtFeather* feather) {
+            mCharacter->SetArtFeather(feather);
+					std::for_each(loopList.flower.begin(), loopList.flower.end(), [&](ArtFlower* flower) {
+                        mCharacter->SetArtFlower(flower);
+						
+						// Initialize the character
+						CALLOOPSTART = std::chrono::system_clock::now();
+						mCharacter->Update();
+						CALLOOPFINISH = std::chrono::system_clock::now();
+						mCalLoopTimeList[0] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
+						
+						// Calculate the damage
+						CALLOOPSTART = CALLOOPFINISH;
+						tempDamage = mCharacter->GetScore_MonkeyMagic();
+						CALLOOPFINISH = std::chrono::system_clock::now();
+						mCalLoopTimeList[1] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
+
+						// Update the best damage and artifact combination if necessary
+						if (tempDamage > bestDamage)
+						{
+							bestDamage = tempDamage;
+							bestTryArtifacts.flower = flower;
+							bestTryArtifacts.feather = feather;
+							bestTryArtifacts.clock = clock;
+							bestTryArtifacts.cup = cup;
+							bestTryArtifacts.crown = crown;
+						}
+                    });
+                });
+            });
+        });
+    });
+
+	return bestDamage;
+}
+
+
 double Simulator::CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList& ArtifactSuperList,
 	ArtifactBundle& bestTryArtifacts)
 {
-	std::chrono::system_clock::time_point CALLOOPSTART, CALLOOPFINISH;
 	// Set the generated artifact as the only artifact in the loop list for its type
     SuperArtifactList loopList = ArtifactSuperList;
     switch (gennedArtifact->GetType())
@@ -345,48 +494,26 @@ double Simulator::CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList& A
             return 0;
     }
 
-	double tempDamage, bestDamage;
-	bestDamage = 0;
+	bool beforeManualMode = mCharacter->GetManualMode();
+	mCharacter->SetManualMode(true);
 
+	double bestDamage;
+	switch (mScoreIndex)
+    {
+        case DAMAGE:
+			bestDamage = CalLoopArtifact_Damage(loopList, bestTryArtifacts);
+            break;
+        case JANGDDOL:
+			bestDamage = CalLoopArtifact_jangddolScore(loopList, bestTryArtifacts);
+            break;
+        case MONKEYMAGIC:
+			bestDamage = CalLoopArtifact_MonkeyMagicScore(loopList, bestTryArtifacts);
+            break;
+        default:
+			assert(0);
+    }
 
-	std::for_each(loopList.flower.begin(), loopList.flower.end(), [&](ArtFlower* flower) {
-        mCharacter->SetArtFlower(flower);
-		std::for_each(loopList.feather.begin(), loopList.feather.end(), [&](ArtFeather* feather) {
-            mCharacter->SetArtFeather(feather);
-			std::for_each(loopList.clock.begin(), loopList.clock.end(), [&](ArtClock* clock) {
-                mCharacter->SetArtClock(clock);
-				std::for_each(loopList.cup.begin(), loopList.cup.end(), [&](ArtCup* cup) {
-                    mCharacter->SetArtCup(cup);
-					std::for_each(loopList.crown.begin(), loopList.crown.end(), [&](ArtCrown* crown) {
-                        mCharacter->SetArtCrown(crown);
-						
-						// Initialize the character
-						CALLOOPSTART = std::chrono::system_clock::now();
-						mCharacter->Update();
-						CALLOOPFINISH = std::chrono::system_clock::now();
-						mCalLoopTimeList[0] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
-						
-						// Calculate the damage
-						CALLOOPSTART = CALLOOPFINISH;
-						tempDamage = mCharacter->GetDamage();
-						CALLOOPFINISH = std::chrono::system_clock::now();
-						mCalLoopTimeList[1] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
-
-						// Update the best damage and artifact combination if necessary
-						if (tempDamage > bestDamage)
-						{
-							bestDamage = tempDamage;
-							bestTryArtifacts.flower = flower;
-							bestTryArtifacts.feather = feather;
-							bestTryArtifacts.clock = clock;
-							bestTryArtifacts.cup = cup;
-							bestTryArtifacts.crown = crown;
-						}
-                    });
-                });
-            });
-        });
-    });
+	mCharacter->SetManualMode(beforeManualMode);
 
 	return bestDamage;
 }
@@ -447,7 +574,22 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
 
 	// Histogram array to store results of each simulation run
     if (histName == "") histName = "SIMULATOR_RUNSIMULATION_RESULT";
-	TH2D* VisualHistogram = new TH2D(histName, "", artifactNum, 0, artifactNum, binNum, minDamage, maxDamage);
+	TH2D* VisualHistogram;
+
+	switch (mScoreIndex)
+    {
+        case DAMAGE:
+			VisualHistogram = new TH2D(histName, "", artifactNum, 0, artifactNum, binNum, minDamage, maxDamage);
+            break;
+        case JANGDDOL:
+			VisualHistogram = new TH2D(histName, "", artifactNum, 0, artifactNum, binNum, MINSCORE, MAXSCORE);
+            break;
+        case MONKEYMAGIC:
+			VisualHistogram = new TH2D(histName, "", artifactNum, 0, artifactNum, binNum, MINSCORE, MAXSCORE);
+            break;
+        default:
+			assert(0);
+    }
 
 	// Code Execution Time Evaluation
 	for (int i = 0; i < 4; i++) mTimeList[i] = 0.;
@@ -457,6 +599,9 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
 	mAppendableRate = {};
 	mAppendableRate.reserve(artifactNum);
 	mAppendableRate.resize(artifactNum);
+
+	mCharacter->MakeEffectionArray();
+	mCharacter->MakeScoreFunction();
 
 	// Simulation Part
 	for (int i = 0; i < simNum; i++)
@@ -582,6 +727,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 		simulatorVector[i].SetNumThread(mNumThread);
 		simulatorVector[i].SetSeeLastArtifact(mSeeLastArtifact);
 		simulatorVector[i].SetSeeTimeConsumption(mSeeTimeConsumption);
+		simulatorVector[i].SetScoreIndexMode(mScoreIndex);
 	}
 
 	if (DEBUGMODE)
@@ -615,8 +761,8 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	}
 	
 
-	// �뜝�럩逾졾뜝�럥援뜹뜝�룞�삕�뜝占� �뤆�룄�궖��뚳옙 �뜝�럥苡뷴뜝�럩�읉�뜝�럥援� �뜝�럥�닱�뜝�럥�뱺�뜝�럡�맋 SimulationWorker占쎈ご�뜝占� �뛾�룇裕녺뙴�쉻�삕�뇡�냲�삕占쎈펲.
-	// SimulationWorker�뜝�럥裕� 2d-Histogram�뜝�럩諭� simulatorVector[i]�뜝�럥�뱺 �뜝�럡�뀣�뼨轅명�쀯옙占쏙옙 �썒�슣�윥占쎈츎�뜝�럥堉�.
+	// 이들은 각각 쓰레드 안에서 SimulationWorker를 발동한다.
+	// SimulationWorker는 2d-Histogram을 simulatorVector[i]에 남기고 죽는다.
 	std::vector<std::thread> threads;
 	for (int i = 0; i < mNumThread; i++)
 	{
@@ -642,7 +788,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 		}
 	}
 
-	// �뜝�럡臾멨뜝�럡�뎽�뜝�럥彛� AppendRate�뜝�럥利� �뜝�럥�뿰�뼨轅명�▽빳占� �뜝�럡�맂�뇦爰용쳛�뜝�룞�삕�뜝�럥堉�.
+	// 생성된 AppendRate도 여기로 넘겨준다.
 	std::vector<double> tempVector(artifactNum);
 	for (int i = 0; i < mNumThread; i++)
 	{
@@ -671,7 +817,21 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 
 	if (DEBUGMODE) std::cout << "11" << std::endl;
 
-	TH2D* VisualHistogram = new TH2D("VisualHistogram", "", artifactNum, 0, artifactNum, binNum, minDamage, maxDamage);
+	TH2D* VisualHistogram;
+	switch (mScoreIndex)
+    {
+        case DAMAGE:
+			VisualHistogram = new TH2D("VisualHistogram", "", artifactNum, 0, artifactNum, binNum, minDamage, maxDamage);
+            break;
+        case JANGDDOL:
+			VisualHistogram = new TH2D("VisualHistogram", "", artifactNum, 0, artifactNum, binNum, MINSCORE, MAXSCORE);
+            break;
+        case MONKEYMAGIC:
+			VisualHistogram = new TH2D("VisualHistogram", "", artifactNum, 0, artifactNum, binNum, MINSCORE, MAXSCORE);
+            break;
+        default:
+			assert(0);
+    }
 	for (int i = 0; i < mNumThread; i++)
 	{
 		VisualHistogram->Add(HistogramArray[i]);
