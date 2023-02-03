@@ -38,11 +38,11 @@ public:
 	Character(Character&& character);
 	Character& operator = (const Character &character);
 	Character& operator = (Character &&character);
-	virtual Character* Clone() const { return new Character(this); }
+	virtual Character* Clone() const;
 	virtual ~Character();
 
 	// Stat Update & UpdateState
-	virtual void DoFeedback() {}
+	virtual void DoFeedback();
 	void Update();
 	void ConfirmResonanceStatModified();
 	void ConfirmWeaponStatModified();
