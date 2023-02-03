@@ -124,8 +124,9 @@ public:
 
 protected:
 	void SetBasicCharacterStat();
-	void SetCharacterStat(int index, double amount)     { mCharacterStat.SetOption(index, amount); }
-	void AddCharacterStat(int index, double amount)     { mCharacterStat.AddOption(index, amount); }
+	void SetCharacterStat(int index, double amount)     { mCharacterStat.SetOption(index, amount); mUpdateState = 0; }
+	void SetCharacterStat(const Stat& stat)             { mCharacterStat = stat; mUpdateState = 0; }
+	void AddCharacterStat(int index, double amount)     { mCharacterStat.AddOption(index, amount); mUpdateState = 0; }
 	void SetCharacterBaseStat(int index, double amount) { mCharacterStat.SetBaseOption(index, amount); }
 
 private:
