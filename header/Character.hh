@@ -77,13 +77,13 @@ public:
 
 	// Weapon
 	Weapon* GetWeapon()               { return mWeapon; }
-	std::string  GetWeaponName() const     { return mWeapon->GetName(); }
-	Weapon* CopyWeapon() const        { return mWeapon->Clone(); }
+	std::string  GetWeaponName() const;
+	Weapon* CopyWeapon() const;
 	void    SetWeapon(Weapon* weapon) { mWeapon = weapon; ConfirmWeaponStatModified(); }
 
 	// ArtSetStat
 	ArtSetStat* GetArtSetStat() { return mArtSetStat; }
-	ArtSetStat* CopyArtSetStat() const { return mArtSetStat->Clone(); }
+	ArtSetStat* CopyArtSetStat() const;
 	void        SetArtSetStat(ArtSetStat* stat);
 
 	// Artifact
