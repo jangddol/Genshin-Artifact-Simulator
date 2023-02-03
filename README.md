@@ -12,9 +12,9 @@ The following image is the one of the expected result of this simulation.
 
 ![plot](./save/Ningguang_DustofMist_600.png)
 
-This plot is the 2d-histogram of a simulation for the artifacts farming result with the following conditions:
+This plot is the 2d-histogram of a simulation for the artifacts farming result with the following conditions:  
 Character : Ningguang  
-Weapon : DualofMist  
+Weapon : Dual of Mist  
 Artifact Set : Archaic Petra 2, Gladiator's Finale 2  
 Resonance : Geo  
 
