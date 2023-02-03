@@ -33,7 +33,7 @@ message("HEADERS : ${HEADERS_CHARACTER}")
 message("HEADERS : ${HEADERS_SKILL}")
 message("HEADERS : ${HEADERS_WEAPON}")
 
-add_executable(Genshin_Artifact_Simulator Simulator_Raiden.C 
+add_executable(Genshin_Artifact_Simulator Simulator_Raiden.cpp 
                         ${SOURCES} 
                         ${SOURCES_CHARACTER} 
                         ${SOURCES_SKILL} 

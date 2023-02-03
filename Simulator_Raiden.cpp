@@ -36,7 +36,7 @@ void Simulator_Raiden()
 
 	// simulation number
 	// the number of artifacts to get
-	int simNum = 100;
+	int simNum = 1000;
 	int artifactNum = 300; // 4.7925 per day (150 ~ month)
 
 	// maxDamage, binNum
@@ -49,6 +49,7 @@ void Simulator_Raiden()
 	// simulator->SetNumThread(8); default : max
 	simulator->SetSeeLastArtifact(false);
 	simulator->SetSeeTimeConsumption(true);
+	simulator->SetScoreIndexMode(JANGDDOL);
 
 	TH2D* VisualHistogram = simulator->RunSimulationMultiThreads(simNum, artifactNum, binNum, minDamage, maxDamage);
 	// TH2D* VisualHistogram = simulator->RunSimulation(simNum, artifactNum, binNum, minDamage, maxDamage);
@@ -64,10 +65,10 @@ void Simulator_Raiden()
 	VisualHistogram->SetEntries(numContent);
 
 	TCanvas* can1 = new TCanvas("canvas", "canvas", 1200, 800);
-	gPad->SetLeftMargin(0.12);
-	gPad->SetBottomMargin(0.12);
-	gPad->SetRightMargin(0.08);
-	gPad->SetTopMargin(0.05);
+	can1->SetLeftMargin(0.12);
+	can1->SetBottomMargin(0.12);
+	can1->SetRightMargin(0.08);
+	can1->SetTopMargin(0.05);
 	
 	VisualHistogram->SetName("Visual");
 	VisualHistogram->GetXaxis()->SetTitle("The number of artifact to get");
@@ -78,4 +79,11 @@ void Simulator_Raiden()
 	TFile* file = new TFile("GenshinArtifactSimulator_Raiden.root", "recreate");
 	VisualHistogram->Write();
 	file->Close();
+}
+
+
+int main()
+{
+	Simulator_Raiden();
+	return 0;
 }
