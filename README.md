@@ -10,4 +10,4 @@ It doesn't work completely.
 # Expected result
 The following image is the one of the expected result of this simulation.
 
-![plot](./save/Class_Diagram.png)
+![plot](./save/Ningguang_DustofMist_600.png)
