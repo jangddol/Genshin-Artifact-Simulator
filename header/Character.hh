@@ -155,6 +155,8 @@ private:
     constexpr static int ARTIFACTSUBSTATUPDATED = 5;
 
 	bool        mIsManualMode = false;
+
+	void        MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5);
 	double      mSavedFunction[46];
 	double      mEffectionArray[19];
 

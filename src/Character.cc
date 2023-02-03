@@ -156,7 +156,7 @@ void Character::Update()
 
 void Character::UpdateFromCharacterResonance()
 {
-	// 罹먮┃�꽣 �샃�뀡 : 0 ~ 34, b0 ~ b2
+	// 筌�癒��봼占쎄숲 占쎌긿占쎈�� : 0 ~ 34, b0 ~ b2
     mStatAfterUpdateFromCharacterResonance.SetZero();
     for (int i = 0; i < 35; i++)
     {
@@ -167,7 +167,7 @@ void Character::UpdateFromCharacterResonance()
         mStatAfterUpdateFromCharacterResonance.SetBaseOption(i, mCharacterStat.GetBaseOption(i));
     }
 
-	// 怨듬챸 : 0, 2, 5, 7, 10 ~ 17, 27
+	// ��⑤벉梨� : 0, 2, 5, 7, 10 ~ 17, 27
     mStatAfterUpdateFromCharacterResonance.AddOption(0, mResonanceStat.GetOption(0));
     mStatAfterUpdateFromCharacterResonance.AddOption(2, mResonanceStat.GetOption(2));
     mStatAfterUpdateFromCharacterResonance.AddOption(5, mResonanceStat.GetOption(5));
@@ -188,16 +188,16 @@ void Character::UpdateFromWeapon()
     
     mStatAfterUpdateFromWeapon = mStatAfterUpdateFromCharacterResonance;
 
-    // 臾닿린 二쇱샃 : b0
+    // �눧�떯由� 雅뚯눘�긿 : b0
     mStatAfterUpdateFromWeapon.SetBaseOption(0, mStatAfterUpdateFromWeapon.GetBaseOption(0) + WeaponMainStat.GetBaseOption(0));
 
-	// 臾닿린 遺��샃 : 0 ~ 18 // �셿�쟾�엳 諛곗젣�맂 寃껋�� �븘�떂
+	// �눧�떯由� �겫占쏙옙�긿 : 0 ~ 18 // 占쎌끏占쎌읈占쎌뿳 獄쏄퀣�젫占쎈쭆 野껉퍔占쏙옙 占쎈툡占쎈뻷
     for (int i = 0; i < 19; i++)
     {
         mStatAfterUpdateFromWeapon.AddOption(i, WeaponSubStat.GetOption(i));
     }
 
-	// 臾닿린 遺�遺��샃 : 0 ~ 23, 27, 28 // �셿�쟾�엳 諛곗젣�맂 寃껋�� �븘�떂
+	// �눧�떯由� �겫占썽겫占쏙옙�긿 : 0 ~ 23, 27, 28 // 占쎌끏占쎌읈占쎌뿳 獄쏄퀣�젫占쎈쭆 野껉퍔占쏙옙 占쎈툡占쎈뻷
     for (int i = 0; i < 24; i++)
     {
         mStatAfterUpdateFromWeapon.AddOption(i, WeaponSubSubStat.GetOption(i));
@@ -212,7 +212,7 @@ void Character::UpdateFromArtSetStat()
 {
     mStatAfterUpdateFromArtSetStat = mStatAfterUpdateFromWeapon;
 
-	// �꽦�쑀臾� �꽭�듃 : 0 ~ 23, 27, 28 // �셿�쟾�엳 諛곗젣�맂 寃껋�� �븘�떂
+	// 占쎄쉐占쎌���눧占� 占쎄쉭占쎈뱜 : 0 ~ 23, 27, 28 // 占쎌끏占쎌읈占쎌뿳 獄쏄퀣�젫占쎈쭆 野껉퍔占쏙옙 占쎈툡占쎈뻷
     for (int i = 0; i < 24; i++)
     {
         mStatAfterUpdateFromArtSetStat.AddOption(i, mArtSetStat->GetOption(i));
@@ -226,7 +226,7 @@ void Character::UpdateFromArtifactMainStat()
 {
     mStatAfterUpdateFromArtifactMainStat = mStatAfterUpdateFromArtSetStat;
     
-    // �꽦�쑀臾� 二쇱샃 : 0 ~ 8, 10 ~ 18
+    // 占쎄쉐占쎌���눧占� 雅뚯눘�긿 : 0 ~ 8, 10 ~ 18
     
     Stat FlowerMainStat = mArtFlower->GetMainStat();
     Stat FeatherMainStat = mArtFeather->GetMainStat();
@@ -246,7 +246,7 @@ void Character::UpdateFromArtifactSubStat()
 {
     mStatAfterUpdateFromArtifactSubStat = mStatAfterUpdateFromArtifactMainStat;
     
-    // �꽦�쑀臾� 遺��샃 : 0 ~ 9
+    // 占쎄쉐占쎌���눧占� �겫占쏙옙�긿 : 0 ~ 9
     
     Stat FlowerSubStat = mArtFlower->GetSubStat();
     Stat FeatherSubStat = mArtFeather->GetSubStat();
@@ -336,18 +336,18 @@ double Character::GetDamageWithStat(const Stat& stat) const
 void Character::MakeEffectionArray()
 {
     Character* tempCharacter;
-    ArtSetStat* tempArtSetStat; // 占쎈쐻占쎈짗占쎌굲�뜝�럥�걼�뜝�럥爾��썒占쏙옙援욅뙴�뵃�삕占쎄뎡�뜝�럡�뜦占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑅�뜝�럥�뼀�뜝�럥�맶�뜝�럥�쑋�뜝�럥占쎈벝�삕占쎌맶�뜝�럥�쑅占쎈뎨�뜝占� 占쎈쐻占쎈윞�뙼占썲뜝�럥�맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윞筌랃옙 占쎈쐻占쎈윥占쎈룾�뜝�럡猿��뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윥筌ο옙 ResonanceStat�뜝�럥�맶�뜝�럥�쑋嶺뚮ㅏ諭띰옙�뮋�뜝�럥�솕�뜝�럩援� �뜝�럥�맶�뜝�럥�쑅占쎈뎨占쎈쑕占쎌맶�뜝�럥�쑅占쎌젂�뜝占�.
-                                        // �뜝�럥�맶�뜝�럥�쑋占쏙옙�뼚짹占쎌맶�뜝�럥�쑋占쎈쐻占쎈짗占쎌굲�뜝�럥�맶�뜝�럥�쑅�뜏類㏃삕, �뜝�럩�맳�뛾�룆梨룡뤃�넀萸먪솒��곸굲 Stat�뜝�럥�맶�뜝�럥�쑋占쏙옙�뼚짹占쎌맶�뜝�럥�쑋占쏙옙�븮猿딆맶�뜝�럥�쐾�뜝�럥彛� �뜝�럥�맶�뜝�럥�쑋�뜝�럩�젦�뜝�럩�맳�뛾占썲뜝�룞�삕占쎈빢占쎈쐻占쎈윥占쎄샹 �뜝�럥�맶�뜝�럥�쑅�뜝�럩二ゅ뜝�럥�맶�뜝�럥�쑅嶺뚮엪�삕.
-                                        // Update�뜝�럥夷у뜝�럥利멨뜝�럩援� �뜝�럥�맶�뜝�럥�쑋雅��굝��ο옙�맶�뜝�럥�쑋�뜝�럡�뜲�솾袁㏉�쀯옙維딁춯占쏙옙�뵛占쎌굲占쎄괌�뇡占썲젆�뫅�삕�뜝�럥흮占쎄뎡 �뜝�럥�맶�뜝�럥�쑅占쎈뎨�뜝�룞�뵾占쎌뒩占쎈뤈�뜝�럩援꿰솾�꺂�뒧占쎈역�뜝�럩援�, �뜝�럥�맶�뜝�럥�쑅占쎌젂嚥∽옙筌뚮냵�삕�뙴袁ъ삕亦낆쉻�삕占쎈��占쎈쐻占쎈쑟�빊占썲뜝�럩�뤈�뜝�럩援� �뜝�럥�맶�뜝�럥�쑅占쎈ご占쎄뭍占쎌맶�뜝�럥�쑋�뵓怨ㅼ삕.
+    ArtSetStat* tempArtSetStat; // �뜝�럥�맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윥占쎄굴占쎈쐻占쎈윥�댚占쏙옙�뜏�뜝�룞�삕�뤃�쉫�쇀占쎈탟占쎌굲�뜝�럡�렊占쎈쐻占쎈윞占쎈쑆�뜝�럥�맶占쎈쐻�뜝占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈��占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝占쎈쐻占쎈윥�뜝�럥踰앾옙�굲�뜝�럩留띰옙�쐻占쎈윥占쎌몗�뜝�럥�렓占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쐾占쎈쇊�뜝�뜴�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥筌욎�λ쐻占쎈윪�뤃��먯삕占쎌맶�뜝�럥�쐾嶺뚮엪�삕 �뜝�럥�맶�뜝�럥�쑅�뜝�럥猷억옙�쐻占쎈윞�뙼占쏙옙�쐻占쎈윥筌욎�λ쐻占쎈윪�뤃轅⑤쐻占쎈윥占쎈㎍占쎈쐻占쎈윥筌욎�λ쐻占쎈윪�뤃��먯삕占쎌맶�뜝�럥�쑅嶺뚋우삕 ResonanceStat占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝癲ル슢�뀖獄��씛�삕占쎈츐占쎈쐻占쎈윥占쎌넅占쎈쐻占쎈윪�뤃占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗�뜝�럥�렓�뜝�럥�몧�뜝�럩留띰옙�쐻占쎈윥占쎌몗�뜝�럩�쟼占쎈쐻�뜝占�.
+                                        // 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝�뜝�룞�삕占쎈폏吏밧뜝�럩留띰옙�쐻占쎈윥占쎌몝�뜝�럥�맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐪筌먦룂�굲, 占쎈쐻占쎈윪占쎈㎡占쎈쎗占쎈즴筌�猷〓쨨占쎈���맱癒れ넂占쏙옙怨멸뎡 Stat占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝�뜝�룞�삕占쎈폏吏밧뜝�럩留띰옙�쐻占쎈윥占쎌몝�뜝�룞�삕占쎈리�뙼�봿留띰옙�쐻占쎈윥占쎌맽占쎈쐻占쎈윥壤쏉옙 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝占쎈쐻占쎈윪占쎌젲占쎈쐻占쎈윪占쎈㎡占쎈쎗�뜝�뜴�쐻占쎈짗占쎌굲�뜝�럥鍮℡뜝�럥�맶�뜝�럥�쑅�뜝�럡�꺓 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪雅뚣굝�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗癲ル슢�뿪占쎌굲.
+                                        // Update占쎈쐻占쎈윥鸚롤껊쐻占쎈윥筌앸ŀ�쐻占쎈윪�뤃占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝�썒占쏙옙援앾옙占싸우삕占쎈㎍占쎈쐻占쎈윥占쎌몝占쎈쐻占쎈윞占쎈쑓占쎌녇熬곥룊占쎌���삕泳��봺異��뜝�룞�삕占쎈탿�뜝�럩援꿨뜝�럡愿뚳옙�눀�뜝�뜴�젂占쎈쳟占쎌굲占쎈쐻占쎈윥�씙�뜝�럡�렊 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗�뜝�럥�렓占쎈쐻占쎈짗占쎈돗�뜝�럩�뮝�뜝�럥琉덌옙�쐻占쎈윪�뤃轅곗녇占쎄틓占쎈뮛�뜝�럥�뿭占쎈쐻占쎈윪�뤃占�, 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗�뜝�럩�쟼�슖�댙�삕嶺뚮슢�꺏占쎌굲占쎈쇀熬곎딆굲雅��굞�돸占쎌굲�뜝�럥占쏙옙�뜝�럥�맶�뜝�럥�몷占쎈퉲�뜝�뜴�쐻占쎈윪占쎈쨮占쎈쐻占쎈윪�뤃占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗�뜝�럥�걫�뜝�럡萸띶뜝�럩留띰옙�쐻占쎈윥占쎌몝占쎈탶��ⓦ끉�굲.
                                     // 230131
-                                        // ResonanceStat �뜝�럥�맶�뜝�럥�쑅�뜝�럥援� �뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥���占쎈쐻�뜝占� Update Optimization 占쎈쐻占쎈짗占쎌굲�뜝�럥爾쎾뜝�럥�빢占쎈쐻占쎈윪占쎌졂�뜝�럥�맶�뜝�럥�쑅�뜝�럥援겼뜝�럥�맶�뜝�럥�쐾�뜝�럥彛�
-                                        // �슖�떜媛��뜝�떥�궠竊묕옙�쐻占쎈윞筌띿눨�쐻占쎈짗占쎌굲�뜝�럥爾잌뜝�럩援� �뜝�럥�눚�뜝�럡���占쎈き獄쏄퉵�삕占쎈폏�젆猿볝럸嚥♂살맶占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쐾�뜝�럥占싼띿삕占쎌맶�뜝�럥�쑋�뜝�럥痢쎾뜝�럥�맶�뜝�럥�쑅�뜝�럥�룎�솾�꺂�뒩占쎈뤈�뜝�럩援� �뜝�럥�맶�뜝�럥�쑅占쎈ご占쎄뭍占쎌맶�뜝�럥�쑅�뜏類㏃삕 �뜝�럥�늾占쎈쇊癰귨옙占쎄뎡 �뜝�럥�맶�뜝�럥�쑅占쎈ご占쎈솇占쎌굲�뜝�럥�뼓癲ル슢�뀕占쎈쳥�뜝�럥援�
-                                        // �뜝�럥�맶�뜝�럥�쑋占쏙옙�뼲�삕 �뜝�럥�맶�뜝�럥�쑅嶺뚮씮�닲占쎌맶�뜝�럥�쑅�뜝�럥臾꾢뜝�럥夷у뜝�럥利멨뜝�럩援� �솾�꺂�뒧占쎈뎔占쎈쑏癰귥옓�맶�뜝�럥吏쀥뜝�럩援꿰솾�꺂�뒩占쎈뤈�뜝�럩援�. 
-                                        // 0 ~ 18 �솾�꺂�뒧占쎈�덃납占썲뜝�뜾異��몴�굞�굲 �뜝�럥�맶�뜝�럥�쐾�뜝�럥占싼띿삕占쎌맶�뜝�럥�쑋�뜝�럥痢쎾뜝�럥�맶�뜝�럥�쑅�뜝�럥�룎�뜝�럥�맶�뜝�럥�쑅�뜏類㏃삕 �뜝�럥�늾占쎈쇊占쎈㎦占쎌맠占쎈쐻占쎈윥�뤃占� �뜝�럥�맶�뜝�럥�쐾�뜝�럥占싼띿삕占쎌맶�뜝�럥�쑋�뜝�럥痢쎾뜝�럥�맶�뜝�럥�쑅�뜝�럥琉끻뜝�럥�맶�뜝�럥�쑅�뜝�럥萸얍뜝�럥�맶�뜝�럥�쑅占쎈뎨占쎈쑕占쎌맶�뜝�럥�쑅占쎌젂�뜝占�.
-                                        // ArtSetStat�뜝�럥�맶�뜝�럥�쑋占쏙옙�뼲�삕 �솾�꺂�뒧占쎈뎔�뜝�럥琉귨옙�쐻占쎈윥筌ο옙 �뜝�럥�맶�뜝�럥�쑅占쎈뼀�뜝占� �뜝�럥�맶�뜝�럥�쑅占쎈뎨�뜝�룞�삕占쎌맶�뜝�럥�쑅占쎌젂�뜝占�.
+                                        // ResonanceStat 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥�뤃占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥筌욎�λ쐻占쎈윪�뤃轅⑤쐻占쎈윥占쎈㎍占쎈쐻占쎈윥筌욎�λ쐻占쎈윪�뤃轅⑤쐻占쎈윥占쏙옙占썲뜝�럥�맶占쎈쐻�뜝占� Update Optimization �뜝�럥�맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윥�댚�렱�쐻占쎈윥占쎈묄�뜝�럥�맶�뜝�럥�쑋�뜝�럩議귨옙�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥�뤃寃쇰쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌맽占쎈쐻占쎈윥壤쏉옙
+                                        // 占쎌뒙占쎈뼔揶쏉옙占쎈쐻占쎈뼢占쎄텭塋딅쵓�삕占쎌맶�뜝�럥�쐾嶺뚮씮�닲占쎌맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윥�댚�엺�쐻占쎈윪�뤃占� 占쎈쐻占쎈윥占쎈닖占쎈쐻占쎈윞占쏙옙占썲뜝�럥�걤�뛾�룄�돲占쎌굲�뜝�럥�룒占쎌젂�뙼蹂앸읁�슖�셽�궡留뜹뜝�럥�맶占쎈쐻�뜝占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌맽占쎈쐻占쎈윥�뜝�떬�씮�굲�뜝�럩留띰옙�쐻占쎈윥占쎌몝占쎈쐻占쎈윥筌μ렱�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈즼占쎌녇占쎄틓占쎈뮝�뜝�럥琉덌옙�쐻占쎈윪�뤃占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗�뜝�럥�걫�뜝�럡萸띶뜝�럩留띰옙�쐻占쎈윥占쎌몗占쎈쐪筌먦룂�굲 占쎈쐻占쎈윥占쎈듋�뜝�럥�뇢�솻洹⑥삕�뜝�럡�렊 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗�뜝�럥�걫�뜝�럥�냷�뜝�럩援뀐옙�쐻占쎈윥占쎈폆�솾�꺂�뒧占쎈�뺝뜝�럥爾ο옙�쐻占쎈윥�뤃占�
+                                        // 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝�뜝�룞�삕占쎈섣占쎌굲 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗癲ル슢�뵰占쎈떜�뜝�럩留띰옙�쐻占쎈윥占쎌몗占쎈쐻占쎈윥�눧袁��쐻占쎈윥鸚롤껊쐻占쎈윥筌앸ŀ�쐻占쎈윪�뤃占� 占쎌녇占쎄틓占쎈뮛�뜝�럥�럵�뜝�럥�몡�솻洹μ삌占쎈㎍占쎈쐻占쎈윥筌욎�λ쐻占쎈윪�뤃轅곗녇占쎄틓占쎈뮝�뜝�럥琉덌옙�쐻占쎈윪�뤃占�. 
+                                        // 0 ~ 18 占쎌녇占쎄틓占쎈뮛�뜝�럥占쎈뛽�궔�뜝�뜴�쐻占쎈쑟�빊占쏙옙紐댐옙援욑옙援� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌맽占쎈쐻占쎈윥�뜝�떬�씮�굲�뜝�럩留띰옙�쐻占쎈윥占쎌몝占쎈쐻占쎈윥筌μ렱�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈즼占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐪筌먦룂�굲 占쎈쐻占쎈윥占쎈듋�뜝�럥�뇢�뜝�럥�렑�뜝�럩留졾뜝�럥�맶�뜝�럥�쑅占쎈쨨�뜝占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌맽占쎈쐻占쎈윥�뜝�떬�씮�굲�뜝�럩留띰옙�쐻占쎈윥占쎌몝占쎈쐻占쎈윥筌μ렱�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥筌뚮겭�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥�맱�뼃�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗�뜝�럥�렓�뜝�럥�몧�뜝�럩留띰옙�쐻占쎈윥占쎌몗�뜝�럩�쟼占쎈쐻�뜝占�.
+                                        // ArtSetStat占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝�뜝�룞�삕占쎈섣占쎌굲 占쎌녇占쎄틓占쎈뮛�뜝�럥�럵占쎈쐻占쎈윥筌뚭랬�삕占쎌맶�뜝�럥�쑅嶺뚋우삕 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗�뜝�럥堉�占쎈쐻�뜝占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗�뜝�럥�렓占쎈쐻占쎈짗占쎌굲�뜝�럩留띰옙�쐻占쎈윥占쎌몗�뜝�럩�쟼占쎈쐻�뜝占�.
 
 
-    double defaultDamage = GetDamage(); // �뜝�럥�맶�뜝�럥�쑋�뇦猿됰쭑占쎌맶�뜝�럥�쑋�뜝�럡�븤 �뜝�럥�맶�뜝�럥�쑅�뜏類ㅼ돥占쎌맶�뜝�럥�쑅�뜝�럩諭쇔뜝�럥�맶�뜝�럥�쑋�뛾占썲뜝占� �뜝�럥���耀붾굝梨멨뜝�뜦堉븅뜮�냲�삕筌랃옙�뜝�럩援꿨뜝�럥����뜝�럥爰뗥뜝�럩援뀐옙�쐻占쎈윥占쎈젩.
+    double defaultDamage = GetDamage(); // 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝占쎈눇�뙼�맧彛묈뜝�럩留띰옙�쐻占쎈윥占쎌몝占쎈쐻占쎈윞占쎈륵 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐪筌먦끉�룯�뜝�럩留띰옙�쐻占쎈윥占쎌몗占쎈쐻占쎈윪獄��뇯�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝占쎈쎗�뜝�뜴�쐻�뜝占� 占쎈쐻占쎈윥占쏙옙占썼��遺얘턁筌�硫⑤쐻占쎈쑆�젆釉낅쑏占쎈꺋占쎌굲嶺뚮엪�삕占쎈쐻占쎈윪�뤃轅⑤쐻占쎈윥占쏙옙占쏙옙�쐻占쎈윥�댆�뿥�쐻占쎈윪�뤃��먯삕占쎌맶�뜝�럥�쑅�뜝�럥�젵.
     for (int i = 0; i < 19; i++)
     {
         tempCharacter = this->Clone();
@@ -387,9 +387,15 @@ int FindNthLargestOption(std::array<double, 10> damArray, int nth)
     return tempList[nth - 1].second;
 }
 
-
-// TODO: �뜝�럥�맶�뜝�럥�쑋占쏙옙�뼚짹占쎌맶�뜝�럥�쑋�뜝�럩議� StatExceptSubOpt�뜝�럥夷у뜝�럥利멨뜝�럩援� �뜝�럥�맶�뜝�럥�쑋�뜝�럡�꺘�뜝�럥�맶�뜝�럥�쑅嶺뚯쉸占싸살맶�뜝�럥�쑅占쎈뎨�뜝�룞�뵾占쎌뒩占쎈뤈�뜝�럩援� �뜝�럥�맶�뜝�럥�쑅占쎈ご占쎄뭍占쎌맶�뜝�럥�쑅�뜏類ｋ쭠占쎌맶�뜝�럥�쑅占쎌젂�뜝占�. �뜝�럥�맶�뜝�럥�쑅�뜝�럥�젃�뜝�럥�맶�뜝�럥�쑋占쏙옙�븮猿딆맶�뜝�럥�쐾�뜝�럥彛� �뜝�럥�맶�뜝�럥�쐾�뜝�럥�젾�뜝�럥�맶�뜝�럥�쑋占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈윥占쎈뼓�뜝�럥�맶占쎈쐻�뜝占� 占쎈쐻占쎈윞�뙼占썲뜝�럥�맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윞筌띿닂�삕占쎌맶�뜝�럥�쑋�뛾占썲뜝占� �솾袁㏉�쀯옙維딉옙�쐻占쎈짗占쎌굲占쎈쎗�뜝�룞�삕占쎈탿�뜝�럩援뀐옙�쐻占쎈윪鈺곕〕�삕占쎌맶�뜝�럥�쐾�뜝�럥彛� �뜝�럥�맶�뜝�럥�쑅占쎈뎨�뜝�룞�삕占쎌맶�뜝�럥�쑅�뜏類㏃삕 �뜝�럥�럸�뜝�럥�졎力놂옙筌믍됰���뜝�럩�뮲�뜝�럩援뀐옙�쐻占쎈윥�뤃占� �솾�꺂�뒖占쎈１占쎌젂占쎈뼐占쎈���뜝�럡�꽫�뜝�럩援꿨뜝�럥�몡占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑅占쎈뎨占쎈쑕占쎌맶�뜝�럥�쑅占쎌젂�뜝占�.
 void Character::MakeScoreFunction()
+{
+    std::array<MainOptionsAndDamage, 10> optimizationResult = OptimizeMainOption();
+    std::array<int, 3> optimizedMainOption = optimizationResult[0].mainOptions;
+    MakeScoreFunctionMainOptionFixed(optimizedMainOption[0], optimizedMainOption[1], optimizedMainOption[2]);
+}
+
+
+void Character::MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5)
 {
     std::array<int, 10> mainOp = { 0 }; // It will be checked which main option is activated.
     if (mArtClock->GetMainType() < 10) mainOp[mArtClock->GetMainType()] = 1;
@@ -400,19 +406,17 @@ void Character::MakeScoreFunction()
     std::array<double, 10> damArray = { 0. }; // It will be recorded in this array how much damage will be if each option is added.
 
     Character* tempCharacter;
-    std::array<Stat, 10> tempSubStatArray; // Flower�뜝�럥�맶�뜝�럥�쑅�뜝�럥援곁솾�꺂�뒧占쎈역�뜝�럩援� �뜝�럥�맶�뜝�럥�쑋�뜝�럩諭얍뜝�럥�맶�뜝�럥�쑋�뜝�럥痢쎾뜝�럥�맶�뜝�럥�쑅鶯ㅼ룊�삕 �뜝�럥�늾占쎈쇊占쎈㎦占쎌맠占쎈쐻占쎈윥占쎄샹�뜝�럥�맶�뜝�럥�쑅占쎌젂�뜝占�.
+    std::array<Stat, 10> tempSubStatArray; // Flower에만 적용될 것이다.
 
-    // Character占쎈쐻占쎈윥占쎄괴�뜝�럥�맶占쎈쐻�뜝占� 10�뜝�럥夷у뜝�럥利든뜏類ｋ��占쎌맶�뜝�럥吏쀥뜝�럩援� �뜝�럩�뀇�윜諭꾪맊�떋�떟踰㏆옙援욃뜝�룞�삕�뜝�럩援꿨뜝�럥���占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑅占쎌젂熬곻옙占쎌맶�뜝�럥�쑋�뵓怨뺣쭠占쎌맶�뜝�럥�쑅�뜝�럥援�, �뜝�럥夷у뜝�럥利멨뜝�럩援� Character�뜝�럥�맶�뜝�럥�쑅�뜝�럥援겼뜝�럥�늾占쎈쇊癰귨옙占쎄뎡 占쎈쐻占쎈윞�뙼占썲뜝�럥�맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윞筌띿닂�삕占쎌맶�뜝�럥�쑋占쏙옙�뼲�삕 �뜝�럥�맶�뜝�럥�쑋�뜝�럩踰곻옙�쐻占쎈윞�뙼占썲뜝�럥�맶占쎈쐻�뜝占� 占쎈쐻占쎈윥占쎈ぁ占쎈꽠��⑨퐢爾녑뜝�럡�맖�뜝�럥�맶�뜝�럥�쑋占쎄덩占쎈�섓옙�맶�뜝�럥�쑅�뜏類㏃삕 Artifact占쎈쐻占쎈윥占쎄괴�뜝�럥�맶占쎈쐻�뜝占� 嚥싳쉶瑗э옙�뒭占쎄뎡�뜝�럥�맶�뜝�럥�쑅占쎌젂�뜝占�.
-    ArtFlower* emptyFlower = new ArtFlower(this->GetArtFlower());
-    emptyFlower->SetSubStat(Stat());
-    ArtFeather* emptyFeather = new ArtFeather(this->GetArtFeather());
-    emptyFeather->SetSubStat(Stat());
-    ArtClock* emptyClock = new ArtClock(this->GetArtClock());
-    emptyClock->SetSubStat(Stat());
-    ArtCup* emptyCup = new ArtCup(this->GetArtCup());
-    emptyCup->SetSubStat(Stat());
-    ArtCrown* emptyCrown = new ArtCrown(this->GetArtCrown());
-    emptyCrown->SetSubStat(Stat());
+    // Character를 10개를 복사한 다음에, 각 Character에게 부옵이 전부 비어있는 Artifact를 준다.
+    ArtFlower* emptyFlower = new ArtFlower();
+    ArtFeather* emptyFeather = new ArtFeather();
+    ArtClock* emptyClock = new ArtClock();
+    emptyClock->SetMainType(main3);
+    ArtCup* emptyCup = new ArtCup();
+    emptyCup->SetMainType(main4);
+    ArtCrown* emptyCrown = new ArtCrown();
+    emptyCrown->SetMainType(main5);
 
     tempCharacter = this->Clone();
     tempCharacter->SetArtFlower(new ArtFlower(emptyFlower));
@@ -426,7 +430,7 @@ void Character::MakeScoreFunction()
     tempCharacter->Update();
     mSavedFunction[0] = tempCharacter->GetDamage();
 
-    for (int i = 0; i < 45; i++) // for占쎈쐻占쎈윥占쎈뼓癲ル슢�뀕占쎈쳮嶺뚮ㅏ諭띰옙�뮋�뜝�럥�솕�뜝�럩援� 45�뜝�럥�맶�뜝�럥�쑋�뜝�럥夷㎩뜝�럥�맶�뜝�럥�쑅嶺뚯쉸占싸살맶�뜝�럥�쑅�뜝�럥�뼓, 
+    for (int i = 0; i < 45; i++) // for문으로 45회동안, 
     {
         double difEC = mTargetEC - tempCharacter->GetStat().GetOption(4); // check the element charge is enough or not.
         bool whetherNotEnoughEC = difEC > 0;
@@ -451,9 +455,9 @@ void Character::MakeScoreFunction()
                     damArray[j] = tempCharacter->GetDamage();
                 }
 
-                // �뜝�럥夷у뜝�럥利멨뜝�럩援꿨뜝�럥�맶�뜝�럥�쑋�뜝�럡�뀘 �뜝�럥�맶�뜝�럥�쑋�뜝�럩�젋�뜝�럥�맶�뜝�럥�쑅�뜝�럥臾꾢뜝�럥夷у뜝�럥利멨뜝�럩援� �뜝�럥�맶�뜝�럥�쑅占쎈き�맦占쎌맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑅�뜏類ㅼ돥占쎌맶�뜝�럥�쐾�뜝�럥六뷴뜝�럥�맶�뜝�럥�쑅�뜝�럥援� �뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�몡占쎌넂占쏙옙怨멸뎡�뜝�럥鍮앾옙�쐻�뜝占� ((5 - �뜝�럩�쐪�뜝�럩�뮝�뜝�럥�빢占쎈쐻占쎈윞筌띿닂�삕占쎌맶�뜝�럥�쑅�뜝�럥�뿼占쎈쐻占쎈윞�뙼占썲뜝�럥�맶占쎈쐻�뜝占�) �뜝�럩�뀇�윜諭꾪맔占쎌굲占쎈쐻占쎈짗占쎌굲占쎌젂�뜝占� �뜝�럥�맶�뜝�럥�쑋�뜝�럩諭얍뜝�럥�늾占쎈쇊癰귨옙占쎄뎡 �솾�꺂�뒱占쎌굲占쎈꽠��⑨퐢爾닷뜝�럩紐��뜝�럥�맶�뜝�럥�쑅�뜏類ｋ쭦筌뚮냵�삕�뙴�뵃�삕占쎄뎡?)占쎈쐻占쎈윥占쎄괴�뜝�럥�맶占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑋�뜝�럡�꼫�뜝�럥�맶�뜝�럥�쑋占쏙옙�븪�벉�맶�뜝�럥�쑅占쎈뎨�뜝�뜴�쐻占쎈짗占쎌굲�뜝�럥爾잌뜝�럩援� �솾�꺂�뒱占쎌굲占쎈꽠��⑨퐢爾닷뜝�럥占썬룇�삕占쎌맶�뜝�럥�쑅占쎌젂�뜝占�.
+                // 가장 점수가 높은 스탯에 대해서 ((5 - 주옵여부) 보다 적게 채웠는가?)를 확인하고 채운다.
                     // If impossible,
-                        // �뜝�럥�맶�뜝�럥�쑅占쎌젂熬곻옙占쎌맶�뜝�럥�쑋�뵓怨ㅼ삕 �뜝�럥�맶�뜝�럥�쑋�뜝�럩�젋�뜝�럥�맶�뜝�럥�쑅�뜝�럥臾꾢뜝�럥夷у뜝�럥利멨뜝�럩援� �뜝�럥�맶�뜝�럥�쑅占쎈き�맦占쎌맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑅�뜏類ㅼ돥占쎌맶�뜝�럥�쐾�뜝�럥六뷴뜝�럥�맶�뜝�럥�쑅�뜝�럥援� �뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�몡占쎌넂占쏙옙怨멸뎡�뜝�럥鍮앾옙�쐻�뜝占� �뜝�럥�맶�뜝�럥�쑋�뜝�럡�꼫�뜝�럥�맶�뜝�럥�쑋占쏙옙�븪�벉�맶�뜝�럥�쑅占쎈뎨占쎈쑕占쎌맶�뜝�럥�쑅占쎌젂�뜝占�. (�솾�꺂�뒗占쎄콬�뜏類ｋ��占쎌맶�뜝�럥吏쀥뜝�럩援� 5�뜝�럥�맶�뜝�럥�쑋�뜝�럥夷� �뜝�럥�럸�뜝�럥利듸옙紐�占쎌뵛占쎌굲雅��굢�삕)
+                        // 다음 점수가 높은 스탯에 대해서 확인한다. (최대 5회 반복)
                 for (int j = 1; j <= 5; j++)
                 {
                     int largeStat = FindNthLargestOption(damArray, j);
