@@ -76,4 +76,8 @@ private:
 	Stat mSubStat;
 };
 
+
+void PrintArtifact(const Artifact* artifact);
+
+
 #endif
