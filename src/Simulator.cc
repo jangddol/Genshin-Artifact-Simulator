@@ -12,6 +12,7 @@
 #include "../header/Artifact/ArtCrown.hh"
 #include "../PrintToCoordinates.hh"
 
+#include <assert.h>
 #include <iostream>
 #include <cstdio>
 #include <vector>
@@ -349,20 +350,20 @@ double Simulator::CalLoopArtifact_Damage(SuperArtifactList& loopList, ArtifactBu
 
 						// Update the best damage and artifact combination if necessary
 						if (tempDamage > bestDamage)
-    {
+						{
 							bestDamage = tempDamage;
 							bestTryArtifacts.flower = flower;
 							bestTryArtifacts.feather = feather;
 							bestTryArtifacts.clock = clock;
 							bestTryArtifacts.cup = cup;
 							bestTryArtifacts.crown = crown;
-    }
+						}
                     });
                 });
             });
         });
     });
-
+	
 	return bestDamage;
 }
 
@@ -382,8 +383,8 @@ double Simulator::CalLoopArtifact_jangddolScore(SuperArtifactList& loopList, Art
                 mCharacter->SetArtClock(clock);
 				std::for_each(loopList.feather.begin(), loopList.feather.end(), [&](ArtFeather* feather) {
                     mCharacter->SetArtFeather(feather);
-	std::for_each(loopList.flower.begin(), loopList.flower.end(), [&](ArtFlower* flower) {
-        mCharacter->SetArtFlower(flower);
+					std::for_each(loopList.flower.begin(), loopList.flower.end(), [&](ArtFlower* flower) {
+                        mCharacter->SetArtFlower(flower);
 						
 						// Initialize the character
 						CALLOOPSTART = std::chrono::system_clock::now();
@@ -430,8 +431,8 @@ double Simulator::CalLoopArtifact_MonkeyMagicScore(SuperArtifactList& loopList, 
             mCharacter->SetArtCup(cup);
 			std::for_each(loopList.clock.begin(), loopList.clock.end(), [&](ArtClock* clock) {
                 mCharacter->SetArtClock(clock);
-		std::for_each(loopList.feather.begin(), loopList.feather.end(), [&](ArtFeather* feather) {
-            mCharacter->SetArtFeather(feather);
+				std::for_each(loopList.feather.begin(), loopList.feather.end(), [&](ArtFeather* feather) {
+                    mCharacter->SetArtFeather(feather);
 					std::for_each(loopList.flower.begin(), loopList.flower.end(), [&](ArtFlower* flower) {
                         mCharacter->SetArtFlower(flower);
 						
@@ -761,8 +762,8 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	}
 	
 
-	// ì´ë“¤ì€ ê°ê° ì“°ë ˆë“œ ì•ˆì—ì„œ SimulationWorkerë¥¼ ë°œë™í•œë‹¤.
-	// SimulationWorkerëŠ” 2d-Histogramì„ simulatorVector[i]ì— ë‚¨ê¸°ê³  ì£½ëŠ”ë‹¤.
+	// ÀÌµéÀº °¢°¢ ¾²·¹µå ¾È¿¡¼­ SimulationWorker¸¦ ¹ßµ¿ÇÑ´Ù.
+	// SimulationWorker´Â 2d-HistogramÀ» simulatorVector[i]¿¡ ³²±â°í Á×´Â´Ù.
 	std::vector<std::thread> threads;
 	for (int i = 0; i < mNumThread; i++)
 	{
@@ -788,7 +789,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 		}
 	}
 
-	// ìƒì„±ëœ AppendRateë„ ì—¬ê¸°ë¡œ ë„˜ê²¨ì¤€ë‹¤.
+	// »ı¼ºµÈ AppendRateµµ ¿©±â·Î ³Ñ°ÜÁØ´Ù.
 	std::vector<double> tempVector(artifactNum);
 	for (int i = 0; i < mNumThread; i++)
 	{
