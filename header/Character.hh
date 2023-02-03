@@ -68,12 +68,16 @@ public:
 	// Damage and EffectionArray
 	double GetDamage() const { return this->GetDamageWithStat(mStat); }
 	virtual double GetDamageWithStat(const Stat& stat) const;
+
+	// Score (algorithm by jangddol)
 	void MakeEffectionArray();
 	void MakeScoreFunction();
 	double GetScoreFunction(int index) const { return mSavedFunction[index]; }
 	double GetScore() const;
 	double GetEffection(int index) const { return mEffectionArray[index]; }
 
+	// Score (algorithm by MonkeyMagic)
+	double GetScore_MonkeyMagic() const;
 
 	// Artifact MainOption Optimization
 	std::array<MainOptionsAndDamage, 10> OptimizeMainOption() const;
