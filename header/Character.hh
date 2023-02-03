@@ -32,10 +32,9 @@ class Character
 {
 public:
 	Character(Weapon* weapon, ArtSetStat* artSetStat, ArtFlower* flower, ArtFeather* feather, ArtClock* clock, ArtCup* cup, ArtCrown* crown)
+	: mTargetEC{100.}, mWeapon{weapon}
 	{ 
-		mWeapon = weapon;
 		SetArtifact(flower, feather, clock, cup, crown);
-		mTargetEC = 100.;
 		SetArtSetStat(artSetStat);
 	}
 	Character(const Character* character);
