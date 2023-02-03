@@ -51,7 +51,11 @@ public:
 	void ConfirmArtifactSubStatModified();
 	int  GetUpdateState() const { return mUpdateState; }
 
-	// Damage and EffectionArray, Score Function
+	// Set Manual Mode
+	void SetManualMode(bool isManualMode) { mIsManualMode = isManualMode; }
+	bool GetManualMode()                  { return mIsManualMode; }
+
+	// Damage and EffectionArray
 	double GetDamage() const { return this->GetDamageWithStat(mStat); }
 	virtual double GetDamageWithStat(const Stat& stat) const;
 	void MakeEffectionArray();
@@ -150,6 +154,7 @@ private:
     constexpr static int ARTIFACTMAINSTATUPDATED = 4;
     constexpr static int ARTIFACTSUBSTATUPDATED = 5;
 
+	bool        mIsManualMode = false;
 	double      mSavedFunction[46];
 	double      mEffectionArray[19];
 
