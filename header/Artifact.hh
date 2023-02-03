@@ -43,6 +43,7 @@ public:
 
 	Stat GetMainStat() const { return mMainStat; }
 	Stat GetSubStat() const { return mSubStat; }
+	double GetSubStatValue(int index) const { return mSubStat.GetOption(index); }
 	void SetSubStat(const Stat& stat) { mSubStat = stat; AlertModified(); }
 
 	void SaveCharacterPointer(Character* character);
