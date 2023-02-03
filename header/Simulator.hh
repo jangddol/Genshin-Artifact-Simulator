@@ -28,11 +28,11 @@ public:
     void Clear() { flower = {}; feather = {}; clock = {}; cup = {}; crown = {};}
     void DeleteAll()
     {
-        for (int j = 0; j < flower.size(); j++) delete flower[j];
-		for (int j = 0; j < feather.size(); j++) delete feather[j];
-		for (int j = 0; j < clock.size(); j++) delete clock[j];
-		for (int j = 0; j < cup.size(); j++) delete cup[j];
-		for (int j = 0; j < crown.size(); j++) delete crown[j];
+        for (std::size_t j = 0; j < flower.size(); j++) delete flower[j];
+		for (std::size_t j = 0; j < feather.size(); j++) delete feather[j];
+		for (std::size_t j = 0; j < clock.size(); j++) delete clock[j];
+		for (std::size_t j = 0; j < cup.size(); j++) delete cup[j];
+		for (std::size_t j = 0; j < crown.size(); j++) delete crown[j];
     }
 
 	std::vector<ArtFlower*> flower;
