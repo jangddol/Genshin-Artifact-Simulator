@@ -17,8 +17,7 @@ Character::Character(const Character *character)
     SetResonanceStat(character->GetResonanceStat());
     
     mTargetEC = character->GetTargetEC();
-    mCharacterStat = character->GetCharacterStat(); // TODO: SetCharacterStat을 분화해서 통째로 넣는거랑 아닌거랑 둘다 만들기
-    mUpdateState = 0; // TODO: 위에꺼 완료되면 이거 없애기
+    SetCharacterStat(character->GetCharacterStat());
     for (int i = 0; i < 19; i++)
     {
         mEffectionArray[i] = character->GetEffection(i);
@@ -43,8 +42,7 @@ Character::Character(const Character& character)
     SetResonanceStat(character.GetResonanceStat());
     
     mTargetEC = character.GetTargetEC();
-    mCharacterStat = character.GetCharacterStat(); // TODO: SetCharacterStat을 분화해서 통째로 넣는거랑 아닌거랑 둘다 만들기
-    mUpdateState = 0; // TODO: 위에꺼 완료되면 이거 없애기
+    SetCharacterStat(character.GetCharacterStat());
     for (int i = 0; i < 19; i++)
     {
         mEffectionArray[i] = character.GetEffection(i);
@@ -68,8 +66,7 @@ Character::Character(Character&& character)
     SetResonanceStat(character.GetResonanceStat());
     
     mTargetEC = character.GetTargetEC();
-    mCharacterStat = character.GetCharacterStat(); // TODO: SetCharacterStat을 분화해서 통째로 넣는거랑 아닌거랑 둘다 만들기
-    mUpdateState = 0; // TODO: 위에꺼 완료되면 이거 없애기
+    SetCharacterStat(character.GetCharacterStat());
     for (int i = 0; i < 19; i++)
     {
         mEffectionArray[i] = character.GetEffection(i);
@@ -339,18 +336,18 @@ double Character::GetDamageWithStat(const Stat& stat) const
 void Character::MakeEffectionArray()
 {
     Character* tempCharacter;
-    ArtSetStat* tempArtSetStat; // 계산에 필요한 부옵 추가는 ResonanceStat으로 한다.
-                                        // 이유는, 그냥 Stat이라서 접근이 편함.
-                                        // Update가 오래걸리긴 하지만, 심각하진 않음.
+    ArtSetStat* tempArtSetStat; // �뜝�룞�삕占쎈た占쎈쳮雅��굞猷딉옙�굲占쎄덩�뜝占� 占쎈쐻占쎈윥占쎈떋占쎈쐻占쎈윪占쎈�듸옙�쐻占쎈윥�뵳占� �뜝�럡猿�占쎈쐻占쎈짗占쎌굲�뜝�럡留� �뜝�럥�돯占쎄껀占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲�뜝�럥痢� ResonanceStat占쎈쐻占쎈윪筌뤿뱶�뒙占쎈뙔占쎌굲 占쎈쐻占쎈윥�뵳�뜴�쐻占쎈윥�젆占�.
+                                        // 占쎈쐻占쎈윪��얠±�쐻占쎈윪�뜝�룞�삕占쎈쐻占쎈윥獒뺧옙, 占쎌쐺獄쏅챷援←뭐癒뀁삕 Stat占쎈쐻占쎈윪��얠±�쐻占쎈윪��앗껊쐻占쎈윞占쎈쭓 占쎈쐻占쎈윪占쎌젞占쎌쐺獄�占쏙옙�땾�뜝�럥�꼧 占쎈쐻占쎈윥占쎌죪占쎈쐻占쎈윥筌랃옙.
+                                        // Update占쎈쨬占쎈즸占쎌굲 占쎈쐻占쎈윪亦낅‥�쐻占쎈윪占쎄데癲꾧퀗�뫊筌��씛�삕�걡釉�堉⑨옙占쎈Ŋ�굲 占쎈쐻占쎈윥�뵳占쏙┼�슣�돸占쎌굲癲ル슢�뿪占쎌굲, 占쎈쐻占쎈윥�젆濡�琉놅옙猷꾬옙沅욑옙�눀�뜝�뜾異�占쎌돸占쎌굲 占쎈쐻占쎈윥�몴�깷�쐻占쎈윪甕곤옙.
                                     // 230131
-                                        // ResonanceStat 에 대한 Update Optimization 과정에서
-                                        // 깡옵과 치피가 사용되지 않는 것 때문에
-                                        // 이 함수가 망가짐. 
-                                        // 0 ~ 18 모두 사용되는 것을 사용해야한다.
-                                        // ArtSetStat이 맞는 듯 하다.
+                                        // ResonanceStat 占쎈쐻占쎈윥占쎈군 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈눀�뜝占� Update Optimization �뜝�룞�삕占쎈쳛占쎈땾�뜝�럩�젳占쎈쐻占쎈윥占쎈군占쎈쐻占쎈윞占쎈쭓
+                                        // 嚥싲갭占싸삳１�뜝�럡留쇿뜝�룞�삕占쎈쳟占쎌굲 占쎈뇲占쎄땀�몭諛깍옙�뼚堉껓㎗濡λ쐻�뜝占� 占쎈쐻占쎈윞占쎈�э옙�쐻占쎈윪占쎈츛占쎈쐻占쎈윥占쎈돌癲ル슣�돸占쎌굲 占쎈쐻占쎈윥�몴�깷�쐻占쎈윥獒뺧옙 占쎈눇�뙼蹂��굲 占쎈쐻占쎈윥�몴�뙋�삕占쎈떛嶺뚮ㅎ�뫊占쎈군
+                                        // 占쎈쐻占쎈윪��억옙 占쎈쐻占쎈윥筌띿눨�쐻占쎈윥占쎈묄占쎈쨬占쎈즸占쎌굲 癲ル슢�뵰�뜮蹂잙쐻占쎈짗占쎌굲癲ル슣�돸占쎌굲. 
+                                        // 0 ~ 18 癲ル슢�뀈泳�占썹춯瑜낆삕 占쎈쐻占쎈윞占쎈�э옙�쐻占쎈윪占쎈츛占쎈쐻占쎈윥占쎈돌占쎈쐻占쎈윥獒뺧옙 占쎈눇�뙼�맪�쐭�뜝�럥援� 占쎈쐻占쎈윞占쎈�э옙�쐻占쎈윪占쎈츛占쎈쐻占쎈윥占쎈뤅占쎈쐻占쎈윥占쎈뭾占쎈쐻占쎈윥�뵳�뜴�쐻占쎈윥�젆占�.
+                                        // ArtSetStat占쎈쐻占쎈윪��억옙 癲ル슢�뵰占쎈뤂�뜝�럥痢� 占쎈쐻占쎈윥�떋占� 占쎈쐻占쎈윥�뵳占쏙옙�쐻占쎈윥�젆占�.
 
 
-    double defaultDamage = GetDamage(); // 현재 스펙을 기록한다.
+    double defaultDamage = GetDamage(); // 占쎈쐻占쎈윪野껉막�쐻占쎈윪占쎄땍 占쎈쐻占쎈윥獒뺤쉩�쐻占쎈윥占쎌뱼占쎈쐻占쎈윪獄�占� 占쎈섀饔낅챸占썩뼺鍮놂옙留�占쎌굲占쎈눀占쎈꺋占쎌굲�뜝�럥�렡.
     for (int i = 0; i < 19; i++)
     {
         tempCharacter = this->Clone();
@@ -391,7 +388,7 @@ int FindNthLargestOption(std::array<double, 10> damArray, int nth)
 }
 
 
-// TODO: 이제 StatExceptSubOpt가 작동하지 않는다. 따라서 성유물 부옵을 건드려서 하는 방법을 찾아야 한다.
+// TODO: 占쎈쐻占쎈윪��얠±�쐻占쎈윪占쎌졆 StatExceptSubOpt占쎈쨬占쎈즸占쎌굲 占쎈쐻占쎈윪占쎄탾占쎈쐻占쎈윥筌욎�λ쐻占쎈윥�뵳占쏙┼�슣�돸占쎌굲 占쎈쐻占쎈윥�몴�깷�쐻占쎈윥獒뺣맕�쐻占쎈윥�젆占�. 占쎈쐻占쎈윥占쎈젇占쎈쐻占쎈윪��앗껊쐻占쎈윞占쎈쭓 占쎈쐻占쎈윞占쎈렰占쎈쐻占쎈윪�뜝�룞�삕�뜝�럥�떛占쎈쐻�뜝占� �뜝�럡猿�占쎈쐻占쎈짗占쎌굲�뜝�럡留숋옙�쐻占쎈윪獄�占� 癲꾧퀗�뫊�뜝�룞�삕�뛾占쏙옙�뵛占쎌굲�뜝�럩議롳옙�쐻占쎈윞占쎈쭓 占쎈쐻占쎈윥�뵳占쏙옙�쐻占쎈윥獒뺧옙 占쎈쎗占쎈젻泳�戮щ뼀占쎌뒻占쎌굲�뜝�럥援� 癲ル슓�룱�젆�떘�눀占쎄섶占쎌굲占쎈쑏�뜝占� 占쎈쐻占쎈윥�뵳�뜴�쐻占쎈윥�젆占�.
 void Character::MakeScoreFunction()
 {
     std::array<int, 10> mainOp = { 0 }; // It will be checked which main option is activated.
@@ -403,9 +400,9 @@ void Character::MakeScoreFunction()
     std::array<double, 10> damArray = { 0. }; // It will be recorded in this array how much damage will be if each option is added.
 
     Character* tempCharacter;
-    std::array<Stat, 10> tempSubStatArray; // Flower에만 적용될 것이다.
+    std::array<Stat, 10> tempSubStatArray; // Flower占쎈쐻占쎈윥占쎈군癲ル슢�뿪占쎌굲 占쎈쐻占쎈윪占쎌뱾占쎈쐻占쎈윪占쎈츛占쎈쐻占쎈윥壤쏉옙 占쎈눇�뙼�맪�쐭�뜝�럥�꼧占쎈쐻占쎈윥�젆占�.
 
-    // Character를 10개를 복사한 다음에, 각 Character에게 부옵이 전부 비어있는 Artifact를 준다.
+    // Character�뜝�럥�걫占쎈쐻�뜝占� 10占쎈쨬占쎈즵獒뺣끀�쐻占쎈짗占쎌굲 占쎌녃域뱄퐢苡답벧�굞占쏙옙占쎌굲占쎈눀�뜝占� 占쎈쐻占쎈윥�젆袁��쐻占쎈윪甕곕맕�쐻占쎈윥占쎈군, 占쎈쨬占쎈즸占쎌굲 Character占쎈쐻占쎈윥占쎈군占쎈눇�뙼蹂��굲 �뜝�럡猿�占쎈쐻占쎈짗占쎌굲�뜝�럡留숋옙�쐻占쎈윪��억옙 占쎈쐻占쎈윪占쎌벁�뜝�럡猿�占쎈쐻�뜝占� �뜝�럥�몡�넭怨ｋ쳳占쎄퐨占쎈쐻占쎈윪�굢�뀘�쐻占쎈윥獒뺧옙 Artifact�뜝�럥�걫占쎈쐻�뜝占� 濚욌꼬�슦�굲占쎈쐻占쎈윥�젆占�.
     ArtFlower* emptyFlower = new ArtFlower(this->GetArtFlower());
     emptyFlower->SetSubStat(Stat());
     ArtFeather* emptyFeather = new ArtFeather(this->GetArtFeather());
@@ -429,7 +426,7 @@ void Character::MakeScoreFunction()
     tempCharacter->Update();
     mSavedFunction[0] = tempCharacter->GetDamage();
 
-    for (int i = 0; i < 45; i++) // for문으로 45회동안, 
+    for (int i = 0; i < 45; i++) // for�뜝�럥�떛嶺뚮ㅎ�뫒筌뤿뱶�뒙占쎈뙔占쎌굲 45占쎈쐻占쎈윪占쎈쨧占쎈쐻占쎈윥筌욎�λ쐻占쎈윥占쎈떛, 
     {
         double difEC = mTargetEC - tempCharacter->GetStat().GetOption(4); // check the element charge is enough or not.
         bool whetherNotEnoughEC = difEC > 0;
@@ -454,9 +451,9 @@ void Character::MakeScoreFunction()
                     damArray[j] = tempCharacter->GetDamage();
                 }
 
-                // 가장 점수가 높은 스탯에 대해서 ((5 - 주옵여부) 보다 적게 채웠는가?)를 확인하고 채운다.
+                // 占쎈쨬占쎈즸占쎌굲占쎈쐻占쎈윪占쎄텑 占쎈쐻占쎈윪占쎌젌占쎈쐻占쎈윥占쎈묄占쎈쨬占쎈즸占쎌굲 占쎈쐻占쎈윥�몭琯�쐻占쎈짗占쎌굲占쎈쐻�뜝占� 占쎈쐻占쎈윥獒뺤쉩�쐻占쎈윞占쎈뻺占쎈쐻占쎈윥占쎈군 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쑏�솒��곸굲占쎈빝�뜝占� ((5 - 占쎌뜏占쎌뒩占쎈땾�뜝�럡留숋옙�쐻占쎈윥占쎈염�뜝�럡猿�占쎈쐻�뜝占�) 占쎌녃域뱄퐦�삕�뜝�룞�삕�젆占� 占쎈쐻占쎈윪占쎌뱾占쎈눇�뙼蹂��굲 癲ル슪�삕�넭怨ｋ쳴占쎌몦占쎈쐻占쎈윥獒뺣맚琉놅옙猷딉옙�굲?)�뜝�럥�걫占쎈쐻�뜝占� 占쎈쐻占쎈윪占쎄섈占쎈쐻占쎈윪��앓듬쐻占쎈윥�뵳占썲뜝�룞�삕占쎈쳟占쎌굲 癲ル슪�삕�넭怨ｋ쳴占쎈�㏆옙�쐻占쎈윥�젆占�.
                     // If impossible,
-                        // 다음 점수가 높은 스탯에 대해서 확인한다. (최대 5회 반복)
+                        // 占쎈쐻占쎈윥�젆袁��쐻占쎈윪甕곤옙 占쎈쐻占쎈윪占쎌젌占쎈쐻占쎈윥占쎈묄占쎈쨬占쎈즸占쎌굲 占쎈쐻占쎈윥�몭琯�쐻占쎈짗占쎌굲占쎈쐻�뜝占� 占쎈쐻占쎈윥獒뺤쉩�쐻占쎈윞占쎈뻺占쎈쐻占쎈윥占쎈군 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쑏�솒��곸굲占쎈빝�뜝占� 占쎈쐻占쎈윪占쎄섈占쎈쐻占쎈윪��앓듬쐻占쎈윥�뵳�뜴�쐻占쎈윥�젆占�. (癲ル슔�걠獒뺣끀�쐻占쎈짗占쎌굲 5占쎈쐻占쎈윪占쎈쨧 占쎈쎗占쎈즵�몭�씛�삕亦낉옙)
                 for (int j = 1; j <= 5; j++)
                 {
                     int largeStat = FindNthLargestOption(damArray, j);
