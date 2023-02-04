@@ -107,3 +107,9 @@ void Simulator_Kokomi()
 	VisualHistogram->Write();
 	file->Close();
 }
+
+int main()
+{
+	Simulator_Kokomi();
+	return 0;
+}
