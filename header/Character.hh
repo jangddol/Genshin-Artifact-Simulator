@@ -80,7 +80,7 @@ public:
 	double GetScore_MonkeyMagic() const;
 
 	// Artifact MainOption Optimization
-	std::array<MainOptionsAndDamage, 10> OptimizeMainOption() const;
+	std::array<MainOptionsAndDamage, 10> OptimizeMainOption(int refScore = 28) const;
 
 	// Stat
 	Stat GetStat() const    { return mStat; }
@@ -174,7 +174,7 @@ private:
 
 	bool        mIsManualMode = false;
 
-	void        MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5);
+	void        MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5, int endScore=45);
 	double      mSavedFunction[46];
 	double      mEffectionArray[19];
 
