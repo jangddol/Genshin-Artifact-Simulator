@@ -106,6 +106,9 @@ private:
     int mWorkerID = 1;
 
     TH2D* mSimulationResult;
+
+    static constexpr double MINSCORE = 0.;
+    static constexpr double MAXSCORE = 45.;
 };
 
 
