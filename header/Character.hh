@@ -20,6 +20,7 @@ constexpr double PLUSARRAY[10] = { 3.88999991118908, 7.76999965310097, 5.8299999
 
 
 class Weapon;
+enum WeaponList;
 class Artifact;
 class ArtFlower;
 class ArtFeather;
@@ -27,10 +28,21 @@ class ArtClock;
 class ArtCup;
 class ArtCrown;
 class ArtSetStat;
+
+
 struct MainOptionsAndDamage
 {
     std::array<int, 3> mainOptions = {-1, -1, -1};
     double damage = 0;
+};
+
+
+enum CharList
+{
+	NONE,
+	KOKOMI,
+	NINGGUANG,
+	RAIDEN
 };
 
 
@@ -195,15 +207,6 @@ private:
 	// Skill mPSkill;
 	// Skill mESkill;
 	// Skill mQSkill;
-};
-
-
-enum CharList
-{
-	NONE,
-	KOKOMI,
-	NINGGUANG,
-	RAIDEN
 };
 
 

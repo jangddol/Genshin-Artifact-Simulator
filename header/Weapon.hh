@@ -10,6 +10,15 @@
 class Character;
 
 
+enum WeaponList
+{
+	ENGULFINGLIGHTNING,
+	EVERLASTINGMOONGLOW,
+	MEMORYOFDUST,
+	SOLARPEARL
+};
+
+
 class Weapon
 {
 public:
@@ -37,15 +46,6 @@ protected:
 	Stat mMainStat;
 	Stat mSubStat;
 	Stat mSubSubStat;
-};
-
-
-enum WeaponList
-{
-	ENGULFINGLIGHTNING,
-	EVERLASTINGMOONGLOW,
-	MEMORYOFDUST,
-	SOLARPEARL
 };
 
 
