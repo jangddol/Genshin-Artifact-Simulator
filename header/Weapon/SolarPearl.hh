@@ -20,7 +20,7 @@ public:
         mSubSubStat.SetOption(22, 40.);
         mSubSubStat.SetOption(23, 40.);
 
-        mWeaponName = "Solar Pearl";
+        mWeaponName = SOLARPEARL;
     }
     SolarPearl(const Weapon* weapon) : Weapon(weapon) {}
     Weapon* Clone() const override { return new SolarPearl(this); }

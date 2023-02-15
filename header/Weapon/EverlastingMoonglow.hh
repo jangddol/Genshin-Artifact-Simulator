@@ -18,7 +18,7 @@ public:
         mSubStat.SetHPPer(49.6);
         mSubSubStat.SetHealBonus(10.);
 
-        mWeaponName = "Everlasting Moonglow";
+        mWeaponName = EVERLASTINGMOONGLOW;
     }
     EverlastingMoonglow(const Weapon* weapon) : Weapon(weapon) {}
     Weapon* Clone() const override { return new EverlastingMoonglow(this); }

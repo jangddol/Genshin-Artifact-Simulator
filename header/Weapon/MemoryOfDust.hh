@@ -18,7 +18,7 @@ public:
         mSubStat.SetOption(2, 49.6);
         mSubSubStat.SetOption(2, 40.);
 
-        mWeaponName = "Memory of Dust";
+        mWeaponName = MEMORYOFDUST;
     }
     MemoryOfDust(const Weapon* weapon) : Weapon(weapon) {}
     Weapon* Clone() const override { return new MemoryOfDust(this); }

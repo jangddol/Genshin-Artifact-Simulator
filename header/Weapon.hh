@@ -30,13 +30,23 @@ public:
 	Stat GetSubStat() const { return mSubStat; }
 	Stat GetSubSubStat() const { return mSubSubStat; }
 
-	std::string GetName() const { return mWeaponName; }
+	WeaponList GetName() const { return mWeaponName; }
 	
 protected:
-	std::string mWeaponName;
+	WeaponList mWeaponName;
 	Stat mMainStat;
 	Stat mSubStat;
 	Stat mSubSubStat;
 };
+
+
+enum WeaponList
+{
+	ENGULFINGLIGHTNING,
+	EVERLASTINGMOONGLOW,
+	MEMORYOFDUST,
+	SOLARPEARL
+};
+
 
 #endif

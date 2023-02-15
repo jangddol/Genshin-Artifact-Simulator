@@ -18,7 +18,7 @@ public:
         mMainStat.SetBaseOption(0, 608.);
         mSubStat.SetElementCharge(85.1); // 55.1 + 30
 
-        mWeaponName = "Engulfing Lightning";
+        mWeaponName = ENGULFINGLIGHTNING;
     }
     EngulfingLightning(const Weapon* weapon) : Weapon(weapon) {}
     Weapon* Clone() const override { return new EngulfingLightning(this); }

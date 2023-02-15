@@ -426,7 +426,7 @@ void Character::MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5
     tempCharacter->SetArtClock(new ArtClock(emptyClock));
     tempCharacter->SetArtCup(new ArtCup(emptyCup));
     tempCharacter->SetArtCrown(new ArtCrown(emptyCrown));
-    
+
     Stat tempSubStat = Stat();
 
     tempCharacter->Update();
@@ -628,7 +628,7 @@ std::array<MainOptionsAndDamage, 10> Character::OptimizeMainOption(int refScore)
 }
 
 
-std::string  Character::GetWeaponName() const
+WeaponList Character::GetWeaponName() const
 {
     return mWeapon->GetName();
 }

@@ -1,4 +1,5 @@
 #include "../../header/Character/Kokomi.hh"
+#include "../../header/Weapon/EverlastingMoonglow.hh"
 
 
 double Kokomi::GetDamageWithStat(const Stat& stat) const
@@ -18,7 +19,7 @@ double Kokomi::GetDamageWithStat(const Stat& stat) const
     double eBonus = stat.GetEBonus();
 
     double normalAttackPlusDMG = 0;
-    if (this->GetWeaponName() == "Everlasting MoonGlow")
+    if (this->GetWeaponName() == EVERLASTINGMOONGLOW) // TODO : 여기 개 느림
     {
         normalAttackPlusDMG = totalHP * 0.01;
     }

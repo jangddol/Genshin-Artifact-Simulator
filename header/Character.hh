@@ -95,7 +95,7 @@ public:
 
 	// Weapon
 	Weapon* GetWeapon()               { return mWeapon; }
-	std::string  GetWeaponName() const;
+	WeaponList GetWeaponName() const;
 	Weapon* CopyWeapon() const;
 	void    SetWeapon(Weapon* weapon) { mWeapon = weapon; ConfirmWeaponStatModified(); }
 
