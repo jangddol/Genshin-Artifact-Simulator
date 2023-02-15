@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <iostream>
 #include <ctime>
+#include <assert.h>
 
 
 Character::Character(const Character *character)
@@ -522,20 +523,27 @@ double Character::GetScore() const
     double score = 0;
     double damage = GetDamage();
 
-    // Return 0 if the saved function is equal to the damage
-    if (mSavedFunction[0] == damage)
+    if (damage <= mSavedFunction[0])
     {
-        return 0;
-    }
-
-    // Find the score by iterating through the saved function array
-    for (int i = 0; i < 45; i++)
-    {
-        if ((mSavedFunction[i] < damage) && (damage <= mSavedFunction[i + 1]))
+        if (mSavedFunction[0] >= mSavedFunction[1])
         {
-            score = i + (damage - mSavedFunction[i]) / (mSavedFunction[i + 1] - mSavedFunction[i]);
-            break;
+            assert(false);
         }
+        score = (damage - mSavedFunction[0]) / (mSavedFunction[1] - mSavedFunction[0]);
+    }
+    else
+    {
+        int left = 0;
+        int right = 45;
+        while (left < right)
+        {
+            int mid = left + (right - left) / 2;
+            if (damage > mSavedFunction[mid]) left = mid + 1;
+            else right = mid;
+        }
+        if (left == 0) score = 0;
+        else if (left == 45) score = 45;
+        else score = left + (damage - mSavedFunction[left - 1]) / (mSavedFunction[left] - mSavedFunction[left - 1]);
     }
 
     // Adjust the score based on the element charge
