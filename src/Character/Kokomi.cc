@@ -19,7 +19,7 @@ double Kokomi::GetDamageWithStat(const Stat& stat) const
     double eBonus = stat.GetEBonus();
 
     double normalAttackPlusDMG = 0;
-    if (this->GetWeaponName() == EVERLASTINGMOONGLOW) // TODO : 여기 개 느림
+    if (this->GetWeaponName() == EVERLASTINGMOONGLOW)
     {
         normalAttackPlusDMG = totalHP * 0.01;
     }
