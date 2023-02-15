@@ -2,9 +2,9 @@
 #define ARTIFACT_HH
 
 
+// #include "Character.hh" : since of cylic declaration : moved to Artifact.cc
 #include "Stat.hh"
 #include <vector>
-#include "Character.hh"
 
 
 // double artInitTimeList[5] = { 0. }; // global
@@ -26,6 +26,9 @@ constexpr std::array<std::array<double, 4>, 10> OPTIONARRAY
 	{{16.3199996948242, 18.6499996185303, 20.9799995422363, 23.3099994659424}},
 	{{5.09999990463257, 5.82999996840954, 6.56000003218651, 7.28999972343445}},
 	{{16.2000007629395, 18.5200004577637, 20.8299999237061, 23.1499996185303}} }};
+
+
+class Character;
 
 
 class Artifact

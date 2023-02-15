@@ -1,3 +1,4 @@
+#include "../header/Character.hh"
 #include "../header/ArtSetStat.hh"
 
 

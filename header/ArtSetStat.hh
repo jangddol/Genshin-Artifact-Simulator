@@ -2,7 +2,9 @@
 #define ARTSETSTAT_HH
 
 
-#include "Character.hh"
+#include "Stat.hh"
+#include <vector>
+// #include "Character.hh" : since of cylic reference : goes to ArtSetStat.cc
 
 
 class Character;
