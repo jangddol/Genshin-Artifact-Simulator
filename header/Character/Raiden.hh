@@ -20,6 +20,8 @@ public:
 		SetCharacterBaseStat(0, 337.);
 		SetCharacterBaseStat(1, 12907.);
 		SetCharacterBaseStat(2, 789.);
+
+		mCharacterName = RAIDEN;
 	}
 	Raiden(const Raiden* other) : Character(other) { Update(); }
 	Raiden(const Raiden& other) : Character(other) { Update(); }

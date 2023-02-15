@@ -150,6 +150,8 @@ protected:
 	void SetCharacterStat(const Stat& stat)             { mCharacterStat = stat; mUpdateState = 0; }
 	void AddCharacterStat(int index, double amount)     { mCharacterStat.AddOption(index, amount); mUpdateState = 0; }
 	void SetCharacterBaseStat(int index, double amount) { mCharacterStat.SetBaseOption(index, amount); }
+	
+	static CharList mCharacterName;
 
 private:
 	// Stat Update Process
@@ -194,5 +196,15 @@ private:
 	// Skill mESkill;
 	// Skill mQSkill;
 };
+
+
+enum CharList
+{
+	NONE,
+	KOKOMI,
+	NINGGUANG,
+	RAIDEN
+};
+
 
 #endif
