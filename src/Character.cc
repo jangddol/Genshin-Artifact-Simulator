@@ -405,6 +405,16 @@ void Character::MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5
     if (mArtCup->GetMainType() < 10) mainOp[mArtCup->GetMainType()] = 1;
     if (mArtCrown->GetMainType() < 10) mainOp[mArtCrown->GetMainType()] = 1;
 
+    std::vector<int> effectiveStats = {};
+    effectiveStats.reserve(10);
+    for(int i = 0; i < 10; i++)
+    {
+        if (GetEffection(i) > 0)
+        {
+            effectiveStats.emplace_back(GetEffection(i));
+        }
+    }
+
     std::array<int, 10> numArray = { 0 }; // It will be recorded in this array how many times each option is added.
     std::array<double, 10> damArray = { 0. }; // It will be recorded in this array how much damage will be if each option is added.
 
@@ -438,69 +448,37 @@ void Character::MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5
         double difEC = mTargetEC - tempCharacter->GetStat().GetOption(4); // check the element charge is enough or not.
         bool whetherNotEnoughEC = difEC > 0;
 
-        if (i < 20)
+        // If the element charge is not enouth, add element charge.
+        if (whetherNotEnoughEC && ((i >= 20) || (5 - mainOp[4] > numArray[4])))
         {
-            // If the element charge is not enouth, add element charge.
-            if (whetherNotEnoughEC && (5 - mainOp[4] > numArray[4]))
-            {
-                tempSubStat.AddOption(4, PLUSARRAY[4]);
-                numArray[4] += 1;
-            }
-            else // If impossible,
-            {
-                // record how much damage will be if each option is added at damArray.
-                for (int j = 0; j < 10; j++) 
-                {
-                    tempSubStatArray[j] = tempSubStat;
-                    tempSubStatArray[j].AddOption(j, PLUSARRAY[j]);
-                    tempCharacter->GetArtFlower()->SetSubStat(tempSubStatArray[j]);
-                    tempCharacter->Update();
-                    damArray[j] = tempCharacter->GetDamage();
-                }
-
-                // 가장 점수가 높은 스탯에 대해서 ((5 - 주옵여부) 보다 적게 채웠는가?)를 확인하고 채운다.
-                    // If impossible,
-                        // 다음 점수가 높은 스탯에 대해서 확인한다. (최대 5회 반복)
-                for (int j = 1; j <= 5; j++)
-                {
-                    int largeStat = FindNthLargestOption(damArray, j);
-                    if (5 - mainOp[largeStat] > numArray[largeStat])
-                    {
-                        if ((damArray[largeStat] == damArray[4]) && (5 - mainOp[4] > numArray[4])) largeStat = 4;
-                        tempSubStat.AddOption(largeStat, PLUSARRAY[largeStat]);
-                        numArray[largeStat] += 1;
-                        break;
-                    }
-                }
-            }
+            tempSubStat.AddOption(4, PLUSARRAY[4]);
+            numArray[4] += 1;
         }
-        else
+        else // If impossible,
         {
-            if (whetherNotEnoughEC)
+            // record how much damage will be if each option is added at damArray.
+            for (int &stat: effectiveStats) 
             {
-                tempSubStat.AddOption(4, PLUSARRAY[4]);
-                numArray[4] += 1;
+                tempSubStatArray[stat] = tempSubStat;
+                tempSubStatArray[stat].AddOption(stat, PLUSARRAY[stat]);
+                tempCharacter->GetArtFlower()->SetSubStat(tempSubStatArray[stat]);
+                tempCharacter->Update();
+                damArray[stat] = tempCharacter->GetDamage();
             }
-            else
-            {
-                for (int j = 0; j < 10; j++)
-                {
-                    tempSubStatArray[j] = tempSubStat;
-                    tempSubStatArray[j].AddOption(j, PLUSARRAY[j]);
-                    tempCharacter->GetArtFlower()->SetSubStat(tempSubStatArray[j]);
-                    tempCharacter->Update();
-                    damArray[j] = tempCharacter->GetDamage();
-                }
 
-                for (int j = 1; j <= 2; j++)
+            // 가장 점수가 높은 스탯에 대해서 ((5 - 주옵여부) 보다 적게 채웠는가?)를 확인하고 채운다.
+                // If impossible,
+                    // 다음 점수가 높은 스탯에 대해서 확인한다. (최대 5회 반복)
+            int jEnd = 5 ? i < 20 : 2;
+            for (int j = 1; j <= jEnd; j++)
+            {
+                int largeStat = FindNthLargestOption(damArray, j);
+                if (5 - mainOp[largeStat] > numArray[largeStat])
                 {
-                    int largeStat = FindNthLargestOption(damArray, j);
-                    if (30 - mainOp[largeStat] != numArray[largeStat])
-                    {
-                        tempSubStat.AddOption(largeStat, PLUSARRAY[largeStat]);
-                        numArray[largeStat] += 1;
-                        break;
-                    }
+                    if ((i < 20) && (damArray[largeStat] == damArray[4]) && (5 - mainOp[4] > numArray[4])) largeStat = 4;
+                    tempSubStat.AddOption(largeStat, PLUSARRAY[largeStat]);
+                    numArray[largeStat] += 1;
+                    break;
                 }
             }
         }
