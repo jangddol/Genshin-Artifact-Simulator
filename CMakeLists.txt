@@ -7,8 +7,6 @@ project ("Genshin_Artifact_Simulator")
 
 ADD_COMPILE_OPTIONS ( -g -Wall )
 
-list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
-
 find_package(ROOT 6.26 REQUIRED)
 
 include(${ROOT_USE_FILE})
