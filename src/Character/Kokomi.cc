@@ -12,8 +12,7 @@ double Kokomi::GetDamageWithStat(const Stat& stat) const
     if (CR < 0) CR = 0.;
     double CB = stat.GetCriticalBonus();
     double resCoef = stat.GetResistCoef();
-    double defCoef = stat.GetDefenseCoef();
-    double LvCoef = stat.GetLevelCoef();
+    double LvDefCoef = stat.GetLvDefCoef();
     double hydroBonus = stat.GetHydroBonus();
     double normalAttackBonus = stat.GetNormalAttackBonus();
     double eBonus = stat.GetEBonus();
@@ -35,6 +34,6 @@ double Kokomi::GetDamageWithStat(const Stat& stat) const
     double normalDamageBonus = (100. + hydroBonus + normalAttackBonus + healBonus * 0.15) / 100.;
     double eDamageBonus = (100. + hydroBonus + eBonus) / 100.;
     
-    double returnValue = ((damage + QDamage + normalAttackPlusDMG) * 15. * normalDamageBonus + eDamage * 5. * eDamageBonus) * (1. + CR * CB / 10000.) * resCoef * defCoef * LvCoef + physicsPlusDMG;
+    double returnValue = ((damage + QDamage + normalAttackPlusDMG) * 15. * normalDamageBonus + eDamage * 5. * eDamageBonus) * (1. + CR * CB / 10000.) * resCoef * LvDefCoef + physicsPlusDMG;
     return returnValue;
 }

@@ -29,8 +29,7 @@ void Stat::Update()
 	CalTotalHP();
 	CalTotalDefense();
 	CalResistCoef();
-	CalDefenseCoef();
-	CalLevelCoef();
+	CalLvDefCoef();
 }
 
 
@@ -38,35 +37,27 @@ void Stat::CalResistCoef()
 {
 	double monsterResist = GetMonsterResist();
 	double resistCut = GetResistCut();
-	if (monsterResist - resistCut <= 75. && monsterResist - resistCut >= 0)
+	double remainResist = monsterResist - resistCut;
+	if (remainResist <= 75. && remainResist >= 0)
 	{
-		mStat[30] = 1. - (monsterResist - resistCut) / 100.;
+		mStat[33] = 1. - remainResist * 0.01;
 	}
-	else if (monsterResist - resistCut > 75)
+	else if (remainResist > 75)
 	{
-		mStat[30] = 1. / ((monsterResist - resistCut) / 25. + 1.);
+		mStat[33] = 1. / (remainResist * 0.04 + 1.);
 	}
 	else
 	{
-		mStat[30] = 1. - (monsterResist - resistCut) / 200.;
+		mStat[33] = 1. - remainResist * 0.005;
 	}
 }
 
 
-void Stat::CalDefenseCoef()
+void Stat::CalLvDefCoef()
 {
-	double charLv = GetLevel();
+	double charLvPlus100 = GetLevel() + 100;
 	double monsterLv = GetMonsterLevel();
 	double defenseCut = GetDefenseCut();
-	double result = (charLv + monsterLv + 200) / ((charLv + 100) + (monsterLv + 100) * (1 - defenseCut / 100));
-	mStat[31] = result;
-}
-
-
-void Stat::CalLevelCoef()
-{
-	double charLv = GetLevel();
-	double monsterLv = GetMonsterLevel();
-	double result = (charLv + 100) / (charLv + monsterLv + 200);
-	mStat[34] = result;
+	double defenseIgnore = GetDefenseIgnore();
+	mStat[34] = charLvPlus100 / (charLvPlus100 + (monsterLv + 100.) * (1 - defenseCut * 0.01) * (1 - defenseIgnore * 0.01));
 }
