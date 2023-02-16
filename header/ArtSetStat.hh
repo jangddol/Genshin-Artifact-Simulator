@@ -18,7 +18,7 @@ public:
     virtual ArtSetStat* Clone() const { return new ArtSetStat(*this); }
     virtual ~ArtSetStat() {}
 
-    virtual void DoFeedback(Character* character) const {}
+    virtual void DoFeedback(const Character* character, int& stat, double& amount) const { stat = 0; amount = 0; }
 
     void   SaveCharacterPointer(Character* character);
     void   DeleteCharacterPointer(const Character* chraracter);

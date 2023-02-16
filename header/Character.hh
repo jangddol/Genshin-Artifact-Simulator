@@ -64,7 +64,7 @@ public:
 	virtual ~Character();
 
 	// Stat Update & UpdateState
-	virtual void DoFeedback();
+	virtual void DoFeedback(int& stat, double& amount);
 	void Update();
 	void ConfirmResonanceStatModified();
 	void ConfirmWeaponStatModified();
@@ -134,11 +134,6 @@ public:
 	ArtCrown*   CopyArtCrown() const { return new ArtCrown(mArtCrown); }
 	void        SetArtCrown(ArtCrown* artCrown);
 
-	// Feedbacked Stat
-	Stat GetFeedbackedStat() const       { return mFeedbackedStat; }
-	void SetFeedbackedStat(const Stat& stat)    { mFeedbackedStat = stat; }
-	void AddFeedbackedStat(int index, double amount) { mFeedbackedStat.AddOption(index, amount); }
-
 	// TargetEC
 	double GetTargetEC() const          { return mTargetEC; }
 	void   SetTargetEC(double targetEC) { mTargetEC = targetEC; }
@@ -194,7 +189,6 @@ private:
 
 	Stat        mStat;
 	Stat        mCharacterStat;
-	Stat        mFeedbackedStat;
 	double      mTargetEC;
 	Weapon*     mWeapon = nullptr;
 	ArtFlower*  mArtFlower = nullptr;

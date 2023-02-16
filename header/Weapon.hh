@@ -33,7 +33,7 @@ public:
 	virtual Weapon* Clone() const { return new Weapon(this); }
 	virtual ~Weapon() {}
 
-	virtual void DoFeedback (Character* character) const {}
+	virtual void DoFeedback(const Character* character, int& stat, double& amount) const { stat = 0; amount = 0; }
 
 	Stat GetMainStat() const { return mMainStat; }
 	Stat GetSubStat() const { return mSubStat; }

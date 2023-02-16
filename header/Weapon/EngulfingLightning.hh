@@ -24,11 +24,11 @@ public:
     Weapon* Clone() const override { return new EngulfingLightning(this); }
 	~EngulfingLightning() override {}
 
-    void DoFeedback(Character* character) const override
+    void DoFeedback(const Character* character, int& stat, double& amount) const override
     {
         double extraEC = character->GetStat().GetElementCharge() - 100.;
-        double feedbackAP = std::min((extraEC * ECCoef), 80.);
-        character->AddFeedbackedStat(2, feedbackAP);
+        amount = std::min((extraEC * ECCoef), 80.);
+        stat = 2;
     }
 
 private:

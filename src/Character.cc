@@ -114,7 +114,7 @@ Character::~Character()
 }
 
 
-void Character::DoFeedback() {}
+void Character::DoFeedback(int& stat, double& amount) { stat = 0; amount = 0; }
 
 
 void Character::Update()
@@ -163,7 +163,7 @@ void Character::Update()
 
 void Character::UpdateFromCharacterResonance()
 {
-	// Ä³¸¯ÅÍ ¿É¼Ç : 0 ~ 34, b0 ~ b2
+	// ï§¦ë¨®â”ƒï¿½ê½£ ï¿½ìƒƒï¿½ë€¡ : 0 ~ 34, b0 ~ b2
     mStatAfterUpdateFromCharacterResonance.SetZero();
     for (int i = 0; i < 35; i++)
     {
@@ -174,7 +174,7 @@ void Character::UpdateFromCharacterResonance()
         mStatAfterUpdateFromCharacterResonance.SetBaseOption(i, mCharacterStat.GetBaseOption(i));
     }
 
-	// °ø¸í : 0, 2, 5, 7, 10 ~ 17, 27
+	// æ€¨ë“¬ì±¸ : 0, 2, 5, 7, 10 ~ 17, 27
     mStatAfterUpdateFromCharacterResonance.AddOption(0, mResonanceStat.GetOption(0));
     mStatAfterUpdateFromCharacterResonance.AddOption(2, mResonanceStat.GetOption(2));
     mStatAfterUpdateFromCharacterResonance.AddOption(5, mResonanceStat.GetOption(5));
@@ -195,16 +195,16 @@ void Character::UpdateFromWeapon()
     
     mStatAfterUpdateFromWeapon = mStatAfterUpdateFromCharacterResonance;
 
-    // ¹«±â ÁÖ¿É : b0
+    // è‡¾ë‹¿ë¦° äºŒì‡±ìƒƒ : b0
     mStatAfterUpdateFromWeapon.SetBaseOption(0, mStatAfterUpdateFromWeapon.GetBaseOption(0) + WeaponMainStat.GetBaseOption(0));
 
-	// ¹«±â ºÎ¿É : 0 ~ 18 // ¿ÏÀüÈ÷ ¹èÁ¦µÈ °ÍÀº ¾Æ´Ô
+	// è‡¾ë‹¿ë¦° éºï¿½ï¿½ìƒƒ : 0 ~ 18 // ï¿½ì…¿ï¿½ìŸ¾ï¿½ì—³ è«›ê³—ì £ï¿½ë§‚ å¯ƒê»‹ï¿½ï¿½ ï¿½ë¸˜ï¿½ë–‚
     for (int i = 0; i < 19; i++)
     {
         mStatAfterUpdateFromWeapon.AddOption(i, WeaponSubStat.GetOption(i));
     }
 
-	// ¹«±â ºÎºÎ¿É : 0 ~ 23, 27, 28 // ¿ÏÀüÈ÷ ¹èÁ¦µÈ °ÍÀº ¾Æ´Ô
+	// è‡¾ë‹¿ë¦° éºï¿½éºï¿½ï¿½ìƒƒ : 0 ~ 23, 27, 28 // ï¿½ì…¿ï¿½ìŸ¾ï¿½ì—³ è«›ê³—ì £ï¿½ë§‚ å¯ƒê»‹ï¿½ï¿½ ï¿½ë¸˜ï¿½ë–‚
     for (int i = 0; i < 24; i++)
     {
         mStatAfterUpdateFromWeapon.AddOption(i, WeaponSubSubStat.GetOption(i));
@@ -219,7 +219,7 @@ void Character::UpdateFromArtSetStat()
 {
     mStatAfterUpdateFromArtSetStat = mStatAfterUpdateFromWeapon;
 
-	// ¼ºÀ¯¹° ¼¼Æ® : 0 ~ 23, 27, 28 // ¿ÏÀüÈ÷ ¹èÁ¦µÈ °ÍÀº ¾Æ´Ô
+	// ï¿½ê½¦ï¿½ì‘€è‡¾ï¿½ ï¿½ê½­ï¿½ë“ƒ : 0 ~ 23, 27, 28 // ï¿½ì…¿ï¿½ìŸ¾ï¿½ì—³ è«›ê³—ì £ï¿½ë§‚ å¯ƒê»‹ï¿½ï¿½ ï¿½ë¸˜ï¿½ë–‚
     for (int i = 0; i < 24; i++)
     {
         mStatAfterUpdateFromArtSetStat.AddOption(i, mArtSetStat->GetOption(i));
@@ -233,7 +233,7 @@ void Character::UpdateFromArtifactMainStat()
 {
     mStatAfterUpdateFromArtifactMainStat = mStatAfterUpdateFromArtSetStat;
     
-    // ¼ºÀ¯¹° ÁÖ¿É : 0 ~ 8, 10 ~ 18
+    // ï¿½ê½¦ï¿½ì‘€è‡¾ï¿½ äºŒì‡±ìƒƒ : 0 ~ 8, 10 ~ 18
     
     Stat FlowerMainStat = mArtFlower->GetMainStat();
     Stat FeatherMainStat = mArtFeather->GetMainStat();
@@ -253,7 +253,7 @@ void Character::UpdateFromArtifactSubStat()
 {
     mStatAfterUpdateFromArtifactSubStat = mStatAfterUpdateFromArtifactMainStat;
     
-    // ¼ºÀ¯¹° ºÎ¿É : 0 ~ 9
+    // ï¿½ê½¦ï¿½ì‘€è‡¾ï¿½ éºï¿½ï¿½ìƒƒ : 0 ~ 9
 
     for (int i = 0; i < 10; i++)
     {
@@ -267,13 +267,14 @@ void Character::UpdateFromArtifactSubStat()
 
 void Character::UpdateFromFeedback()
 {
-    mFeedbackedStat.SetZero();
-    mWeapon->DoFeedback(this);
-    mArtSetStat->DoFeedback(this);
-    this->DoFeedback();
-    for (int i = 0; i < 24; i++) mStat.AddOption(i, mFeedbackedStat.GetOption(i));
-    mStat.AddOption(27, mFeedbackedStat.GetOption(27));
-    mStat.AddOption(28, mFeedbackedStat.GetOption(28));
+    int stat = -1;
+    double amount = 0.;
+    mWeapon->DoFeedback(this, stat, amount);
+    mStat.AddOption(stat, amount);
+    mArtSetStat->DoFeedback(this, stat, amount);
+    mStat.AddOption(stat, amount);
+    this->DoFeedback(stat, amount);
+    mStat.AddOption(stat, amount);
 }
 
 
@@ -339,18 +340,18 @@ double Character::GetDamageWithStat(const Stat& stat) const
 void Character::MakeEffectionArray()
 {
     Character* tempCharacter;
-    ArtSetStat* tempArtSetStat; // °è»ê¿¡ ÇÊ¿äÇÑ ºÎ¿É Ãß°¡´Â ResonanceStatÀ¸·Î ÇÑ´Ù.
-                                        // ÀÌÀ¯´Â, ±×³É StatÀÌ¶ó¼­ Á¢±ÙÀÌ ÆíÇÔ.
-                                        // Update°¡ ¿À·¡°É¸®±ä ÇÏÁö¸¸, ½É°¢ÇÏÁø ¾ÊÀ½.
+    ArtSetStat* tempArtSetStat; // æ€¨ê¾©ê¶›ï¿½ë¿‰ ï¿½ë¸˜ï¿½ìŠ‚ï¿½ë¸³ éºï¿½ï¿½ìƒƒ ç•°ë¶½ï¿½ï¿½ï¿½ë’— ResonanceStatï¿½ì‘æ¿¡ï¿½ ï¿½ë¸³ï¿½ë–.
+                                        // ï¿½ì” ï¿½ì‘€ï¿½ë’—, æ´¹ëªƒê¹· Statï¿½ì” ï¿½ì”ªï¿½ê½Œ ï¿½ì ’æ´¹ì‡±ì”  ï¿½ë ªï¿½ë¸¿.
+                                        // Updateåª›ï¿½ ï¿½ì‚¤ï¿½ì˜’å«„ëªƒâ”æ¹²ï¿½ ï¿½ë¸¯ï§ï¿½ï§ï¿½, ï¿½ë––åª›ê³¹ë¸¯ï§ï¿½ ï¿½ë¸¡ï¿½ì“¬.
                                     // 230131
-                                        // ResonanceStat ¿¡ ´ëÇÑ Update Optimization °úÁ¤¿¡¼­
-                                        // ±ø¿É°ú Ä¡ÇÇ°¡ »ç¿ëµÇÁö ¾Ê´Â °Í ¶§¹®¿¡
-                                        // ÀÌ ÇÔ¼ö°¡ ¸Á°¡Áü. 
-                                        // 0 ~ 18 ¸ğµÎ »ç¿ëµÇ´Â °ÍÀ» »ç¿ëÇØ¾ßÇÑ´Ù.
-                                        // ArtSetStatÀÌ ¸Â´Â µí ÇÏ´Ù.
+                                        // ResonanceStat ï¿½ë¿‰ ï¿½ï¿½ï¿½ï¿½ë¸³ Update Optimization æ€¨ì‡±ì ™ï¿½ë¿‰ï¿½ê½Œ
+                                        // æºâ‰ªìƒƒæ€¨ï¿½ ç§»ì„‘ëµ¾åª›ï¿½ ï¿½ê¶—ï¿½ìŠœï¿½ë¦ºï§ï¿½ ï¿½ë¸¡ï¿½ë’— å¯ƒï¿½ ï¿½ë¸£è‡¾ëª„ë¿‰
+                                        // ï¿½ì”  ï¿½ë¸¿ï¿½ë‹”åª›ï¿½ ï§ì•·ï¿½ï¿½ï§ï¿½. 
+                                        // 0 ~ 18 ï§â‘¤ëª¢ ï¿½ê¶—ï¿½ìŠœï¿½ë¦ºï¿½ë’— å¯ƒê»‹ì“£ ï¿½ê¶—ï¿½ìŠœï¿½ë¹ï¿½ë¹ï¿½ë¸³ï¿½ë–.
+                                        // ArtSetStatï¿½ì”  ï§ìšŒë’— ï¿½ë² ï¿½ë¸¯ï¿½ë–.
 
 
-    double defaultDamage = GetDamage(); // ÇöÀç ½ºÆåÀ» ±â·ÏÇÑ´Ù.
+    double defaultDamage = GetDamage(); // ï¿½ì½ï¿½ì˜± ï¿½ë’ªï¿½ëŸºï¿½ì“£ æ¹²ê³•ì¤‰ï¿½ë¸³ï¿½ë–.
     for (int i = 0; i < 19; i++)
     {
         tempCharacter = this->Clone();
@@ -419,9 +420,9 @@ void Character::MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5
     std::array<double, 10> damArray = { 0. }; // It will be recorded in this array how much damage will be if each option is added.
 
     Character* tempCharacter;
-    std::array<Stat, 10> tempSubStatArray; // Flower¿¡¸¸ Àû¿ëµÉ °ÍÀÌ´Ù.
+    std::array<Stat, 10> tempSubStatArray; // Flowerï¿½ë¿‰ï§ï¿½ ï¿½ìŸ»ï¿½ìŠœï¿½ë§† å¯ƒê»‹ì” ï¿½ë–.
 
-    // Character¸¦ 10°³¸¦ º¹»çÇÑ ´ÙÀ½¿¡, °¢ Character¿¡°Ô ºÎ¿ÉÀÌ ÀüºÎ ºñ¾îÀÖ´Â Artifact¸¦ ÁØ´Ù.
+    // Characterç‘œï¿½ 10åª›ì’•ï¿½ï¿½ è¹‚ë“­ê¶—ï¿½ë¸³ ï¿½ë–ï¿½ì“¬ï¿½ë¿‰, åª›ï¿½ Characterï¿½ë¿‰å¯ƒï¿½ éºï¿½ï¿½ìƒƒï¿½ì”  ï¿½ìŸ¾éºï¿½ é®ê¾©ë¼±ï¿½ì—³ï¿½ë’— Artifactç‘œï¿½ ä»¥ï¿½ï¿½ë–.
     ArtFlower* emptyFlower = new ArtFlower();
     ArtFeather* emptyFeather = new ArtFeather();
     ArtClock* emptyClock = new ArtClock();
@@ -443,7 +444,7 @@ void Character::MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5
     tempCharacter->Update();
     mSavedFunction[0] = tempCharacter->GetDamage();
 
-    for (int i = 0; i < endScore; i++) // for¹®À¸·Î 45È¸µ¿¾È, 
+    for (int i = 0; i < endScore; i++) // forè‡¾ëª„ì‘æ¿¡ï¿½ 45ï¿½ì‰¶ï¿½ë£ï¿½ë¸, 
     {
         double difEC = mTargetEC - tempCharacter->GetStat().GetOption(4); // check the element charge is enough or not.
         bool whetherNotEnoughEC = difEC > 0;
@@ -466,9 +467,9 @@ void Character::MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5
                 damArray[stat] = tempCharacter->GetDamage();
             }
 
-            // °¡Àå Á¡¼ö°¡ ³ôÀº ½ºÅÈ¿¡ ´ëÇØ¼­ ((5 - ÁÖ¿É¿©ºÎ) º¸´Ù Àû°Ô Ã¤¿ü´Â°¡?)¸¦ È®ÀÎÇÏ°í Ã¤¿î´Ù.
+            // åª›ï¿½ï¿½ì˜£ ï¿½ì ï¿½ë‹”åª›ï¿½ ï¿½ë„‚ï¿½ï¿½ï¿½ ï¿½ë’ªï¿½êºˆï¿½ë¿‰ ï¿½ï¿½ï¿½ï¿½ë¹ï¿½ê½Œ ((5 - äºŒì‡±ìƒƒï¿½ë¿¬éºï¿½) è¹‚ëŒ€ë– ï¿½ìŸ»å¯ƒï¿½ ï§¢ê¾©ì±ï¿½ë’—åª›ï¿½?)ç‘œï¿½ ï¿½ì†—ï¿½ì”¤ï¿½ë¸¯æ€¨ï¿½ ï§¢ê¾©ìŠ«ï¿½ë–.
                 // If impossible,
-                    // ´ÙÀ½ Á¡¼ö°¡ ³ôÀº ½ºÅÈ¿¡ ´ëÇØ¼­ È®ÀÎÇÑ´Ù. (ÃÖ´ë 5È¸ ¹İº¹)
+                    // ï¿½ë–ï¿½ì“¬ ï¿½ì ï¿½ë‹”åª›ï¿½ ï¿½ë„‚ï¿½ï¿½ï¿½ ï¿½ë’ªï¿½êºˆï¿½ë¿‰ ï¿½ï¿½ï¿½ï¿½ë¹ï¿½ê½Œ ï¿½ì†—ï¿½ì”¤ï¿½ë¸³ï¿½ë–. (ï§¤ì’•ï¿½ï¿½ 5ï¿½ì‰¶ è«›ì„ë‚¬)
             int jEnd = 5 ? i < 20 : 2;
             for (int j = 1; j <= jEnd; j++)
             {
@@ -535,7 +536,7 @@ double Character::GetScore() const
 }
 
 
-double Character::GetScore_MonkeyMagic() const // TODO : Ã¤¿ö¾ßÇÔ
+double Character::GetScore_MonkeyMagic() const // TODO : ï§¢ê¾©ì™ï¿½ë¹ï¿½ë¸¿
 {
     return 0.;
 }
@@ -589,10 +590,10 @@ std::array<MainOptionsAndDamage, 10> Character::OptimizeMainOption(int refScore)
                 
 				double tempRefDamage = tempChar->GetScoreFunction(refScore);
 
-                // tempDamage°¡ top10Option¿¡ ÀÖ´Â minOptionº¸´Ù Å¬ °æ¿ì
+                // tempDamageåª›ï¿½ top10Optionï¿½ë¿‰ ï¿½ì—³ï¿½ë’— minOptionè¹‚ëŒ€ë– ï¿½ê²¢ å¯ƒìŒìŠ¦
                 if (tempRefDamage > top10Options[9].damage)
                 {
-                    for (int i = 0; i < 10; i++)// ¸î¹øÂ°·Î µé¾î°¡´Â Áö ÆÄ¾ÇÇÏ°í, ³Ö¾îÁØ´Ù.
+                    for (int i = 0; i < 10; i++)// ï§ë‰–ì¾²ï§ëªƒì¤ˆ ï¿½ë±¾ï¿½ë¼±åª›ï¿½ï¿½ë’— ï§ï¿½ ï¿½ë™†ï¿½ë¸™ï¿½ë¸¯æ€¨ï¿½, ï¿½ê½”ï¿½ë¼±ä»¥ï¿½ï¿½ë–.
                     {
                         if (tempRefDamage > top10Options[i].damage)
                         {

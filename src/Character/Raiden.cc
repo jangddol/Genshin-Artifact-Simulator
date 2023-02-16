@@ -50,9 +50,9 @@ double Raiden::GetDamageWithStat(const Stat& stat) const
 }
 
 
-void Raiden::DoFeedback()
+void Raiden::DoFeedback(int& stat, double& amount)
 {
     double EC = this->GetStat().GetElementCharge();
-    double elecBonus = (EC - 100.) * 0.4;
-    this->AddFeedbackedStat(11, elecBonus);
+    amount = (EC - 100.) * 0.4;
+    stat = 11;
 }

@@ -33,7 +33,7 @@ public:
 
 	virtual double GetDamageWithStat(const Stat& stat) const override;
 
-    virtual void DoFeedback() override;
+    virtual void DoFeedback(int& stat, double& amount) override;
 
 	double GetTotalPartyEnergy() const { return mTotalPartyEnergy; }
 	void   SetTotalPartyEnergy(double totalPartyEnergy) { mTotalPartyEnergy = totalPartyEnergy; }
