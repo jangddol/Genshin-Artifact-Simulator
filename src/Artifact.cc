@@ -33,7 +33,7 @@ Artifact::Artifact(const Artifact* artifact)
 int Artifact::UseCummulatedWeight(std::vector<int> cummulatedWeight)
 {
 	// generate random integer from 0 to the sum of probability table
-	int length = cummulatedWeight.size();
+	std::size_t length = cummulatedWeight.size();
 	
 	int tempInt;
 	if (cummulatedWeight[length - 1] == 1) tempInt = 1;
@@ -42,12 +42,12 @@ int Artifact::UseCummulatedWeight(std::vector<int> cummulatedWeight)
 	int selectedInt = 0;
 	int beforeElement = 0;
 	int nowElement = 0;
-	for (int i = 0; i < length; i++) // for¹®À» µ¹¸®¸é¼­ ´ë¼Òºñ±³¸¦ ÇÑ´Ù.
+	for (int i = 0; i < length; i++) // forë¬¸ì„ ëŒë¦¬ë©´ì„œ ëŒ€ì†Œë¹„êµë¥¼ í•œë‹¤.
 	{
 		nowElement = cummulatedWeight[i];
 		if (tempInt > beforeElement && tempInt <= nowElement)
 		{
-			selectedInt = i; // ·£´ı int¸¦ °¡Áö°í ¾î´À ÁÖ¿ÉÀÎÁö °áÁ¤ÇÑ´Ù.
+			selectedInt = i; // ëœë¤ intë¥¼ ê°€ì§€ê³  ì–´ëŠ ì£¼ì˜µì¸ì§€ ê²°ì •í•œë‹¤.
 			break;
 		}
 		beforeElement = nowElement;
@@ -149,7 +149,7 @@ void Artifact::UpgradeSubOption(std::array<int, 4> startOptList, bool whether4Op
 	int numUpgrade = 4;
 	if (whether4OptStart) numUpgrade = 5;
 
-	// °¢°¢ 1È¸¾¿
+	// ê°ê° 1íšŒì”©
 	for (int i = 0; i < 4; i++)
 	{
 		int optIndex = startOptList[i];
@@ -157,7 +157,7 @@ void Artifact::UpgradeSubOption(std::array<int, 4> startOptList, bool whether4Op
 		mSubStat.AddOption(optIndex, randomStat);
 	}
 
-	// ·£´ıÀ¸·Î numUpgrade¸¸Å­
+	// ëœë¤ìœ¼ë¡œ numUpgradeë§Œí¼
 	for (int i = 0; i < numUpgrade; i++)
 	{
 		int randomIndex = startOptList[GetRdUni4()];
@@ -170,18 +170,18 @@ void Artifact::UpgradeSubOption(std::array<int, 4> startOptList, bool whether4Op
 void Artifact::GenerateSubOption()
 {
 	std::vector<int> subCummulatedWeight = GenerateCummulatedWeight();
-		// 1. ¸ŞÀÎ¿É¼ÇÀ» È®ÀÎÇØ¼­ È®·üÇ¥¿¡¼­ ÇØ´ç ºÎºĞÀ» 0À¸·Î ¸¸µç´Ù.
-			// 1-1. ÀÌ°É °¡Áö°í cummulatedWeightÀ» ¸¸µç´Ù.
+		// 1. ë©”ì¸ì˜µì…˜ì„ í™•ì¸í•´ì„œ í™•ë¥ í‘œì—ì„œ í•´ë‹¹ ë¶€ë¶„ì„ 0ìœ¼ë¡œ ë§Œë“ ë‹¤.
+			// 1-1. ì´ê±¸ ê°€ì§€ê³  cummulatedWeightì„ ë§Œë“ ë‹¤.
 				// This cummulatedWeight is for subOption
 				// Therefore the length of cummulatedWeight is 10.
 
 	bool whether4OptStart = Selected3or4OptStart();
-		// 2. Ã³À½¿¡ 3°³ÀÎÁö 4°³ÀÎÁö °í¸¥´Ù. -> 8°³ or 9°³
+		// 2. ì²˜ìŒì— 3ê°œì¸ì§€ 4ê°œì¸ì§€ ê³ ë¥¸ë‹¤. -> 8ê°œ or 9ê°œ
 	std::array<int, 4> startOptList = GenerateStartOpt(subCummulatedWeight);
-		// 3. Ã³À½ ¿É¼Ç 4°³°¡ ¹«¾ùÀÎÁö °áÁ¤ÇÑ´Ù. 4°³¸¦ °ãÄ¡Áö ¾Ê°Ô »ı¼ºÇÑ´Ù.
+		// 3. ì²˜ìŒ ì˜µì…˜ 4ê°œê°€ ë¬´ì—‡ì¸ì§€ ê²°ì •í•œë‹¤. 4ê°œë¥¼ ê²¹ì¹˜ì§€ ì•Šê²Œ ìƒì„±í•œë‹¤.
 
 	UpgradeSubOption(startOptList, whether4OptStart);
-		// 4. ±âÁ¸ 4°³¸¦ ·£´ıÀ¸·Î °¢°¢ 1È¸ °íÁ¤¿¡ ·£´ıÀ¸·Î 4È¸ ¶Ç´Â 5È¸ Áõ°¡½ÃÅ²´Ù.
+		// 4. ê¸°ì¡´ 4ê°œë¥¼ ëœë¤ìœ¼ë¡œ ê°ê° 1íšŒ ê³ ì •ì— ëœë¤ìœ¼ë¡œ 4íšŒ ë˜ëŠ” 5íšŒ ì¦ê°€ì‹œí‚¨ë‹¤.
 }
 
 
@@ -189,8 +189,8 @@ void Artifact::Generation()
 {
 	mMainStat.SetZero();
 	mSubStat.SetZero();
-	GenerateMainOption(); // ¸ŞÀÎ¿É¼Ç : ºÎÀ§¸¶´Ù ´Ù¸§.
-	GenerateSubOption(); // ºÎ¿É¼Ç : ºÎÀ§¸¶´Ù, ¸ŞÀÎ¿É¼Ç¸¶´Ù ´Ù¸§.
+	GenerateMainOption(); // ë©”ì¸ì˜µì…˜ : ë¶€ìœ„ë§ˆë‹¤ ë‹¤ë¦„.
+	GenerateSubOption(); // ë¶€ì˜µì…˜ : ë¶€ìœ„ë§ˆë‹¤, ë©”ì¸ì˜µì…˜ë§ˆë‹¤ ë‹¤ë¦„.
 	AlertModified();
 }
 
