@@ -163,7 +163,7 @@ void Character::Update()
 
 void Character::UpdateFromCharacterResonance()
 {
-	// 罹먮┃�꽣 �샃�뀡 : 0 ~ 34, b0 ~ b2
+	// 筌�癒��봼占쎄숲 占쎌긿占쎈�� : 0 ~ 34, b0 ~ b2
     mStatAfterUpdateFromCharacterResonance.SetZero();
     for (int i = 0; i < 35; i++)
     {
@@ -174,7 +174,7 @@ void Character::UpdateFromCharacterResonance()
         mStatAfterUpdateFromCharacterResonance.SetBaseOption(i, mCharacterStat.GetBaseOption(i));
     }
 
-	// 怨듬챸 : 0, 2, 5, 7, 10 ~ 17, 27
+	// ��⑤벉梨� : 0, 2, 5, 7, 10 ~ 17, 27
     mStatAfterUpdateFromCharacterResonance.AddOption(0, mResonanceStat.GetOption(0));
     mStatAfterUpdateFromCharacterResonance.AddOption(2, mResonanceStat.GetOption(2));
     mStatAfterUpdateFromCharacterResonance.AddOption(5, mResonanceStat.GetOption(5));
@@ -195,16 +195,16 @@ void Character::UpdateFromWeapon()
     
     mStatAfterUpdateFromWeapon = mStatAfterUpdateFromCharacterResonance;
 
-    // 臾닿린 二쇱샃 : b0
+    // �눧�떯由� 雅뚯눘�긿 : b0
     mStatAfterUpdateFromWeapon.SetBaseOption(0, mStatAfterUpdateFromWeapon.GetBaseOption(0) + WeaponMainStat.GetBaseOption(0));
 
-	// 臾닿린 遺��샃 : 0 ~ 18 // �셿�쟾�엳 諛곗젣�맂 寃껋�� �븘�떂
+	// �눧�떯由� �겫占쏙옙�긿 : 0 ~ 18 // 占쎌끏占쎌읈占쎌뿳 獄쏄퀣�젫占쎈쭆 野껉퍔占쏙옙 占쎈툡占쎈뻷
     for (int i = 0; i < 19; i++)
     {
         mStatAfterUpdateFromWeapon.AddOption(i, WeaponSubStat.GetOption(i));
     }
 
-	// 臾닿린 遺�遺��샃 : 0 ~ 23, 27, 28 // �셿�쟾�엳 諛곗젣�맂 寃껋�� �븘�떂
+	// �눧�떯由� �겫占썽겫占쏙옙�긿 : 0 ~ 23, 27, 28 // 占쎌끏占쎌읈占쎌뿳 獄쏄퀣�젫占쎈쭆 野껉퍔占쏙옙 占쎈툡占쎈뻷
     for (int i = 0; i < 24; i++)
     {
         mStatAfterUpdateFromWeapon.AddOption(i, WeaponSubSubStat.GetOption(i));
@@ -219,7 +219,7 @@ void Character::UpdateFromArtSetStat()
 {
     mStatAfterUpdateFromArtSetStat = mStatAfterUpdateFromWeapon;
 
-	// �꽦�쑀臾� �꽭�듃 : 0 ~ 23, 27, 28 // �셿�쟾�엳 諛곗젣�맂 寃껋�� �븘�떂
+	// 占쎄쉐占쎌���눧占� 占쎄쉭占쎈뱜 : 0 ~ 23, 27, 28 // 占쎌끏占쎌읈占쎌뿳 獄쏄퀣�젫占쎈쭆 野껉퍔占쏙옙 占쎈툡占쎈뻷
     for (int i = 0; i < 24; i++)
     {
         mStatAfterUpdateFromArtSetStat.AddOption(i, mArtSetStat->GetOption(i));
@@ -233,7 +233,7 @@ void Character::UpdateFromArtifactMainStat()
 {
     mStatAfterUpdateFromArtifactMainStat = mStatAfterUpdateFromArtSetStat;
     
-    // �꽦�쑀臾� 二쇱샃 : 0 ~ 8, 10 ~ 18
+    // 占쎄쉐占쎌���눧占� 雅뚯눘�긿 : 0 ~ 8, 10 ~ 18
     
     Stat FlowerMainStat = mArtFlower->GetMainStat();
     Stat FeatherMainStat = mArtFeather->GetMainStat();
@@ -253,7 +253,7 @@ void Character::UpdateFromArtifactSubStat()
 {
     mStatAfterUpdateFromArtifactSubStat = mStatAfterUpdateFromArtifactMainStat;
     
-    // �꽦�쑀臾� 遺��샃 : 0 ~ 9
+    // 占쎄쉐占쎌���눧占� �겫占쏙옙�긿 : 0 ~ 9
 
     for (int i = 0; i < 10; i++)
     {
@@ -340,18 +340,18 @@ double Character::GetDamageWithStat(const Stat& stat) const
 void Character::MakeEffectionArray()
 {
     Character* tempCharacter;
-    ArtSetStat* tempArtSetStat; // 怨꾩궛�뿉 �븘�슂�븳 遺��샃 異붽���뒗 ResonanceStat�쑝濡� �븳�떎.
-                                        // �씠�쑀�뒗, 洹몃깷 Stat�씠�씪�꽌 �젒洹쇱씠 �렪�븿.
-                                        // Update媛� �삤�옒嫄몃━湲� �븯吏�留�, �떖媛곹븯吏� �븡�쓬.
+    ArtSetStat* tempArtSetStat; // ��④쑴沅쏉옙肉� 占쎈툡占쎌뒄占쎈립 �겫占쏙옙�긿 �빊遺쏙옙占쏙옙�뮉 ResonanceStat占쎌몵嚥∽옙 占쎈립占쎈뼄.
+                                        // 占쎌뵠占쎌��占쎈뮉, 域밸챶源� Stat占쎌뵠占쎌뵬占쎄퐣 占쎌젔域뱀눘�뵠 占쎈젶占쎈맙.
+                                        // Update揶쏉옙 占쎌궎占쎌삋椰꾨챶�봺疫뀐옙 占쎈릭筌욑옙筌랃옙, 占쎈뼎揶쏄낱釉�筌욑옙 占쎈륫占쎌벉.
                                     // 230131
-                                        // ResonanceStat �뿉 ����븳 Update Optimization 怨쇱젙�뿉�꽌
-                                        // 源≪샃怨� 移섑뵾媛� �궗�슜�릺吏� �븡�뒗 寃� �븣臾몄뿉
-                                        // �씠 �븿�닔媛� 留앷��吏�. 
-                                        // 0 ~ 18 紐⑤몢 �궗�슜�릺�뒗 寃껋쓣 �궗�슜�빐�빞�븳�떎.
-                                        // ArtSetStat�씠 留욌뒗 �벏 �븯�떎.
+                                        // ResonanceStat 占쎈퓠 占쏙옙占쏙옙釉� Update Optimization ��⑥눘�젟占쎈퓠占쎄퐣
+                                        // 繹먥돦�긿��⑨옙 燁살꼹逾얍첎占� 占쎄텢占쎌뒠占쎈┷筌욑옙 占쎈륫占쎈뮉 野껓옙 占쎈르�눧紐꾨퓠
+                                        // 占쎌뵠 占쎈맙占쎈땾揶쏉옙 筌띿빓占쏙옙筌욑옙. 
+                                        // 0 ~ 18 筌뤴뫀紐� 占쎄텢占쎌뒠占쎈┷占쎈뮉 野껉퍔�뱽 占쎄텢占쎌뒠占쎈퉸占쎈튊占쎈립占쎈뼄.
+                                        // ArtSetStat占쎌뵠 筌띿쉶�뮉 占쎈쾹 占쎈릭占쎈뼄.
 
 
-    double defaultDamage = GetDamage(); // �쁽�옱 �뒪�럺�쓣 湲곕줉�븳�떎.
+    double defaultDamage = GetDamage(); // 占쎌겱占쎌삺 占쎈뮞占쎈읃占쎌뱽 疫꿸퀡以됵옙釉놂옙�뼄.
     for (int i = 0; i < 19; i++)
     {
         tempCharacter = this->Clone();
@@ -420,9 +420,9 @@ void Character::MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5
     std::array<double, 10> damArray = { 0. }; // It will be recorded in this array how much damage will be if each option is added.
 
     Character* tempCharacter;
-    std::array<Stat, 10> tempSubStatArray; // Flower�뿉留� �쟻�슜�맆 寃껋씠�떎.
+    std::array<Stat, 10> tempSubStatArray; // Flower占쎈퓠筌랃옙 占쎌읅占쎌뒠占쎈쭍 野껉퍔�뵠占쎈뼄.
 
-    // Character瑜� 10媛쒕�� 蹂듭궗�븳 �떎�쓬�뿉, 媛� Character�뿉寃� 遺��샃�씠 �쟾遺� 鍮꾩뼱�엳�뒗 Artifact瑜� 以��떎.
+    // Character�몴占� 10揶쏆뮆占쏙옙 癰귣벊沅쀯옙釉� 占쎈뼄占쎌벉占쎈퓠, 揶쏉옙 Character占쎈퓠野껓옙 �겫占쏙옙�긿占쎌뵠 占쎌읈�겫占� �뜮袁⑸선占쎌뿳占쎈뮉 Artifact�몴占� 餓ο옙占쎈뼄.
     ArtFlower* emptyFlower = new ArtFlower();
     ArtFeather* emptyFeather = new ArtFeather();
     ArtClock* emptyClock = new ArtClock();
@@ -444,7 +444,7 @@ void Character::MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5
     tempCharacter->Update();
     mSavedFunction[0] = tempCharacter->GetDamage();
 
-    for (int i = 0; i < endScore; i++) // for臾몄쑝濡� 45�쉶�룞�븞, 
+    for (int i = 0; i < endScore; i++) // for�눧紐꾩몵嚥∽옙 45占쎌돳占쎈짗占쎈툧, 
     {
         double difEC = mTargetEC - tempCharacter->GetStat().GetOption(4); // check the element charge is enough or not.
         bool whetherNotEnoughEC = difEC > 0;
@@ -458,7 +458,7 @@ void Character::MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5
         else // If impossible,
         {
             // record how much damage will be if each option is added at damArray.
-            for (int &stat: effectiveStats) 
+            for (const int &stat: effectiveStats) 
             {
                 tempSubStatArray[stat] = tempSubStat;
                 tempSubStatArray[stat].AddOption(stat, PLUSARRAY[stat]);
@@ -467,9 +467,9 @@ void Character::MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5
                 damArray[stat] = tempCharacter->GetDamage();
             }
 
-            // 媛��옣 �젏�닔媛� �넂��� �뒪�꺈�뿉 ����빐�꽌 ((5 - 二쇱샃�뿬遺�) 蹂대떎 �쟻寃� 梨꾩썱�뒗媛�?)瑜� �솗�씤�븯怨� 梨꾩슫�떎.
+            // 揶쏉옙占쎌삢 占쎌젎占쎈땾揶쏉옙 占쎈꼥占쏙옙占� 占쎈뮞占쎄틛占쎈퓠 占쏙옙占쏙옙鍮먲옙苑� ((5 - 雅뚯눘�긿占쎈연�겫占�) 癰귣���뼄 占쎌읅野껓옙 筌�袁⑹뜳占쎈뮉揶쏉옙?)�몴占� 占쎌넇占쎌뵥占쎈릭��⑨옙 筌�袁⑹뒲占쎈뼄.
                 // If impossible,
-                    // �떎�쓬 �젏�닔媛� �넂��� �뒪�꺈�뿉 ����빐�꽌 �솗�씤�븳�떎. (理쒕�� 5�쉶 諛섎났)
+                    // 占쎈뼄占쎌벉 占쎌젎占쎈땾揶쏉옙 占쎈꼥占쏙옙占� 占쎈뮞占쎄틛占쎈퓠 占쏙옙占쏙옙鍮먲옙苑� 占쎌넇占쎌뵥占쎈립占쎈뼄. (筌ㅼ뮆占쏙옙 5占쎌돳 獄쏆꼶�궗)
             int jEnd = 5 ? i < 20 : 2;
             for (int j = 1; j <= jEnd; j++)
             {
@@ -536,7 +536,7 @@ double Character::GetScore() const
 }
 
 
-double Character::GetScore_MonkeyMagic() const // TODO : 梨꾩썙�빞�븿
+double Character::GetScore_MonkeyMagic() const // TODO : 筌�袁⑹뜖占쎈튊占쎈맙
 {
     return 0.;
 }
@@ -590,10 +590,10 @@ std::array<MainOptionsAndDamage, 10> Character::OptimizeMainOption(int refScore)
                 
 				double tempRefDamage = tempChar->GetScoreFunction(refScore);
 
-                // tempDamage媛� top10Option�뿉 �엳�뒗 minOption蹂대떎 �겢 寃쎌슦
+                // tempDamage揶쏉옙 top10Option占쎈퓠 占쎌뿳占쎈뮉 minOption癰귣���뼄 占쎄깻 野껋럩�뒭
                 if (tempRefDamage > top10Options[9].damage)
                 {
-                    for (int i = 0; i < 10; i++)// 紐뉖쾲吏몃줈 �뱾�뼱媛��뒗 吏� �뙆�븙�븯怨�, �꽔�뼱以��떎.
+                    for (int i = 0; i < 10; i++)// 筌뤿돃苡뀐쭪紐껋쨮 占쎈굶占쎈선揶쏉옙占쎈뮉 筌욑옙 占쎈솁占쎈툢占쎈릭��⑨옙, 占쎄퐫占쎈선餓ο옙占쎈뼄.
                     {
                         if (tempRefDamage > top10Options[i].damage)
                         {
