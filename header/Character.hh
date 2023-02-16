@@ -163,7 +163,7 @@ protected:
 	void AddCharacterStat(int index, double amount)     { mCharacterStat.AddOption(index, amount); mUpdateState = 0; }
 	void SetCharacterBaseStat(int index, double amount) { mCharacterStat.SetBaseOption(index, amount); }
 	
-	static CharList mCharacterName;
+	CharList mCharacterName;
 
 private:
 	// Stat Update Process
