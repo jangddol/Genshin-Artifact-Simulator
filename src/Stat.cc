@@ -38,20 +38,18 @@ void Stat::CalResistCoef()
 {
 	double monsterResist = GetMonsterResist();
 	double resistCut = GetResistCut();
-	double result;
-	if (monsterResist - resistCut > 75)
+	if (monsterResist - resistCut <= 75. && monsterResist - resistCut >= 0)
 	{
-		result = 1. / ((monsterResist - resistCut) / 25. + 1.);
+		mStat[30] = 1. - (monsterResist - resistCut) / 100.;
 	}
-	else if (monsterResist - resistCut < 0)
+	else if (monsterResist - resistCut > 75)
 	{
-		result = 1. - (monsterResist - resistCut) / 200.;
+		mStat[30] = 1. / ((monsterResist - resistCut) / 25. + 1.);
 	}
 	else
 	{
-		result = 1. - (monsterResist - resistCut) / 100.;
+		mStat[30] = 1. - (monsterResist - resistCut) / 200.;
 	}
-	mStat[30] = result;
 }
 
 
