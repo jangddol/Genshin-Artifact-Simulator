@@ -5,7 +5,7 @@ cmake_minimum_required (VERSION 3.8)
 
 project ("Genshin_Artifact_Simulator")
 
-ADD_COMPILE_OPTIONS ( -g -Wall )
+ADD_COMPILE_OPTIONS ( -g -Wall -analyze )
 
 find_package(ROOT 6.26 REQUIRED)
 
