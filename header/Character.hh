@@ -189,8 +189,8 @@ private:
 	bool        mIsManualMode = false;
 
 	void        MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5, int endScore=45);
-	double      mSavedFunction[46];
-	double      mEffectionArray[19];
+	std::array<double, 46> mSavedFunction;
+	std::array<double, 19> mEffectionAmount;
 
 	Stat        mStat;
 	Stat        mCharacterStat;
