@@ -86,7 +86,7 @@ public:
 	void MakeScoreFunction();
 	double GetScoreFunction(int index) const { return mSavedFunction[index]; }
 	double GetScore() const;
-	double GetEffection(int index) const { return mEffectionArray[index]; }
+	double GetEffection(int index) const { return mEffectionAmount[index]; }
 
 	// Score (algorithm by MonkeyMagic)
 	double GetScore_MonkeyMagic() const;
