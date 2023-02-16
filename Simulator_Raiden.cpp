@@ -52,7 +52,7 @@ void Simulator_Raiden()
 	simulator->SetScoreIndexMode(JANGDDOL);
 
 	TH2D* VisualHistogram = simulator->RunSimulationMultiThreads(simNum, artifactNum, binNum, minDamage, maxDamage);
-	// TH2D* VisualHistogram = simulator->RunSimulation(simNum, artifactNum, binNum, minDamage, maxDamage);
+	// TH2D* VisualHistogram = simulator->RunSimulation(simNum, artifactNum, binNum, minDamage, maxDamage, "");
 
 	int numContent = 0;
 	for (int i = 0; i < artifactNum; i++)

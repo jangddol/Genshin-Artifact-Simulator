@@ -82,9 +82,43 @@ void testRaiden()
     cout << "========== Character Damage ==========" << endl;
     cout << simChar->GetDamage() << endl;
 
+    cout << "========== Clone Test ==========" << endl;
     cout << "========== Cloned Character Stat ==========" << endl;
     PrintStat(simChar->Clone()->GetStat());
     cout << "========== Cloned Character Damage ==========" << endl;
     cout << simChar->Clone()->GetDamage() << endl;
 
+    std::array<MainOptionsAndDamage, 10> top10Options = simChar->OptimizeMainOption();
+    cout << "========== Artifact Main Option Optimization Test ==========" << endl;
+    cout << " 1st : " << top10Options[0].damage << " : " << STATSTRING[top10Options[0].mainOptions[0]] << ", " << STATSTRING[top10Options[0].mainOptions[1]] << ", " << STATSTRING[top10Options[0].mainOptions[2]] << endl;
+    cout << " 2nd : " << top10Options[1].damage << " : " << STATSTRING[top10Options[1].mainOptions[0]] << ", " << STATSTRING[top10Options[1].mainOptions[1]] << ", " << STATSTRING[top10Options[1].mainOptions[2]] << endl;
+    cout << " 3rd : " << top10Options[2].damage << " : " << STATSTRING[top10Options[2].mainOptions[0]] << ", " << STATSTRING[top10Options[2].mainOptions[1]] << ", " << STATSTRING[top10Options[2].mainOptions[2]] << endl;
+    cout << " 4th : " << top10Options[3].damage << " : " << STATSTRING[top10Options[3].mainOptions[0]] << ", " << STATSTRING[top10Options[3].mainOptions[1]] << ", " << STATSTRING[top10Options[3].mainOptions[2]] << endl;
+    cout << " 5th : " << top10Options[4].damage << " : " << STATSTRING[top10Options[4].mainOptions[0]] << ", " << STATSTRING[top10Options[4].mainOptions[1]] << ", " << STATSTRING[top10Options[4].mainOptions[2]] << endl;
+    cout << " 6th : " << top10Options[5].damage << " : " << STATSTRING[top10Options[5].mainOptions[0]] << ", " << STATSTRING[top10Options[5].mainOptions[1]] << ", " << STATSTRING[top10Options[5].mainOptions[2]] << endl;
+    cout << " 7th : " << top10Options[6].damage << " : " << STATSTRING[top10Options[6].mainOptions[0]] << ", " << STATSTRING[top10Options[6].mainOptions[1]] << ", " << STATSTRING[top10Options[6].mainOptions[2]] << endl;
+    cout << " 8th : " << top10Options[7].damage << " : " << STATSTRING[top10Options[7].mainOptions[0]] << ", " << STATSTRING[top10Options[7].mainOptions[1]] << ", " << STATSTRING[top10Options[7].mainOptions[2]] << endl;
+    cout << " 9th : " << top10Options[8].damage << " : " << STATSTRING[top10Options[8].mainOptions[0]] << ", " << STATSTRING[top10Options[8].mainOptions[1]] << ", " << STATSTRING[top10Options[8].mainOptions[2]] << endl;
+    cout << "10th : " << top10Options[9].damage << " : " << STATSTRING[top10Options[9].mainOptions[0]] << ", " << STATSTRING[top10Options[9].mainOptions[1]] << ", " << STATSTRING[top10Options[9].mainOptions[2]] << endl;
+
+
+    cout << "========== Score Function Test (artifact regeneration)==========" << endl;
+    artinit1->Generation();
+    artinit2->Generation();
+    artinit3->Generation();
+    artinit4->Generation();
+    artinit5->Generation();
+    simChar->Update();
+    cout << "========== Artifact Stat ==========" << endl;
+    // Damage with random artifact
+    PrintArtifact(artinit1);
+    PrintArtifact(artinit2);
+    PrintArtifact(artinit3);
+    PrintArtifact(artinit4);
+    PrintArtifact(artinit5);
+    cout << "========== Character Stat ==========" << endl;
+    PrintStat(simChar->GetStat());
+    cout << "========== Character Damage ==========" << endl;
+    cout << simChar->GetDamage() << endl;
+    cout << "score  : " << simChar->GetScore() << endl;
 }
