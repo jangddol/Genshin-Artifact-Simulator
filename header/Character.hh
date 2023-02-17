@@ -54,6 +54,7 @@ public:
 	{ 
 		SetArtifact(flower, feather, clock, cup, crown);
 		SetArtSetStat(artSetStat);
+		mEffectiveSubStats.reserve(10);
 	}
 	Character(const Character* character);
 	Character(const Character& character);
@@ -87,6 +88,7 @@ public:
 	double GetScoreFunction(int index) const { return mSavedFunction[index]; }
 	double GetScore() const;
 	double GetEffection(int index) const { return mEffectionAmount[index]; }
+	std::vector<int> GetEffectiveSubStats() const { return mEffectiveSubStats; }
 
 	// Score (algorithm by MonkeyMagic)
 	double GetScore_MonkeyMagic() const;
@@ -186,6 +188,7 @@ private:
 	void        MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5, int endScore=45);
 	std::array<double, 46> mSavedFunction;
 	std::array<double, 19> mEffectionAmount;
+	std::vector<int> mEffectiveSubStats;
 
 	Stat        mStat;
 	Stat        mCharacterStat;
