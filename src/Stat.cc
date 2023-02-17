@@ -33,7 +33,7 @@ void Stat::Update()
 }
 
 
-void Stat::CalResistCoef()
+inline void Stat::CalResistCoef()
 {
 	double monsterResist = GetMonsterResist();
 	double resistCut = GetResistCut();
@@ -53,7 +53,7 @@ void Stat::CalResistCoef()
 }
 
 
-void Stat::CalLvDefCoef()
+inline void Stat::CalLvDefCoef()
 {
 	double charLvPlus100 = GetLevel() + 100;
 	double monsterLv = GetMonsterLevel();
