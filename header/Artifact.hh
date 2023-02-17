@@ -7,7 +7,6 @@
 #include <vector>
 
 
-// double artInitTimeList[5] = { 0. }; // global
 constexpr std::array<double, 19> MAXMAINOPTIONLIST
 		= { 31.1, 62.2, 46.6, 311., 51.8,
 			46.6, 4780., 187., 58.3, 0.,
@@ -26,6 +25,8 @@ constexpr std::array<std::array<double, 4>, 10> OPTIONARRAY
 	{{16.3199996948242, 18.6499996185303, 20.9799995422363, 23.3099994659424}},
 	{{5.09999990463257, 5.82999996840954, 6.56000003218651, 7.28999972343445}},
 	{{16.2000007629395, 18.5200004577637, 20.8299999237061, 23.1499996185303}} }};
+
+static std::array<std::string, 6> ARTIFACTTYPESTRING{{"NONE", "Flower", "Feather", "Clock", "Cup", "Crown"}};
 
 
 class Character;
