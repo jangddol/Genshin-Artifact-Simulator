@@ -45,7 +45,7 @@ double Raiden::GetDamageWithStat(const Stat& stat) const
     double totalQBonus = 100. + qBonus + elecBonus;
     double totalEBonus = 100. + eBonus + elecBonus;
     double totalDamage = (burstDamage + qAttackDamage) * totalQBonus * 0.01 + eDamage * totalEBonus * 0.01;
-    return totalATK * (1 + CR * CB * 0.0001) * lvDefCoef * resistCoef * totalDamage;
+    return totalATK * (1. + CR * CB * 0.0001) * lvDefCoef * resistCoef * totalDamage;
 }
 
 
