@@ -61,3 +61,34 @@ target_link_libraries(Genshin_Artifact_Simulator PUBLIC
         ROOT::MathCore
         ROOT::Thread
         ROOT::ROOTDataFrame)
+
+add_executable(test_Raiden testRaiden.cpp 
+                        ${SOURCES} 
+                        ${SOURCES_CHARACTER} 
+                        ${SOURCES_SKILL} 
+                        ${HEADERS} 
+                        ${HEADERS_ARTIFACT} 
+                        ${HEADERS_ARTSETSTAT} 
+                        ${HEADERS_CHARACTER} 
+                        ${HEADERS_SKILL} 
+                        ${HEADERS_WEAPON} )
+
+target_link_libraries(test_Raiden PUBLIC
+        ROOT::Core
+        ROOT::Imt
+        ROOT::RIO
+        ROOT::Net
+        ROOT::Hist
+        ROOT::Graf
+        ROOT::Graf3d
+        ROOT::Gpad
+        ROOT::ROOTVecOps
+        ROOT::Tree
+        ROOT::TreePlayer
+        ROOT::Rint
+        ROOT::Postscript
+        ROOT::Matrix
+        ROOT::Physics
+        ROOT::MathCore
+        ROOT::Thread
+        ROOT::ROOTDataFrame)
