@@ -1,5 +1,4 @@
 #include "top.hh"
-#include "PrintToCoordinates.hh"
 #include "TRandom.h"
 #include "TStyle.h"
 
@@ -121,4 +120,11 @@ void testRaiden()
     cout << "========== Character Damage ==========" << endl;
     cout << simChar->GetDamage() << endl;
     cout << "score  : " << simChar->GetScore() << endl;
+}
+
+
+int main()
+{
+    testRaiden();
+    return 0;
 }
