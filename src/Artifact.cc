@@ -3,22 +3,33 @@
 #include "../header/Character.hh"
 #include <algorithm>
 #include <iostream>
+#include <iomanip>  // for std::setw
 
 
 void PrintArtifact(const Artifact* artifact)
 {
-    std::cout << "Artifact Type      : " << artifact->GetType() << std::endl;
-    std::cout << "Artifact Main Stat : " << STATSTRING[artifact->GetMainType()] << " = " << artifact->GetMainStat().GetOption(artifact->GetMainType()) << std::endl;
-    std::cout << "Artifcat Sub Stat  : " << STATSTRING[0] << " = " << artifact->GetSubStat().GetOption(0) << std::endl;
-    std::cout << "                   : " << STATSTRING[1] << " = " << artifact->GetSubStat().GetOption(1) << std::endl;
-    std::cout << "                   : " << STATSTRING[2] << " = " << artifact->GetSubStat().GetOption(2) << std::endl;
-    std::cout << "                   : " << STATSTRING[3] << " = " << artifact->GetSubStat().GetOption(3) << std::endl;
-    std::cout << "                   : " << STATSTRING[4] << " = " << artifact->GetSubStat().GetOption(4) << std::endl;
-    std::cout << "                   : " << STATSTRING[5] << " = " << artifact->GetSubStat().GetOption(5) << std::endl;
-    std::cout << "                   : " << STATSTRING[6] << " = " << artifact->GetSubStat().GetOption(6) << std::endl;
-    std::cout << "                   : " << STATSTRING[7] << " = " << artifact->GetSubStat().GetOption(7) << std::endl;
-    std::cout << "                   : " << STATSTRING[8] << " = " << artifact->GetSubStat().GetOption(8) << std::endl;
-    std::cout << "                   : " << STATSTRING[9] << " = " << artifact->GetSubStat().GetOption(9) << std::endl;
+    int type = artifact->GetType();
+    int mainType = artifact->GetMainType();
+    std::cout << "Type : " << ARTIFACTTYPESTRING[type] << std::endl;
+    std::cout << "Main Option : " << STATSTRING[mainType] << " : " << std::setprecision(2) << std::fixed << artifact->GetMainStat().GetOption(mainType) << std::endl;
+    std::cout << "SubStat" << std::endl;
+
+	int category_column_widths = 0;
+    for (int i = 0; i < 9; i++)
+	{
+        int category_width = STATSTRING[i].length();
+        if (category_width > category_column_widths) category_column_widths = category_width;
+    }
+    int value_column_widths = 11;
+
+    for (int i = 0; i < 5; i++)
+	{
+        std::cout << std::left << std::setw(category_column_widths) << STATSTRING[i] << " : ";
+        std::cout << std::left << std::setw(value_column_widths) << std::setprecision(2) << std::fixed << artifact->GetSubStat().GetOption(i);
+        std::cout << std::left << std::setw(category_column_widths) << STATSTRING[i+5] << " : ";
+        std::cout << std::left << std::setw(value_column_widths) << std::setprecision(2) << std::fixed << artifact->GetSubStat().GetOption(i+5);
+        std::cout << std::endl;
+	}
 }
 
 
