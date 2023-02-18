@@ -368,6 +368,277 @@ double Simulator::CalLoopArtifact_Damage(SuperArtifactList& loopList, ArtifactBu
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+// std::pair<int, double> GetScoreForEachArtifact(const std::array<double, 19>& scoreEffection, const std::vector<ArtFlower*>& artVector)
+// {
+// 	double bestScore = 0;
+// 	int bestIndex = -1;
+// 	for(int i = 0; i < artVector.size(); i++)
+// 	{
+// 		double tempScore = 0;
+// 		const ArtFlower* art = artVector[i];
+// 		tempScore += art->GetMainStat().GetOption(art->GetMainType()) * scoreEffection[art->GetMainType()];
+// 		Stat tempSubStat = art->GetSubStat();
+// 		for (int j = 0; j < 10; j++)
+// 		{
+// 			tempScore += tempSubStat.GetOption(j) * scoreEffection[j];
+// 		}
+// 		if (tempScore >= bestScore)
+// 		{
+// 			bestScore = tempScore;
+// 			bestIndex = i;
+// 		}
+// 	}
+// 	return {bestIndex, bestScore};
+// }
+
+
+// std::pair<int, double> GetScoreForEachArtifact(const std::array<double, 19>& scoreEffection, const std::vector<ArtFeather*>& artVector)
+// {
+// 	double bestScore = 0;
+// 	int bestIndex = -1;
+// 	for(int i = 0; i < artVector.size(); i++)
+// 	{
+// 		double tempScore = 0;
+// 		const ArtFeather* art = artVector[i];
+// 		tempScore += art->GetMainStat().GetOption(art->GetMainType()) * scoreEffection[art->GetMainType()];
+// 		Stat tempSubStat = art->GetSubStat();
+// 		for (int j = 0; j < 10; j++)
+// 		{
+// 			tempScore += tempSubStat.GetOption(j) * scoreEffection[j];
+// 		}
+// 		if (tempScore >= bestScore)
+// 		{
+// 			bestScore = tempScore;
+// 			bestIndex = i;
+// 		}
+// 	}
+// 	return {bestIndex, bestScore};
+// }
+
+
+// std::pair<int, double> GetScoreForEachArtifact(const std::array<double, 19>& scoreEffection, const std::vector<ArtClock*>& artVector)
+// {
+// 	double bestScore = 0;
+// 	int bestIndex = -1;
+// 	for(int i = 0; i < artVector.size(); i++)
+// 	{
+// 		double tempScore = 0;
+// 		const ArtClock* art = artVector[i];
+// 		tempScore += art->GetMainStat().GetOption(art->GetMainType()) * scoreEffection[art->GetMainType()];
+// 		Stat tempSubStat = art->GetSubStat();
+// 		for (int j = 0; j < 10; j++)
+// 		{
+// 			tempScore += tempSubStat.GetOption(j) * scoreEffection[j];
+// 		}
+// 		if (tempScore >= bestScore)
+// 		{
+// 			bestScore = tempScore;
+// 			bestIndex = i;
+// 		}
+// 	}
+// 	return {bestIndex, bestScore};
+// }
+
+
+// std::pair<int, double> GetScoreForEachArtifact(const std::array<double, 19>& scoreEffection, const std::vector<ArtCup*>& artVector)
+// {
+// 	double bestScore = 0;
+// 	int bestIndex = -1;
+// 	for(int i = 0; i < artVector.size(); i++)
+// 	{
+// 		double tempScore = 0;
+// 		const ArtCup* art = artVector[i];
+// 		tempScore += art->GetMainStat().GetOption(art->GetMainType()) * scoreEffection[art->GetMainType()];
+// 		Stat tempSubStat = art->GetSubStat();
+// 		for (int j = 0; j < 10; j++)
+// 		{
+// 			tempScore += tempSubStat.GetOption(j) * scoreEffection[j];
+// 		}
+// 		if (tempScore >= bestScore)
+// 		{
+// 			bestScore = tempScore;
+// 			bestIndex = i;
+// 		}
+// 	}
+// 	return {bestIndex, bestScore};
+// }
+
+
+// std::pair<int, double> GetScoreForEachArtifact(const std::array<double, 19>& scoreEffection, const std::vector<ArtCrown*>& artVector)
+// {
+// 	double bestScore = 0;
+// 	int bestIndex = -1;
+// 	for(int i = 0; i < artVector.size(); i++)
+// 	{
+// 		double tempScore = 0;
+// 		const ArtCrown* art = artVector[i];
+// 		tempScore += art->GetMainStat().GetOption(art->GetMainType()) * scoreEffection[art->GetMainType()];
+// 		Stat tempSubStat = art->GetSubStat();
+// 		for (int j = 0; j < 10; j++)
+// 		{
+// 			tempScore += tempSubStat.GetOption(j) * scoreEffection[j];
+// 		}
+// 		if (tempScore >= bestScore)
+// 		{
+// 			bestScore = tempScore;
+// 			bestIndex = i;
+// 		}
+// 	}
+// 	return {bestIndex, bestScore};
+// }
+
+
+// double Simulator::CalLoopArtifact_jangddolScore(SuperArtifactList& loopList, ArtifactBundle& bestTryArtifacts)
+// {
+// 	if ((loopList.flower.size() == 0) ||
+// 		(loopList.feather.size() == 0) ||
+// 		(loopList.clock.size() == 0) ||
+// 		(loopList.cup.size() == 0) ||
+// 		(loopList.crown.size() == 0)) return 0.;
+	
+// 	std::chrono::system_clock::time_point CALLOOPSTART, CALLOOPFINISH;
+
+// 	Character* tempCharacter = mCharacter->Clone();
+
+// 	tempCharacter->Update();
+// 	std::array<double, 19> firstScoreEffection = tempCharacter->GetScoreEffection();
+// 	std::pair<int, double> firstBestScore_Flower = GetScoreForEachArtifact(firstScoreEffection, loopList.flower); // descending sorted
+// 	std::pair<int, double> firstBestScore_Feather = GetScoreForEachArtifact(firstScoreEffection, loopList.feather);
+// 	std::pair<int, double> firstBestScore_Clock = GetScoreForEachArtifact(firstScoreEffection, loopList.clock);
+// 	std::pair<int, double> firstBestScore_Cup = GetScoreForEachArtifact(firstScoreEffection, loopList.cup);
+// 	std::pair<int, double> firstBestScore_Crown = GetScoreForEachArtifact(firstScoreEffection, loopList.crown);
+
+// 	delete tempCharacter->GetArtFlower();
+// 	delete tempCharacter->GetArtFeather();
+// 	delete tempCharacter->GetArtClock();
+// 	delete tempCharacter->GetArtCup();
+// 	delete tempCharacter->GetArtCrown();
+// 	tempCharacter->SetArtifact(loopList.flower[firstBestScore_Flower.first],
+// 								loopList.feather[firstBestScore_Feather.first],
+// 								loopList.clock[firstBestScore_Clock.first],
+// 								loopList.cup[firstBestScore_Cup.first],
+// 								loopList.crown[firstBestScore_Crown.first]);
+	
+// 	tempCharacter->Update();
+// 	std::array<double, 19> secondScoreEffection = tempCharacter->GetScoreEffection();
+// 	std::pair<int, double> secondBestScore_Flower = GetScoreForEachArtifact(secondScoreEffection, loopList.flower); // descending sorted
+// 	std::pair<int, double> secondBestScore_Feather = GetScoreForEachArtifact(secondScoreEffection, loopList.feather);
+// 	std::pair<int, double> secondBestScore_Clock = GetScoreForEachArtifact(secondScoreEffection, loopList.clock);
+// 	std::pair<int, double> secondBestScore_Cup = GetScoreForEachArtifact(secondScoreEffection, loopList.cup);
+// 	std::pair<int, double> secondBestScore_Crown = GetScoreForEachArtifact(secondScoreEffection, loopList.crown);
+
+// 	if( (firstBestScore_Flower.first == secondBestScore_Flower.first) && 
+// 		(firstBestScore_Feather.first == secondBestScore_Feather.first) && 
+// 		(firstBestScore_Clock.first == secondBestScore_Clock.first) && 
+// 		(firstBestScore_Cup.first == secondBestScore_Cup.first) && 
+// 		(firstBestScore_Crown.first == secondBestScore_Crown.first))
+// 	{
+// 		tempCharacter->SetArtifact(loopList.flower[secondBestScore_Flower.first],
+// 									loopList.feather[secondBestScore_Feather.first],
+// 									loopList.clock[secondBestScore_Clock.first],
+// 									loopList.cup[secondBestScore_Cup.first],
+// 									loopList.crown[secondBestScore_Crown.first]);
+		
+// 		// Initialize the character
+// 		CALLOOPSTART = std::chrono::system_clock::now();
+// 		tempCharacter->Update(true);
+// 		CALLOOPFINISH = std::chrono::system_clock::now();
+// 		mCalLoopTimeList[0] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
+		
+// 		// Calculate the damage
+// 		CALLOOPSTART = CALLOOPFINISH;
+// 		double bestDamage = tempCharacter->GetScore();
+// 		CALLOOPFINISH = std::chrono::system_clock::now();
+// 		mCalLoopTimeList[1] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
+
+// 		bestTryArtifacts.flower = loopList.flower[firstBestScore_Flower.first];
+// 		bestTryArtifacts.feather = loopList.feather[firstBestScore_Feather.first];
+// 		bestTryArtifacts.clock = loopList.clock[firstBestScore_Clock.first];
+// 		bestTryArtifacts.cup = loopList.cup[firstBestScore_Cup.first];
+// 		bestTryArtifacts.crown = loopList.crown[firstBestScore_Crown.first];
+
+// 		delete tempCharacter->GetWeapon();
+// 		delete tempCharacter->GetArtSetStat();
+// 		delete tempCharacter;
+// 		return bestDamage;
+// 	}
+// 	else
+// 	{
+// 		std::array<double, 19> thirdScoreEffection = { 0. };
+// 		for (int i = 0; i < 19; i++)
+// 		{
+// 			thirdScoreEffection[i] = (firstScoreEffection[i] + secondScoreEffection[i]) * 0.5;
+// 		}
+// 		std::pair<int, double> thirdBestScore_Flower = GetScoreForEachArtifact(thirdScoreEffection, loopList.flower); // descending sorted
+// 		std::pair<int, double> thirdBestScore_Feather = GetScoreForEachArtifact(thirdScoreEffection, loopList.feather);
+// 		std::pair<int, double> thirdBestScore_Clock = GetScoreForEachArtifact(thirdScoreEffection, loopList.clock);
+// 		std::pair<int, double> thirdBestScore_Cup = GetScoreForEachArtifact(thirdScoreEffection, loopList.cup);
+// 		std::pair<int, double> thirdBestScore_Crown = GetScoreForEachArtifact(thirdScoreEffection, loopList.crown);
+		
+// 		tempCharacter->SetArtifact(loopList.flower[thirdBestScore_Flower.first],
+// 									loopList.feather[thirdBestScore_Feather.first],
+// 									loopList.clock[thirdBestScore_Clock.first],
+// 									loopList.cup[thirdBestScore_Cup.first],
+// 									loopList.crown[thirdBestScore_Crown.first]);
+		
+// 		// Initialize the character
+// 		CALLOOPSTART = std::chrono::system_clock::now();
+// 		tempCharacter->Update(true);
+// 		CALLOOPFINISH = std::chrono::system_clock::now();
+// 		mCalLoopTimeList[0] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
+		
+// 		// Calculate the damage
+// 		CALLOOPSTART = CALLOOPFINISH;
+// 		double bestDamage = tempCharacter->GetScore();
+// 		CALLOOPFINISH = std::chrono::system_clock::now();
+// 		mCalLoopTimeList[1] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
+
+// 		bestTryArtifacts.flower = loopList.flower[thirdBestScore_Flower.first];
+// 		bestTryArtifacts.feather = loopList.feather[thirdBestScore_Feather.first];
+// 		bestTryArtifacts.clock = loopList.clock[thirdBestScore_Clock.first];
+// 		bestTryArtifacts.cup = loopList.cup[thirdBestScore_Cup.first];
+// 		bestTryArtifacts.crown = loopList.crown[thirdBestScore_Crown.first];
+
+// 		delete tempCharacter->GetWeapon();
+// 		delete tempCharacter->GetArtSetStat();
+// 		delete tempCharacter;
+// 		return bestDamage;
+// 	}
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 double Simulator::CalLoopArtifact_jangddolScore(SuperArtifactList& loopList, ArtifactBundle& bestTryArtifacts)
 {
 	std::chrono::system_clock::time_point CALLOOPSTART, CALLOOPFINISH;
@@ -767,8 +1038,8 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	}
 	
 
-	// �뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐앾옙�쐻占쎈짗占쎌굲�뜝�럥�룒筌욌갊�쐻占쎈윪筌띾씛�삕占쎌맶�뜝�럥�쑅�뜝�럩紐쀯옙�쐻占쎈윥鸚룐벂�쐻占쎈윪筌뤾막�쐻占쎈윪筌띾씛�삕占쎌맶�뜝�럥�쑅嶺뚯쉸占싸살맶�뜝�럥�쑋占쎈쨨饔끸뫀�맶�뜝�럥�쑅�뜝�럥�럪占쎈쐻占쎈윥占쎈㎍�뜝�럥�맶占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑅勇싲·猿딆맶�뜝�럥�쑅嶺뚯빓�뿥占쎌맶�뜝�럥�쐾�뜝�럥占썬굩�삕占쎌맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윪占쎈��占쎈쐻占쎈윪�뤃占� �뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀯옙�쐻占쎈윥�젆占썲뜝�럥占쎈〕�삕�뜝�룞�삕�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐앭뜝�럥�맶�뜝�럥�쑋�뜝�럥苡ュ뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀯옙�쐻占쎈윥鸚룐뫅�삕占쎌맶占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀥뜝�럥�맶�뜝�럥�쑅�뜝�럥�룇�뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀥뜝�럥�맶�뜝�럥�쑅占쎈쨨野껋눖�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩留썲뜝�럥�맶�뜝�럥�쑅鶯ㅼ룊�삕 SimulationWorker占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윞�꽴�뙋�삕占쎌맶�뜝�럥�쑅�뜝�럥�럪占쎈쐻占쎈윥占쎈㎍�뜝�럥�맶占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑅�뜝�럥�쓠�뜝�럥�맶�뜝�럥�쑅嶺뚯빖諭븝옙�맚嶺뚮㉡�맊椰꾩빆�쐻占쎈윪�뜝�룞�삕�뜝�럥�맶�뜝�럥�쑋�뜝�럥夷��뜝�럥�맶�뜝�럥�쑋占쎈쨨饔끸뫀�맶�뜝�럥�쑅�뜝�룞�삕�뜝�룞�삕占쎌맶�뜝�럥�쑅占쎈뙀占쎈엠占쎌맶�뜝�럥�쑋占쎈쨨占쏙옙癒��굲�뜝�럩留띰옙�쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎌졄.
-	// SimulationWorker�뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀥뜝�럥�맚嶺뚮Ĳ猷귨옙援� 2d-Histogram�뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐앭뜝�럥�럸占쎈쐻占쎈쑕占쎌맶占쎈쐻�뜝占� simulatorVector[i]�뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀥뜝�럥�맶�뜝�럥�쑅占쎈쨨�뜝占� �뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩留썲뜝�럥�맶�뜝�럥�쑅占쎈쐻占쎈짗占쎈쭟�뜝�럩援꿨뜝�럩�쟼�뜝�럥�걶�뜝�럥占쏙옙癲ル슢�뀖�뤃占썲뜝�럩援뀐옙�쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲�뜝�럡�렊占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥筌욎�λ쐻占쎈윪�뤃占� �뜝�럥�맶�뜝�럥�쑋�뜝�럩留싧뜝�럥�맶�뜝�럥�쑋�뜝�럥痢㎩뜝�럥�맶�뜝�럥�쑋�뜝�럥泥딉옙�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗癲ル쉵�궇占쎈벨�삕占쎄뎡占쎈쐻占쎈윪筌띾씛�삕占쎌맶�뜝�럥�쑅�뜝�럩紐쀯옙�쐻占쎈윪占쎌읆�뜝�럥�맶占쎈쐻�뜝占�.
+	// 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁빢�삕占쎌맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윥占쎈짂嶺뚯쉶媛딉옙�맶�뜝�럥�쑋嶺뚮씭�뵛占쎌굲�뜝�럩留띰옙�쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁���삕占쎌맶�뜝�럥�쑅勇싲즾踰귨옙�맶�뜝�럥�쑋嶺뚮ㅎ留됵옙�맶�뜝�럥�쑋嶺뚮씭�뵛占쎌굲�뜝�럩留띰옙�쐻占쎈윥占쎌몗癲ル슣�돵�뜝�떥�궡留띰옙�쐻占쎈윥占쎌몝�뜝�럥夷③쪛�겦維�占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫�뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪占쎈쐻占쎈윥占쎈㎍�뜝�럥�맶占쎈쐻�뜝占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗�땱�떜쨌�뙼�봿留띰옙�쐻占쎈윥占쎌몗癲ル슣鍮볩옙肉ε뜝�럩留띰옙�쐻占쎈윥占쎌맽占쎈쐻占쎈윥�뜝�뜫援⑼옙�굲�뜝�럩留띰옙�쐻占쎈윥筌욎�λ쐻占쎈윪�뤃��먯삕占쎌맶�뜝�럥�쑋�뜝�럥占쏙옙�뜝�럥�맶�뜝�럥�쑋占쎈쨨�뜝占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁���삕占쎌맶�뜝�럥�쑅占쎌젂�뜝�뜴�쐻占쎈윥�뜝�럥��뺧옙�굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁빆�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝占쎈쐻占쎈윥�떋�깷�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁���삕占쎌맶�뜝�럥�쑅勇싲즾維낉옙�굲�뜝�럩留뜹뜝�럥�맶占쎈쐻�뜝占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁�λ쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈즵占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁�λ쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗�뜝�럥夷③뇦猿뗫닑占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌띿뜴�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗傭��끉猷딉옙�굲 SimulationWorker�뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀥뜝�럥�맶�뜝�럥�쐾占쎄슈占쎈솇占쎌굲�뜝�럩留띰옙�쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫�뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪占쎈쐻占쎈윥占쎈㎍�뜝�럥�맶占쎈쐻�뜝占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎌뱺占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗癲ル슣鍮뽬キ釉앹삕占쎈쭦癲ル슢�돘占쎈쭒濾곌쑴鍮놅옙�맶�뜝�럥�쑋占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝占쎈쐻占쎈윥鸚뤄옙占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝�뜝�럥夷③쪛�겦維�占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲�뜝�럩留띰옙�쐻占쎈윥占쎌몗�뜝�럥����뜝�럥�뿞�뜝�럩留띰옙�쐻占쎈윥占쎌몝�뜝�럥夷ⓨ뜝�룞�삕�솒占쏙옙援뀐옙�쐻占쎈윪筌띾씛�삕占쎌맶�뜝�럥�쑅�뜝�럩紐쀥뜝�럥�맶�뜝�럥�쑅�뜝�럩議�.
+	// SimulationWorker占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁�λ쐻占쎈윥占쎈쭦癲ル슢캉�뙴洹⑥삕�뤃占� 2d-Histogram占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁빆�쐻占쎈윥占쎈읁�뜝�럥�맶�뜝�럥�몧�뜝�럩留뜹뜝�럥�맶占쎈쐻�뜝占� simulatorVector[i]占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁�λ쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗�뜝�럥夷⑨옙�쐻�뜝占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌띿뜴�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗�뜝�럥�맶�뜝�럥吏쀥뜝�럥彛잞옙�쐻占쎈윪�뤃轅⑤쐻占쎈윪占쎌읆占쎈쐻占쎈윥占쎄굡占쎈쐻占쎈윥�뜝�룞�삕�솾�꺂�뒧占쎈�뽳옙琉껃뜝�뜴�쐻占쎈윪�뤃��먯삕占쎌맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윞占쎈젇�뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅嶺뚯쉸占싸살맶�뜝�럥�쑋占쎈쨨�뜝占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝占쎈쐻占쎈윪筌띿떑�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝占쎈쐻占쎈윥筌γ렔�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝占쎈쐻占쎈윥筌ｋ뵃�삕占쎌맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀧솾�꺂�돲占쎄텊�뜝�럥踰⑨옙�굲�뜝�럡�렊�뜝�럥�맶�뜝�럥�쑋嶺뚮씭�뵛占쎌굲�뜝�럩留띰옙�쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁���삕占쎌맶�뜝�럥�쑋�뜝�럩�쓥占쎈쐻占쎈윥占쎈㎍�뜝�럥�맶占쎈쐻�뜝占�.
 	std::vector<std::thread> threads;
 	for (int i = 0; i < mNumThread; i++)
 	{
@@ -794,7 +1065,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 		}
 	}
 
-	// �뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩留쏙옙�쐻占쎈윥占쎈뼓癲ル슢���泳�占썲뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩留썲뜝�럥�맶�뜝�럥�쑅�뜝�럩議묈뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀥궘占쏙옙�걠�뙴�뵃�삕占쎄뎡 AppendRate�뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀧솾�꺂�뒩�뜮占썲뜝�럩援� �뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀥뜝�럥�맶�뜝�럥�쑅�뜝�럥�삓�뜝�럥�맶�뜝�럥�쑅�뜝�룞�삕�뜝�띁占쏙옙�겫�뼐�꼤嶺뚳옙筌롡뫀�맶�뜝�럥�몘占쎌젂�뇡�굝�몡�뜝�럥占쎌꼻�삕占쎈㎍�뜝�럥�맶占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩留썲뜝�럥�맶�뜝�럥�쑅鶯ㅼ룆���占쎌맶�뜝�럥�쑅�뜝�럥�뱥占쎈쐻占쎈윥占쏙옙占쏙옙�쐻占쎈윪占쎈츛�뜝�럥�솗�뜝�럥利멨뜝�럩援뀐옙�쐻占쎈윪筌띾씛�삕占쎌맶�뜝�럥�쑅嶺뚯쉸占싸살맶�뜝�럥�쑋占쎈쨨饔끸뫀�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀯옙�쐻占쎈윪占쎌읆�뜝�럥�맶占쎈쐻�뜝占�.
+	// 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌띿룞�삕占쎌맶�뜝�럥�쑅�뜝�럥堉볡솾�꺂�뒧占쏙옙占썸납占썲뜝�뜴�쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌띿뜴�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪鈺곕쵆�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁�κ텣�뜝�룞�삕占쎄콬占쎈쇀占쎈탟占쎌굲�뜝�럡�렊 AppendRate占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁�㏃녇占쎄틓占쎈뮝占쎈쑏�뜝�뜴�쐻占쎈윪�뤃占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁�λ쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎌굯占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈쓠�뜝�룞�삕占쎄껀占쎈폁占쎄샴癲ル슪�삕嶺뚮　維�占쎈㎍占쎈쐻占쎈윥占쎈첋�뜝�럩�쟼占쎈눀占쎄턁占쎈ぁ占쎈쐻占쎈윥�뜝�럩瑗삼옙�굲�뜝�럥�럪占쎈쐻占쎈윥占쎈㎍�뜝�럥�맶占쎈쐻�뜝占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌띿뜴�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗傭��끉猷놅옙占쏙옙�뜝�럩留띰옙�쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈괘�뜝�럥�맶�뜝�럥�쑅�뜝�룞�삕�뜝�룞�삕占쎌맶�뜝�럥�쑋�뜝�럥痢쏉옙�쐻占쎈윥占쎌넇占쎈쐻占쎈윥筌앸ŀ�쐻占쎈윪�뤃��먯삕占쎌맶�뜝�럥�쑋嶺뚮씭�뵛占쎌굲�뜝�럩留띰옙�쐻占쎈윥占쎌몗癲ル슣�돵�뜝�떥�궡留띰옙�쐻占쎈윥占쎌몝�뜝�럥夷③쪛�겦維�占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁���삕占쎌맶�뜝�럥�쑋�뜝�럩�쓥占쎈쐻占쎈윥占쎈㎍�뜝�럥�맶占쎈쐻�뜝占�.
 	std::vector<double> tempVector(artifactNum);
 	for (int i = 0; i < mNumThread; i++)
 	{
