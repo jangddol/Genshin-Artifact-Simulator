@@ -117,7 +117,7 @@ Character::~Character()
 void Character::DoFeedback(int& stat, double& amount) { stat = 0; amount = 0; }
 
 
-void Character::Update()
+void Character::Update(bool fastMode)
 {
     // Process
         // CharacterStat + ResonanceStat
@@ -151,7 +151,8 @@ void Character::Update()
     }
     if (mUpdateState < ARTIFACTSUBSTATUPDATED)
     {
-        UpdateFromArtifactSubStat();
+        if(fastMode) UpdateFromArtifactSubStatFast();
+        else UpdateFromArtifactSubStat();
         mUpdateState = ARTIFACTSUBSTATUPDATED;
     }
     mStat = mStatAfterUpdateFromArtifactSubStat;
@@ -163,7 +164,7 @@ void Character::Update()
 
 void Character::UpdateFromCharacterResonance()
 {
-	// 캐릭터 옵션 : 0 ~ 34, b0 ~ b2
+	// 筌�癒��봼占쎄숲 占쎌긿占쎈�� : 0 ~ 34, b0 ~ b2
     mStatAfterUpdateFromCharacterResonance.SetZero();
     for (int i = 0; i < 35; i++)
     {
@@ -174,7 +175,7 @@ void Character::UpdateFromCharacterResonance()
         mStatAfterUpdateFromCharacterResonance.SetBaseOption(i, mCharacterStat.GetBaseOption(i));
     }
 
-	// 공명 : 0, 2, 5, 7, 10 ~ 17, 24
+	// ��⑤벉梨� : 0, 2, 5, 7, 10 ~ 17, 24
     mStatAfterUpdateFromCharacterResonance.AddOption(0, mResonanceStat.GetOption(0));
     mStatAfterUpdateFromCharacterResonance.AddOption(2, mResonanceStat.GetOption(2));
     mStatAfterUpdateFromCharacterResonance.AddOption(5, mResonanceStat.GetOption(5));
@@ -195,16 +196,16 @@ void Character::UpdateFromWeapon()
     
     mStatAfterUpdateFromWeapon = mStatAfterUpdateFromCharacterResonance;
 
-    // 무기 주옵 : b0
+    // �눧�떯由� 雅뚯눘�긿 : b0
     mStatAfterUpdateFromWeapon.SetBaseOption(0, mStatAfterUpdateFromWeapon.GetBaseOption(0) + WeaponMainStat.GetBaseOption(0));
 
-	// 무기 부옵 : 0 ~ 18 // 완전히 배제된 것은 아님
+	// �눧�떯由� �겫占쏙옙�긿 : 0 ~ 18 // 占쎌끏占쎌읈占쎌뿳 獄쏄퀣�젫占쎈쭆 野껉퍔占쏙옙 占쎈툡占쎈뻷
     for (int i = 0; i < 19; i++)
     {
         mStatAfterUpdateFromWeapon.AddOption(i, WeaponSubStat.GetOption(i));
     }
 
-	// 무기 부부옵 : 0 ~ 26 // 완전히 배제된 것은 아님
+	// �눧�떯由� �겫占썽겫占쏙옙�긿 : 0 ~ 26 // 占쎌끏占쎌읈占쎌뿳 獄쏄퀣�젫占쎈쭆 野껉퍔占쏙옙 占쎈툡占쎈뻷
     for (int i = 0; i < 27; i++)
     {
         mStatAfterUpdateFromWeapon.AddOption(i, WeaponSubSubStat.GetOption(i));
@@ -216,7 +217,7 @@ void Character::UpdateFromArtSetStat()
 {
     mStatAfterUpdateFromArtSetStat = mStatAfterUpdateFromWeapon;
 
-	// 성유물 세트 : 0 ~ 26 // 완전히 배제된 것은 아님
+	// 占쎄쉐占쎌���눧占� 占쎄쉭占쎈뱜 : 0 ~ 26 // 占쎌끏占쎌읈占쎌뿳 獄쏄퀣�젫占쎈쭆 野껉퍔占쏙옙 占쎈툡占쎈뻷
     for (int i = 0; i < 27; i++)
     {
         mStatAfterUpdateFromArtSetStat.AddOption(i, mArtSetStat->GetOption(i));
@@ -228,7 +229,7 @@ void Character::UpdateFromArtifactMainStat()
 {
     mStatAfterUpdateFromArtifactMainStat = mStatAfterUpdateFromArtSetStat;
     
-    // 성유물 주옵 : 0 ~ 8, 10 ~ 18
+    // 占쎄쉐占쎌���눧占� 雅뚯눘�긿 : 0 ~ 8, 10 ~ 18
     
     Stat FlowerMainStat = mArtFlower->GetMainStat();
     Stat FeatherMainStat = mArtFeather->GetMainStat();
@@ -248,7 +249,7 @@ void Character::UpdateFromArtifactSubStat()
 {
     mStatAfterUpdateFromArtifactSubStat = mStatAfterUpdateFromArtifactMainStat;
     
-    // 성유물 부옵 : 0 ~ 9
+    // 占쎄쉐占쎌���눧占� �겫占쏙옙�긿 : 0 ~ 9
 
     for (int i = 0; i < 10; i++)
     {
@@ -259,6 +260,24 @@ void Character::UpdateFromArtifactSubStat()
         mStatAfterUpdateFromArtifactSubStat.AddOption(i, mArtCrown->GetSubStatValue(i));
     }
 }
+
+
+void Character::UpdateFromArtifactSubStatFast()
+{
+    mStatAfterUpdateFromArtifactSubStat = mStatAfterUpdateFromArtifactMainStat;
+    
+    // 성유물 부옵 : 0 ~ 9
+
+    for (int &stat: mEffectiveSubStats)
+    {
+        mStatAfterUpdateFromArtifactSubStat.AddOption(stat, mArtFlower->GetSubStatValue(stat));
+        mStatAfterUpdateFromArtifactSubStat.AddOption(stat, mArtFeather->GetSubStatValue(stat));
+        mStatAfterUpdateFromArtifactSubStat.AddOption(stat, mArtClock->GetSubStatValue(stat));
+        mStatAfterUpdateFromArtifactSubStat.AddOption(stat, mArtCup->GetSubStatValue(stat));
+        mStatAfterUpdateFromArtifactSubStat.AddOption(stat, mArtCrown->GetSubStatValue(stat));
+    }
+}
+
 
 void Character::UpdateFromFeedback()
 {
@@ -336,19 +355,19 @@ void Character::MakeEffectionArray()
 {
     Character* tempCharacter = this->Clone();
     ArtSetStat* tempArtSetStat = tempCharacter->GetArtSetStat();
-    // 계산에 필요한 부옵 추가는 ResonanceStat으로 한다.
-        // 이유는, 그냥 Stat이라서 접근이 편함.
-        // Update가 오래걸리긴 하지만, 심각하진 않음.
+    // ��④쑴沅쏉옙肉� 占쎈툡占쎌뒄占쎈립 �겫占쏙옙�긿 �빊遺쏙옙占쏙옙�뮉 ResonanceStat占쎌몵嚥∽옙 占쎈립占쎈뼄.
+        // 占쎌뵠占쎌��占쎈뮉, 域밸챶源� Stat占쎌뵠占쎌뵬占쎄퐣 占쎌젔域뱀눘�뵠 占쎈젶占쎈맙.
+        // Update揶쏉옙 占쎌궎占쎌삋椰꾨챶�봺疫뀐옙 占쎈릭筌욑옙筌랃옙, 占쎈뼎揶쏄낱釉�筌욑옙 占쎈륫占쎌벉.
     // 230131
-        // ResonanceStat 에 대한 Update Optimization 과정에서
-        // 깡옵과 치피가 사용되지 않는 것 때문에
-        // 이 함수가 망가짐. 
-        // 0 ~ 18 모두 사용되는 것을 사용해야한다.
-        // ArtSetStat이 맞는 듯 하다.
+        // ResonanceStat 占쎈퓠 占쏙옙占쏙옙釉� Update Optimization ��⑥눘�젟占쎈퓠占쎄퐣
+        // 繹먥돦�긿��⑨옙 燁살꼹逾얍첎占� 占쎄텢占쎌뒠占쎈┷筌욑옙 占쎈륫占쎈뮉 野껓옙 占쎈르�눧紐꾨퓠
+        // 占쎌뵠 占쎈맙占쎈땾揶쏉옙 筌띿빓占쏙옙筌욑옙. 
+        // 0 ~ 18 筌뤴뫀紐� 占쎄텢占쎌뒠占쎈┷占쎈뮉 野껉퍔�뱽 占쎄텢占쎌뒠占쎈퉸占쎈튊占쎈립占쎈뼄.
+        // ArtSetStat占쎌뵠 筌띿쉶�뮉 占쎈쾹 占쎈릭占쎈뼄.
 
     mEffectiveSubStats = {};
     tempCharacter->Update();
-    double defaultDamage = tempCharacter->GetDamage(); // 현재 스펙을 기록한다.
+    double defaultDamage = tempCharacter->GetDamage(); // 占쎌겱占쎌삺 占쎈뮞占쎈읃占쎌뱽 疫꿸퀡以됵옙釉놂옙�뼄.
     for (int i = 0; i < 10; i++)
     {
         tempArtSetStat->AddOption(i, 1.);
@@ -438,9 +457,9 @@ void Character::MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5
     std::array<double, 10> damArray = { 0. }; // It will be recorded in this array how much damage will be if each option is added.
 
     Character* tempCharacter;
-    std::array<Stat, 10> tempSubStatArray; // Flower에만 적용될 것이다.
+    std::array<Stat, 10> tempSubStatArray; // Flower占쎈퓠筌랃옙 占쎌읅占쎌뒠占쎈쭍 野껉퍔�뵠占쎈뼄.
 
-    // Character를 10개를 복사한 다음에, 각 Character에게 부옵이 전부 비어있는 Artifact를 준다.
+    // Character�몴占� 10揶쏆뮆占쏙옙 癰귣벊沅쀯옙釉� 占쎈뼄占쎌벉占쎈퓠, 揶쏉옙 Character占쎈퓠野껓옙 �겫占쏙옙�긿占쎌뵠 占쎌읈�겫占� �뜮袁⑸선占쎌뿳占쎈뮉 Artifact�몴占� 餓ο옙占쎈뼄.
     ArtFlower emptyFlower = ArtFlower();
     ArtFeather emptyFeather = ArtFeather();
     ArtClock emptyClock = ArtClock();
@@ -462,7 +481,7 @@ void Character::MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5
     tempCharacter->Update();
     mSavedFunction[0] = tempCharacter->GetDamage();
 
-    for (int i = 0; i < endScore; i++) // for문으로 45회동안, 
+    for (int i = 0; i < endScore; i++) // for�눧紐꾩몵嚥∽옙 45占쎌돳占쎈짗占쎈툧, 
     {
         double difEC = mTargetEC - tempCharacter->GetStat().GetOption(4); // check the element charge is enough or not.
         bool whetherNotEnoughEC = difEC > 0;
@@ -485,9 +504,9 @@ void Character::MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5
                 damArray[stat] = tempCharacter->GetDamage();
             }
 
-            // 가장 점수가 높은 스탯에 대해서 ((5 - 주옵여부) 보다 적게 채웠는가?)를 확인하고 채운다.
+            // 揶쏉옙占쎌삢 占쎌젎占쎈땾揶쏉옙 占쎈꼥占쏙옙占� 占쎈뮞占쎄틛占쎈퓠 占쏙옙占쏙옙鍮먲옙苑� ((5 - 雅뚯눘�긿占쎈연�겫占�) 癰귣���뼄 占쎌읅野껓옙 筌�袁⑹뜳占쎈뮉揶쏉옙?)�몴占� 占쎌넇占쎌뵥占쎈릭��⑨옙 筌�袁⑹뒲占쎈뼄.
                 // If impossible,
-                    // 다음 점수가 높은 스탯에 대해서 확인한다. (최대 5회 반복)
+                    // 占쎈뼄占쎌벉 占쎌젎占쎈땾揶쏉옙 占쎈꼥占쏙옙占� 占쎈뮞占쎄틛占쎈퓠 占쏙옙占쏙옙鍮먲옙苑� 占쎌넇占쎌뵥占쎈립占쎈뼄. (筌ㅼ뮆占쏙옙 5占쎌돳 獄쏆꼶�궗)
             int jEnd = (i < 20) ? 5 : 2;
             for (int j = 1; j <= jEnd; j++)
             {
@@ -551,7 +570,7 @@ double Character::GetScore() const
 }
 
 
-double Character::GetScore_MonkeyMagic() const // TODO : 채워야함
+double Character::GetScore_MonkeyMagic() const // TODO : 筌�袁⑹뜖占쎈튊占쎈맙
 {
     return 0.;
 }
@@ -605,7 +624,7 @@ std::array<MainOptionsAndDamage, 10> Character::OptimizeMainOption(int refScore)
                 
 				double tempRefDamage = tempChar->GetScoreFunction(refScore);
 
-                // tempDamage가 top10Option에 있는 minOption보다 클 경우
+                // tempDamage揶쏉옙 top10Option占쎈퓠 占쎌뿳占쎈뮉 minOption癰귣���뼄 占쎄깻 野껋럩�뒭
                 if (tempRefDamage > top10Options[9].damage) {
                     // Find the index i where tempRefDamage should be inserted
                     int left = 0;

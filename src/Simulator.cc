@@ -338,7 +338,7 @@ double Simulator::CalLoopArtifact_Damage(SuperArtifactList& loopList, ArtifactBu
 						
 						// Initialize the character
 						CALLOOPSTART = std::chrono::system_clock::now();
-						mCharacter->Update();
+						mCharacter->Update(true);
 						CALLOOPFINISH = std::chrono::system_clock::now();
 						mCalLoopTimeList[0] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
 						
@@ -388,7 +388,7 @@ double Simulator::CalLoopArtifact_jangddolScore(SuperArtifactList& loopList, Art
 						
 						// Initialize the character
 						CALLOOPSTART = std::chrono::system_clock::now();
-						mCharacter->Update();
+						mCharacter->Update(true);
 						CALLOOPFINISH = std::chrono::system_clock::now();
 						mCalLoopTimeList[0] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
 						
@@ -438,7 +438,7 @@ double Simulator::CalLoopArtifact_MonkeyMagicScore(SuperArtifactList& loopList, 
 						
 						// Initialize the character
 						CALLOOPSTART = std::chrono::system_clock::now();
-						mCharacter->Update();
+						mCharacter->Update(true);
 						CALLOOPFINISH = std::chrono::system_clock::now();
 						mCalLoopTimeList[0] += std::chrono::duration<double>(CALLOOPFINISH- CALLOOPSTART).count();
 						
@@ -762,8 +762,8 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	}
 	
 
-	// ÀÌµéÀº °¢°¢ ¾²·¹µå ¾È¿¡¼­ SimulationWorker¸¦ ¹ßµ¿ÇÑ´Ù.
-	// SimulationWorker´Â 2d-HistogramÀ» simulatorVector[i]¿¡ ³²±â°í Á×´Â´Ù.
+	// å ìŒëµ å ìˆêµ¶å ì™ì˜™å ï¿½ æ¶ì„ë‚«è€Œï¿½ å ìˆì¾ºå ìŒìŸ¿å ìˆêµ¡ å ìˆíˆ§å ìˆí“ å ì„í£ SimulationWorkerï¿½ëª´å ï¿½ ç„ì†ë®†çŒ·ìš‘ì˜™é‡‰ë†‚ì˜™ï¿½ë¼„.
+	// SimulationWorkerå ìˆë®‰ 2d-Histogramå ìŒë±½ simulatorVector[i]å ìˆí“  å ì„í…šç–«ê¿¸í€—ï¿½ï¿½ï¿½ é›…ëš¯ëŸ¥ï¿½ë®‰å ìˆë¼„.
 	std::vector<std::thread> threads;
 	for (int i = 0; i < mNumThread; i++)
 	{
@@ -789,7 +789,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 		}
 	}
 
-	// »ı¼ºµÈ AppendRateµµ ¿©±â·Î ³Ñ°ÜÁØ´Ù.
+	// å ì„ë¬¸å ì„ì‰å ìˆì­† AppendRateå ìˆì¦² å ìˆì—°ç–«ê¿¸í€¡ä»¥ï¿½ å ì„íœé‡êº¿ë«å ì™ì˜™å ìˆë¼„.
 	std::vector<double> tempVector(artifactNum);
 	for (int i = 0; i < mNumThread; i++)
 	{

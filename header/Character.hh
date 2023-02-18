@@ -66,7 +66,7 @@ public:
 
 	// Stat Update & UpdateState
 	virtual void DoFeedback(int& stat, double& amount);
-	void Update();
+	void Update(bool fastMode=false);
 	void ConfirmResonanceStatModified();
 	void ConfirmWeaponStatModified();
 	void ConfirmArtSetStatModified();
@@ -169,6 +169,7 @@ private:
 	void UpdateFromArtSetStat();
 	void UpdateFromArtifactMainStat();
 	void UpdateFromArtifactSubStat();
+	void UpdateFromArtifactSubStatFast();
 	void UpdateFromFeedback();
 	Stat mStatAfterUpdateFromCharacterResonance; // never do initialization
 	Stat mStatAfterUpdateFromWeapon; // never do initialization
