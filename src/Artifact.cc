@@ -15,7 +15,7 @@ void PrintArtifact(const Artifact* artifact)
     std::cout << "SubStat" << std::endl;
 
 	int category_column_widths = 0;
-    for (int i = 0; i < 9; i++)
+    for (std::size_t i = 0; i < 9; i++)
 	{
         int category_width = STATSTRING[i].length();
         if (category_width > category_column_widths) category_column_widths = category_width;
@@ -49,10 +49,10 @@ Artifact::Artifact(const Artifact& artifact)
 }
 
 
-int Artifact::UseCummulatedWeight(std::vector<int> cummulatedWeight)
+int Artifact::UseCummulatedWeight(const std::vector<int>& cummulatedWeight)
 {
 	// generate random integer from 0 to the sum of probability table
-	std::size_t length = cummulatedWeight.size();
+	int length = cummulatedWeight.size();
 	
 	int tempInt;
 	if (cummulatedWeight[length - 1] == 1) tempInt = 1;
@@ -61,12 +61,12 @@ int Artifact::UseCummulatedWeight(std::vector<int> cummulatedWeight)
 	int selectedInt = 0;
 	int beforeElement = 0;
 	int nowElement = 0;
-	for (int i = 0; i < length; i++) // forë¬¸ì„ ëŒë¦¬ë©´ì„œ ëŒ€ì†Œë¹„êµë¥¼ í•œë‹¤.
+	for (int i = 0; i < length; i++) // for¹®À» µ¹¸®¸é¼­ ´ë¼Òºñ±³¸¦ ÇÑ´Ù.
 	{
 		nowElement = cummulatedWeight[i];
 		if (tempInt > beforeElement && tempInt <= nowElement)
 		{
-			selectedInt = i; // ëœë¤ intë¥¼ ê°€ì§€ê³  ì–´ëŠ ì£¼ì˜µì¸ì§€ ê²°ì •í•œë‹¤.
+			selectedInt = i; // ·£´ı int¸¦ °¡Áö°í ¾î´À ÁÖ¿ÉÀÎÁö °áÁ¤ÇÑ´Ù.
 			break;
 		}
 		beforeElement = nowElement;
@@ -94,13 +94,16 @@ void Artifact::GenerateMainOption()
 
 std::vector<int> Artifact::GenerateCummulatedWeight()
 {	
-	std::vector<int> returnList(10);
-	for (int i = 0; i < 10; i++)
-	{
-		returnList[i] = SUBOPTPROB[i];
-	} 
+	// std::vector<int> returnList(10);
+	// for (std::size_t i = 0; i < 10; i++)
+	// {
+	// 	returnList[i] = SUBOPTPROB[i];
+	// } 
+
+	std::vector<int> returnList(SUBOPTPROB.begin(), SUBOPTPROB.end());
+
 	if ((mMainType >= 0) && (mMainType < 10) && (mMainType != 3) && (mMainType != 6)) returnList[mMainType] = 0;
-	for (int i = 1; i < 10; i++)
+	for (std::size_t i = 1; i < 10; i++)
 	{
 		returnList[i] += returnList[i - 1];
 	}
@@ -119,7 +122,7 @@ bool Artifact::IsUsingThis(const Character* character) const
 {
 	bool returnBool = false;
 	int length = mCharactersUsingThis.size();
-	for (int i = 0; i < length; i++)
+	for (std::size_t i = 0; i < length; i++)
 	{
 		if (character == mCharactersUsingThis[i])
 		{
@@ -131,10 +134,10 @@ bool Artifact::IsUsingThis(const Character* character) const
 }
 
 
-bool CheckIsThereIn(int element, std::array<int, 4> list)
+bool CheckIsThereIn(int element, const std::array<int, 4>& list)
 {
 	bool returnBool = false;
-	for (int i = 0; i < 4; i++)
+	for (std::size_t i = 0; i < 4; i++)
 	{
 		if (element == list[i])
 		{
@@ -146,9 +149,9 @@ bool CheckIsThereIn(int element, std::array<int, 4> list)
 }
 
 
-std::array<int, 4> Artifact::GenerateStartOpt(std::vector<int> cummulatedWeight)
+std::array<int, 4> Artifact::GenerateStartOpt(const std::vector<int>& cummulatedWeight)
 {
-	std::array<int, 4> returnList = { -1, -1, -1, -1 };
+	std::array<int, 4> returnList{ { -1, -1, -1, -1 } };
 	returnList[0] = UseCummulatedWeight(cummulatedWeight);
 	for (int i = 1; i < 4; i++)
 	{
@@ -163,21 +166,21 @@ std::array<int, 4> Artifact::GenerateStartOpt(std::vector<int> cummulatedWeight)
 }
 
 
-void Artifact::UpgradeSubOption(std::array<int, 4> startOptList, bool whether4OptStart)
+void Artifact::UpgradeSubOption(const std::array<int, 4>& startOptList, bool whether4OptStart)
 {
 	int numUpgrade = 4;
 	if (whether4OptStart) numUpgrade = 5;
 
-	// ê°ê° 1íšŒì”©
-	for (int i = 0; i < 4; i++)
+	// °¢°¢ 1È¸¾¿
+	for (std::size_t i = 0; i < 4; i++)
 	{
 		int optIndex = startOptList[i];
 		double randomStat = OPTIONARRAY[optIndex][GetRdUni4()];
 		mSubStat.AddOption(optIndex, randomStat);
 	}
 
-	// ëœë¤ìœ¼ë¡œ numUpgradeë§Œí¼
-	for (int i = 0; i < numUpgrade; i++)
+	// ·£´ıÀ¸·Î numUpgrade¸¸Å­
+	for (std::size_t i = 0; i < numUpgrade; i++)
 	{
 		int randomIndex = startOptList[GetRdUni4()];
 		double randomStat = OPTIONARRAY[randomIndex][GetRdUni4()];
@@ -189,18 +192,18 @@ void Artifact::UpgradeSubOption(std::array<int, 4> startOptList, bool whether4Op
 void Artifact::GenerateSubOption()
 {
 	std::vector<int> subCummulatedWeight = GenerateCummulatedWeight();
-		// 1. ë©”ì¸ì˜µì…˜ì„ í™•ì¸í•´ì„œ í™•ë¥ í‘œì—ì„œ í•´ë‹¹ ë¶€ë¶„ì„ 0ìœ¼ë¡œ ë§Œë“ ë‹¤.
-			// 1-1. ì´ê±¸ ê°€ì§€ê³  cummulatedWeightì„ ë§Œë“ ë‹¤.
+		// 1. ¸ŞÀÎ¿É¼ÇÀ» È®ÀÎÇØ¼­ È®·üÇ¥¿¡¼­ ÇØ´ç ºÎºĞÀ» 0À¸·Î ¸¸µç´Ù.
+			// 1-1. ÀÌ°É °¡Áö°í cummulatedWeightÀ» ¸¸µç´Ù.
 				// This cummulatedWeight is for subOption
 				// Therefore the length of cummulatedWeight is 10.
 
 	bool whether4OptStart = Selected3or4OptStart();
-		// 2. ì²˜ìŒì— 3ê°œì¸ì§€ 4ê°œì¸ì§€ ê³ ë¥¸ë‹¤. -> 8ê°œ or 9ê°œ
+		// 2. Ã³À½¿¡ 3°³ÀÎÁö 4°³ÀÎÁö °í¸¥´Ù. -> 8°³ or 9°³
 	std::array<int, 4> startOptList = GenerateStartOpt(subCummulatedWeight);
-		// 3. ì²˜ìŒ ì˜µì…˜ 4ê°œê°€ ë¬´ì—‡ì¸ì§€ ê²°ì •í•œë‹¤. 4ê°œë¥¼ ê²¹ì¹˜ì§€ ì•Šê²Œ ìƒì„±í•œë‹¤.
+		// 3. Ã³À½ ¿É¼Ç 4°³°¡ ¹«¾ùÀÎÁö °áÁ¤ÇÑ´Ù. 4°³¸¦ °ãÄ¡Áö ¾Ê°Ô »ı¼ºÇÑ´Ù.
 
 	UpgradeSubOption(startOptList, whether4OptStart);
-		// 4. ê¸°ì¡´ 4ê°œë¥¼ ëœë¤ìœ¼ë¡œ ê°ê° 1íšŒ ê³ ì •ì— ëœë¤ìœ¼ë¡œ 4íšŒ ë˜ëŠ” 5íšŒ ì¦ê°€ì‹œí‚¨ë‹¤.
+		// 4. ±âÁ¸ 4°³¸¦ ·£´ıÀ¸·Î °¢°¢ 1È¸ °íÁ¤¿¡ ·£´ıÀ¸·Î 4È¸ ¶Ç´Â 5È¸ Áõ°¡½ÃÅ²´Ù.
 }
 
 
@@ -208,8 +211,8 @@ void Artifact::Generation()
 {
 	mMainStat.SetZero();
 	mSubStat.SetZero();
-	GenerateMainOption(); // ë©”ì¸ì˜µì…˜ : ë¶€ìœ„ë§ˆë‹¤ ë‹¤ë¦„.
-	GenerateSubOption(); // ë¶€ì˜µì…˜ : ë¶€ìœ„ë§ˆë‹¤, ë©”ì¸ì˜µì…˜ë§ˆë‹¤ ë‹¤ë¦„.
+	GenerateMainOption(); // ¸ŞÀÎ¿É¼Ç : ºÎÀ§¸¶´Ù ´Ù¸§.
+	GenerateSubOption(); // ºÎ¿É¼Ç : ºÎÀ§¸¶´Ù, ¸ŞÀÎ¿É¼Ç¸¶´Ù ´Ù¸§.
 	AlertModified();
 }
 
@@ -232,8 +235,7 @@ void Artifact::SaveCharacterPointer(Character* character)
 
 void Artifact::DeleteCharacterPointer(const Character* character)
 {
-    int index = 0;
-    int size = mCharactersUsingThis.size();
+    std::size_t size = mCharactersUsingThis.size();
 	if (size == 0) return;
 	if (size == 1 && mCharactersUsingThis[0] == character) mCharactersUsingThis.erase(mCharactersUsingThis.begin());
 	else mCharactersUsingThis.erase(remove(mCharactersUsingThis.begin(), mCharactersUsingThis.end(), character), mCharactersUsingThis.end());
