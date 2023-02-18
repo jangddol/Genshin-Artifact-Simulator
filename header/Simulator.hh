@@ -62,6 +62,8 @@ public:
     TH2D* RunSimulationMultiThreads(int simNum, int artifactNum, int binNum, double minDamage, double maxDamage);
     TH2D* GetSimulationResult() { return mSimulationResult; }
 
+    int        GetBundleNum() { return mBundleNum; }
+    void       SetBundleNum(int bundleNum) { mBundleNum = bundleNum; }
     Character* GetCharacter() { return mCharacter; }
     void       SetCharacter(Character* character) { mCharacter = character; }
     int        GetNumThread() const { return mNumThread; }
@@ -87,6 +89,8 @@ private:
     void PrintLastArtifacts(int trialNum, double bestDamage, const ArtifactBundle& bestArtifacts) const;
     void PrintTimeConsumption() const;
     void PrintProgress(int trial, int nowArtNum, int simNum, int artifactNum) const;
+
+    int mBundleNum = 1;
 
     Character* mCharacter;
     std::vector<double> mAppendableRate;

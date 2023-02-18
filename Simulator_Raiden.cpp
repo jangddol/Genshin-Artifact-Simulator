@@ -50,6 +50,7 @@ void Simulator_Raiden()
 	simulator->SetSeeLastArtifact(false);
 	simulator->SetSeeTimeConsumption(true);
 	simulator->SetScoreIndexMode(JANGDDOL);
+	// simulator->SetBundleNum(5);
 
 	TH2D* VisualHistogram = simulator->RunSimulationMultiThreads(simNum, artifactNum, binNum, minDamage, maxDamage);
 	// TH2D* VisualHistogram = simulator->RunSimulation(simNum, artifactNum, binNum, minDamage, maxDamage, "");

@@ -577,16 +577,19 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
     if (histName == "") histName = "SIMULATOR_RUNSIMULATION_RESULT";
 	TH2D* VisualHistogram;
 
+	int newArtNum = (artifactNum % mBundleNum == 0) ? artifactNum : ((artifactNum / mBundleNum + 1) * mBundleNum + 1);
+	int newArtBinNum = (artifactNum % mBundleNum == 0) ? (artifactNum / mBundleNum) : (newArtNum / mBundleNum + 1);
+
 	switch (mScoreIndex)
     {
         case DAMAGE:
-			VisualHistogram = new TH2D(histName, "", artifactNum, 0, artifactNum, binNum, minDamage, maxDamage);
+			VisualHistogram = new TH2D(histName, "", newArtBinNum, 0, newArtNum, binNum, minDamage, maxDamage);
             break;
         case JANGDDOL:
-			VisualHistogram = new TH2D(histName, "", artifactNum, 0, artifactNum, binNum, MINSCORE, MAXSCORE);
+			VisualHistogram = new TH2D(histName, "", newArtBinNum, 0, newArtNum, binNum, MINSCORE, MAXSCORE);
             break;
         case MONKEYMAGIC:
-			VisualHistogram = new TH2D(histName, "", artifactNum, 0, artifactNum, binNum, MINSCORE, MAXSCORE);
+			VisualHistogram = new TH2D(histName, "", newArtBinNum, 0, newArtNum, binNum, MINSCORE, MAXSCORE);
             break;
         default:
 			assert(0);
@@ -598,8 +601,8 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
 	std::chrono::system_clock::time_point start, finish;
 
 	mAppendableRate = {};
-	mAppendableRate.reserve(artifactNum);
-	mAppendableRate.resize(artifactNum);
+	mAppendableRate.reserve(newArtNum);
+	mAppendableRate.resize(newArtNum);
 
 	mCharacter->MakeEffectionArray();
 	mCharacter->MakeScoreFunction();
@@ -629,9 +632,12 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
 
 			if (whetherAppend)
 			{				
+
+				if (j % mBundleNum == 0)
+				{
 				start = std::chrono::system_clock::now(); 
 				double comparedDamage = CalLoopArtifact(gennedArtifact, artifactSuperList, bestTryArtifacts);
-				finish  = std::chrono::system_clock::now();
+					finish = std::chrono::system_clock::now();
 				mTimeList[2] += std::chrono::duration<double>(finish - start).count();
 
 				if (comparedDamage >= bestDamage)
@@ -639,18 +645,16 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
 					bestDamage = comparedDamage;
 					bestArtifacts = bestTryArtifacts;
 				}
-				
-				start = finish; 
-				AppendArtifactList(gennedArtifact, artifactSuperList);
-				finish  = std::chrono::system_clock::now();
-				mTimeList[3] += std::chrono::duration<double>(finish - start).count();
+				}
 
 				numAppend++;
 			}
 			else delete gennedArtifact;
 
+			if (j % mBundleNum == 0)
+			{
 			VisualHistogram->Fill(j + 0.5, bestDamage);
-			// N_Histogram[j]->Fill(bestDamage);
+			}
 
 			mAppendableRate[j] += (double)numAppend;
 
@@ -729,6 +733,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 		simulatorVector[i].SetSeeLastArtifact(mSeeLastArtifact);
 		simulatorVector[i].SetSeeTimeConsumption(mSeeTimeConsumption);
 		simulatorVector[i].SetScoreIndexMode(mScoreIndex);
+		simulatorVector[i].SetBundleNum(mBundleNum);
 	}
 
 	if (DEBUGMODE)
@@ -762,8 +767,8 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	}
 	
 
-	// 占쎌뵠占쎈굶占쏙옙占� 揶쏄낫而� 占쎈쾺占쎌쟿占쎈굡 占쎈툧占쎈퓠占쎄퐣 SimulationWorker�몴占� 獄쏆뮆猷욑옙釉놂옙�뼄.
-	// SimulationWorker占쎈뮉 2d-Histogram占쎌뱽 simulatorVector[i]占쎈퓠 占쎄텚疫꿸퀗��� 雅뚯럥�뮉占쎈뼄.
+	// �뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐앾옙�쐻占쎈짗占쎌굲�뜝�럥�룒筌욌갊�쐻占쎈윪筌띾씛�삕占쎌맶�뜝�럥�쑅�뜝�럩紐쀯옙�쐻占쎈윥鸚룐벂�쐻占쎈윪筌뤾막�쐻占쎈윪筌띾씛�삕占쎌맶�뜝�럥�쑅嶺뚯쉸占싸살맶�뜝�럥�쑋占쎈쨨饔끸뫀�맶�뜝�럥�쑅�뜝�럥�럪占쎈쐻占쎈윥占쎈㎍�뜝�럥�맶占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑅勇싲·猿딆맶�뜝�럥�쑅嶺뚯빓�뿥占쎌맶�뜝�럥�쐾�뜝�럥占썬굩�삕占쎌맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윪占쎈��占쎈쐻占쎈윪�뤃占� �뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀯옙�쐻占쎈윥�젆占썲뜝�럥占쎈〕�삕�뜝�룞�삕�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐앭뜝�럥�맶�뜝�럥�쑋�뜝�럥苡ュ뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀯옙�쐻占쎈윥鸚룐뫅�삕占쎌맶占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀥뜝�럥�맶�뜝�럥�쑅�뜝�럥�룇�뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀥뜝�럥�맶�뜝�럥�쑅占쎈쨨野껋눖�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩留썲뜝�럥�맶�뜝�럥�쑅鶯ㅼ룊�삕 SimulationWorker占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윞�꽴�뙋�삕占쎌맶�뜝�럥�쑅�뜝�럥�럪占쎈쐻占쎈윥占쎈㎍�뜝�럥�맶占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑅�뜝�럥�쓠�뜝�럥�맶�뜝�럥�쑅嶺뚯빖諭븝옙�맚嶺뚮㉡�맊椰꾩빆�쐻占쎈윪�뜝�룞�삕�뜝�럥�맶�뜝�럥�쑋�뜝�럥夷��뜝�럥�맶�뜝�럥�쑋占쎈쨨饔끸뫀�맶�뜝�럥�쑅�뜝�룞�삕�뜝�룞�삕占쎌맶�뜝�럥�쑅占쎈뙀占쎈엠占쎌맶�뜝�럥�쑋占쎈쨨占쏙옙癒��굲�뜝�럩留띰옙�쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎌졄.
+	// SimulationWorker�뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀥뜝�럥�맚嶺뚮Ĳ猷귨옙援� 2d-Histogram�뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐앭뜝�럥�럸占쎈쐻占쎈쑕占쎌맶占쎈쐻�뜝占� simulatorVector[i]�뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀥뜝�럥�맶�뜝�럥�쑅占쎈쨨�뜝占� �뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩留썲뜝�럥�맶�뜝�럥�쑅占쎈쐻占쎈짗占쎈쭟�뜝�럩援꿨뜝�럩�쟼�뜝�럥�걶�뜝�럥占쏙옙癲ル슢�뀖�뤃占썲뜝�럩援뀐옙�쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲�뜝�럡�렊占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥筌욎�λ쐻占쎈윪�뤃占� �뜝�럥�맶�뜝�럥�쑋�뜝�럩留싧뜝�럥�맶�뜝�럥�쑋�뜝�럥痢㎩뜝�럥�맶�뜝�럥�쑋�뜝�럥泥딉옙�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗癲ル쉵�궇占쎈벨�삕占쎄뎡占쎈쐻占쎈윪筌띾씛�삕占쎌맶�뜝�럥�쑅�뜝�럩紐쀯옙�쐻占쎈윪占쎌읆�뜝�럥�맶占쎈쐻�뜝占�.
 	std::vector<std::thread> threads;
 	for (int i = 0; i < mNumThread; i++)
 	{
@@ -789,7 +794,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 		}
 	}
 
-	// 占쎄문占쎄쉐占쎈쭆 AppendRate占쎈즲 占쎈연疫꿸퀡以� 占쎄퐜野꺿뫁占쏙옙占쎈뼄.
+	// �뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩留쏙옙�쐻占쎈윥占쎈뼓癲ル슢���泳�占썲뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩留썲뜝�럥�맶�뜝�럥�쑅�뜝�럩議묈뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀥궘占쏙옙�걠�뙴�뵃�삕占쎄뎡 AppendRate�뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀧솾�꺂�뒩�뜮占썲뜝�럩援� �뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀥뜝�럥�맶�뜝�럥�쑅�뜝�럥�삓�뜝�럥�맶�뜝�럥�쑅�뜝�룞�삕�뜝�띁占쏙옙�겫�뼐�꼤嶺뚳옙筌롡뫀�맶�뜝�럥�몘占쎌젂�뇡�굝�몡�뜝�럥占쎌꼻�삕占쎈㎍�뜝�럥�맶占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩留썲뜝�럥�맶�뜝�럥�쑅鶯ㅼ룆���占쎌맶�뜝�럥�쑅�뜝�럥�뱥占쎈쐻占쎈윥占쏙옙占쏙옙�쐻占쎈윪占쎈츛�뜝�럥�솗�뜝�럥利멨뜝�럩援뀐옙�쐻占쎈윪筌띾씛�삕占쎌맶�뜝�럥�쑅嶺뚯쉸占싸살맶�뜝�럥�쑋占쎈쨨饔끸뫀�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀯옙�쐻占쎈윪占쎌읆�뜝�럥�맶占쎈쐻�뜝占�.
 	std::vector<double> tempVector(artifactNum);
 	for (int i = 0; i < mNumThread; i++)
 	{
@@ -819,20 +824,25 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	if (DEBUGMODE) std::cout << "11" << std::endl;
 
 	TH2D* VisualHistogram;
+
+	int newArtNum = (artifactNum % mBundleNum == 0) ? artifactNum : ((artifactNum / mBundleNum + 1) * mBundleNum + 1);
+	int newArtBinNum = (artifactNum % mBundleNum == 0) ? (artifactNum / mBundleNum) : (newArtNum / mBundleNum + 1);
+
 	switch (mScoreIndex)
     {
         case DAMAGE:
-			VisualHistogram = new TH2D("VisualHistogram", "", artifactNum, 0, artifactNum, binNum, minDamage, maxDamage);
+			VisualHistogram = new TH2D("VisualHistogram", "", newArtBinNum, 0, newArtNum, binNum, minDamage, maxDamage);
             break;
         case JANGDDOL:
-			VisualHistogram = new TH2D("VisualHistogram", "", artifactNum, 0, artifactNum, binNum, MINSCORE, MAXSCORE);
+			VisualHistogram = new TH2D("VisualHistogram", "", newArtBinNum, 0, newArtNum, binNum, MINSCORE, MAXSCORE);
             break;
         case MONKEYMAGIC:
-			VisualHistogram = new TH2D("VisualHistogram", "", artifactNum, 0, artifactNum, binNum, MINSCORE, MAXSCORE);
+			VisualHistogram = new TH2D("VisualHistogram", "", newArtBinNum, 0, newArtNum, binNum, MINSCORE, MAXSCORE);
             break;
         default:
 			assert(0);
     }
+
 	for (int i = 0; i < mNumThread; i++)
 	{
 		VisualHistogram->Add(HistogramArray[i]);
