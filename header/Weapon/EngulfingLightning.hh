@@ -21,7 +21,7 @@ public:
         mWeaponName = ENGULFINGLIGHTNING;
     }
     EngulfingLightning(const Weapon* weapon) : Weapon(weapon) {}
-    Weapon* Clone() const override { return new EngulfingLightning(this); }
+    std::shared_ptr<Weapon> Clone_sharedptr() const override { return std::dynamic_pointer_cast<Weapon>(std::make_shared<EngulfingLightning>(this)); }
 	~EngulfingLightning() override {}
 
     void DoFeedback(const Character* character, int& stat, double& amount) const override

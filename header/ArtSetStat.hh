@@ -4,6 +4,7 @@
 
 #include "Stat.hh"
 #include <vector>
+#include <memory>
 // #include "Character.hh" : since of cylic reference : goes to ArtSetStat.cc
 
 
@@ -15,7 +16,7 @@ class ArtSetStat
 public:
     ArtSetStat() {}
     ArtSetStat(const ArtSetStat* artSetStat) { mStat = artSetStat->GetStat(); }
-    virtual ArtSetStat* Clone() const { return new ArtSetStat(*this); }
+    virtual std::shared_ptr<ArtSetStat> Clone_sharedptr() const { return std::make_shared<ArtSetStat>(this); }
     virtual ~ArtSetStat() {}
 
     virtual void DoFeedback(const Character* character, int& stat, double& amount) const { stat = 0; amount = 0; }

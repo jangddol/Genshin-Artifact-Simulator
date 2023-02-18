@@ -21,7 +21,7 @@ public:
         mWeaponName = EVERLASTINGMOONGLOW;
     }
     EverlastingMoonglow(const Weapon* weapon) : Weapon(weapon) {}
-    Weapon* Clone() const override { return new EverlastingMoonglow(this); }
+    std::shared_ptr<Weapon> Clone_sharedptr() const override { return std::dynamic_pointer_cast<Weapon>(std::make_shared<EverlastingMoonglow>(this)); }
 	~EverlastingMoonglow() override {}
 };
 

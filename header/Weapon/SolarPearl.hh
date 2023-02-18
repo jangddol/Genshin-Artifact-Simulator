@@ -23,7 +23,7 @@ public:
         mWeaponName = SOLARPEARL;
     }
     SolarPearl(const Weapon* weapon) : Weapon(weapon) {}
-    Weapon* Clone() const override { return new SolarPearl(this); }
+    std::shared_ptr<Weapon> Clone_sharedptr() const override { return std::dynamic_pointer_cast<Weapon>(std::make_shared<SolarPearl>(this)); }
 	~SolarPearl() override {}
 };
 

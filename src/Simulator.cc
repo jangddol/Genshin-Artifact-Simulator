@@ -18,6 +18,7 @@
 #include <vector>
 #include <thread>
 #include <mutex>
+#include <memory>
 #include <algorithm>
 #include <ctime>
 #include <chrono>
@@ -30,52 +31,47 @@
 bool DEBUGMODE = false;
 
 
-Artifact* GenRandArtf_1()
+std::shared_ptr<Artifact> GenRandArtf_1()
 {
-	ArtFlower* tempArtf = new ArtFlower();
-	tempArtf->Generation();
-	Artifact* returnArtf = (Artifact*)tempArtf;
+	std::shared_ptr<Artifact> returnArtf = std::dynamic_pointer_cast<Artifact>(std::make_shared<ArtFlower>());
+	returnArtf->Generation();
 	return returnArtf;
 }
 
 
-Artifact* GenRandArtf_2()
+std::shared_ptr<Artifact> GenRandArtf_2()
 {
-	ArtFeather* tempArtf = new ArtFeather();
-	tempArtf->Generation();
-	Artifact* returnArtf = (Artifact*)tempArtf;
+	std::shared_ptr<Artifact> returnArtf = std::dynamic_pointer_cast<Artifact>(std::make_shared<ArtFeather>());
+	returnArtf->Generation();
 	return returnArtf;
 }
 
 
-Artifact* GenRandArtf_3()
+std::shared_ptr<Artifact> GenRandArtf_3()
 {
-	ArtClock* tempArtf = new ArtClock();
-	tempArtf->Generation();
-	Artifact* returnArtf = (Artifact*)tempArtf;
+	std::shared_ptr<Artifact> returnArtf = std::dynamic_pointer_cast<Artifact>(std::make_shared<ArtClock>());
+	returnArtf->Generation();
 	return returnArtf;
 }
 
 
-Artifact* GenRandArtf_4()
+std::shared_ptr<Artifact> GenRandArtf_4()
 {
-	ArtCup* tempArtf = new ArtCup();
-	tempArtf->Generation();
-	Artifact* returnArtf = (Artifact*)tempArtf;
+	std::shared_ptr<Artifact> returnArtf = std::dynamic_pointer_cast<Artifact>(std::make_shared<ArtCup>());
+	returnArtf->Generation();
 	return returnArtf;
 }
 
 
-Artifact* GenRandArtf_5()
+std::shared_ptr<Artifact> GenRandArtf_5()
 {
-	ArtCrown* tempArtf = new ArtCrown();
-	tempArtf->Generation();
-	Artifact* returnArtf = (Artifact*)tempArtf;
+	std::shared_ptr<Artifact> returnArtf = std::dynamic_pointer_cast<Artifact>(std::make_shared<ArtCrown>());
+	returnArtf->Generation();
 	return returnArtf;
 }
 
 
-Artifact* GenerateRandomArtifact()
+std::shared_ptr<Artifact> GenerateRandomArtifact()
 {
 	int temp = GetRdUni5();
 
@@ -89,20 +85,20 @@ Artifact* GenerateRandomArtifact()
 	default:
 		{
 			assert(0);
-			return new ArtFlower();
+			return std::shared_ptr<ArtFlower>();
 		}
 	}
 }
 
 
-bool CheckEffectiveOption(Character* character, int index)
+bool CheckEffectiveOption(const std::shared_ptr<Character>& character, int index)
 {
 	if (character->GetEffection(index) > 1.e-5) return true;
 	else return false;
 }
 
 
-void MakeEffectiveOptionList(int* oEffectiveList, int& oSize, Character* character)
+void MakeEffectiveOptionList(int* oEffectiveList, int& oSize, const std::shared_ptr<Character>& character)
 {
 	int j = 0;
 	for (int i = 0; i < 10; i++)
@@ -127,7 +123,7 @@ bool CheckWhetherElementIsIn(int element, int List[], int size)
 }
 
 
-bool CheckBetterSubOpt(Stat betterOpt, Stat worseOpt, int effectiveList[], int effListSize, Character* character)
+bool CheckBetterSubOpt(Stat betterOpt, Stat worseOpt, int effectiveList[], int effListSize, std::shared_ptr<Character>& character)
 {
 	// CR
 	if (CheckWhetherElementIsIn(0, effectiveList, effListSize))
@@ -186,42 +182,42 @@ bool CheckBetterSubOpt(Stat betterOpt, Stat worseOpt, int effectiveList[], int e
 }
 
 
-std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtFlower*> flowerList)
+std::vector<std::shared_ptr<Artifact>> Convert2VecArtifactPointer(std::vector<std::shared_ptr<ArtFlower>> flowerList)
 {
-	std::vector<Artifact*> returnVector(flowerList.size());
-	for (std::size_t i = 0; i < flowerList.size() ; i++) returnVector[i] = (Artifact*)flowerList[i];
+	std::vector<std::shared_ptr<Artifact>> returnVector(flowerList.size());
+	for (std::size_t i = 0; i < flowerList.size() ; i++) returnVector[i] = std::dynamic_pointer_cast<Artifact>(flowerList[i]);
 	return returnVector;
 }
 
 
-std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtFeather*> featherList)
+std::vector<std::shared_ptr<Artifact>> Convert2VecArtifactPointer(std::vector<std::shared_ptr<ArtFeather>> featherList)
 {
-	std::vector<Artifact*> returnVector(featherList.size());
-	for (std::size_t i = 0; i < featherList.size() ; i++) returnVector[i] = (Artifact*)featherList[i];
+	std::vector<std::shared_ptr<Artifact>> returnVector(featherList.size());
+	for (std::size_t i = 0; i < featherList.size() ; i++) returnVector[i] = std::dynamic_pointer_cast<Artifact>(featherList[i]);
 	return returnVector;
 }
 
 
-std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtClock*> clockList)
+std::vector<std::shared_ptr<Artifact>> Convert2VecArtifactPointer(std::vector<std::shared_ptr<ArtClock>> clockList)
 {
-	std::vector<Artifact*> returnVector(clockList.size());
-	for (std::size_t i = 0; i < clockList.size() ; i++) returnVector[i] = (Artifact*)clockList[i];
+	std::vector<std::shared_ptr<Artifact>> returnVector(clockList.size());
+	for (std::size_t i = 0; i < clockList.size() ; i++) returnVector[i] = std::dynamic_pointer_cast<Artifact>(clockList[i]);
 	return returnVector;
 }
 
 
-std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtCup*> cupList)
+std::vector<std::shared_ptr<Artifact>> Convert2VecArtifactPointer(std::vector<std::shared_ptr<ArtCup>> cupList)
 {
-	std::vector<Artifact*> returnVector(cupList.size());
-	for (std::size_t i = 0; i < cupList.size() ; i++) returnVector[i] = (Artifact*)cupList[i];
+	std::vector<std::shared_ptr<Artifact>> returnVector(cupList.size());
+	for (std::size_t i = 0; i < cupList.size() ; i++) returnVector[i] = std::dynamic_pointer_cast<Artifact>(cupList[i]);
 	return returnVector;
 }
 
 
-std::vector<Artifact*> Convert2VecArtifactPointer(std::vector<ArtCrown*> crownList)
+std::vector<std::shared_ptr<Artifact>> Convert2VecArtifactPointer(std::vector<std::shared_ptr<ArtCrown>> crownList)
 {
-	std::vector<Artifact*> returnVector(crownList.size());
-	for (std::size_t i = 0; i < crownList.size() ; i++) returnVector[i] = (Artifact*)crownList[i];
+	std::vector<std::shared_ptr<Artifact>> returnVector(crownList.size());
+	for (std::size_t i = 0; i < crownList.size() ; i++) returnVector[i] = std::dynamic_pointer_cast<Artifact>(crownList[i]);
 	return returnVector;
 }
 
@@ -237,7 +233,7 @@ void EraseSuperArtifactList(SuperArtifactList& ArtifactSuperList, int numType, i
 }
 
 
-bool CheckWhetherAppendAndDelete(Character* character, Artifact* gennedArtifact, SuperArtifactList& ArtifactSuperList)
+bool CheckWhetherAppendAndDelete(std::shared_ptr<Character> character, std::shared_ptr<Artifact> gennedArtifact, SuperArtifactList& ArtifactSuperList)
 {
     // Return false if the effective option check fails and the main type is not 3 or 6
     if (!CheckEffectiveOption(character, gennedArtifact->GetMainType()) && (gennedArtifact->GetMainType() != 3 && gennedArtifact->GetMainType() != 6))
@@ -246,7 +242,7 @@ bool CheckWhetherAppendAndDelete(Character* character, Artifact* gennedArtifact,
     }
 
     // Get the list of artifacts for the given type
-    std::vector<Artifact*> selectedList;
+    std::vector<std::shared_ptr<Artifact>> selectedList;
     switch (gennedArtifact->GetType())
     {
         case 1:
@@ -276,7 +272,7 @@ bool CheckWhetherAppendAndDelete(Character* character, Artifact* gennedArtifact,
     // Check whether the generated artifact should be appended to or deleted from the list
     bool whetherAppend = true;
     Stat gennedSubOpt = gennedArtifact->GetSubStat();
-    for (std::size_t i = 0; i < selectedList.size(); i++)
+    for (int i = 0; i < selectedList.size(); i++)
     {
         if (selectedList[i]->GetMainType() == gennedArtifact->GetMainType())
         {
@@ -290,7 +286,6 @@ bool CheckWhetherAppendAndDelete(Character* character, Artifact* gennedArtifact,
             {
                 // Generated artifact is better, delete the existing artifact
                 EraseSuperArtifactList(ArtifactSuperList, gennedArtifact->GetType(), i);
-                delete selectedList[i];
                 selectedList.erase(selectedList.begin() + i);
                 i--;
             }
@@ -302,15 +297,15 @@ bool CheckWhetherAppendAndDelete(Character* character, Artifact* gennedArtifact,
 }
 
 
-void AppendArtifactList(Artifact* gennedArtifact, SuperArtifactList& ArtifactSuperList)
+void AppendArtifactList(std::shared_ptr<Artifact> gennedArtifact, SuperArtifactList& ArtifactSuperList)
 {
 	int numType = gennedArtifact->GetType();
 
-	if      (numType == 1) ArtifactSuperList.flower.emplace_back((ArtFlower*)gennedArtifact);
-	else if (numType == 2) ArtifactSuperList.feather.emplace_back((ArtFeather*)gennedArtifact);
-	else if (numType == 3) ArtifactSuperList.clock.emplace_back((ArtClock*)gennedArtifact);
-	else if (numType == 4) ArtifactSuperList.cup.emplace_back((ArtCup*)gennedArtifact);
-	else if (numType == 5) ArtifactSuperList.crown.emplace_back((ArtCrown*)gennedArtifact);
+	if      (numType == 1) ArtifactSuperList.flower.emplace_back(std::dynamic_pointer_cast<ArtFlower>(gennedArtifact));
+	else if (numType == 2) ArtifactSuperList.feather.emplace_back(std::dynamic_pointer_cast<ArtFeather>(gennedArtifact));
+	else if (numType == 3) ArtifactSuperList.clock.emplace_back(std::dynamic_pointer_cast<ArtClock>(gennedArtifact));
+	else if (numType == 4) ArtifactSuperList.cup.emplace_back(std::dynamic_pointer_cast<ArtCup>(gennedArtifact));
+	else if (numType == 5) ArtifactSuperList.crown.emplace_back(std::dynamic_pointer_cast<ArtCrown>(gennedArtifact));
 	else
 	{
 		std::cout << "Error : gennedArtifact has wrong Type (@ AppendArtifactList)" << std::endl; 
@@ -325,15 +320,15 @@ double Simulator::CalLoopArtifact_Damage(SuperArtifactList& loopList, ArtifactBu
 	double tempDamage;
 	double bestDamage = 0;
 
-	std::for_each(loopList.crown.begin(), loopList.crown.end(), [&](ArtCrown* crown) {
+	std::for_each(loopList.crown.begin(), loopList.crown.end(), [&](std::shared_ptr<ArtCrown> crown) {
         mCharacter->SetArtCrown(crown);
-		std::for_each(loopList.cup.begin(), loopList.cup.end(), [&](ArtCup* cup) {
+		std::for_each(loopList.cup.begin(), loopList.cup.end(), [&](std::shared_ptr<ArtCup> cup) {
             mCharacter->SetArtCup(cup);
-			std::for_each(loopList.clock.begin(), loopList.clock.end(), [&](ArtClock* clock) {
+			std::for_each(loopList.clock.begin(), loopList.clock.end(), [&](std::shared_ptr<ArtClock> clock) {
                 mCharacter->SetArtClock(clock);
-				std::for_each(loopList.feather.begin(), loopList.feather.end(), [&](ArtFeather* feather) {
+				std::for_each(loopList.feather.begin(), loopList.feather.end(), [&](std::shared_ptr<ArtFeather> feather) {
                     mCharacter->SetArtFeather(feather);
-					std::for_each(loopList.flower.begin(), loopList.flower.end(), [&](ArtFlower* flower) {
+					std::for_each(loopList.flower.begin(), loopList.flower.end(), [&](std::shared_ptr<ArtFlower> flower) {
                         mCharacter->SetArtFlower(flower);
 						
 						// Initialize the character
@@ -696,15 +691,15 @@ double Simulator::CalLoopArtifact_MonkeyMagicScore(SuperArtifactList& loopList, 
 	double tempDamage;
 	double bestDamage = 0;
 
-	std::for_each(loopList.crown.begin(), loopList.crown.end(), [&](ArtCrown* crown) {
+	std::for_each(loopList.crown.begin(), loopList.crown.end(), [&](std::shared_ptr<ArtCrown> crown) {
         mCharacter->SetArtCrown(crown);
-		std::for_each(loopList.cup.begin(), loopList.cup.end(), [&](ArtCup* cup) {
+		std::for_each(loopList.cup.begin(), loopList.cup.end(), [&](std::shared_ptr<ArtCup> cup) {
             mCharacter->SetArtCup(cup);
-			std::for_each(loopList.clock.begin(), loopList.clock.end(), [&](ArtClock* clock) {
+			std::for_each(loopList.clock.begin(), loopList.clock.end(), [&](std::shared_ptr<ArtClock> clock) {
                 mCharacter->SetArtClock(clock);
-				std::for_each(loopList.feather.begin(), loopList.feather.end(), [&](ArtFeather* feather) {
+				std::for_each(loopList.feather.begin(), loopList.feather.end(), [&](std::shared_ptr<ArtFeather> feather) {
                     mCharacter->SetArtFeather(feather);
-					std::for_each(loopList.flower.begin(), loopList.flower.end(), [&](ArtFlower* flower) {
+					std::for_each(loopList.flower.begin(), loopList.flower.end(), [&](std::shared_ptr<ArtFlower> flower) {
                         mCharacter->SetArtFlower(flower);
 						
 						// Initialize the character
@@ -739,7 +734,7 @@ double Simulator::CalLoopArtifact_MonkeyMagicScore(SuperArtifactList& loopList, 
 }
 
 
-double Simulator::CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList& ArtifactSuperList,
+double Simulator::CalLoopArtifact(std::shared_ptr<Artifact> gennedArtifact, SuperArtifactList& ArtifactSuperList,
 	ArtifactBundle& bestTryArtifacts)
 {
 	// Set the generated artifact as the only artifact in the loop list for its type
@@ -747,19 +742,19 @@ double Simulator::CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList& A
     switch (gennedArtifact->GetType())
     {
         case 1:
-            loopList.flower = { (ArtFlower*)gennedArtifact };
+            loopList.flower = { std::dynamic_pointer_cast<ArtFlower>(gennedArtifact) };
             break;
         case 2:
-            loopList.feather = { (ArtFeather*)gennedArtifact };
+            loopList.feather = { std::dynamic_pointer_cast<ArtFeather>(gennedArtifact) };
             break;
         case 3:
-            loopList.clock = { (ArtClock*)gennedArtifact };
+            loopList.clock = { std::dynamic_pointer_cast<ArtClock>(gennedArtifact) };
             break;
         case 4:
-            loopList.cup = { (ArtCup*)gennedArtifact };
+            loopList.cup = { std::dynamic_pointer_cast<ArtCup>(gennedArtifact) };
             break;
         case 5:
-            loopList.crown = { (ArtCrown*)gennedArtifact };
+            loopList.crown = { std::dynamic_pointer_cast<ArtCrown>(gennedArtifact) };
             break;
         default:
             std::cout << "Error : gennedArtifact has wrong Type (@ CalLoopArtifact) : numType = " << gennedArtifact->GetType() << std::endl; 
@@ -799,11 +794,11 @@ void Simulator::PrintLastArtifacts(int trialNum, double bestDamage, const Artifa
 		std::cout << trialNum << "-th result =============================================" << std::endl;
 		std::cout << "bestDamage : " << bestDamage << std::endl;
 		std::cout << "============== Last Artifacts ===============" << std::endl;
-		PrintArtifact(bestArtifacts.flower);
-		PrintArtifact(bestArtifacts.feather);
-		PrintArtifact(bestArtifacts.clock);
-		PrintArtifact(bestArtifacts.cup);
-		PrintArtifact(bestArtifacts.crown);
+		PrintArtifact(bestArtifacts.flower.get());
+		PrintArtifact(bestArtifacts.feather.get());
+		PrintArtifact(bestArtifacts.clock.get());
+		PrintArtifact(bestArtifacts.cup.get());
+		PrintArtifact(bestArtifacts.crown.get());
 		std::cout << "============== Character Stat ===============" << std::endl;
 		PrintStat(mCharacter->GetStat());
 	}
@@ -822,8 +817,8 @@ void Simulator::PrintTimeConsumption() const
 
 void Simulator::PrintProgress(int trial, int nowArtNum, int simNum, int artifactNum) const
 {
-	double beforePercent = (double)(trial * artifactNum + nowArtNum - 1)/(double)(simNum * artifactNum) * 100.;
-	double percent = (double)(trial * artifactNum + nowArtNum)/(double)(simNum * artifactNum) * 100.;
+	double beforePercent = (double)(trial * artifactNum + nowArtNum - 1) / (double)(simNum * artifactNum) * 100.;
+	double percent = (double)(trial * artifactNum + nowArtNum) / (double)(simNum * artifactNum) * 100.;
 	if (!mWorkerMode)
 	{
 		if ((int)beforePercent != (int)percent) std::cout << (int)percent << "% end" << std::endl;
@@ -875,6 +870,7 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
 	mAppendableRate.reserve(newArtNum);
 	mAppendableRate.resize(newArtNum);
 
+	mCharacter->Update();
 	mCharacter->MakeEffectionArray();
 	mCharacter->MakeScoreFunction();
 
@@ -892,17 +888,21 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
 			ArtifactBundle bestTryArtifacts;
 			
 			start = std::chrono::system_clock::now();
-			Artifact* gennedArtifact = GenerateRandomArtifact();
-			finish  = std::chrono::system_clock::now();
+			std::shared_ptr<Artifact> gennedArtifact = GenerateRandomArtifact();
+			finish = std::chrono::system_clock::now();
 			mTimeList[0] += std::chrono::duration<double>(finish - start).count();
 
 			start = finish; 
 			bool whetherAppend = CheckWhetherAppendAndDelete(mCharacter, gennedArtifact, artifactSuperList);
-			finish  = std::chrono::system_clock::now();
+			finish = std::chrono::system_clock::now();
 			mTimeList[1] += std::chrono::duration<double>(finish - start).count();
 
 			if (whetherAppend)
 			{				
+				start = finish;
+				AppendArtifactList(gennedArtifact, artifactSuperList);
+				finish = std::chrono::system_clock::now();
+				mTimeList[3] += std::chrono::duration<double>(finish - start).count();
 
 				if (j % mBundleNum == 0)
 				{
@@ -920,7 +920,6 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
 
 				numAppend++;
 			}
-			else delete gennedArtifact;
 
 			if (j % mBundleNum == 0)
 			{
@@ -932,9 +931,16 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
 			PrintProgress(i, j, simNum, artifactNum);
 		}
 
+		if ((artifactSuperList.flower.size() == 0) ||
+		(artifactSuperList.feather.size() == 0) ||
+		(artifactSuperList.clock.size() == 0) ||
+		(artifactSuperList.cup.size() == 0) ||
+		(artifactSuperList.crown.size() == 0))
+		{
+			mCharacter->SetArtifact(bestArtifacts.flower, bestArtifacts.feather, bestArtifacts.clock, bestArtifacts.cup, bestArtifacts.crown);
+			mCharacter->Update();
 		PrintLastArtifacts(i, bestDamage, bestArtifacts);
-
-		artifactSuperList.DeleteAll();
+		}
 	}
 
 	for (int i = 0; i < artifactNum; i++)
@@ -945,7 +951,7 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
 
 	PrintTimeConsumption();
 
-	if (DEBUGMODE) std::cout << "VisualHistogram->GetBinContent(artifactNum, (int)(0.7*binNum))" << VisualHistogram->GetBinContent(artifactNum, (int)(0.7*binNum)) << std::endl;
+	if (DEBUGMODE) std::cout << "VisualHistogram->GetBinContent(newArtNum, (int)(0.7*newArtBinNum))" << VisualHistogram->GetBinContent(newArtNum, (int)(0.7*newArtBinNum)) << std::endl;
 
     return VisualHistogram;
 }
@@ -956,6 +962,7 @@ void Simulator::SimulationWorker(int workerID, int simNum, int artifactNum, int 
 	mCharacter->MakeEffectionArray();
 	// simulation number
 	simNum = simNum / mNumThread;
+	if (workerID <= simNum % mNumThread) simNum++;
 	
 	SetWorkerID(workerID);
 
@@ -986,11 +993,11 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 			// In the copy constructor of character, the copy one of ARtifact and Weapon is used.
 				// The Copy Constructor of Artifact is made.
 			// The Unit Test Code of these Copy Constructor is needed.
-	std::vector<Character*> characterVector;
+	std::vector<std::shared_ptr<Character>> characterVector;
 	characterVector.reserve(mNumThread);
 	for (int i = 0; i < mNumThread; i++)
 	{
-		characterVector.emplace_back(mCharacter->Clone());
+		characterVector.emplace_back(mCharacter->Clone_sharedptr());
 	}
 	// These Characters is to be the memeber of Simulators (number of them = numThread)
 	std::vector<Simulator> simulatorVector;
@@ -1038,8 +1045,8 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	}
 	
 
-	// 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁빢�삕占쎌맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윥占쎈짂嶺뚯쉶媛딉옙�맶�뜝�럥�쑋嶺뚮씭�뵛占쎌굲�뜝�럩留띰옙�쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁���삕占쎌맶�뜝�럥�쑅勇싲즾踰귨옙�맶�뜝�럥�쑋嶺뚮ㅎ留됵옙�맶�뜝�럥�쑋嶺뚮씭�뵛占쎌굲�뜝�럩留띰옙�쐻占쎈윥占쎌몗癲ル슣�돵�뜝�떥�궡留띰옙�쐻占쎈윥占쎌몝�뜝�럥夷③쪛�겦維�占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫�뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪占쎈쐻占쎈윥占쎈㎍�뜝�럥�맶占쎈쐻�뜝占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗�땱�떜쨌�뙼�봿留띰옙�쐻占쎈윥占쎌몗癲ル슣鍮볩옙肉ε뜝�럩留띰옙�쐻占쎈윥占쎌맽占쎈쐻占쎈윥�뜝�뜫援⑼옙�굲�뜝�럩留띰옙�쐻占쎈윥筌욎�λ쐻占쎈윪�뤃��먯삕占쎌맶�뜝�럥�쑋�뜝�럥占쏙옙�뜝�럥�맶�뜝�럥�쑋占쎈쨨�뜝占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁���삕占쎌맶�뜝�럥�쑅占쎌젂�뜝�뜴�쐻占쎈윥�뜝�럥��뺧옙�굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁빆�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝占쎈쐻占쎈윥�떋�깷�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁���삕占쎌맶�뜝�럥�쑅勇싲즾維낉옙�굲�뜝�럩留뜹뜝�럥�맶占쎈쐻�뜝占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁�λ쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈즵占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁�λ쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗�뜝�럥夷③뇦猿뗫닑占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌띿뜴�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗傭��끉猷딉옙�굲 SimulationWorker�뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀥뜝�럥�맶�뜝�럥�쐾占쎄슈占쎈솇占쎌굲�뜝�럩留띰옙�쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫�뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪占쎈쐻占쎈윥占쎈㎍�뜝�럥�맶占쎈쐻�뜝占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎌뱺占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗癲ル슣鍮뽬キ釉앹삕占쎈쭦癲ル슢�돘占쎈쭒濾곌쑴鍮놅옙�맶�뜝�럥�쑋占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝占쎈쐻占쎈윥鸚뤄옙占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝�뜝�럥夷③쪛�겦維�占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲�뜝�럩留띰옙�쐻占쎈윥占쎌몗�뜝�럥����뜝�럥�뿞�뜝�럩留띰옙�쐻占쎈윥占쎌몝�뜝�럥夷ⓨ뜝�룞�삕�솒占쏙옙援뀐옙�쐻占쎈윪筌띾씛�삕占쎌맶�뜝�럥�쑅�뜝�럩紐쀥뜝�럥�맶�뜝�럥�쑅�뜝�럩議�.
-	// SimulationWorker占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁�λ쐻占쎈윥占쎈쭦癲ル슢캉�뙴洹⑥삕�뤃占� 2d-Histogram占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁빆�쐻占쎈윥占쎈읁�뜝�럥�맶�뜝�럥�몧�뜝�럩留뜹뜝�럥�맶占쎈쐻�뜝占� simulatorVector[i]占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁�λ쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗�뜝�럥夷⑨옙�쐻�뜝占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌띿뜴�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗�뜝�럥�맶�뜝�럥吏쀥뜝�럥彛잞옙�쐻占쎈윪�뤃轅⑤쐻占쎈윪占쎌읆占쎈쐻占쎈윥占쎄굡占쎈쐻占쎈윥�뜝�룞�삕�솾�꺂�뒧占쎈�뽳옙琉껃뜝�뜴�쐻占쎈윪�뤃��먯삕占쎌맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윞占쎈젇�뜝�럥�맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅嶺뚯쉸占싸살맶�뜝�럥�쑋占쎈쨨�뜝占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝占쎈쐻占쎈윪筌띿떑�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝占쎈쐻占쎈윥筌γ렔�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몝占쎈쐻占쎈윥筌ｋ뵃�삕占쎌맶�뜝�럥�쑅�뜝�럥�럪�뜝�럥�맶�뜝�럥�쑅�뜝�럩紐쀧솾�꺂�돲占쎄텊�뜝�럥踰⑨옙�굲�뜝�럡�렊�뜝�럥�맶�뜝�럥�쑋嶺뚮씭�뵛占쎌굲�뜝�럩留띰옙�쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁���삕占쎌맶�뜝�럥�쑋�뜝�럩�쓥占쎈쐻占쎈윥占쎈㎍�뜝�럥�맶占쎈쐻�뜝占�.
+	// 이들은 각각 쓰레드 안에서 SimulationWorker를 발동한다.
+	// SimulationWorker는 2d-Histogram을 simulatorVector[i]에 남기고 죽는다.
 	std::vector<std::thread> threads;
 	for (int i = 0; i < mNumThread; i++)
 	{
@@ -1065,7 +1072,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 		}
 	}
 
-	// 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌띿룞�삕占쎌맶�뜝�럥�쑅�뜝�럥堉볡솾�꺂�뒧占쏙옙占썸납占썲뜝�뜴�쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌띿뜴�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪鈺곕쵆�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁�κ텣�뜝�룞�삕占쎄콬占쎈쇀占쎈탟占쎌굲�뜝�럡�렊 AppendRate占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁�㏃녇占쎄틓占쎈뮝占쎈쑏�뜝�뜴�쐻占쎈윪�뤃占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁�λ쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎌굯占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈쓠�뜝�룞�삕占쎄껀占쎈폁占쎄샴癲ル슪�삕嶺뚮　維�占쎈㎍占쎈쐻占쎈윥占쎈첋�뜝�럩�쟼占쎈눀占쎄턁占쎈ぁ占쎈쐻占쎈윥�뜝�럩瑗삼옙�굲�뜝�럥�럪占쎈쐻占쎈윥占쎈㎍�뜝�럥�맶占쎈쐻�뜝占� 占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌띿뜴�쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗傭��끉猷놅옙占쏙옙�뜝�럩留띰옙�쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈괘�뜝�럥�맶�뜝�럥�쑅�뜝�룞�삕�뜝�룞�삕占쎌맶�뜝�럥�쑋�뜝�럥痢쏉옙�쐻占쎈윥占쎌넇占쎈쐻占쎈윥筌앸ŀ�쐻占쎈윪�뤃��먯삕占쎌맶�뜝�럥�쑋嶺뚮씭�뵛占쎌굲�뜝�럩留띰옙�쐻占쎈윥占쎌몗癲ル슣�돵�뜝�떥�궡留띰옙�쐻占쎈윥占쎌몝�뜝�럥夷③쪛�겦維�占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윥占쎈윫占쎈쐻占쎈윥占쎈㎍占쎈쐻占쎈윥占쎌몗占쎈쐻占쎈윪筌륁���삕占쎌맶�뜝�럥�쑋�뜝�럩�쓥占쎈쐻占쎈윥占쎈㎍�뜝�럥�맶占쎈쐻�뜝占�.
+	// 생성된 AppendRate도 여기로 넘겨준다.
 	std::vector<double> tempVector(artifactNum);
 	for (int i = 0; i < mNumThread; i++)
 	{

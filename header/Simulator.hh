@@ -11,11 +11,11 @@
 
 struct ArtifactBundle
 {
-    ArtFlower* flower;
-    ArtFeather* feather;
-    ArtClock* clock;
-    ArtCup* cup;
-    ArtCrown* crown;
+    std::shared_ptr<ArtFlower> flower;
+    std::shared_ptr<ArtFeather> feather;
+    std::shared_ptr<ArtClock> clock;
+    std::shared_ptr<ArtCup> cup;
+    std::shared_ptr<ArtCrown> crown;
 };
 
 
@@ -26,20 +26,12 @@ public:
     ~SuperArtifactList() {}
 
     void Clear() { flower = {}; feather = {}; clock = {}; cup = {}; crown = {};}
-    void DeleteAll()
-    {
-        for (std::size_t j = 0; j < flower.size(); j++) delete flower[j];
-		for (std::size_t j = 0; j < feather.size(); j++) delete feather[j];
-		for (std::size_t j = 0; j < clock.size(); j++) delete clock[j];
-		for (std::size_t j = 0; j < cup.size(); j++) delete cup[j];
-		for (std::size_t j = 0; j < crown.size(); j++) delete crown[j];
-    }
 
-	std::vector<ArtFlower*> flower;
-	std::vector<ArtFeather*> feather;
-	std::vector<ArtClock*> clock;
-	std::vector<ArtCup*> cup;
-	std::vector<ArtCrown*> crown;
+	std::vector<std::shared_ptr<ArtFlower>> flower;
+	std::vector<std::shared_ptr<ArtFeather>> feather;
+	std::vector<std::shared_ptr<ArtClock>> clock;
+	std::vector<std::shared_ptr<ArtCup>> cup;
+	std::vector<std::shared_ptr<ArtCrown>> crown;
 };
 
 
@@ -62,12 +54,12 @@ public:
     TH2D* RunSimulationMultiThreads(int simNum, int artifactNum, int binNum, double minDamage, double maxDamage);
     TH2D* GetSimulationResult() { return mSimulationResult; }
 
-    int        GetBundleNum() { return mBundleNum; }
-    void       SetBundleNum(int bundleNum) { mBundleNum = bundleNum; }
-    Character* GetCharacter() { return mCharacter; }
-    void       SetCharacter(Character* character) { mCharacter = character; }
-    int        GetNumThread() const { return mNumThread; }
-    void       SetNumThread(int numThread) { mNumThread = numThread; }
+    int  GetBundleNum() { return mBundleNum; }
+    void SetBundleNum(int bundleNum) { mBundleNum = bundleNum; }
+    std::shared_ptr<Character> GetCharacter() { return mCharacter; }
+    void SetCharacter(std::shared_ptr<Character> character) { mCharacter = character; }
+    int  GetNumThread() const { return mNumThread; }
+    void SetNumThread(int numThread) { mNumThread = numThread; }
     
     void SetWorkerMode(bool workerMode) { mWorkerMode = workerMode; if (workerMode) mSeeLastArtifact = false; }
     void SetSeeTimeConsumption(bool seeTimeConsumption) { mSeeTimeConsumption = seeTimeConsumption; }
@@ -83,7 +75,7 @@ private:
     double CalLoopArtifact_Damage(SuperArtifactList& loopList, ArtifactBundle& bestTryArtifacts);
     double CalLoopArtifact_jangddolScore(SuperArtifactList& loopList, ArtifactBundle& bestTryArtifacts);
     double CalLoopArtifact_MonkeyMagicScore(SuperArtifactList& loopList, ArtifactBundle& bestTryArtifacts);
-    double CalLoopArtifact(Artifact* gennedArtifact, SuperArtifactList& ArtifactSuperList,
+    double CalLoopArtifact(std::shared_ptr<Artifact> gennedArtifact, SuperArtifactList& ArtifactSuperList,
                             ArtifactBundle& bestTryArtifacts);
 
     void PrintLastArtifacts(int trialNum, double bestDamage, const ArtifactBundle& bestArtifacts) const;
@@ -92,7 +84,7 @@ private:
 
     int mBundleNum = 1;
 
-    Character* mCharacter;
+    std::shared_ptr<Character> mCharacter;
     std::vector<double> mAppendableRate;
 
     double mCalLoopTimeList[2] = { 0. };

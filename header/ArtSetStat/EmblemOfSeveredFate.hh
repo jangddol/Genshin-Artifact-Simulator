@@ -13,7 +13,7 @@ public:
         SetZero();
         SetOption(4, 20.); // EC
     }
-    ArtSetStat* Clone() const override { return new EmblemOfSeveredFate(*this); }
+    std::shared_ptr<ArtSetStat> Clone_sharedptr() const override { return std::dynamic_pointer_cast<ArtSetStat>(std::make_shared<EmblemOfSeveredFate>(*this)); }
     ~EmblemOfSeveredFate() override {}
 
     void DoFeedback(const Character* character, int& stat, double& amount) const override

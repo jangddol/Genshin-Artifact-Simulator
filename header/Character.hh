@@ -32,7 +32,7 @@ class ArtSetStat;
 
 struct MainOptionsAndDamage
 {
-    std::array<int, 3> mainOptions = {-1, -1, -1};
+	std::array<int, 3> mainOptions{ {-1, -1, -1} };
     double damage = 0;
 };
 
@@ -46,10 +46,16 @@ enum CharList
 };
 
 
-class Character
+class Character : public std::enable_shared_from_this<Character>
 {
 public:
-	Character(Weapon* weapon, ArtSetStat* artSetStat, ArtFlower* flower, ArtFeather* feather, ArtClock* clock, ArtCup* cup, ArtCrown* crown)
+	Character(  std::shared_ptr<Weapon> weapon,
+				std::shared_ptr<ArtSetStat> artSetStat,
+				std::shared_ptr<ArtFlower> flower,
+				std::shared_ptr<ArtFeather> feather,
+				std::shared_ptr<ArtClock> clock,
+				std::shared_ptr<ArtCup> cup,
+				std::shared_ptr<ArtCrown> crown)
 	: mTargetEC{100.}, mWeapon{weapon}
 	{ 
 		SetArtifact(flower, feather, clock, cup, crown);
@@ -61,7 +67,7 @@ public:
 	Character(Character&& character);
 	Character& operator = (const Character &character);
 	Character& operator = (Character &&character);
-	virtual Character* Clone() const;
+	virtual std::shared_ptr<Character> Clone_sharedptr() const;
 	virtual ~Character();
 
 	// Stat Update & UpdateState
@@ -109,33 +115,37 @@ public:
 	void SetResonanceStat(const Stat& stat) { mResonanceStat = stat; ConfirmResonanceStatModified(); }
 
 	// Weapon
-	Weapon* GetWeapon()               { return mWeapon; }
+	std::shared_ptr<Weapon> GetWeapon()               { return mWeapon; }
 	WeaponList GetWeaponName() const;
-	Weapon* CopyWeapon() const;
-	void    SetWeapon(Weapon* weapon) { mWeapon = weapon; ConfirmWeaponStatModified(); }
+	std::shared_ptr<Weapon> CopyWeapon() const;
+	void    SetWeapon(std::shared_ptr<Weapon> weapon) { mWeapon = weapon; ConfirmWeaponStatModified(); }
 
 	// ArtSetStat
-	ArtSetStat* GetArtSetStat() { return mArtSetStat; }
-	ArtSetStat* CopyArtSetStat() const;
-	void        SetArtSetStat(ArtSetStat* stat);
+	std::shared_ptr<ArtSetStat> GetArtSetStat() { return mArtSetStat; }
+	std::shared_ptr<ArtSetStat> CopyArtSetStat() const;
+	void        SetArtSetStat(std::shared_ptr<ArtSetStat> stat);
 
 	// Artifact
-	void        SetArtifact(ArtFlower* flower, ArtFeather* feather, ArtClock* clock, ArtCup* cup, ArtCrown* crown);
-	ArtFlower*  GetArtFlower() { return mArtFlower; }
-	ArtFlower*  CopyArtFlower() const { return new ArtFlower(mArtFlower); }
-	void        SetArtFlower(ArtFlower* artFlower);
-	ArtFeather* GetArtFeather() { return mArtFeather; }
-	ArtFeather* CopyArtFeather() const { return new ArtFeather(mArtFeather); }
-	void        SetArtFeather(ArtFeather* artFeather);
-	ArtClock*   GetArtClock() { return mArtClock; }
-	ArtClock *  CopyArtClock() const { return new ArtClock(mArtClock); }
-	void        SetArtClock(ArtClock* artClock);
-	ArtCup*     GetArtCup() { return mArtCup; }
-	ArtCup*     CopyArtCup() const { return new ArtCup(mArtCup); }
-	void        SetArtCup(ArtCup* artCup);
-	ArtCrown*   GetArtCrown() { return mArtCrown; }
-	ArtCrown*   CopyArtCrown() const { return new ArtCrown(mArtCrown); }
-	void        SetArtCrown(ArtCrown* artCrown);
+	void        SetArtifact(std::shared_ptr<ArtFlower> flower,
+							std::shared_ptr<ArtFeather> feather,
+							std::shared_ptr<ArtClock> clock,
+							std::shared_ptr<ArtCup> cup,
+							std::shared_ptr<ArtCrown> crown);
+	std::shared_ptr<ArtFlower>  GetArtFlower() { return mArtFlower; }
+	std::shared_ptr<ArtFlower>  CopyArtFlower() const { return std::make_shared<ArtFlower>(mArtFlower.get()); }
+	void        SetArtFlower(std::shared_ptr<ArtFlower> artFlower);
+	std::shared_ptr<ArtFeather> GetArtFeather() { return mArtFeather; }
+	std::shared_ptr<ArtFeather> CopyArtFeather() const { return std::make_shared<ArtFeather>(mArtFeather.get()); }
+	void        SetArtFeather(std::shared_ptr<ArtFeather> artFeather);
+	std::shared_ptr<ArtClock>   GetArtClock() { return mArtClock; }
+	std::shared_ptr<ArtClock >  CopyArtClock() const { return std::make_shared<ArtClock>(mArtClock.get()); }
+	void        SetArtClock(std::shared_ptr<ArtClock> artClock);
+	std::shared_ptr<ArtCup>     GetArtCup() { return mArtCup; }
+	std::shared_ptr<ArtCup>     CopyArtCup() const { return std::make_shared<ArtCup>(mArtCup.get()); }
+	void        SetArtCup(std::shared_ptr<ArtCup> artCup);
+	std::shared_ptr<ArtCrown>   GetArtCrown() { return mArtCrown; }
+	std::shared_ptr<ArtCrown>   CopyArtCrown() const { return std::make_shared<ArtCrown>(mArtCrown.get()); }
+	void        SetArtCrown(std::shared_ptr<ArtCrown> artCrown);
 
 	// TargetEC
 	double GetTargetEC() const          { return mTargetEC; }
@@ -195,13 +205,13 @@ private:
 	Stat        mStat;
 	Stat        mCharacterStat;
 	double      mTargetEC;
-	Weapon*     mWeapon = nullptr;
-	ArtFlower*  mArtFlower = nullptr;
-	ArtFeather* mArtFeather = nullptr;
-	ArtClock*   mArtClock = nullptr;
-	ArtCup*     mArtCup = nullptr;
-	ArtCrown*   mArtCrown = nullptr;
-	ArtSetStat* mArtSetStat = nullptr;
+	std::shared_ptr<Weapon>     mWeapon;
+	std::shared_ptr<ArtFlower>  mArtFlower;
+	std::shared_ptr<ArtFeather> mArtFeather;
+	std::shared_ptr<ArtClock>   mArtClock;
+	std::shared_ptr<ArtCup>     mArtCup;
+	std::shared_ptr<ArtCrown>   mArtCrown;
+	std::shared_ptr<ArtSetStat> mArtSetStat;
 	Stat        mResonanceStat;
 	// Skill mPSkill;
 	// Skill mESkill;

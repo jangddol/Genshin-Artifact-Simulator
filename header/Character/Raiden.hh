@@ -8,7 +8,7 @@
 class Raiden : public Character
 {
 public:
-	Raiden(Weapon* weapon, ArtSetStat* artSetStat, ArtFlower* flower, ArtFeather* feather, ArtClock* clock, ArtCup* cup, ArtCrown* crown) 
+	Raiden(std::shared_ptr<Weapon> weapon, std::shared_ptr<ArtSetStat> artSetStat, std::shared_ptr<ArtFlower> flower, std::shared_ptr<ArtFeather> feather, std::shared_ptr<ArtClock> clock, std::shared_ptr<ArtCup> cup, std::shared_ptr<ArtCrown> crown) 
 	: Character(weapon, artSetStat, flower, feather, clock, cup, crown)
 	{
 		SetBasicCharacterStat();
@@ -28,7 +28,7 @@ public:
 	Raiden(Raiden&& other) : Character(other) { Update(); }
 	Raiden& operator = (const Raiden& other) { return * this; }
 	Raiden& operator = (Raiden&& other) { return * this; }
-	virtual Character* Clone() const override;
+	virtual std::shared_ptr<Character> Clone_sharedptr() const override;
 	virtual ~Raiden() override;
 
 	virtual double GetDamageWithStat(const Stat& stat) const override;

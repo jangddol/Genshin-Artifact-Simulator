@@ -8,7 +8,7 @@
 class Kokomi : public Character
 {
 public:
-	Kokomi(Weapon* weapon, ArtSetStat* artSetStat, ArtFlower* flower, ArtFeather* feather, ArtClock* clock, ArtCup* cup, ArtCrown* crown) 
+	Kokomi(std::shared_ptr<Weapon> weapon, std::shared_ptr<ArtSetStat> artSetStat, std::shared_ptr<ArtFlower> flower, std::shared_ptr<ArtFeather> feather, std::shared_ptr<ArtClock> clock, std::shared_ptr<ArtCup> cup, std::shared_ptr<ArtCrown> crown) 
 	: Character(weapon, artSetStat, flower, feather, clock, cup, crown)
 	{
 		SetBasicCharacterStat();
@@ -25,7 +25,7 @@ public:
 		mCharacterName = KOKOMI;
 	}
 	Kokomi(const Kokomi* other) : Character(other) { Update(); }
-	Character* Clone() const override { return new Kokomi(this); }
+	std::shared_ptr<Character> Clone_sharedptr() const override { return std::dynamic_pointer_cast<Character>(std::make_shared<Kokomi>(this)); }
 	~Kokomi() override {}
 
 	double GetDamageWithStat(const Stat& stat) const override;

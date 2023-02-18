@@ -1,9 +1,9 @@
 #include "../../header/Character/Raiden.hh"
 
 
-Character* Raiden::Clone() const
+std::shared_ptr<Character> Raiden::Clone_sharedptr() const
 {
-    return new Raiden(this);
+    return std::make_shared<Raiden>(this);
 }
 
 

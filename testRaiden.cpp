@@ -11,13 +11,13 @@ void testRaiden()
     gStyle->SetOptStat(false);
 	gRandom->SetSeed(0);
 
-	EngulfingLightning* weapon = new EngulfingLightning();
+	std::shared_ptr<EngulfingLightning> weapon = std::make_shared<EngulfingLightning>();
 
-	ArtFlower* artinit1 = new ArtFlower();
-	ArtFeather* artinit2 = new ArtFeather();
-	ArtClock* artinit3 = new ArtClock();
-	ArtCup* artinit4 = new ArtCup();
-	ArtCrown* artinit5 = new ArtCrown();
+	std::shared_ptr<ArtFlower> artinit1 = std::make_shared<ArtFlower>();
+	std::shared_ptr<ArtFeather> artinit2 = std::make_shared<ArtFeather>();
+	std::shared_ptr<ArtClock> artinit3 = std::make_shared<ArtClock>();
+	std::shared_ptr<ArtCup> artinit4 = std::make_shared<ArtCup>();
+	std::shared_ptr<ArtCrown> artinit5 = std::make_shared<ArtCrown>();
 
     artinit1->SetSubStat(Stat());
     artinit2->SetSubStat(Stat());
@@ -28,9 +28,9 @@ void testRaiden()
     artinit5->SetSubStat(Stat());
     artinit5->SetMainType(1);
 	
-    EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
+    std::shared_ptr<EmblemOfSeveredFate> artSetStat = std::make_shared<EmblemOfSeveredFate>();
 
-    Raiden* simChar = new Raiden(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
+    std::shared_ptr<Raiden> simChar = std::make_shared<Raiden>(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
@@ -78,11 +78,11 @@ void testRaiden()
     }
     cout << "========== Artifact Stat ==========" << endl;
     // Damage with random artifact
-    PrintArtifact(artinit1);
-    PrintArtifact(artinit2);
-    PrintArtifact(artinit3);
-    PrintArtifact(artinit4);
-    PrintArtifact(artinit5);
+    PrintArtifact(artinit1.get());
+    PrintArtifact(artinit2.get());
+    PrintArtifact(artinit3.get());
+    PrintArtifact(artinit4.get());
+    PrintArtifact(artinit5.get());
     cout << "========== Character Stat ==========" << endl;
     PrintStat(simChar->GetStat());
     cout << "========== Character Damage ==========" << endl;
@@ -90,9 +90,9 @@ void testRaiden()
 
     cout << "========== Clone Test ==========" << endl;
     cout << "========== Cloned Character Stat ==========" << endl;
-    PrintStat(simChar->Clone()->GetStat());
+    PrintStat(simChar->Clone_sharedptr()->GetStat());
     cout << "========== Cloned Character Damage ==========" << endl;
-    cout << simChar->Clone()->GetDamage() << endl;
+    cout << simChar->Clone_sharedptr()->GetDamage() << endl;
 
     std::array<MainOptionsAndDamage, 10> top10Options = simChar->OptimizeMainOption();
     cout << "========== Artifact Main Option Optimization Test ==========" << endl;
@@ -117,11 +117,11 @@ void testRaiden()
     simChar->Update();
     cout << "========== Artifact Stat ==========" << endl;
     // Damage with random artifact
-    PrintArtifact(artinit1);
-    PrintArtifact(artinit2);
-    PrintArtifact(artinit3);
-    PrintArtifact(artinit4);
-    PrintArtifact(artinit5);
+    PrintArtifact(artinit1.get());
+    PrintArtifact(artinit2.get());
+    PrintArtifact(artinit3.get());
+    PrintArtifact(artinit4.get());
+    PrintArtifact(artinit5.get());
     cout << "========== Character Stat ==========" << endl;
     PrintStat(simChar->GetStat());
     cout << "========== Character Damage ==========" << endl;

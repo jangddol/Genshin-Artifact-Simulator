@@ -21,7 +21,7 @@ public:
         mWeaponName = MEMORYOFDUST;
     }
     MemoryOfDust(const Weapon* weapon) : Weapon(weapon) {}
-    Weapon* Clone() const override { return new MemoryOfDust(this); }
+    std::shared_ptr<Weapon> Clone_sharedptr() const override { return std::dynamic_pointer_cast<Weapon>(std::make_shared<MemoryOfDust>(this)); }
 	~MemoryOfDust() override {}
 };
 

@@ -100,7 +100,7 @@ Character& Character::operator = (Character &&character)
 }
 
 
-Character* Character::Clone() const { return new Character(this); }
+std::shared_ptr<Character> Character::Clone_sharedptr() const { return std::make_shared<Character>(this); }
 
 
 Character::~Character()
@@ -164,7 +164,7 @@ void Character::Update(bool fastMode)
 
 void Character::UpdateFromCharacterResonance()
 {
-	// �솾�꺂�뒱占쎌굲�뜝�럩�꼥占쎈쐻占쎈짗占쎌굲占쎄괌占쎈눓占쎌맶�뜝�럥�쐾�뜝�럥�셾 �뜝�럥�맶�뜝�럥�쑋�뼨��곸뒅占쎌맶�뜝�럥�쑅占쎈쐻占쎈짗占쎌굲 : 0 ~ 34, b0 ~ b2
+	// ĳ���� �ɼ� : 0 ~ 34, b0 ~ b2
     mStatAfterUpdateFromCharacterResonance.SetZero();
     for (int i = 0; i < 35; i++)
     {
@@ -175,7 +175,7 @@ void Character::UpdateFromCharacterResonance()
         mStatAfterUpdateFromCharacterResonance.SetBaseOption(i, mCharacterStat.GetBaseOption(i));
     }
 
-	// 占쎈쐻占쎈짗占쎌굲�뜝�럥占쏙옙�뵓怨뺣㎜占쎈윿占쎈쐻�뜝占� : 0, 2, 5, 7, 10 ~ 17, 24
+	// ���� : 0, 2, 5, 7, 10 ~ 17, 24
     mStatAfterUpdateFromCharacterResonance.AddOption(0, mResonanceStat.GetOption(0));
     mStatAfterUpdateFromCharacterResonance.AddOption(2, mResonanceStat.GetOption(2));
     mStatAfterUpdateFromCharacterResonance.AddOption(5, mResonanceStat.GetOption(5));
@@ -196,16 +196,16 @@ void Character::UpdateFromWeapon()
     
     mStatAfterUpdateFromWeapon = mStatAfterUpdateFromCharacterResonance;
 
-    // 占쎈쐻占쎈윥占쎈뼓占쎈쐻占쎈윥�젆�띿삕��얜뀘�쐻�뜝占� �뜝�럩�쐪�뜝�럩�뮝�뜝�럥�빢占쎈쐻占쎈윞筌랃옙 : b0
+    // ���� �ֿ� : b0
     mStatAfterUpdateFromWeapon.SetBaseOption(0, mStatAfterUpdateFromWeapon.GetBaseOption(0) + WeaponMainStat.GetBaseOption(0));
 
-	// 占쎈쐻占쎈윥占쎈뼓占쎈쐻占쎈윥�젆�띿삕��얜뀘�쐻�뜝占� 占쎈쐻占쎈윞�뙼占썲뜝�럥�맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윞筌랃옙 : 0 ~ 18 // �뜝�럥�맶�뜝�럥�쑋�뜝�럡愿쒎뜝�럥�맶�뜝�럥�쑋�뜝�럩踰곩뜝�럥�맶�뜝�럥�쑋占쎄덩�뜝占� �뜝�럥�럸�뜝�럥利꿨뜝�룞�삕影�瑜곸굲�뜝�럩議녶뜝�럥�맶�뜝�럥�쑅鶯ㅼ룊�삕 �뜝�럥�늾占쎈쇊占쎈㎦占쎌맠�뜝�럥�맶�뜝�럥吏쀥뜝�럩援� �뜝�럥�맶�뜝�럥�쑅�뜝�럥�뼀�뜝�럥�맶�뜝�럥�쑅嶺뚮쵓�삕
+	// ���� �ο� : 0 ~ 18 // ������ ������ ���� �ƴ�
     for (int i = 0; i < 19; i++)
     {
         mStatAfterUpdateFromWeapon.AddOption(i, WeaponSubStat.GetOption(i));
     }
 
-	// 占쎈쐻占쎈윥占쎈뼓占쎈쐻占쎈윥�젆�띿삕��얜뀘�쐻�뜝占� 占쎈쐻占쎈윞�뙼占썲뜝�럥�맶�뜝�럥�뱻�뇦猿곴뭍占쎌맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윞筌랃옙 : 0 ~ 26 // �뜝�럥�맶�뜝�럥�쑋�뜝�럡愿쒎뜝�럥�맶�뜝�럥�쑋�뜝�럩踰곩뜝�럥�맶�뜝�럥�쑋占쎄덩�뜝占� �뜝�럥�럸�뜝�럥利꿨뜝�룞�삕影�瑜곸굲�뜝�럩議녶뜝�럥�맶�뜝�럥�쑅鶯ㅼ룊�삕 �뜝�럥�늾占쎈쇊占쎈㎦占쎌맠�뜝�럥�맶�뜝�럥吏쀥뜝�럩援� �뜝�럥�맶�뜝�럥�쑅�뜝�럥�뼀�뜝�럥�맶�뜝�럥�쑅嶺뚮쵓�삕
+	// ���� �κο� : 0 ~ 26 // ������ ������ ���� �ƴ�
     for (int i = 0; i < 27; i++)
     {
         mStatAfterUpdateFromWeapon.AddOption(i, WeaponSubSubStat.GetOption(i));
@@ -217,7 +217,7 @@ void Character::UpdateFromArtSetStat()
 {
     mStatAfterUpdateFromArtSetStat = mStatAfterUpdateFromWeapon;
 
-	// �뜝�럥�맶�뜝�럥�쐾�뜝�럥�젾�뜝�럥�맶�뜝�럥�쑋占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈윥占쎈뼓�뜝�럥�맶占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쐾�뜝�럥猷드뜝�럥�맶�뜝�럥�쑅�뛾占썲뜝占� : 0 ~ 26 // �뜝�럥�맶�뜝�럥�쑋�뜝�럡愿쒎뜝�럥�맶�뜝�럥�쑋�뜝�럩踰곩뜝�럥�맶�뜝�럥�쑋占쎄덩�뜝占� �뜝�럥�럸�뜝�럥利꿨뜝�룞�삕影�瑜곸굲�뜝�럩議녶뜝�럥�맶�뜝�럥�쑅鶯ㅼ룊�삕 �뜝�럥�늾占쎈쇊占쎈㎦占쎌맠�뜝�럥�맶�뜝�럥吏쀥뜝�럩援� �뜝�럥�맶�뜝�럥�쑅�뜝�럥�뼀�뜝�럥�맶�뜝�럥�쑅嶺뚮쵓�삕
+	// ������ ��Ʈ : 0 ~ 26 // ������ ������ ���� �ƴ�
     for (int i = 0; i < 27; i++)
     {
         mStatAfterUpdateFromArtSetStat.AddOption(i, mArtSetStat->GetOption(i));
@@ -229,7 +229,7 @@ void Character::UpdateFromArtifactMainStat()
 {
     mStatAfterUpdateFromArtifactMainStat = mStatAfterUpdateFromArtSetStat;
     
-    // �뜝�럥�맶�뜝�럥�쐾�뜝�럥�젾�뜝�럥�맶�뜝�럥�쑋占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈윥占쎈뼓�뜝�럥�맶占쎈쐻�뜝占� �뜝�럩�쐪�뜝�럩�뮝�뜝�럥�빢占쎈쐻占쎈윞筌랃옙 : 0 ~ 8, 10 ~ 18
+    // ������ �ֿ� : 0 ~ 8, 10 ~ 18
     
     Stat FlowerMainStat = mArtFlower->GetMainStat();
     Stat FeatherMainStat = mArtFeather->GetMainStat();
@@ -249,7 +249,7 @@ void Character::UpdateFromArtifactSubStat()
 {
     mStatAfterUpdateFromArtifactSubStat = mStatAfterUpdateFromArtifactMainStat;
     
-    // �뜝�럥�맶�뜝�럥�쐾�뜝�럥�젾�뜝�럥�맶�뜝�럥�쑋占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈윥占쎈뼓�뜝�럥�맶占쎈쐻�뜝占� 占쎈쐻占쎈윞�뙼占썲뜝�럥�맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윞筌랃옙 : 0 ~ 9
+    // ������ �ο� : 0 ~ 9
 
     for (int i = 0; i < 10; i++)
     {
@@ -266,7 +266,7 @@ void Character::UpdateFromArtifactSubStatFast()
 {
     mStatAfterUpdateFromArtifactSubStat = mStatAfterUpdateFromArtifactMainStat;
     
-    // �뜝�럡�뎽�뜝�럩占쏙옙占쎈닱�뜝占� 占쎄껀�뜝�룞�삕占쎄맙 : 0 ~ 9
+    // ������ �ο� : 0 ~ 9
 
     for (int &stat: mEffectiveSubStats)
     {
@@ -353,21 +353,21 @@ double Character::GetDamageWithStat(const Stat& stat) const
 
 void Character::MakeEffectionArray()
 {
-    Character* tempCharacter = this->Clone();
-    ArtSetStat* tempArtSetStat = tempCharacter->GetArtSetStat();
-    // 占쎈쐻占쎈짗占쎌굲�뜝�럥�걼�뜝�럥爾��썒占쏙옙援욅뙴�뵃�삕占쎄뎡�뜝�럡�뜦占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑅�뜝�럥�뼀�뜝�럥�맶�뜝�럥�쑋�뜝�럥占쎈벝�삕占쎌맶�뜝�럥�쑅占쎈뎨�뜝占� 占쎈쐻占쎈윞�뙼占썲뜝�럥�맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윞筌랃옙 占쎈쐻占쎈윥占쎈룾�뜝�럡猿��뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윥筌ο옙 ResonanceStat�뜝�럥�맶�뜝�럥�쑋嶺뚮ㅏ諭띰옙�뮋�뜝�럥�솕�뜝�럩援� �뜝�럥�맶�뜝�럥�쑅占쎈뎨占쎈쑕占쎌맶�뜝�럥�쑅占쎌젂�뜝占�.
-        // �뜝�럥�맶�뜝�럥�쑋占쏙옙�뼚짹占쎌맶�뜝�럥�쑋占쎈쐻占쎈짗占쎌굲�뜝�럥�맶�뜝�럥�쑅�뜏類㏃삕, �뜝�럩�맳�뛾�룆梨룡뤃�넀萸먪솒��곸굲 Stat�뜝�럥�맶�뜝�럥�쑋占쏙옙�뼚짹占쎌맶�뜝�럥�쑋占쏙옙�븮猿딆맶�뜝�럥�쐾�뜝�럥彛� �뜝�럥�맶�뜝�럥�쑋�뜝�럩�젦�뜝�럩�맳�뛾占썲뜝�룞�삕占쎈빢占쎈쐻占쎈윥占쎄샹 �뜝�럥�맶�뜝�럥�쑅�뜝�럩二ゅ뜝�럥�맶�뜝�럥�쑅嶺뚮엪�삕.
-        // Update�뜝�럥夷у뜝�럥利멨뜝�럩援� �뜝�럥�맶�뜝�럥�쑋雅��굝��ο옙�맶�뜝�럥�쑋�뜝�럡�뜲�솾袁㏉�쀯옙維딁춯占쏙옙�뵛占쎌굲占쎄괌�뇡占썲젆�뫅�삕�뜝�럥흮占쎄뎡 �뜝�럥�맶�뜝�럥�쑅占쎈뎨�뜝�룞�뵾占쎌뒩占쎈뤈�뜝�럩援꿰솾�꺂�뒧占쎈역�뜝�럩援�, �뜝�럥�맶�뜝�럥�쑅占쎌젂嚥∽옙筌뚮냵�삕�뙴袁ъ삕亦낆쉻�삕占쎈��占쎈쐻占쎈쑟�빊占썲뜝�럩�뤈�뜝�럩援� �뜝�럥�맶�뜝�럥�쑅占쎈ご占쎄뭍占쎌맶�뜝�럥�쑋�뵓怨ㅼ삕.
+    std::shared_ptr<Character> tempCharacter = this->Clone_sharedptr();
+    std::shared_ptr<ArtSetStat> tempArtSetStat = tempCharacter->GetArtSetStat();
+    // ��꿡 �ʿ��� �ο� �߰��� ResonanceStat���� �Ѵ�.
+        // ������, �׳� Stat�̶� ������ ����.
+        // Update�� �����ɸ��� ������, �ɰ����� ����.
     // 230131
-        // ResonanceStat �뜝�럥�맶�뜝�럥�쑅�뜝�럥援� �뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥���占쎈쐻�뜝占� Update Optimization 占쎈쐻占쎈짗占쎌굲�뜝�럥爾쎾뜝�럥�빢占쎈쐻占쎈윪占쎌졂�뜝�럥�맶�뜝�럥�쑅�뜝�럥援겼뜝�럥�맶�뜝�럥�쐾�뜝�럥彛�
-        // �슖�떜媛��뜝�떥�궠竊묕옙�쐻占쎈윞筌띿눨�쐻占쎈짗占쎌굲�뜝�럥爾잌뜝�럩援� �뜝�럥�눚�뜝�럡���占쎈き獄쏄퉵�삕占쎈폏�젆猿볝럸嚥♂살맶占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쐾�뜝�럥占싼띿삕占쎌맶�뜝�럥�쑋�뜝�럥痢쎾뜝�럥�맶�뜝�럥�쑅�뜝�럥�룎�솾�꺂�뒩占쎈뤈�뜝�럩援� �뜝�럥�맶�뜝�럥�쑅占쎈ご占쎄뭍占쎌맶�뜝�럥�쑅�뜏類㏃삕 �뜝�럥�늾占쎈쇊癰귨옙占쎄뎡 �뜝�럥�맶�뜝�럥�쑅占쎈ご占쎈솇占쎌굲�뜝�럥�뼓癲ル슢�뀕占쎈쳥�뜝�럥援�
-        // �뜝�럥�맶�뜝�럥�쑋占쏙옙�뼲�삕 �뜝�럥�맶�뜝�럥�쑅嶺뚮씮�닲占쎌맶�뜝�럥�쑅�뜝�럥臾꾢뜝�럥夷у뜝�럥利멨뜝�럩援� �솾�꺂�뒧占쎈뎔占쎈쑏癰귥옓�맶�뜝�럥吏쀥뜝�럩援꿰솾�꺂�뒩占쎈뤈�뜝�럩援�. 
-        // 0 ~ 18 �솾�꺂�뒧占쎈�덃납占썲뜝�뜾異��몴�굞�굲 �뜝�럥�맶�뜝�럥�쐾�뜝�럥占싼띿삕占쎌맶�뜝�럥�쑋�뜝�럥痢쎾뜝�럥�맶�뜝�럥�쑅�뜝�럥�룎�뜝�럥�맶�뜝�럥�쑅�뜏類㏃삕 �뜝�럥�늾占쎈쇊占쎈㎦占쎌맠占쎈쐻占쎈윥�뤃占� �뜝�럥�맶�뜝�럥�쐾�뜝�럥占싼띿삕占쎌맶�뜝�럥�쑋�뜝�럥痢쎾뜝�럥�맶�뜝�럥�쑅�뜝�럥琉끻뜝�럥�맶�뜝�럥�쑅�뜝�럥萸얍뜝�럥�맶�뜝�럥�쑅占쎈뎨占쎈쑕占쎌맶�뜝�럥�쑅占쎌젂�뜝占�.
-        // ArtSetStat�뜝�럥�맶�뜝�럥�쑋占쏙옙�뼲�삕 �솾�꺂�뒧占쎈뎔�뜝�럥琉귨옙�쐻占쎈윥筌ο옙 �뜝�럥�맶�뜝�럥�쑅占쎈뼀�뜝占� �뜝�럥�맶�뜝�럥�쑅占쎈뎨�뜝�룞�삕占쎌맶�뜝�럥�쑅占쎌젂�뜝占�.
+        // ResonanceStat �� ���� Update Optimization ��������
+        // ���ɰ� ġ�ǰ� ������ �ʴ� �� ������
+        // �� �Լ��� ������. 
+        // 0 ~ 18 ��� ���Ǵ� ���� ����ؾ��Ѵ�.
+        // ArtSetStat�� �´� �� �ϴ�.
 
     mEffectiveSubStats = {};
     tempCharacter->Update();
-    double defaultDamage = tempCharacter->GetDamage(); // �뜝�럥�맶�뜝�럥�쑋�뇦猿됰쭑占쎌맶�뜝�럥�쑋�뜝�럡�븤 �뜝�럥�맶�뜝�럥�쑅�뜏類ㅼ돥占쎌맶�뜝�럥�쑅�뜝�럩諭쇔뜝�럥�맶�뜝�럥�쑋�뛾占썲뜝占� �뜝�럥���耀붾굝梨멨뜝�뜦堉븅뜮�냲�삕筌랃옙�뜝�럩援꿨뜝�럥����뜝�럥爰뗥뜝�럩援뀐옙�쐻占쎈윥占쎈젩.
+    double defaultDamage = tempCharacter->GetDamage(); // ���� ������ ����Ѵ�.
     for (int i = 0; i < 10; i++)
     {
         tempArtSetStat->AddOption(i, 1.);
@@ -383,7 +383,6 @@ void Character::MakeEffectionArray()
         mEffectionAmount[i] = tempCharacter->GetDamage() - defaultDamage;
         tempArtSetStat->AddOption(i, -1.);
     }
-    delete tempCharacter;
 }
 
 
@@ -456,35 +455,35 @@ void Character::MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5
     std::array<int, 10> numArray = { 0 }; // It will be recorded in this array how many times each option is added.
     std::array<double, 10> damArray = { 0. }; // It will be recorded in this array how much damage will be if each option is added.
 
-    Character* tempCharacter;
-    std::array<Stat, 10> tempSubStatArray; // Flower�뜝�럥�맶�뜝�럥�쑅�뜝�럥援곁솾�꺂�뒧占쎈역�뜝�럩援� �뜝�럥�맶�뜝�럥�쑋�뜝�럩諭얍뜝�럥�맶�뜝�럥�쑋�뜝�럥痢쎾뜝�럥�맶�뜝�럥�쑅鶯ㅼ룊�삕 �뜝�럥�늾占쎈쇊占쎈㎦占쎌맠占쎈쐻占쎈윥占쎄샹�뜝�럥�맶�뜝�럥�쑅占쎌젂�뜝占�.
+    std::array<Stat, 10> tempSubStatArray; // Flower���� ����� ���̴�.
 
-    // Character占쎈쐻占쎈윥占쎄괴�뜝�럥�맶占쎈쐻�뜝占� 10�뜝�럥夷у뜝�럥利든뜏類ｋ��占쎌맶�뜝�럥吏쀥뜝�럩援� �뜝�럩�뀇�윜諭꾪맊�떋�떟踰㏆옙援욃뜝�룞�삕�뜝�럩援꿨뜝�럥���占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑅占쎌젂熬곻옙占쎌맶�뜝�럥�쑋�뵓怨뺣쭠占쎌맶�뜝�럥�쑅�뜝�럥援�, �뜝�럥夷у뜝�럥利멨뜝�럩援� Character�뜝�럥�맶�뜝�럥�쑅�뜝�럥援겼뜝�럥�늾占쎈쇊癰귨옙占쎄뎡 占쎈쐻占쎈윞�뙼占썲뜝�럥�맶�뜝�럥吏쀥뜝�럩援뀐옙�쐻占쎈윞筌띿닂�삕占쎌맶�뜝�럥�쑋占쏙옙�뼲�삕 �뜝�럥�맶�뜝�럥�쑋�뜝�럩踰곻옙�쐻占쎈윞�뙼占썲뜝�럥�맶占쎈쐻�뜝占� 占쎈쐻占쎈윥占쎈ぁ占쎈꽠��⑨퐢爾녑뜝�럡�맖�뜝�럥�맶�뜝�럥�쑋占쎄덩占쎈�섓옙�맶�뜝�럥�쑅�뜏類㏃삕 Artifact占쎈쐻占쎈윥占쎄괴�뜝�럥�맶占쎈쐻�뜝占� 嚥싳쉶瑗э옙�뒭占쎄뎡�뜝�럥�맶�뜝�럥�쑅占쎌젂�뜝占�.
-    ArtFlower emptyFlower = ArtFlower();
-    ArtFeather emptyFeather = ArtFeather();
-    ArtClock emptyClock = ArtClock();
-    emptyClock.SetMainType(main3);
-    ArtCup emptyCup = ArtCup();
-    emptyCup.SetMainType(main4);
-    ArtCrown emptyCrown = ArtCrown();
-    emptyCrown.SetMainType(main5);
+    // Character�� 10���� ������ ������, �� Character���� �ο��� ���� ����ִ� Artifact�� �ش�.
+    std::shared_ptr<ArtFlower> emptyFlower = std::make_shared<ArtFlower>();
+    std::shared_ptr<ArtFeather> emptyFeather = std::make_shared<ArtFeather>();
+    std::shared_ptr<ArtClock> emptyClock = std::make_shared<ArtClock>();
+    emptyClock->SetMainType(main3);
+    std::shared_ptr<ArtCup> emptyCup = std::make_shared<ArtCup>();
+    emptyCup->SetMainType(main4);
+    std::shared_ptr<ArtCrown> emptyCrown = std::make_shared<ArtCrown>();
+    emptyCrown->SetMainType(main5);
 
-    tempCharacter = this->Clone();
-    tempCharacter->SetArtFlower(&emptyFlower);
-    tempCharacter->SetArtFeather(&emptyFeather);
-    tempCharacter->SetArtClock(&emptyClock);
-    tempCharacter->SetArtCup(&emptyCup);
-    tempCharacter->SetArtCrown(&emptyCrown);
+    std::shared_ptr<Character> tempCharacter = this->Clone_sharedptr();
+    tempCharacter->SetArtFlower(emptyFlower);
+    tempCharacter->SetArtFeather(emptyFeather);
+    tempCharacter->SetArtClock(emptyClock);
+    tempCharacter->SetArtCup(emptyCup);
+    tempCharacter->SetArtCrown(emptyCrown);
 
     Stat tempSubStat = Stat();
 
+    tempCharacter->MakeEffectionArray();
     tempCharacter->Update();
     mSavedFunction[0] = tempCharacter->GetDamage();
 
-    for (int i = 0; i < endScore; i++) // for占쎈쐻占쎈윥占쎈뼓癲ル슢�뀕占쎈쳮嶺뚮ㅏ諭띰옙�뮋�뜝�럥�솕�뜝�럩援� 45�뜝�럥�맶�뜝�럥�쑋�뜝�럥夷㎩뜝�럥�맶�뜝�럥�쑅嶺뚯쉸占싸살맶�뜝�럥�쑅�뜝�럥�뼓, 
+    for (int i = 0; i < endScore; i++) // for������ 45ȸ����, 
     {
         double difEC = mTargetEC - tempCharacter->GetStat().GetOption(4); // check the element charge is enough or not.
-        bool whetherNotEnoughEC = difEC > 0;
+        bool whetherNotEnoughEC = (difEC > 0);
 
         // If the element charge is not enouth, add element charge.
         if (whetherNotEnoughEC && ((i >= 20) || (5 - mainOp[4] > numArray[4])))
@@ -504,14 +503,15 @@ void Character::MakeScoreFunctionMainOptionFixed(int main3, int main4, int main5
                 damArray[stat] = tempCharacter->GetDamage();
             }
 
-            // �뜝�럥夷у뜝�럥利멨뜝�럩援꿨뜝�럥�맶�뜝�럥�쑋�뜝�럡�뀘 �뜝�럥�맶�뜝�럥�쑋�뜝�럩�젋�뜝�럥�맶�뜝�럥�쑅�뜝�럥臾꾢뜝�럥夷у뜝�럥利멨뜝�럩援� �뜝�럥�맶�뜝�럥�쑅占쎈き�맦占쎌맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑅�뜏類ㅼ돥占쎌맶�뜝�럥�쐾�뜝�럥六뷴뜝�럥�맶�뜝�럥�쑅�뜝�럥援� �뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�몡占쎌넂占쏙옙怨멸뎡�뜝�럥鍮앾옙�쐻�뜝占� ((5 - �뜝�럩�쐪�뜝�럩�뮝�뜝�럥�빢占쎈쐻占쎈윞筌띿닂�삕占쎌맶�뜝�럥�쑅�뜝�럥�뿼占쎈쐻占쎈윞�뙼占썲뜝�럥�맶占쎈쐻�뜝占�) �뜝�럩�뀇�윜諭꾪맔占쎌굲占쎈쐻占쎈짗占쎌굲占쎌젂�뜝占� �뜝�럥�맶�뜝�럥�쑋�뜝�럩諭얍뜝�럥�늾占쎈쇊癰귨옙占쎄뎡 �솾�꺂�뒱占쎌굲占쎈꽠��⑨퐢爾닷뜝�럩紐��뜝�럥�맶�뜝�럥�쑅�뜏類ｋ쭦筌뚮냵�삕�뙴�뵃�삕占쎄뎡?)占쎈쐻占쎈윥占쎄괴�뜝�럥�맶占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑋�뜝�럡�꼫�뜝�럥�맶�뜝�럥�쑋占쏙옙�븪�벉�맶�뜝�럥�쑅占쎈뎨�뜝�뜴�쐻占쎈짗占쎌굲�뜝�럥爾잌뜝�럩援� �솾�꺂�뒱占쎌굲占쎈꽠��⑨퐢爾닷뜝�럥占썬룇�삕占쎌맶�뜝�럥�쑅占쎌젂�뜝占�.
+            // ���� ������ ���� ���ȿ� ���ؼ� ((5 - �ֿɿ���) ���� ���� ä���°�?)�� Ȯ���ϰ� ä���.
                 // If impossible,
-                    // �뜝�럥�맶�뜝�럥�쑅占쎌젂熬곻옙占쎌맶�뜝�럥�쑋�뵓怨ㅼ삕 �뜝�럥�맶�뜝�럥�쑋�뜝�럩�젋�뜝�럥�맶�뜝�럥�쑅�뜝�럥臾꾢뜝�럥夷у뜝�럥利멨뜝�럩援� �뜝�럥�맶�뜝�럥�쑅占쎈き�맦占쎌맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥�쑅�뜏類ㅼ돥占쎌맶�뜝�럥�쐾�뜝�럥六뷴뜝�럥�맶�뜝�럥�쑅�뜝�럥援� �뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�몡占쎌넂占쏙옙怨멸뎡�뜝�럥鍮앾옙�쐻�뜝占� �뜝�럥�맶�뜝�럥�쑋�뜝�럡�꼫�뜝�럥�맶�뜝�럥�쑋占쏙옙�븪�벉�맶�뜝�럥�쑅占쎈뎨占쎈쑕占쎌맶�뜝�럥�쑅占쎌젂�뜝占�. (�솾�꺂�뒗占쎄콬�뜏類ｋ��占쎌맶�뜝�럥吏쀥뜝�럩援� 5�뜝�럥�맶�뜝�럥�쑋�뜝�럥夷� �뜝�럥�럸�뜝�럥利듸옙紐�占쎌뵛占쎌굲雅��굢�삕)
+                    // ���� ������ ���� ���ȿ� ���ؼ� Ȯ���Ѵ�. (�ִ� 5ȸ �ݺ�)
             int jEnd = (i < 20) ? 5 : 2;
+            int MAXMAINOP = (i < 20) ? 5 : 30;
             for (int j = 1; j <= jEnd; j++)
             {
                 int largeStat = FindNthLargestOption(damArray, j);
-                if (5 - mainOp[largeStat] > numArray[largeStat])
+                if (MAXMAINOP - mainOp[largeStat] > numArray[largeStat])
                 {
                     if ((i < 20) && (damArray[largeStat] == damArray[4]) && (5 - mainOp[4] > numArray[4])) largeStat = 4;
                     tempSubStat.AddOption(largeStat, PLUSARRAY[largeStat]);
@@ -571,7 +571,7 @@ double Character::GetScore() const
 }
 
 
-double Character::GetScore_MonkeyMagic() const // TODO : �솾�꺂�뒱占쎌굲占쎈꽠��⑨퐢爾닷뜝�럩留ュ뜝�럥�맶�뜝�럥�쑅�뜝�럥萸얍뜝�럥�맶�뜝�럥�쑅嶺뚮엪�삕
+double Character::GetScore_MonkeyMagic() const // TODO : ä������
 {
     return 0.;
 }
@@ -605,7 +605,7 @@ std::array<MainOptionsAndDamage, 10> Character::OptimizeMainOption(int refScore)
         }
     }
 
-    Character* tempChar = this->Clone();
+    std::shared_ptr<Character> tempChar = this->Clone_sharedptr();
     tempChar->GetArtFlower()->SetSubStat(Stat());
     tempChar->GetArtFeather()->SetSubStat(Stat());
     tempChar->GetArtClock()->SetSubStat(Stat());
@@ -625,7 +625,7 @@ std::array<MainOptionsAndDamage, 10> Character::OptimizeMainOption(int refScore)
                 
 				double tempRefDamage = tempChar->GetScoreFunction(refScore);
 
-                // tempDamage�뜝�럥夷у뜝�럥利멨뜝�럩援� top10Option�뜝�럥�맶�뜝�럥�쑅�뜝�럥援� �뜝�럥�맶�뜝�럥�쑋占쎄덩占쎈�섓옙�맶�뜝�럥�쑅�뜏類㏃삕 minOption�뜝�럩�뀇�윜諭꾪맔占쎌굲占쎈쐻占쎈짗占쎌굲占쎌젂�뜝占� �뜝�럥�맶�뜝�럥�쐾濚밸㉡�삕 �뜝�럥�늾占쎈쇊占쎈엮占쎌몝占쎈쐻占쎈윥獒뺧옙
+                // tempDamage�� top10Option�� �ִ� minOption���� Ŭ ���
                 if (tempRefDamage > top10Options[9].damage) {
                     // Find the index i where tempRefDamage should be inserted
                     int left = 0;
@@ -660,13 +660,13 @@ WeaponList Character::GetWeaponName() const
 }
 
 
-Weapon* Character::CopyWeapon() const
+std::shared_ptr<Weapon> Character::CopyWeapon() const
 {
-    return mWeapon->Clone();
+    return mWeapon->Clone_sharedptr();
 }
 
 
-void Character::SetArtSetStat(ArtSetStat* artSetStat)
+void Character::SetArtSetStat(std::shared_ptr<ArtSetStat> artSetStat)
 {
     if (mArtSetStat) mArtSetStat->DeleteCharacterPointer(this);
     mArtSetStat = artSetStat;
@@ -675,13 +675,13 @@ void Character::SetArtSetStat(ArtSetStat* artSetStat)
 }
 
 
-ArtSetStat* Character::CopyArtSetStat() const
+std::shared_ptr<ArtSetStat> Character::CopyArtSetStat() const
 {
-    return mArtSetStat->Clone();
+    return mArtSetStat->Clone_sharedptr();
 }
 
 
-void Character::SetArtFlower(ArtFlower* artFlower)
+void Character::SetArtFlower(std::shared_ptr<ArtFlower> artFlower)
 {
     if (mIsManualMode)
     {
@@ -696,7 +696,7 @@ void Character::SetArtFlower(ArtFlower* artFlower)
 }
 
 
-void Character::SetArtFeather(ArtFeather* artFeather)
+void Character::SetArtFeather(std::shared_ptr<ArtFeather> artFeather)
 {
     if (mIsManualMode)
     {
@@ -711,7 +711,7 @@ void Character::SetArtFeather(ArtFeather* artFeather)
 }
 
 
-void Character::SetArtClock(ArtClock* artClock)
+void Character::SetArtClock(std::shared_ptr<ArtClock> artClock)
 {
     if (mIsManualMode)
     {
@@ -726,7 +726,7 @@ void Character::SetArtClock(ArtClock* artClock)
 }
 
 
-void Character::SetArtCup(ArtCup* artCup)
+void Character::SetArtCup(std::shared_ptr<ArtCup> artCup)
 {
     if (mIsManualMode)
     {
@@ -741,7 +741,7 @@ void Character::SetArtCup(ArtCup* artCup)
 }
 
 
-void Character::SetArtCrown(ArtCrown* artCrown)
+void Character::SetArtCrown(std::shared_ptr<ArtCrown> artCrown)
 {
     if (mIsManualMode)
     {
@@ -756,7 +756,7 @@ void Character::SetArtCrown(ArtCrown* artCrown)
 }
 
 
-void Character::SetArtifact(ArtFlower* flower, ArtFeather* feather, ArtClock* clock, ArtCup* cup, ArtCrown* crown)
+void Character::SetArtifact(std::shared_ptr<ArtFlower> flower, std::shared_ptr<ArtFeather> feather, std::shared_ptr<ArtClock> clock, std::shared_ptr<ArtCup> cup, std::shared_ptr<ArtCrown> crown)
 {
 	SetArtFlower(flower);
     SetArtFeather(feather);
@@ -768,21 +768,21 @@ void Character::SetArtifact(ArtFlower* flower, ArtFeather* feather, ArtClock* cl
 
 std::array<double, 19> Character::GetScoreEffection() const
 {
-    Character* tempCharacter = this->Clone();
-    ArtSetStat* tempArtSetStat = tempCharacter->GetArtSetStat();
-    // ��④쑴沅쏉옙肉� 占쎈툡占쎌뒄占쎈립 �겫占쏙옙�긿 �빊遺쏙옙占쏙옙�뮉 ResonanceStat占쎌몵嚥∽옙 占쎈립占쎈뼄.
-        // 占쎌뵠占쎌��占쎈뮉, 域밸챶源� Stat占쎌뵠占쎌뵬占쎄퐣 占쎌젔域뱀눘�뵠 占쎈젶占쎈맙.
-        // Update揶쏉옙 占쎌궎占쎌삋椰꾨챶�봺疫뀐옙 占쎈릭筌욑옙筌랃옙, 占쎈뼎揶쏄낱釉�筌욑옙 占쎈륫占쎌벉.
+    std::shared_ptr<Character> tempCharacter = this->Clone_sharedptr();
+    std::shared_ptr<ArtSetStat> tempArtSetStat = tempCharacter->GetArtSetStat();
+    // ��꿡 �ʿ��� �ο� �߰��� ResonanceStat���� �Ѵ�.
+        // ������, �׳� Stat�̶� ������ ����.
+        // Update�� �����ɸ��� ������, �ɰ����� ����.
     // 230131
-        // ResonanceStat 占쎈퓠 占쏙옙占쏙옙釉� Update Optimization ��⑥눘�젟占쎈퓠占쎄퐣
-        // 繹먥돦�긿��⑨옙 燁살꼹逾얍첎占� 占쎄텢占쎌뒠占쎈┷筌욑옙 占쎈륫占쎈뮉 野껓옙 占쎈르�눧紐꾨퓠
-        // 占쎌뵠 占쎈맙占쎈땾揶쏉옙 筌띿빓占쏙옙筌욑옙. 
-        // 0 ~ 18 筌뤴뫀紐� 占쎄텢占쎌뒠占쎈┷占쎈뮉 野껉퍔�뱽 占쎄텢占쎌뒠占쎈퉸占쎈튊占쎈립占쎈뼄.
-        // ArtSetStat占쎌뵠 筌띿쉶�뮉 占쎈쾹 占쎈릭占쎈뼄.
+        // ResonanceStat �� ���� Update Optimization ��������
+        // ���ɰ� ġ�ǰ� ������ �ʴ� �� ������
+        // �� �Լ��� ������. 
+        // 0 ~ 18 ��� ���Ǵ� ���� ����ؾ��Ѵ�.
+        // ArtSetStat�� �´� �� �ϴ�.
     std::array<double, 19> returnVec;
 
     tempCharacter->Update();
-    double defaultScore = tempCharacter->GetScore(); // 占쎌겱占쎌삺 占쎈뮞占쎈읃占쎌뱽 疫꿸퀡以됵옙釉놂옙�뼄.
+    double defaultScore = tempCharacter->GetScore(); // ���� ������ ����Ѵ�.
     for (int i = 0; i < 19; i++)
     {
         tempArtSetStat->AddOption(i, 1.);
@@ -790,13 +790,5 @@ std::array<double, 19> Character::GetScoreEffection() const
         returnVec[i] = tempCharacter->GetScore() - defaultScore;
         tempArtSetStat->AddOption(i, -1.);
     }
-    delete tempCharacter->GetWeapon();
-    delete tempCharacter->GetArtFlower();
-    delete tempCharacter->GetArtFeather();
-    delete tempCharacter->GetArtClock();
-    delete tempCharacter->GetArtCup();
-    delete tempCharacter->GetArtCrown();
-    delete tempCharacter;
-    delete tempArtSetStat;
     return returnVec;
 }

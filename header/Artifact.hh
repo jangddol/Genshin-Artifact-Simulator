@@ -5,6 +5,7 @@
 // #include "Character.hh" : since of cylic declaration : moved to Artifact.cc
 #include "Stat.hh"
 #include <vector>
+#include <memory>
 
 
 constexpr std::array<double, 19> MAXMAINOPTIONLIST
@@ -37,6 +38,7 @@ class Artifact
 public:
 	Artifact() {}
 	Artifact(const Artifact* artifact);
+	Artifact(const Artifact& artifact);
 	virtual ~Artifact() {}
 
 	void Generation();

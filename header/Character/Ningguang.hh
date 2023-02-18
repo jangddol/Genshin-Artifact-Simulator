@@ -8,7 +8,7 @@
 class Ningguang : public Character
 {
 public:
-	Ningguang(Weapon* weapon, ArtSetStat* artSetStat, ArtFlower* flower, ArtFeather* feather, ArtClock* clock, ArtCup* cup, ArtCrown* crown) 
+	Ningguang(std::shared_ptr<Weapon> weapon, std::shared_ptr<ArtSetStat> artSetStat, std::shared_ptr<ArtFlower> flower, std::shared_ptr<ArtFeather> feather, std::shared_ptr<ArtClock> clock, std::shared_ptr<ArtCup> cup, std::shared_ptr<ArtCrown> crown) 
 	: Character(weapon, artSetStat, flower, feather, clock, cup, crown)
 	{
 		SetBasicCharacterStat();
@@ -21,7 +21,7 @@ public:
 		mCharacterName = NINGGUANG;
 	}
 	Ningguang(const Ningguang* other) : Character(other) { Update(); }
-	Character* Clone() const override { return new Ningguang(this); }
+	std::shared_ptr<Character> Clone_sharedptr() const override { return std::dynamic_pointer_cast<Character>(std::make_shared<Ningguang>(this)); }
 	~Ningguang() override {}
 
 	double GetDamageWithStat(const Stat& stat) const override;
