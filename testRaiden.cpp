@@ -63,6 +63,13 @@ void testRaiden()
     {
         cout << "EffectionArray : " << STATSTRING[i] << " : " << simChar->GetEffection(i) << endl;
     }
+    // ScoreEffectionArray
+    std::array<double, 19> scoreEffection = simChar->GetScoreEffection();
+    cout << "========== Effection Array ==========" << endl;
+    for (int i = 0; i < 19; i++)
+    {
+        cout << "EffectionArray : " << STATSTRING[i] << " : " << scoreEffection[i] << endl;
+    }
     // ScoreFunction
     cout << "========== Score Function ==========" << endl;
     for (int i = 0; i < 46; i++)
