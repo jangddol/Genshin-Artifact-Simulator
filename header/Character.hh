@@ -89,6 +89,7 @@ public:
 	double GetScore() const;
 	double GetEffection(int index) const { return mEffectionAmount[index]; }
 	std::vector<int> GetEffectiveSubStats() const { return mEffectiveSubStats; }
+	std::array<double, 19> GetScoreEffection() const;
 
 	// Score (algorithm by MonkeyMagic)
 	double GetScore_MonkeyMagic() const;
