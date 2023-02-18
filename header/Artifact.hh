@@ -68,11 +68,11 @@ private:
 	void GenerateMainOption();
 	void GenerateSubOption();
 
-	int                UseCummulatedWeight(std::vector<int> cummulatedWeight);
+	int                UseCummulatedWeight(const std::vector<int>& cummulatedWeight);
 	std::vector<int>   GenerateCummulatedWeight();
 	bool               Selected3or4OptStart();
-	std::array<int, 4> GenerateStartOpt(std::vector<int> cummulatedWeight);
-	void               UpgradeSubOption(std::array<int, 4> startOptList, bool whether4OptStart);
+	std::array<int, 4> GenerateStartOpt(const std::vector<int>& cummulatedWeight);
+	void               UpgradeSubOption(const std::array<int, 4>& startOptList, bool whether4OptStart);
 
 	void AlertModified();
     std::vector<Character*> mCharactersUsingThis = {};
