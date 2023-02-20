@@ -774,7 +774,7 @@ void Simulator::PrintProgress(int trial, int nowArtNum, int simNum, int artifact
 	}
 	else
 	{
-		if (((int)beforePercent != (int)percent) && !DEBUGMODE)
+		if ((int)beforePercent != (int)percent)
 		{
 			printToCoordinates(2, 1 + FIRSTCOLUMNWIDTH + mWorkerID * COLUMNWIDTH, "|%d %%", (int)percent);
 		}
@@ -900,8 +900,6 @@ TH2D* Simulator::RunSimulation(int simNum, int artifactNum, int binNum, double m
 
 	PrintTimeConsumption();
 
-	if (DEBUGMODE) std::cout << "VisualHistogram->GetBinContent(newArtNum, (int)(0.7*newArtBinNum))" << VisualHistogram->GetBinContent(newArtNum, (int)(0.7*newArtBinNum)) << std::endl;
-
     return VisualHistogram;
 }
 
@@ -916,13 +914,7 @@ void Simulator::SimulationWorker(int workerID, int simNum, int artifactNum, int 
 	SetWorkerID(workerID);
 
 	TString histName = Form("SIMULATOR_RUNSIMULATION_RESULT-%d", workerID);
-
-	if (DEBUGMODE) std::cout << "histName : " << histName << std::endl;
-
 	TH2D* VisualHistogram = RunSimulation(simNum, artifactNum, binNum, minDamage, maxDamage, histName);
-	// printToCoordinates(13 + workerID, 1, "mTimeList Pointer : %p", mTimeList);
-	if (DEBUGMODE) std::cout << "Histogram Generation Done." << std::endl;
-	// printToCoordinates(13 + workerID, 21, "mTimeList Pointer : %p", mTimeList);
 	mSimulationResult = VisualHistogram;
 }
 
@@ -963,19 +955,8 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 		simulatorVector[i].SetBundleNum(mBundleNum);
 	}
 
-	if (DEBUGMODE)
-	{
-		for (int i = 0; i < mNumThread; i++)
-		{
-			std::cout << "Character Pointer" << characterVector[i] << std::endl;
-			std::cout << "Simulaotr Pointer" << &(simulatorVector[i]) << std::endl;
-		}
-	}
-
 	// terminal clear for Info Print out
 	
-	if (!DEBUGMODE)
-	{
 		printToCoordinates(1, 1, "ThreadNum");
 		printToCoordinates(2, 1, "Progress");
 		printToCoordinates(3, 1, "Time Consumption");
@@ -990,12 +971,11 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 		for (int i = 0; i < mNumThread; i++)
 		{
 			printToCoordinates(1, 1 + FIRSTCOLUMNWIDTH + i * COLUMNWIDTH, "|# %d", i + 1);
-		}
 	}
 	
 
-	// 占쎌뵠占쎈굶占쏙옙占� 揶쏄낫而� 占쎈쾺占쎌쟿占쎈굡 占쎈툧占쎈퓠占쎄퐣 SimulationWorker�몴占� 獄쏆뮆猷욑옙釉놂옙�뼄.
-	// SimulationWorker占쎈뮉 2d-Histogram占쎌뱽 simulatorVector[i]占쎈퓠 占쎄텚疫꿸퀗��� 雅뚯럥�뮉占쎈뼄.
+	// 이들은 각각 쓰레드 안에서 SimulationWorker를 발동한다.
+	// SimulationWorker는 2d-Histogram을 simulatorVector[i]에 남기고 죽는다.
 	std::vector<std::thread> threads;
 	for (int i = 0; i < mNumThread; i++)
 	{
@@ -1008,8 +988,6 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	
 	// Info Print out.
 	
-	if (!DEBUGMODE) 
-	{
 		for (int i = 0; i < mNumThread; i++)
 		{
 			printToCoordinates(5, 1 + FIRSTCOLUMNWIDTH + i * COLUMNWIDTH, "|%.1f s", simulatorVector[i].GetTimeList(0));
@@ -1018,10 +996,9 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 			printToCoordinates(8, 1 + FIRSTCOLUMNWIDTH + i * COLUMNWIDTH, "|%.1f s", simulatorVector[i].GetTimeList(3));
 			printToCoordinates(10, 1 + FIRSTCOLUMNWIDTH + i * COLUMNWIDTH, "|%.1f s", simulatorVector[i].GetCalLoopTimeList(0));
 			printToCoordinates(11, 1 + FIRSTCOLUMNWIDTH + i * COLUMNWIDTH, "|%.1f s", simulatorVector[i].GetCalLoopTimeList(1));
-		}
 	}
 
-	// 占쎄문占쎄쉐占쎈쭆 AppendRate占쎈즲 占쎈연疫꿸퀡以� 占쎄퐜野꺿뫁占쏙옙占쎈뼄.
+	// 생성된 AppendRate도 여기로 넘겨준다.
 	std::vector<double> tempVector(artifactNum);
 	for (int i = 0; i < mNumThread; i++)
 	{
@@ -1032,23 +1009,12 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 		}
 	}
 	mAppendableRate = tempVector;
-	
-	if (DEBUGMODE)
-	{
-		std::cout << "tempVector : size = " << tempVector.size() << std::endl;
-		std::cout << "tempVector : first element = " << tempVector[0] << std::endl;
-		for (int i = 0; i < mNumThread; i++)
-		std::cout << Form("simulatorVector[%d].GetSimulationResult() : ", i) << simulatorVector[i].GetSimulationResult() << std::endl;
-	}
 
-	if (DEBUGMODE) std::cout << "10" << std::endl;
 	// Sum over of all histograms
 	for (int i = 0; i < mNumThread; i++)
 	{
 		HistogramArray.emplace_back(simulatorVector[i].GetSimulationResult());
 	}
-
-	if (DEBUGMODE) std::cout << "11" << std::endl;
 
 	TH2D* VisualHistogram;
 
@@ -1074,8 +1040,6 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	{
 		VisualHistogram->Add(HistogramArray[i]);
 	}
-
-	if (DEBUGMODE) std::cout << "12" << std::endl;
 
 	printToCoordinates(12, 1, "");
 	return VisualHistogram;
