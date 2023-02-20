@@ -218,11 +218,6 @@ bool CheckWhetherAppendAndDelete(std::shared_ptr<Character> character, std::shar
             std::cout << "Error : gennedArtifact has wrong Type at CheckWhetherAppendAndDelete : numType = " << gennedArtifact->GetType() << std::endl;
     }
 
-    // Make a list of effective options
-    int effectiveList[10] = { 0 };
-    int effListSize;
-    MakeEffectiveOptionList(effectiveList, effListSize, character);
-
     // Check whether the generated artifact should be appended to or deleted from the list
     bool whetherAppend = true;
     Stat gennedSubOpt = gennedArtifact->GetSubStat();
@@ -231,12 +226,12 @@ bool CheckWhetherAppendAndDelete(std::shared_ptr<Character> character, std::shar
         if (selectedList[i]->GetMainType() == gennedArtifact->GetMainType())
         {
             Stat tempSubOpt = selectedList[i]->GetSubStat();
-            if (CheckBetterSubOpt(tempSubOpt, gennedSubOpt, effectiveList, effListSize, character))
+            if (CheckBetterSubOpt(tempSubOpt, gennedSubOpt, character))
             {
                 // Existing artifact is better, do not append the generated artifact
                 whetherAppend = false;
             }
-            else if (CheckBetterSubOpt(gennedSubOpt, tempSubOpt, effectiveList, effListSize, character))
+            else if (CheckBetterSubOpt(gennedSubOpt, tempSubOpt, character))
             {
                 // Generated artifact is better, delete the existing artifact
                 EraseSuperArtifactList(ArtifactSuperList, gennedArtifact->GetType(), i);
@@ -999,8 +994,8 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	}
 	
 
-	// �씠�뱾��� 媛곴컖 �벐�젅�뱶 �븞�뿉�꽌 SimulationWorker瑜� 諛쒕룞�븳�떎.
-	// SimulationWorker�뒗 2d-Histogram�쓣 simulatorVector[i]�뿉 �궓湲곌퀬 二쎈뒗�떎.
+	// 占쎌뵠占쎈굶占쏙옙占� 揶쏄낫而� 占쎈쾺占쎌쟿占쎈굡 占쎈툧占쎈퓠占쎄퐣 SimulationWorker�몴占� 獄쏆뮆猷욑옙釉놂옙�뼄.
+	// SimulationWorker占쎈뮉 2d-Histogram占쎌뱽 simulatorVector[i]占쎈퓠 占쎄텚疫꿸퀗��� 雅뚯럥�뮉占쎈뼄.
 	std::vector<std::thread> threads;
 	for (int i = 0; i < mNumThread; i++)
 	{
@@ -1026,7 +1021,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 		}
 	}
 
-	// �깮�꽦�맂 AppendRate�룄 �뿬湲곕줈 �꽆寃⑥���떎.
+	// 占쎄문占쎄쉐占쎈쭆 AppendRate占쎈즲 占쎈연疫꿸퀡以� 占쎄퐜野꺿뫁占쏙옙占쎈뼄.
 	std::vector<double> tempVector(artifactNum);
 	for (int i = 0; i < mNumThread; i++)
 	{
