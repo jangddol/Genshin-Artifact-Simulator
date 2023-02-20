@@ -135,43 +135,11 @@ bool CheckBetterSubOpt(Stat betterOpt, Stat worseOpt, int effectiveList[], int e
 	return true;
 }
 
-
-std::vector<std::shared_ptr<Artifact>> Convert2VecArtifactPointer(std::vector<std::shared_ptr<ArtFlower>> flowerList)
+template <typename T>
+std::vector<std::shared_ptr<Artifact>> Convert2VecArtifactPointer(std::vector<std::shared_ptr<T>> TList)
 {
-	std::vector<std::shared_ptr<Artifact>> returnVector(flowerList.size());
-	for (std::size_t i = 0; i < flowerList.size() ; i++) returnVector[i] = std::dynamic_pointer_cast<Artifact>(flowerList[i]);
-	return returnVector;
-}
-
-
-std::vector<std::shared_ptr<Artifact>> Convert2VecArtifactPointer(std::vector<std::shared_ptr<ArtFeather>> featherList)
-{
-	std::vector<std::shared_ptr<Artifact>> returnVector(featherList.size());
-	for (std::size_t i = 0; i < featherList.size() ; i++) returnVector[i] = std::dynamic_pointer_cast<Artifact>(featherList[i]);
-	return returnVector;
-}
-
-
-std::vector<std::shared_ptr<Artifact>> Convert2VecArtifactPointer(std::vector<std::shared_ptr<ArtClock>> clockList)
-{
-	std::vector<std::shared_ptr<Artifact>> returnVector(clockList.size());
-	for (std::size_t i = 0; i < clockList.size() ; i++) returnVector[i] = std::dynamic_pointer_cast<Artifact>(clockList[i]);
-	return returnVector;
-}
-
-
-std::vector<std::shared_ptr<Artifact>> Convert2VecArtifactPointer(std::vector<std::shared_ptr<ArtCup>> cupList)
-{
-	std::vector<std::shared_ptr<Artifact>> returnVector(cupList.size());
-	for (std::size_t i = 0; i < cupList.size() ; i++) returnVector[i] = std::dynamic_pointer_cast<Artifact>(cupList[i]);
-	return returnVector;
-}
-
-
-std::vector<std::shared_ptr<Artifact>> Convert2VecArtifactPointer(std::vector<std::shared_ptr<ArtCrown>> crownList)
-{
-	std::vector<std::shared_ptr<Artifact>> returnVector(crownList.size());
-	for (std::size_t i = 0; i < crownList.size() ; i++) returnVector[i] = std::dynamic_pointer_cast<Artifact>(crownList[i]);
+	std::vector<std::shared_ptr<Artifact>> returnVector(TList.size());
+	for (std::size_t i = 0; i < TList.size() ; i++) returnVector[i] = std::dynamic_pointer_cast<Artifact>(TList[i]);
 	return returnVector;
 }
 
@@ -703,8 +671,8 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	}
 	
 
-	// 占쎌뵠占쎈굶占쏙옙占� 揶쏄낫而� 占쎈쾺占쎌쟿占쎈굡 占쎈툧占쎈퓠占쎄퐣 SimulationWorker�몴占� 獄쏆뮆猷욑옙釉놂옙�뼄.
-	// SimulationWorker占쎈뮉 2d-Histogram占쎌뱽 simulatorVector[i]占쎈퓠 占쎄텚疫꿸퀗��� 雅뚯럥�뮉占쎈뼄.
+	// �뜝�럩逾졾뜝�럥援뜹뜝�룞�삕�뜝占� �뤆�룄�궖��뚳옙 �뜝�럥苡뷴뜝�럩�읉�뜝�럥援� �뜝�럥�닱�뜝�럥�뱺�뜝�럡�맋 SimulationWorker占쎈ご�뜝占� �뛾�룇裕녺뙴�쉻�삕�뇡�냲�삕占쎈펲.
+	// SimulationWorker�뜝�럥裕� 2d-Histogram�뜝�럩諭� simulatorVector[i]�뜝�럥�뱺 �뜝�럡�뀣�뼨轅명�쀯옙占쏙옙 �썒�슣�윥占쎈츎�뜝�럥堉�.
 	std::vector<std::thread> threads;
 	for (int i = 0; i < mNumThread; i++)
 	{
@@ -727,7 +695,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 			printToCoordinates(11, 1 + FIRSTCOLUMNWIDTH + i * COLUMNWIDTH, "|%.1f s", simulatorVector[i].GetCalLoopTimeList(1));
 	}
 
-	// 占쎄문占쎄쉐占쎈쭆 AppendRate占쎈즲 占쎈연疫꿸퀡以� 占쎄퐜野꺿뫁占쏙옙占쎈뼄.
+	// �뜝�럡臾멨뜝�럡�뎽�뜝�럥彛� AppendRate�뜝�럥利� �뜝�럥�뿰�뼨轅명�▽빳占� �뜝�럡�맂�뇦爰용쳛�뜝�룞�삕�뜝�럥堉�.
 	std::vector<double> tempVector(artifactNum);
 	for (int i = 0; i < mNumThread; i++)
 	{
