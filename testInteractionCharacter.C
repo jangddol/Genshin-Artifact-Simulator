@@ -7,13 +7,13 @@ void testConstructor()
 {
     cout << "========== testConstructor ==========" << endl;
 
-    EngulfingLightning* weapon = new EngulfingLightning();
+    std::shared_ptr<EngulfingLightning> weapon = std::make_shared<EngulfingLightning>();
 
-	ArtFlower* artinit1 = new ArtFlower();
-	ArtFeather* artinit2 = new ArtFeather();
-	ArtClock* artinit3 = new ArtClock();
-	ArtCup* artinit4 = new ArtCup();
-	ArtCrown* artinit5 = new ArtCrown();
+	std::shared_ptr<ArtFlower> artinit1 = std::make_shared<ArtFlower>();
+	std::shared_ptr<ArtFeather> artinit2 = std::make_shared<ArtFeather>();
+	std::shared_ptr<ArtClock> artinit3 = std::make_shared<ArtClock>();
+	std::shared_ptr<ArtCup> artinit4 = std::make_shared<ArtCup>();
+	std::shared_ptr<ArtCrown> artinit5 = std::make_shared<ArtCrown>();
 
     artinit1->Generation();
     artinit2->Generation();
@@ -24,25 +24,25 @@ void testConstructor()
     artinit5->Generation();
     artinit5->SetMainType(0);
 	
-    EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
+    std::shared_ptr<EmblemOfSeveredFate> artSetStat = std::make_shared<EmblemOfSeveredFate>();
 
-    Raiden* simChar = new Raiden(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
+    std::shared_ptr<Raiden> simChar = std::make_shared<Raiden>(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
     resonanceStat.SetAttackPer(25.);
     simChar->SetResonanceStat(resonanceStat);
 
-    cout << "artinit1 is used : " << artinit1->IsUsingThis(simChar) << endl;
-    cout << "artinit2 is used : " << artinit2->IsUsingThis(simChar) << endl;
-    cout << "artinit3 is used : " << artinit3->IsUsingThis(simChar) << endl;
-    cout << "artinit4 is used : " << artinit4->IsUsingThis(simChar) << endl;
-    cout << "artinit5 is used : " << artinit5->IsUsingThis(simChar) << endl;
-    cout << "artSetSTat is used : " << artSetStat->IsUsingThis(simChar) << endl;
+    cout << "artinit1 is used : " << artinit1->IsUsingThis(simChar.get()) << endl;
+    cout << "artinit2 is used : " << artinit2->IsUsingThis(simChar.get()) << endl;
+    cout << "artinit3 is used : " << artinit3->IsUsingThis(simChar.get()) << endl;
+    cout << "artinit4 is used : " << artinit4->IsUsingThis(simChar.get()) << endl;
+    cout << "artinit5 is used : " << artinit5->IsUsingThis(simChar.get()) << endl;
+    cout << "artSetSTat is used : " << artSetStat->IsUsingThis(simChar.get()) << endl;
 }
 
 
-bool IsSameArtifactValue(Artifact* art1, Artifact* art2)
+bool IsSameArtifactValue(std::shared_ptr<Artifact> art1, std::shared_ptr<Artifact> art2)
 {
     Stat mainStat1 = art1->GetMainStat();
     Stat mainStat2 = art2->GetMainStat();
@@ -74,13 +74,13 @@ void testCopyConstructor()
 {
     cout << "========== testCopyConstructor ==========" << endl;
 
-    EngulfingLightning* weapon = new EngulfingLightning();
+    std::shared_ptr<EngulfingLightning> weapon = std::make_shared<EngulfingLightning>();
 
-	ArtFlower* artinit1 = new ArtFlower();
-	ArtFeather* artinit2 = new ArtFeather();
-	ArtClock* artinit3 = new ArtClock();
-	ArtCup* artinit4 = new ArtCup();
-	ArtCrown* artinit5 = new ArtCrown();
+	std::shared_ptr<ArtFlower> artinit1 = std::make_shared<ArtFlower>();
+	std::shared_ptr<ArtFeather> artinit2 = std::make_shared<ArtFeather>();
+	std::shared_ptr<ArtClock> artinit3 = std::make_shared<ArtClock>();
+	std::shared_ptr<ArtCup> artinit4 = std::make_shared<ArtCup>();
+	std::shared_ptr<ArtCrown> artinit5 = std::make_shared<ArtCrown>();
 
     artinit1->Generation();
     artinit2->Generation();
@@ -91,7 +91,7 @@ void testCopyConstructor()
     artinit5->Generation();
     artinit5->SetMainType(0);
 	
-    EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
+    std::shared_ptr<EmblemOfSeveredFate> artSetStat = std::make_shared<EmblemOfSeveredFate>();
 
     Raiden simChar(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
 
@@ -138,13 +138,13 @@ void testMoveConstructor()
 {
     cout << "========== testMoveConstructor ==========" << endl;
 
-    EngulfingLightning* weapon = new EngulfingLightning();
+    std::shared_ptr<EngulfingLightning> weapon = std::make_shared<EngulfingLightning>();
 
-	ArtFlower* artinit1 = new ArtFlower();
-	ArtFeather* artinit2 = new ArtFeather();
-	ArtClock* artinit3 = new ArtClock();
-	ArtCup* artinit4 = new ArtCup();
-	ArtCrown* artinit5 = new ArtCrown();
+	std::shared_ptr<ArtFlower> artinit1 = std::make_shared<ArtFlower>();
+	std::shared_ptr<ArtFeather> artinit2 = std::make_shared<ArtFeather>();
+	std::shared_ptr<ArtClock> artinit3 = std::make_shared<ArtClock>();
+	std::shared_ptr<ArtCup> artinit4 = std::make_shared<ArtCup>();
+	std::shared_ptr<ArtCrown> artinit5 = std::make_shared<ArtCrown>();
 
     artinit1->Generation();
     artinit2->Generation();
@@ -155,7 +155,7 @@ void testMoveConstructor()
     artinit5->Generation();
     artinit5->SetMainType(0);
 	
-    EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
+    std::shared_ptr<EmblemOfSeveredFate> artSetStat = std::make_shared<EmblemOfSeveredFate>();
 
     Raiden simChar(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
 
@@ -196,13 +196,13 @@ void testCopyAssignment()
 {
     cout << "========== testCopyAssignment ==========" << endl;
 
-    EngulfingLightning* weapon = new EngulfingLightning();
+    std::shared_ptr<EngulfingLightning> weapon = std::make_shared<EngulfingLightning>();
 
-	ArtFlower* artinit1 = new ArtFlower();
-	ArtFeather* artinit2 = new ArtFeather();
-	ArtClock* artinit3 = new ArtClock();
-	ArtCup* artinit4 = new ArtCup();
-	ArtCrown* artinit5 = new ArtCrown();
+	std::shared_ptr<ArtFlower> artinit1 = std::make_shared<ArtFlower>();
+	std::shared_ptr<ArtFeather> artinit2 = std::make_shared<ArtFeather>();
+	std::shared_ptr<ArtClock> artinit3 = std::make_shared<ArtClock>();
+	std::shared_ptr<ArtCup> artinit4 = std::make_shared<ArtCup>();
+	std::shared_ptr<ArtCrown> artinit5 = std::make_shared<ArtCrown>();
 
     artinit1->Generation();
     artinit2->Generation();
@@ -213,7 +213,7 @@ void testCopyAssignment()
     artinit5->Generation();
     artinit5->SetMainType(0);
 	
-    EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
+    std::shared_ptr<EmblemOfSeveredFate> artSetStat = std::make_shared<EmblemOfSeveredFate>();
 
     Raiden simChar(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
 
@@ -228,13 +228,13 @@ void testCopyAssignment()
     cout << "artinit4 is used : " << artinit4->IsUsingThis(&simChar) << endl;
     cout << "artinit5 is used : " << artinit5->IsUsingThis(&simChar) << endl;
 
-    EngulfingLightning* tempweapon = new EngulfingLightning();
+    std::shared_ptr<EngulfingLightning> tempweapon = std::make_shared<EngulfingLightning>();
 
-	ArtFlower* tempartinit1 = new ArtFlower();
-	ArtFeather* tempartinit2 = new ArtFeather();
-	ArtClock* tempartinit3 = new ArtClock();
-	ArtCup* tempartinit4 = new ArtCup();
-	ArtCrown* tempartinit5 = new ArtCrown();
+	std::shared_ptr<ArtFlower> tempartinit1 = std::make_shared<ArtFlower>();
+	std::shared_ptr<ArtFeather> tempartinit2 = std::make_shared<ArtFeather>();
+	std::shared_ptr<ArtClock> tempartinit3 = std::make_shared<ArtClock>();
+	std::shared_ptr<ArtCup> tempartinit4 = std::make_shared<ArtCup>();
+	std::shared_ptr<ArtCrown> tempartinit5 = std::make_shared<ArtCrown>();
 
     tempartinit1->Generation();
     tempartinit2->Generation();
@@ -245,7 +245,7 @@ void testCopyAssignment()
     tempartinit5->Generation();
     tempartinit5->SetMainType(0);
 	
-    EmblemOfSeveredFate* tempartSetStat = new EmblemOfSeveredFate();
+    std::shared_ptr<EmblemOfSeveredFate> tempartSetStat = std::make_shared<EmblemOfSeveredFate>();
 
     Raiden copiedChar(tempweapon, tempartSetStat, tempartinit1, tempartinit2, tempartinit3, tempartinit4, tempartinit5);
     copiedChar = simChar;
@@ -278,13 +278,13 @@ void testMoveAssignment()
 {
     cout << "========== testMoveAssignment ==========" << endl;
 
-    EngulfingLightning* weapon = new EngulfingLightning();
+    std::shared_ptr<EngulfingLightning> weapon = std::make_shared<EngulfingLightning>();
 
-	ArtFlower* artinit1 = new ArtFlower();
-	ArtFeather* artinit2 = new ArtFeather();
-	ArtClock* artinit3 = new ArtClock();
-	ArtCup* artinit4 = new ArtCup();
-	ArtCrown* artinit5 = new ArtCrown();
+	std::shared_ptr<ArtFlower> artinit1 = std::make_shared<ArtFlower>();
+	std::shared_ptr<ArtFeather> artinit2 = std::make_shared<ArtFeather>();
+	std::shared_ptr<ArtClock> artinit3 = std::make_shared<ArtClock>();
+	std::shared_ptr<ArtCup> artinit4 = std::make_shared<ArtCup>();
+	std::shared_ptr<ArtCrown> artinit5 = std::make_shared<ArtCrown>();
 
     artinit1->Generation();
     artinit2->Generation();
@@ -295,7 +295,7 @@ void testMoveAssignment()
     artinit5->Generation();
     artinit5->SetMainType(0);
 	
-    EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
+    std::shared_ptr<EmblemOfSeveredFate> artSetStat = std::make_shared<EmblemOfSeveredFate>();
 
     Raiden simChar = Raiden(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
 
@@ -310,13 +310,13 @@ void testMoveAssignment()
     cout << "artinit4 is used : " << artinit4->IsUsingThis(&simChar) << endl;
     cout << "artinit5 is used : " << artinit5->IsUsingThis(&simChar) << endl;
 
-    EngulfingLightning* tempweapon = new EngulfingLightning();
+    std::shared_ptr<EngulfingLightning> tempweapon = std::make_shared<EngulfingLightning>();
 
-	ArtFlower* tempartinit1 = new ArtFlower();
-	ArtFeather* tempartinit2 = new ArtFeather();
-	ArtClock* tempartinit3 = new ArtClock();
-	ArtCup* tempartinit4 = new ArtCup();
-	ArtCrown* tempartinit5 = new ArtCrown();
+	std::shared_ptr<ArtFlower> tempartinit1 = std::make_shared<ArtFlower>();
+	std::shared_ptr<ArtFeather> tempartinit2 = std::make_shared<ArtFeather>();
+	std::shared_ptr<ArtClock> tempartinit3 = std::make_shared<ArtClock>();
+	std::shared_ptr<ArtCup> tempartinit4 = std::make_shared<ArtCup>();
+	std::shared_ptr<ArtCrown> tempartinit5 = std::make_shared<ArtCrown>();
 
     tempartinit1->Generation();
     tempartinit2->Generation();
@@ -327,7 +327,7 @@ void testMoveAssignment()
     tempartinit5->Generation();
     tempartinit5->SetMainType(0);
 	
-    EmblemOfSeveredFate* tempartSetStat = new EmblemOfSeveredFate();
+    std::shared_ptr<EmblemOfSeveredFate> tempartSetStat = std::make_shared<EmblemOfSeveredFate>();
 
     Raiden movedChar(tempweapon, tempartSetStat, tempartinit1, tempartinit2, tempartinit3, tempartinit4, tempartinit5);
     movedChar = std::move(simChar);
@@ -354,13 +354,13 @@ void testDestructor()
 {
     cout << "========== testDestructor ==========" << endl;
 
-    EngulfingLightning* weapon = new EngulfingLightning();
+    std::shared_ptr<EngulfingLightning> weapon = std::make_shared<EngulfingLightning>();
 
-	ArtFlower* artinit1 = new ArtFlower();
-	ArtFeather* artinit2 = new ArtFeather();
-	ArtClock* artinit3 = new ArtClock();
-	ArtCup* artinit4 = new ArtCup();
-	ArtCrown* artinit5 = new ArtCrown();
+	std::shared_ptr<ArtFlower> artinit1 = std::make_shared<ArtFlower>();
+	std::shared_ptr<ArtFeather> artinit2 = std::make_shared<ArtFeather>();
+	std::shared_ptr<ArtClock> artinit3 = std::make_shared<ArtClock>();
+	std::shared_ptr<ArtCup> artinit4 = std::make_shared<ArtCup>();
+	std::shared_ptr<ArtCrown> artinit5 = std::make_shared<ArtCrown>();
 
     artinit1->Generation();
     artinit2->Generation();
@@ -371,26 +371,26 @@ void testDestructor()
     artinit5->Generation();
     artinit5->SetMainType(0);
 	
-    EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
+    std::shared_ptr<EmblemOfSeveredFate> artSetStat = std::make_shared<EmblemOfSeveredFate>();
 
-    Raiden* simChar = new Raiden(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
+    std::shared_ptr<Raiden> simChar = std::make_shared<Raiden>(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
     resonanceStat.SetAttackPer(25.);
     simChar->SetResonanceStat(resonanceStat);
 
-    cout << "artinit1 is used : " << artinit1->IsUsingThis(simChar) << endl;
-    cout << "artinit2 is used : " << artinit2->IsUsingThis(simChar) << endl;
-    cout << "artinit3 is used : " << artinit3->IsUsingThis(simChar) << endl;
-    cout << "artinit4 is used : " << artinit4->IsUsingThis(simChar) << endl;
-    cout << "artinit5 is used : " << artinit5->IsUsingThis(simChar) << endl;
-    delete simChar;
-    cout << "artinit1 is not used : " << !(artinit1->IsUsingThis(simChar)) << endl;
-    cout << "artinit2 is not used : " << !(artinit2->IsUsingThis(simChar)) << endl;
-    cout << "artinit3 is not used : " << !(artinit3->IsUsingThis(simChar)) << endl;
-    cout << "artinit4 is not used : " << !(artinit4->IsUsingThis(simChar)) << endl;
-    cout << "artinit5 is not used : " << !(artinit5->IsUsingThis(simChar)) << endl;
+    cout << "artinit1 is used : " << artinit1->IsUsingThis(simChar.get()) << endl;
+    cout << "artinit2 is used : " << artinit2->IsUsingThis(simChar.get()) << endl;
+    cout << "artinit3 is used : " << artinit3->IsUsingThis(simChar.get()) << endl;
+    cout << "artinit4 is used : " << artinit4->IsUsingThis(simChar.get()) << endl;
+    cout << "artinit5 is used : " << artinit5->IsUsingThis(simChar.get()) << endl;
+
+    cout << "artinit1 is not used : " << !(artinit1->IsUsingThis(simChar.get())) << endl;
+    cout << "artinit2 is not used : " << !(artinit2->IsUsingThis(simChar.get())) << endl;
+    cout << "artinit3 is not used : " << !(artinit3->IsUsingThis(simChar.get())) << endl;
+    cout << "artinit4 is not used : " << !(artinit4->IsUsingThis(simChar.get())) << endl;
+    cout << "artinit5 is not used : " << !(artinit5->IsUsingThis(simChar.get())) << endl;
 }
 
 
@@ -398,13 +398,13 @@ void testArtifactSetter()
 {
     cout << "========== testArtifactSetter ==========" << endl;
 
-    EngulfingLightning* weapon = new EngulfingLightning();
+    std::shared_ptr<EngulfingLightning> weapon = std::make_shared<EngulfingLightning>();
 
-	ArtFlower* artinit1 = new ArtFlower();
-	ArtFeather* artinit2 = new ArtFeather();
-	ArtClock* artinit3 = new ArtClock();
-	ArtCup* artinit4 = new ArtCup();
-	ArtCrown* artinit5 = new ArtCrown();
+	std::shared_ptr<ArtFlower> artinit1 = std::make_shared<ArtFlower>();
+	std::shared_ptr<ArtFeather> artinit2 = std::make_shared<ArtFeather>();
+	std::shared_ptr<ArtClock> artinit3 = std::make_shared<ArtClock>();
+	std::shared_ptr<ArtCup> artinit4 = std::make_shared<ArtCup>();
+	std::shared_ptr<ArtCrown> artinit5 = std::make_shared<ArtCrown>();
 
     artinit1->Generation();
     artinit2->Generation();
@@ -415,10 +415,10 @@ void testArtifactSetter()
     artinit5->Generation();
     artinit5->SetMainType(0);
 	
-    EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
+    std::shared_ptr<EmblemOfSeveredFate> artSetStat = std::make_shared<EmblemOfSeveredFate>();
 
     // first setter
-    Raiden* simChar = new Raiden(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
+    std::shared_ptr<Raiden> simChar = std::make_shared<Raiden>(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
@@ -427,13 +427,13 @@ void testArtifactSetter()
 
 
     // Check for first setter
-    cout << "artinit1 is used : " << artinit1->IsUsingThis(simChar) << endl;
-    cout << "artinit2 is used : " << artinit2->IsUsingThis(simChar) << endl;
-    cout << "artinit3 is used : " << artinit3->IsUsingThis(simChar) << endl;
-    cout << "artinit4 is used : " << artinit4->IsUsingThis(simChar) << endl;
-    cout << "artinit5 is used : " << artinit5->IsUsingThis(simChar) << endl;
+    cout << "artinit1 is used : " << artinit1->IsUsingThis(simChar.get()) << endl;
+    cout << "artinit2 is used : " << artinit2->IsUsingThis(simChar.get()) << endl;
+    cout << "artinit3 is used : " << artinit3->IsUsingThis(simChar.get()) << endl;
+    cout << "artinit4 is used : " << artinit4->IsUsingThis(simChar.get()) << endl;
+    cout << "artinit5 is used : " << artinit5->IsUsingThis(simChar.get()) << endl;
 
-    ArtFlower* newflower = new ArtFlower();
+    std::shared_ptr<ArtFlower> newflower = std::make_shared<ArtFlower>();
     newflower->Generation();
 
     // second setter
@@ -441,8 +441,8 @@ void testArtifactSetter()
 
 
     // Check for second setter
-    cout << "artinit1 is not used : " << !(artinit1->IsUsingThis(simChar)) << endl;
-    cout << "newflower is used : " << newflower->IsUsingThis(simChar) << endl;
+    cout << "artinit1 is not used : " << !(artinit1->IsUsingThis(simChar.get())) << endl;
+    cout << "newflower is used : " << newflower->IsUsingThis(simChar.get()) << endl;
 }
 
 
@@ -450,13 +450,13 @@ void testArtSetStatSetter()
 {
     cout << "========== testArtSetStatSetter ==========" << endl;
 
-    EngulfingLightning* weapon = new EngulfingLightning();
+    std::shared_ptr<EngulfingLightning> weapon = std::make_shared<EngulfingLightning>();
 
-	ArtFlower* artinit1 = new ArtFlower();
-	ArtFeather* artinit2 = new ArtFeather();
-	ArtClock* artinit3 = new ArtClock();
-	ArtCup* artinit4 = new ArtCup();
-	ArtCrown* artinit5 = new ArtCrown();
+	std::shared_ptr<ArtFlower> artinit1 = std::make_shared<ArtFlower>();
+	std::shared_ptr<ArtFeather> artinit2 = std::make_shared<ArtFeather>();
+	std::shared_ptr<ArtClock> artinit3 = std::make_shared<ArtClock>();
+	std::shared_ptr<ArtCup> artinit4 = std::make_shared<ArtCup>();
+	std::shared_ptr<ArtCrown> artinit5 = std::make_shared<ArtCrown>();
 
     artinit1->Generation();
     artinit2->Generation();
@@ -467,10 +467,10 @@ void testArtSetStatSetter()
     artinit5->Generation();
     artinit5->SetMainType(0);
 	
-    EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
+    std::shared_ptr<EmblemOfSeveredFate> artSetStat = std::make_shared<EmblemOfSeveredFate>();
 
     // first setter
-    Raiden* simChar = new Raiden(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
+    std::shared_ptr<Raiden> simChar = std::make_shared<Raiden>(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
@@ -479,17 +479,17 @@ void testArtSetStatSetter()
 
 
     // Check for first setter
-    cout << "artSetStat is used : " << artSetStat->IsUsingThis(simChar) << endl;
+    cout << "artSetStat is used : " << artSetStat->IsUsingThis(simChar.get()) << endl;
 
-    ArtSetStat* newArtSetStat = new ArtSetStat();
+    std::shared_ptr<ArtSetStat> newArtSetStat = std::make_shared<ArtSetStat>();
 
     // second setter
     simChar->SetArtSetStat(newArtSetStat);
 
 
     // Check for second setter
-    cout << "artSetStat is not used : " << !(artSetStat->IsUsingThis(simChar)) << endl;
-    cout << "newArtSetStat is used : " << newArtSetStat->IsUsingThis(simChar) << endl;
+    cout << "artSetStat is not used : " << !(artSetStat->IsUsingThis(simChar.get())) << endl;
+    cout << "newArtSetStat is used : " << newArtSetStat->IsUsingThis(simChar.get()) << endl;
 }
 
 
@@ -497,13 +497,13 @@ void testArtifactModification()
 {
     cout << "========== testArtifactModification ==========" << endl;
 
-    EngulfingLightning* weapon = new EngulfingLightning();
+    std::shared_ptr<EngulfingLightning> weapon = std::make_shared<EngulfingLightning>();
 
-	ArtFlower* artinit1 = new ArtFlower();
-	ArtFeather* artinit2 = new ArtFeather();
-	ArtClock* artinit3 = new ArtClock();
-	ArtCup* artinit4 = new ArtCup();
-	ArtCrown* artinit5 = new ArtCrown();
+	std::shared_ptr<ArtFlower> artinit1 = std::make_shared<ArtFlower>();
+	std::shared_ptr<ArtFeather> artinit2 = std::make_shared<ArtFeather>();
+	std::shared_ptr<ArtClock> artinit3 = std::make_shared<ArtClock>();
+	std::shared_ptr<ArtCup> artinit4 = std::make_shared<ArtCup>();
+	std::shared_ptr<ArtCrown> artinit5 = std::make_shared<ArtCrown>();
 
     artinit1->Generation();
     artinit2->Generation();
@@ -514,10 +514,10 @@ void testArtifactModification()
     artinit5->Generation();
     artinit5->SetMainType(0);
 	
-    EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
+    std::shared_ptr<EmblemOfSeveredFate> artSetStat = std::make_shared<EmblemOfSeveredFate>();
 
     // first setter
-    Raiden* simChar = new Raiden(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
+    std::shared_ptr<Raiden> simChar = std::make_shared<Raiden>(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
@@ -540,13 +540,13 @@ void testArtSetStatModification()
 {
     cout << "========== testArtSetStatModification ==========" << endl;
 
-    EngulfingLightning* weapon = new EngulfingLightning();
+    std::shared_ptr<EngulfingLightning> weapon = std::make_shared<EngulfingLightning>();
 
-	ArtFlower* artinit1 = new ArtFlower();
-	ArtFeather* artinit2 = new ArtFeather();
-	ArtClock* artinit3 = new ArtClock();
-	ArtCup* artinit4 = new ArtCup();
-	ArtCrown* artinit5 = new ArtCrown();
+	std::shared_ptr<ArtFlower> artinit1 = std::make_shared<ArtFlower>();
+	std::shared_ptr<ArtFeather> artinit2 = std::make_shared<ArtFeather>();
+	std::shared_ptr<ArtClock> artinit3 = std::make_shared<ArtClock>();
+	std::shared_ptr<ArtCup> artinit4 = std::make_shared<ArtCup>();
+	std::shared_ptr<ArtCrown> artinit5 = std::make_shared<ArtCrown>();
 
     artinit1->Generation();
     artinit2->Generation();
@@ -557,10 +557,10 @@ void testArtSetStatModification()
     artinit5->Generation();
     artinit5->SetMainType(0);
 	
-    EmblemOfSeveredFate* artSetStat = new EmblemOfSeveredFate();
+    std::shared_ptr<EmblemOfSeveredFate> artSetStat = std::make_shared<EmblemOfSeveredFate>();
 
     // first setter
-    Raiden* simChar = new Raiden(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
+    std::shared_ptr<Raiden> simChar = std::make_shared<Raiden>(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
 
     Stat resonanceStat = Stat();
     resonanceStat.SetZero();
