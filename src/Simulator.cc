@@ -52,24 +52,19 @@ bool CheckEffectiveOption(const std::shared_ptr<Character>& character, int index
 }
 
 
-void MakeEffectiveOptionList(int* oEffectiveList, int& oSize, const std::shared_ptr<Character>& character)
+bool CheckWhetherElementIsIn(int element, std::vector<int> List)
 {
-	int j = 0;
-	for (int i = 0; i < 10; i++)
+    for (int& inList: List)
 	{
-		if (CheckEffectiveOption(character, i))
-		{
-			oEffectiveList[j] = i;
-			j += 1;
+        if (inList == element) return true;
 		}
-	}
-	oSize = j;
+    return false;
 }
 
 
-bool CheckWhetherElementIsIn(int element, int List[], int size)
+bool CheckWhetherElementIsIn(int element, std::array<double, 19> List)
 {
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < 19; i++)
     {
         if (List[i] == element) return true;
     }
@@ -77,59 +72,63 @@ bool CheckWhetherElementIsIn(int element, int List[], int size)
 }
 
 
-bool CheckBetterSubOpt(Stat betterOpt, Stat worseOpt, int effectiveList[], int effListSize, std::shared_ptr<Character>& character)
+bool CheckBetterSubOpt(Stat betterOpt, Stat worseOpt, std::shared_ptr<Character>& character)
 {
+	std::vector<int> effectiveSubStats = character->GetEffectiveSubStats();
+	std::array<double, 19> effectiveAmount;
+	for (int i = 0; i < 19; i++) effectiveAmount[i] = character->GetEffection(i);
+
 	// CR
-	if (CheckWhetherElementIsIn(0, effectiveList, effListSize))
+	if (CheckWhetherElementIsIn(0, effectiveSubStats))
 	{
 		if (betterOpt.GetOption(0) < worseOpt.GetOption(0)) return false;
 	}
 	// CB
-	if (CheckWhetherElementIsIn(1, effectiveList, effListSize))
+	if (CheckWhetherElementIsIn(1, effectiveSubStats))
 	{
 		if (betterOpt.GetOption(1) < worseOpt.GetOption(1)) return false;
 	}
 	// ATK, AP
-	if (CheckWhetherElementIsIn(2, effectiveList, effListSize))
+	if (CheckWhetherElementIsIn(2, effectiveSubStats))
 	{
 		double betterAP = betterOpt.GetOption(2);
 		double betterATK = betterOpt.GetOption(3);
 		double worseAP = worseOpt.GetOption(2);
 		double worseATK = worseOpt.GetOption(3);
-		double betterTotATKeffection = betterAP * effectiveList[2] + betterATK * effectiveList[3];
-		double worseTotATKeffection = worseAP * effectiveList[2] + worseATK * effectiveList[3];
+		double betterTotATKeffection = betterAP * effectiveAmount[2] + betterATK * effectiveAmount[3];
+		double worseTotATKeffection = worseAP * effectiveAmount[2] + worseATK * effectiveAmount[3];
 		if (betterTotATKeffection < worseTotATKeffection) return false;
 	}
 	// EC
-	if (character->GetTargetEC() > 100 + character->GetWeapon()->GetSubStat().GetElementCharge())
+	if (character->GetTargetEC() > 100 + character->GetStatAfterUpdateFromArtSetStat().GetElementCharge())
 	{
 		if (betterOpt.GetOption(4) < worseOpt.GetOption(4)) return false;
 	}
 	// HP, HPP
-	if (CheckWhetherElementIsIn(5, effectiveList, effListSize))
+	if (CheckWhetherElementIsIn(5, effectiveSubStats))
 	{
 		double betterHPP = betterOpt.GetOption(5);
 		double betterHP = betterOpt.GetOption(6);
 		double worseHPP = worseOpt.GetOption(5);
 		double worseHP = worseOpt.GetOption(6);
-		double betterTotHPeffection = betterHPP * effectiveList[2] + betterHP * effectiveList[3];
-		double worseTotHPeffection = worseHPP * effectiveList[2] + worseHP * effectiveList[3];
+		double betterTotHPeffection = betterHPP * effectiveAmount[2] + betterHP * effectiveAmount[3];
+		double worseTotHPeffection = worseHPP * effectiveAmount[2] + worseHP * effectiveAmount[3];
 		if (betterTotHPeffection < worseTotHPeffection) return false;
 	}
 	// EM
-	if (CheckWhetherElementIsIn(7, effectiveList, effListSize))
+	if (CheckWhetherElementIsIn(7, effectiveSubStats))
 	{
 		if (betterOpt.GetOption(7) < worseOpt.GetOption(7)) return false;
 	}
 	// DEF, DP
-	if (CheckWhetherElementIsIn(8, effectiveList, effListSize))
+	if (CheckWhetherElementIsIn(8, effectiveSubStats))
 	{
-		double betterDP = betterOpt.GetOption(2);
-		double betterDEF = betterOpt.GetOption(3);
-		double worseDP = worseOpt.GetOption(2);
-		double worseDEF = worseOpt.GetOption(3);
-		double betterTotDEFeffection = betterDP * effectiveList[2] + betterDEF * effectiveList[3];
-		double worseTotDEFeffection = worseDP * effectiveList[2] + worseDEF * effectiveList[3];
+		double betterDP = betterOpt.GetOption(8);
+		double betterDEF = betterOpt.GetOption(9);
+		double worseDP = worseOpt.GetOption(8);
+		double worseDEF = worseOpt.GetOption(9);
+		double betterTotDEFeffection = betterDP * effectiveAmount[8] + betterDEF * effectiveAmount[8];
+		double worseTotDEFeffection = worseDP * effectiveAmount[9] + worseDEF * effectiveAmount[9];
 		if (betterTotDEFeffection < worseTotDEFeffection) return false;
 	}
 	return true;
@@ -225,7 +224,7 @@ void AppendArtifactList(std::shared_ptr<Artifact> gennedArtifact, SuperArtifactL
 	else if (numType == 5) ArtifactSuperList.crown.emplace_back(std::dynamic_pointer_cast<ArtCrown>(gennedArtifact));
 	else
 	{
-		std::cout << "Error : gennedArtifact has wrong Type (@ AppendArtifactList)" << std::endl; 
+		assert(false && "Error : gennedArtifact has wrong Type (@ AppendArtifactList)");
 	}
 }
 
@@ -671,8 +670,8 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	}
 	
 
-	// �뜝�럩逾졾뜝�럥援뜹뜝�룞�삕�뜝占� �뤆�룄�궖��뚳옙 �뜝�럥苡뷴뜝�럩�읉�뜝�럥援� �뜝�럥�닱�뜝�럥�뱺�뜝�럡�맋 SimulationWorker占쎈ご�뜝占� �뛾�룇裕녺뙴�쉻�삕�뇡�냲�삕占쎈펲.
-	// SimulationWorker�뜝�럥裕� 2d-Histogram�뜝�럩諭� simulatorVector[i]�뜝�럥�뱺 �뜝�럡�뀣�뼨轅명�쀯옙占쏙옙 �썒�슣�윥占쎈츎�뜝�럥堉�.
+	// �뜝�럥�맶�뜝�럥�쑋占쏙옙�뼚짹占쎌맶�뜝�럥�쑅占쎈쨨占쎌몱占쎌맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶占쎈쐻�뜝占� �뜝�럥夷у뜝�럥利꿨뜝�럡�뀪�뜝�룞�삕占쎌뒱占쎌굲 �뜝�럥�맶�뜝�럥�쑅占쎈뼀�뀎����맶�뜝�럥�쑋�뜝�럩�벂�뜝�럥�맶�뜝�럥�쑅占쎈쨨�뜝占� �뜝�럥�맶�뜝�럥�쑅�뜝�럥�뼓�뜝�럥�맶�뜝�럥�쑅�뜝�럥援겼뜝�럥�맶�뜝�럥�쐾�뜝�럥彛� SimulationWorker占쎈쐻占쎈윥占쎄괴�뜝�럥�맶占쎈쐻�뜝占� �뜝�럥�럸�뜝�럥利든뜏類ｋ걝占쎌���뜝�럩�뤈�뜝�럩援꿨뜝�럥����뜝�럥爰뗥뜝�럩援뀐옙�쐻占쎈윥占쎈젩.
+	// SimulationWorker�뜝�럥�맶�뜝�럥�쑅�뜏類㏃삕 2d-Histogram�뜝�럥�맶�뜝�럥�쑋�뛾占썲뜝占� simulatorVector[i]�뜝�럥�맶�뜝�럥�쑅�뜝�럥援� �뜝�럥�맶�뜝�럥�쐾�뜝�럥占쏙퐦�삕�젆�몼�맀筌뤿굢�삕占쏙옙占쏙옙�굲占쎈쐻占쎈짗占쎌굲 �뜝�럩�쐪�뜝�럩�뮝�뜝�럩�몗占쎈쐻占쎈윥筌λ〕�삕占쎌맶�뜝�럥�쑅占쎌젂�뜝占�.
 	std::vector<std::thread> threads;
 	for (int i = 0; i < mNumThread; i++)
 	{
@@ -695,7 +694,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 			printToCoordinates(11, 1 + FIRSTCOLUMNWIDTH + i * COLUMNWIDTH, "|%.1f s", simulatorVector[i].GetCalLoopTimeList(1));
 	}
 
-	// �뜝�럡臾멨뜝�럡�뎽�뜝�럥彛� AppendRate�뜝�럥利� �뜝�럥�뿰�뼨轅명�▽빳占� �뜝�럡�맂�뇦爰용쳛�뜝�룞�삕�뜝�럥堉�.
+	// �뜝�럥�맶�뜝�럥�쐾占쎈닱筌롡뫀�맶�뜝�럥�쐾�뜝�럥�젾�뜝�럥�맶�뜝�럥�쑅鶯ㅼ룊�삕 AppendRate�뜝�럥�맶�뜝�럥�쑅嶺뚯빢�삕 �뜝�럥�맶�뜝�럥�쑅�뜝�럥�뿼�뜝�럥���耀붾굝梨멨뜝�뜦堉븅뜮�뀘�쐻�뜝占� �뜝�럥�맶�뜝�럥�쐾�뜝�럥彛녶뜝�럥�늾占쎈뙀占쎌뒠�댚�룊�삕占쎌맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥�쑅占쎌젂�뜝占�.
 	std::vector<double> tempVector(artifactNum);
 	for (int i = 0; i < mNumThread; i++)
 	{
