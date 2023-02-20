@@ -590,15 +590,15 @@ double Simulator::CalLoopArtifact_jangddolScore(SuperArtifactList& loopList, Art
 	double tempDamage;
 	double bestDamage = 0;
 
-	std::for_each(loopList.crown.begin(), loopList.crown.end(), [&](ArtCrown* crown) {
+	std::for_each(loopList.crown.begin(), loopList.crown.end(), [&](std::shared_ptr<ArtCrown> crown) {
         mCharacter->SetArtCrown(crown);
-		std::for_each(loopList.cup.begin(), loopList.cup.end(), [&](ArtCup* cup) {
+		std::for_each(loopList.cup.begin(), loopList.cup.end(), [&](std::shared_ptr<ArtCup> cup) {
             mCharacter->SetArtCup(cup);
-			std::for_each(loopList.clock.begin(), loopList.clock.end(), [&](ArtClock* clock) {
+			std::for_each(loopList.clock.begin(), loopList.clock.end(), [&](std::shared_ptr<ArtClock> clock) {
                 mCharacter->SetArtClock(clock);
-				std::for_each(loopList.feather.begin(), loopList.feather.end(), [&](ArtFeather* feather) {
+				std::for_each(loopList.feather.begin(), loopList.feather.end(), [&](std::shared_ptr<ArtFeather> feather) {
                     mCharacter->SetArtFeather(feather);
-					std::for_each(loopList.flower.begin(), loopList.flower.end(), [&](ArtFlower* flower) {
+					std::for_each(loopList.flower.begin(), loopList.flower.end(), [&](std::shared_ptr<ArtFlower> flower) {
                         mCharacter->SetArtFlower(flower);
 						
 						// Initialize the character
@@ -974,8 +974,8 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 	}
 	
 
-	// 이들은 각각 쓰레드 안에서 SimulationWorker를 발동한다.
-	// SimulationWorker는 2d-Histogram을 simulatorVector[i]에 남기고 죽는다.
+	// �씠�뱾��� 媛곴컖 �벐�젅�뱶 �븞�뿉�꽌 SimulationWorker瑜� 諛쒕룞�븳�떎.
+	// SimulationWorker�뒗 2d-Histogram�쓣 simulatorVector[i]�뿉 �궓湲곌퀬 二쎈뒗�떎.
 	std::vector<std::thread> threads;
 	for (int i = 0; i < mNumThread; i++)
 	{
@@ -998,7 +998,7 @@ TH2D* Simulator::RunSimulationMultiThreads(int simNum, int artifactNum, int binN
 			printToCoordinates(11, 1 + FIRSTCOLUMNWIDTH + i * COLUMNWIDTH, "|%.1f s", simulatorVector[i].GetCalLoopTimeList(1));
 	}
 
-	// 생성된 AppendRate도 여기로 넘겨준다.
+	// �깮�꽦�맂 AppendRate�룄 �뿬湲곕줈 �꽆寃⑥���떎.
 	std::vector<double> tempVector(artifactNum);
 	for (int i = 0; i < mNumThread; i++)
 	{
