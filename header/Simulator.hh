@@ -19,22 +19,6 @@ struct ArtifactBundle
 };
 
 
-class SuperArtifactList
-{
-public:
-    SuperArtifactList() { Clear(); }
-    ~SuperArtifactList() {}
-
-    void Clear() { flower = {}; feather = {}; clock = {}; cup = {}; crown = {};}
-
-	std::vector<std::shared_ptr<ArtFlower>> flower;
-	std::vector<std::shared_ptr<ArtFeather>> feather;
-	std::vector<std::shared_ptr<ArtClock>> clock;
-	std::vector<std::shared_ptr<ArtCup>> cup;
-	std::vector<std::shared_ptr<ArtCrown>> crown;
-};
-
-
 enum ScoreIndex
 {
     DAMAGE,
@@ -72,10 +56,10 @@ public:
 
 private:
     ScoreIndex mScoreIndex = DAMAGE;
-    double CalLoopArtifact_Damage(SuperArtifactList& loopList, ArtifactBundle& bestTryArtifacts);
-    double CalLoopArtifact_jangddolScore(SuperArtifactList& loopList, ArtifactBundle& bestTryArtifacts);
-    double CalLoopArtifact_MonkeyMagicScore(SuperArtifactList& loopList, ArtifactBundle& bestTryArtifacts);
-    double CalLoopArtifact(std::shared_ptr<Artifact> gennedArtifact, SuperArtifactList& ArtifactSuperList,
+    double CalLoopArtifact_Damage(std::array<std::vector<std::shared_ptr<Artifact>>, 5>& loopList, ArtifactBundle& bestTryArtifacts);
+    double CalLoopArtifact_jangddolScore(std::array<std::vector<std::shared_ptr<Artifact>>, 5>& loopList, ArtifactBundle& bestTryArtifacts);
+    double CalLoopArtifact_MonkeyMagicScore(std::array<std::vector<std::shared_ptr<Artifact>>, 5>& loopList, ArtifactBundle& bestTryArtifacts);
+    double CalLoopArtifact(std::shared_ptr<Artifact> gennedArtifact, std::array<std::vector<std::shared_ptr<Artifact>>, 5>& ArtifactSuperList,
                             ArtifactBundle& bestTryArtifacts);
 
     void PrintLastArtifacts(int trialNum, double bestDamage, const ArtifactBundle& bestArtifacts) const;
