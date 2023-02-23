@@ -25,17 +25,11 @@ void ArtSetStat::DeleteCharacterPointer(const Character* character)
 
 bool ArtSetStat::IsUsingThis(const Character* character) const
 {
-	bool returnBool = false;
-	std::size_t length = mCharactersUsingThis.size();
-	for (std::size_t i = 0; i < length; i++)
+	for (const Character* chr: mCharactersUsingThis)
 	{
-		if (character == mCharactersUsingThis[i])
-		{
-			returnBool = true;
-			break;
-		}
+		if (character == chr) return true;
 	}
-	return returnBool;
+	return false;
 }
 
 
