@@ -114,32 +114,24 @@ bool Artifact::Selected3or4OptStart()
 
 bool Artifact::IsUsingThis(const Character* character) const
 {
-	bool returnBool = false;
-	int length = mCharactersUsingThis.size();
-	for (std::size_t i = 0; i < length; i++)
+	for (const Character* chr: mCharactersUsingThis)
 	{
-		if (character == mCharactersUsingThis[i])
-		{
-			returnBool = true;
-			break;
-		}
+		if (character == chr) return true;
 	}
-	return returnBool;
+	return false;
 }
 
 
 bool CheckIsThereIn(int element, const std::array<int, 4>& list)
 {
-	bool returnBool = false;
 	for (std::size_t i = 0; i < 4; i++)
 	{
 		if (element == list[i])
 		{
-			returnBool = true;
-			break;
+			return true;
 		}
 	}
-	return returnBool;
+	return false;
 }
 
 
