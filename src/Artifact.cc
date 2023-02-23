@@ -94,12 +94,6 @@ void Artifact::GenerateMainOption()
 
 std::vector<int> Artifact::GenerateCummulatedWeight()
 {	
-	// std::vector<int> returnList(10);
-	// for (std::size_t i = 0; i < 10; i++)
-	// {
-	// 	returnList[i] = SUBOPTPROB[i];
-	// } 
-
 	std::vector<int> returnList(SUBOPTPROB.begin(), SUBOPTPROB.end());
 
 	if ((mMainType >= 0) && (mMainType < 10) && (mMainType != 3) && (mMainType != 6)) returnList[mMainType] = 0;
