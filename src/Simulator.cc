@@ -53,44 +53,23 @@ bool CheckEffectiveOption(const std::shared_ptr<Character>& character, int index
 }
 
 
-bool CheckWhetherElementIsIn(int element, const std::vector<int>& List)
-{
-    for (const int& inList: List)
-    {
-        if (inList == element) return true;
-    }
-    return false;
-}
-
-
-bool CheckWhetherElementIsIn(int element, const std::array<double, 19>& List)
-{
-    for (int i = 0; i < 19; i++)
-    {
-        if (List[i] == element) return true;
-    }
-    return false;
-}
-
-
 bool CheckBetterSubOpt(const Stat& betterOpt, const Stat& worseOpt, std::shared_ptr<Character>& character)
 {
-	std::vector<int> effectiveSubStats = character->GetEffectiveSubStats();
 	std::array<double, 19> effectiveAmount;
 	for (int i = 0; i < 19; i++) effectiveAmount[i] = character->GetEffection(i);
 
 	// CR
-	if (CheckWhetherElementIsIn(0, effectiveSubStats))
+	if (CheckEffectiveOption(character, 0))
 	{
 		if (betterOpt.GetOption(0) < worseOpt.GetOption(0)) return false;
 	}
 	// CB
-	if (CheckWhetherElementIsIn(1, effectiveSubStats))
+	if (CheckEffectiveOption(character, 1))
 	{
 		if (betterOpt.GetOption(1) < worseOpt.GetOption(1)) return false;
 	}
 	// ATK, AP
-	if (CheckWhetherElementIsIn(2, effectiveSubStats))
+	if (CheckEffectiveOption(character, 2))
 	{
 		double betterAP = betterOpt.GetOption(2);
 		double betterATK = betterOpt.GetOption(3);
@@ -106,7 +85,7 @@ bool CheckBetterSubOpt(const Stat& betterOpt, const Stat& worseOpt, std::shared_
 		if (betterOpt.GetOption(4) < worseOpt.GetOption(4)) return false;
 	}
 	// HP, HPP
-	if (CheckWhetherElementIsIn(5, effectiveSubStats))
+	if (CheckEffectiveOption(character, 5))
 	{
 		double betterHPP = betterOpt.GetOption(5);
 		double betterHP = betterOpt.GetOption(6);
@@ -117,12 +96,12 @@ bool CheckBetterSubOpt(const Stat& betterOpt, const Stat& worseOpt, std::shared_
 		if (betterTotHPeffection < worseTotHPeffection) return false;
 	}
 	// EM
-	if (CheckWhetherElementIsIn(7, effectiveSubStats))
+	if (CheckEffectiveOption(character, 7))
 	{
 		if (betterOpt.GetOption(7) < worseOpt.GetOption(7)) return false;
 	}
 	// DEF, DP
-	if (CheckWhetherElementIsIn(8, effectiveSubStats))
+	if (CheckEffectiveOption(character, 8))
 	{
 		double betterDP = betterOpt.GetOption(8);
 		double betterDEF = betterOpt.GetOption(9);
