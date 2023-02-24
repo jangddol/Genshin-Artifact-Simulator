@@ -25,7 +25,6 @@ public:
     void   DeleteCharacterPointer(const Character* chraracter);
 
 	void   SetZero() {mStat.SetZero(); AlertModified(); }
-	void   Update() { mStat.Update(); AlertModified(); }
 
     Stat   GetStat() const { return mStat; }
 

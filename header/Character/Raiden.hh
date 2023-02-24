@@ -25,9 +25,9 @@ public:
 	}
 	Raiden(const Raiden* other) : Character(other) { Update(); }
 	Raiden(const Raiden& other) : Character(other) { Update(); }
-	Raiden(Raiden&& other) : Character(other) { Update(); }
+	Raiden(Raiden&& other) noexcept : Character(other) { Update(); }
 	Raiden& operator = (const Raiden& other) { return * this; }
-	Raiden& operator = (Raiden&& other) { return * this; }
+	Raiden& operator = (Raiden&& other) noexcept { return * this; }
 	virtual std::shared_ptr<Character> Clone_sharedptr() const override;
 	virtual ~Raiden() override;
 

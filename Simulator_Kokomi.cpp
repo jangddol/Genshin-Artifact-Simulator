@@ -2,10 +2,12 @@
 #include "TH2D.h"
 #include "TCanvas.h"
 #include "TFile.h"
-#include "TGraph.h"
 #include "TStyle.h"
 #include "TRandom.h"
+#include "TGraph.h"
+#include "TMath.h"
 #include "TF1.h"
+#include <thread>
 
 
 using namespace std;
@@ -19,49 +21,58 @@ double logXperX(double* x, double* p)
 
 void Simulator_Kokomi()
 {
-	gStyle->SetOptStat(kFALSE);
+	gStyle->SetOptStat(false);
 	gRandom->SetSeed(0);
 
-	EverlastingMoonglow* weapon = new EverlastingMoonglow();
-	cout << "weapon generated" << endl;
+	std::shared_ptr<EverlastingMoonglow> weapon = std::make_shared<EverlastingMoonglow>();
 
-	ArtFlower* artinit1 = new ArtFlower();
-	ArtFeather* artinit2 = new ArtFeather();
-	ArtClock* artinit3 = new ArtClock();
-	ArtCup* artinit4 = new ArtCup();
-	ArtCrown* artinit5 = new ArtCrown();
+	std::shared_ptr<ArtFlower> artinit1 = std::make_shared<ArtFlower>();
+	std::shared_ptr<ArtFeather> artinit2 = std::make_shared<ArtFeather>();
+	std::shared_ptr<ArtClock> artinit3 = std::make_shared<ArtClock>();
+	std::shared_ptr<ArtCup> artinit4 = std::make_shared<ArtCup>();
+	std::shared_ptr<ArtCrown> artinit5 = std::make_shared<ArtCrown>();
 
-	ArtSetStat* artSetStat = new ArtSetStat();
-    artSetStat->SetZero();
-    artSetStat->SetOption(18, 15);
+	std::shared_ptr<ArtSetStat> artSetStat = std::make_shared<ArtSetStat>();
+	artSetStat->SetOption(18, 15);
 
-	Character* simChar = new Kokomi(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
-	cout << "character generated" << endl;
-	
+	std::shared_ptr<Kokomi> simChar = std::make_shared<Kokomi>(weapon, artSetStat, artinit1, artinit2, artinit3, artinit4, artinit5);
 
-
-    Stat resonanceStat = Stat();
-    resonanceStat.SetZero();
-    simChar->SetResonanceStat(resonanceStat);
+	Stat resonanceStat = Stat();
+	resonanceStat.SetZero();
+	simChar->SetResonanceStat(resonanceStat);
 
 	simChar->MakeEffectionArray();
 
 	// simulation number
-	int simNum = 10;
-	
 	// the number of artifacts to get
-	constexpr int artifactNum = 900; // 4.7925 per day (150 ~ month)
-	
+	int simNum = 1000;
+	int artifactNum = 600; // 4.7925 per day (150 ~ month)
+
 	// maxDamage, binNum
 	int binNum = 100;
 	double minDamage = 100000.;
 	double maxDamage = 180000.;
 
-    Simulator* simulator = new Simulator();
-    simulator->SetCharacter(simChar);
+	Simulator* simulator = new Simulator();
+	simulator->SetCharacter(simChar);
+	// simulator->SetNumThread(8); default : max
+	simulator->SetSeeLastArtifact(false);
+	simulator->SetSeeTimeConsumption(true);
+	simulator->SetScoreIndexMode(JANGDDOL);
+	simulator->SetBundleNum(5);
 
-	// Plot Part
-	TH2D* VisualHistogram = simulator->RunSimulation(simNum, artifactNum, binNum, minDamage, maxDamage);
+	TH2D* VisualHistogram = simulator->RunSimulationMultiThreads(simNum, artifactNum, binNum, minDamage, maxDamage);
+	// TH2D* VisualHistogram = simulator->RunSimulation(simNum, artifactNum, binNum, minDamage, maxDamage, "");
+
+	int numContent = 0;
+	for (int i = 0; i < artifactNum; i++)
+	{
+		for (int j = 0; j < binNum; j++)
+		{
+			numContent += VisualHistogram->GetBinContent(i + 1, j + 1);
+		}
+	}
+	VisualHistogram->SetEntries(numContent);
 
 	// Set TGraph for appendableRate
 	vector<double> appendableRate = simulator->GetAppendableRate();
@@ -72,7 +83,7 @@ void Simulator_Kokomi()
 	}
 
 	// fitting
-	TF1* fitFunc1 = new TF1("fit2", logXperX, 100, artifactNum, 2);
+	TF1* fitFunc1 = new TF1("fit", logXperX, 100, artifactNum, 2);
 	fitFunc1->SetParameters(-1, 1);
 	fitFunc1->SetParNames("Power", "Amplitude");
 	gAR->Fit(fitFunc1);
@@ -92,21 +103,24 @@ void Simulator_Kokomi()
 	fitFunc1->SetLineColor(3);
 	fitFunc1->Draw("lSAME");
 
-	TCanvas* can2 = new TCanvas("canvas", "canvas", 1200, 800);
+
+	TCanvas* can2 = new TCanvas("Distribution", "Distribution", 1200, 800);
 	gPad->SetLeftMargin(0.12);
 	gPad->SetBottomMargin(0.12);
 	gPad->SetRightMargin(0.08);
 	gPad->SetTopMargin(0.05);
 
+	VisualHistogram->SetName("Visual");
 	VisualHistogram->GetXaxis()->SetTitle("The number of artifact to get");
 	VisualHistogram->GetYaxis()->SetTitle("Damage");
 	VisualHistogram->GetZaxis()->SetTitle("Count");
 	VisualHistogram->Draw("COL4Z");
-	
+
 	TFile* file = new TFile("GenshinArtifactSimulator_Kokomi.root", "recreate");
 	VisualHistogram->Write();
 	file->Close();
 }
+
 
 int main()
 {

@@ -60,27 +60,28 @@ public:
 	static std::vector<int> GetPossibleMainOption() { return {}; };
 
 protected:
-	int mType = 0;
 	std::vector<int> mProbabilityWeight;
 	std::vector<int> mCummulatedWeight;
+	int mType = 0;
 
 private:
 	void GenerateMainOption();
 	void GenerateSubOption();
 
-	int                UseCummulatedWeight(const std::vector<int>& cummulatedWeight);
-	std::vector<int>   GenerateCummulatedWeight();
-	bool               Selected3or4OptStart();
-	std::array<int, 4> GenerateStartOpt(const std::vector<int>& cummulatedWeight);
-	void               UpgradeSubOption(const std::array<int, 4>& startOptList, bool whether4OptStart);
-
-	void AlertModified();
-    std::vector<Character*> mCharactersUsingThis = {};
+	int                 UseCummulatedWeight(const std::vector<int>& cummulatedWeight);
+	int                 UseCummulatedWeight(const std::array<int, 10>& cummulatedWeight);
+	std::array<int, 10> GenerateCummulatedWeight();
+	bool                Selected3or4OptStart();
+	std::array<int, 4>  GenerateStartOpt(const std::array<int, 10>& cummulatedWeight);
+	void                UpgradeSubOption(const std::array<int, 4>& startOptList, bool whether4OptStart);
 
 	int mMainType = 0;
 
 	Stat mMainStat;
 	Stat mSubStat;
+
+	void AlertModified();
+    std::vector<Character*> mCharactersUsingThis = {};
 };
 
 

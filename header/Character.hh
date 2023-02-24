@@ -46,7 +46,7 @@ enum CharList
 };
 
 
-class Character : public std::enable_shared_from_this<Character>
+class Character
 {
 public:
 	Character(  std::shared_ptr<Weapon> weapon,
@@ -118,34 +118,34 @@ public:
 	std::shared_ptr<Weapon> GetWeapon()               { return mWeapon; }
 	WeaponList GetWeaponName() const;
 	std::shared_ptr<Weapon> CopyWeapon() const;
-	void    SetWeapon(std::shared_ptr<Weapon> weapon) { mWeapon = weapon; ConfirmWeaponStatModified(); }
+	void    SetWeapon(const std::shared_ptr<Weapon>& weapon) { mWeapon = weapon; ConfirmWeaponStatModified(); }
 
 	// ArtSetStat
 	std::shared_ptr<ArtSetStat> GetArtSetStat() { return mArtSetStat; }
 	std::shared_ptr<ArtSetStat> CopyArtSetStat() const;
-	void        SetArtSetStat(std::shared_ptr<ArtSetStat> stat);
+	void        SetArtSetStat(const std::shared_ptr<ArtSetStat>& stat);
 
 	// Artifact
-	void        SetArtifact(std::shared_ptr<ArtFlower> flower,
-							std::shared_ptr<ArtFeather> feather,
-							std::shared_ptr<ArtClock> clock,
-							std::shared_ptr<ArtCup> cup,
-							std::shared_ptr<ArtCrown> crown);
+	void        SetArtifact(const std::shared_ptr<ArtFlower>& flower,
+							const std::shared_ptr<ArtFeather>& feather,
+							const std::shared_ptr<ArtClock>& clock,
+							const std::shared_ptr<ArtCup>& cup,
+							const std::shared_ptr<ArtCrown>& crown);
 	std::shared_ptr<ArtFlower>  GetArtFlower() { return mArtFlower; }
 	std::shared_ptr<ArtFlower>  CopyArtFlower() const { return std::make_shared<ArtFlower>(mArtFlower.get()); }
-	void        SetArtFlower(std::shared_ptr<ArtFlower> artFlower);
+	void        SetArtFlower(const std::shared_ptr<ArtFlower>& artFlower);
 	std::shared_ptr<ArtFeather> GetArtFeather() { return mArtFeather; }
 	std::shared_ptr<ArtFeather> CopyArtFeather() const { return std::make_shared<ArtFeather>(mArtFeather.get()); }
-	void        SetArtFeather(std::shared_ptr<ArtFeather> artFeather);
+	void        SetArtFeather(const std::shared_ptr<ArtFeather>& artFeather);
 	std::shared_ptr<ArtClock>   GetArtClock() { return mArtClock; }
 	std::shared_ptr<ArtClock >  CopyArtClock() const { return std::make_shared<ArtClock>(mArtClock.get()); }
-	void        SetArtClock(std::shared_ptr<ArtClock> artClock);
+	void        SetArtClock(const std::shared_ptr<ArtClock>& artClock);
 	std::shared_ptr<ArtCup>     GetArtCup() { return mArtCup; }
 	std::shared_ptr<ArtCup>     CopyArtCup() const { return std::make_shared<ArtCup>(mArtCup.get()); }
-	void        SetArtCup(std::shared_ptr<ArtCup> artCup);
+	void        SetArtCup(const std::shared_ptr<ArtCup>& artCup);
 	std::shared_ptr<ArtCrown>   GetArtCrown() { return mArtCrown; }
 	std::shared_ptr<ArtCrown>   CopyArtCrown() const { return std::make_shared<ArtCrown>(mArtCrown.get()); }
-	void        SetArtCrown(std::shared_ptr<ArtCrown> artCrown);
+	void        SetArtCrown(const std::shared_ptr<ArtCrown>& artCrown);
 
 	// TargetEC
 	double GetTargetEC() const          { return mTargetEC; }
@@ -182,12 +182,13 @@ private:
 	void UpdateFromArtifactSubStat();
 	void UpdateFromArtifactSubStatFast();
 	void UpdateFromFeedback();
+
+	int  mUpdateState = 0;
 	Stat mStatAfterUpdateFromCharacterResonance; // never do initialization
 	Stat mStatAfterUpdateFromWeapon; // never do initialization
 	Stat mStatAfterUpdateFromArtSetStat; // never do initialization
 	Stat mStatAfterUpdateFromArtifactMainStat; // never do initialization
 	Stat mStatAfterUpdateFromArtifactSubStat; // never do initialization
-	int  mUpdateState = 0;
 
 	constexpr static int CHARACTERRESONANCEUPDATED = 1;
     constexpr static int WEAPONSTATUPDATED = 2;

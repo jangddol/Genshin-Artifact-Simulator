@@ -6,7 +6,7 @@
 
 void PrintStat(const Stat& stat) {
     int category_column_widths = 0;
-    for (int i = 0; i < 35; i++) {
+    for (std::size_t i = 0; i < 35; i++) {
         int category_width = STATSTRING[i].length();
         if (category_width > category_column_widths) {
             category_column_widths = category_width;
@@ -17,21 +17,21 @@ void PrintStat(const Stat& stat) {
     for (int i = 0; i < 6; i++) {
         std::cout << std::left << std::setw(category_column_widths) << STATSTRING[i] << " : ";
         std::cout << std::left << std::setw(value_column_widths) << std::setprecision(2) << std::fixed << stat.GetOption(i);
-        std::cout << std::left << std::setw(category_column_widths) << STATSTRING[i+10] << " : ";
-        std::cout << std::left << std::setw(value_column_widths) << std::setprecision(2) << std::fixed << stat.GetOption(i+10);
-        std::cout << std::left << std::setw(category_column_widths) << STATSTRING[i+19] << " : ";
-        std::cout << std::left << std::setw(value_column_widths) << std::setprecision(2) << std::fixed << stat.GetOption(i+19);
-        std::cout << std::left << std::setw(category_column_widths) << STATSTRING[i+29] << " : ";
-        std::cout << std::left << std::setw(value_column_widths) << std::setprecision(2) << std::fixed << stat.GetOption(i+29);
+        std::cout << std::left << std::setw(category_column_widths) << STATSTRING[i + 10] << " : ";
+        std::cout << std::left << std::setw(value_column_widths) << std::setprecision(2) << std::fixed << stat.GetOption(i + 10);
+        std::cout << std::left << std::setw(category_column_widths) << STATSTRING[i + 19] << " : ";
+        std::cout << std::left << std::setw(value_column_widths) << std::setprecision(2) << std::fixed << stat.GetOption(i + 19);
+        std::cout << std::left << std::setw(category_column_widths) << STATSTRING[i + 29] << " : ";
+        std::cout << std::left << std::setw(value_column_widths) << std::setprecision(2) << std::fixed << stat.GetOption(i + 29);
         std::cout << std::endl;
     }
     for (int i = 6; i < 9; i++) {
         std::cout << std::left << std::setw(category_column_widths) << STATSTRING[i] << " : ";
         std::cout << std::left << std::setw(value_column_widths) << std::setprecision(2) << std::fixed << stat.GetOption(i);
-        std::cout << std::left << std::setw(category_column_widths) << STATSTRING[i+10] << " : ";
-        std::cout << std::left << std::setw(value_column_widths) << std::setprecision(2) << std::fixed << stat.GetOption(i+10);
-        std::cout << std::left << std::setw(category_column_widths) << STATSTRING[i+19] << " : ";
-        std::cout << std::left << std::setw(value_column_widths) << std::setprecision(2) << std::fixed << stat.GetOption(i+19);
+        std::cout << std::left << std::setw(category_column_widths) << STATSTRING[i + 10] << " : ";
+        std::cout << std::left << std::setw(value_column_widths) << std::setprecision(2) << std::fixed << stat.GetOption(i + 10);
+        std::cout << std::left << std::setw(category_column_widths) << STATSTRING[i + 19] << " : ";
+        std::cout << std::left << std::setw(value_column_widths) << std::setprecision(2) << std::fixed << stat.GetOption(i + 19);
         std::cout << std::endl;
     }
     std::cout << std::left << std::setw(category_column_widths) << STATSTRING[9] << " : ";

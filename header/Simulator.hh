@@ -78,12 +78,12 @@ private:
     
     int mNumThread;
 
+    void SetWorkerID(int workerID) { mWorkerID = workerID; }
+    int mWorkerID = 1;
+
     bool mSeeLastArtifact = false;
     bool mSeeTimeConsumption = false;
     bool mWorkerMode = false;
-
-    void SetWorkerID(int workerID) { mWorkerID = workerID; }
-    int mWorkerID = 1;
 
     TH2D* mSimulationResult;
 

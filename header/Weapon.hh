@@ -42,10 +42,10 @@ public:
 	WeaponList GetName() const { return mWeaponName; }
 	
 protected:
-	WeaponList mWeaponName;
 	Stat mMainStat;
 	Stat mSubStat;
 	Stat mSubSubStat;
+	WeaponList mWeaponName;
 };
 
 

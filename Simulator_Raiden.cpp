@@ -4,10 +4,19 @@
 #include "TFile.h"
 #include "TStyle.h"
 #include "TRandom.h"
+#include "TGraph.h"
+#include "TMath.h"
+#include "TF1.h"
 #include <thread>
 
 
 using namespace std;
+
+
+double logXperX(double* x, double* p)
+{
+	return p[1] * TMath::Log(x[0]) * TMath::Power(x[0], p[0]);
+}
 
 
 void Simulator_Raiden()
@@ -36,8 +45,8 @@ void Simulator_Raiden()
 
 	// simulation number
 	// the number of artifacts to get
-	int simNum = 1000;
-	int artifactNum = 900; // 4.7925 per day (150 ~ month)
+	int simNum = 10000;
+	int artifactNum = 600; // 4.7925 per day (150 ~ month)
 
 	// maxDamage, binNum
 	int binNum = 100;
@@ -65,11 +74,41 @@ void Simulator_Raiden()
 	}
 	VisualHistogram->SetEntries(numContent);
 
-	TCanvas* can1 = new TCanvas("canvas", "canvas", 1200, 800);
-	can1->SetLeftMargin(0.12);
-	can1->SetBottomMargin(0.12);
-	can1->SetRightMargin(0.08);
-	can1->SetTopMargin(0.05);
+	// Set TGraph for appendableRate
+	vector<double> appendableRate = simulator->GetAppendableRate();
+	TGraph* gAR = new TGraph();
+	for (int i = 0; i < appendableRate.size(); i++)
+	{
+		gAR->SetPoint(i, (double)(i + 1), appendableRate[i]);
+	}
+
+	// fitting
+	TF1* fitFunc1 = new TF1("fit", logXperX, 100, artifactNum, 2);
+	fitFunc1->SetParameters(-1, 1);
+	fitFunc1->SetParNames("Power", "Amplitude");
+	gAR->Fit(fitFunc1);
+
+	// Plot part
+	TCanvas* can1 = new TCanvas("appendableRate", "appendableRate", 1200, 800);
+	gPad->SetLeftMargin(0.12);
+	gPad->SetBottomMargin(0.12);
+	gPad->SetRightMargin(0.08);
+	gPad->SetTopMargin(0.05);
+
+	TH1D* hFrame = new TH1D("hFrame", "", 100, 0, artifactNum);
+	hFrame->GetXaxis()->SetTitle("artifact number");
+	hFrame->GetYaxis()->SetTitle("appendable Rate");
+	hFrame->Draw();
+	gAR->Draw("lSAME");
+	fitFunc1->SetLineColor(3);
+	fitFunc1->Draw("lSAME");
+
+
+	TCanvas* can2 = new TCanvas("Distribution", "Distribution", 1200, 800);
+	gPad->SetLeftMargin(0.12);
+	gPad->SetBottomMargin(0.12);
+	gPad->SetRightMargin(0.08);
+	gPad->SetTopMargin(0.05);
 	
 	VisualHistogram->SetName("Visual");
 	VisualHistogram->GetXaxis()->SetTitle("The number of artifact to get");
