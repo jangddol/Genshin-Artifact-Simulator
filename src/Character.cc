@@ -398,7 +398,7 @@ void Character::SetBasicCharacterStat()
 }
 
 
-int FindNthLargestOption(std::array<double, 10> damArray, const int nth)
+int FindNthLargestOption(const std::array<double, 10>& damArray, const int nth)
 {
     if(nth == 1)
     {
@@ -666,7 +666,7 @@ std::shared_ptr<Weapon> Character::CopyWeapon() const
 }
 
 
-void Character::SetArtSetStat(std::shared_ptr<ArtSetStat> artSetStat)
+void Character::SetArtSetStat(const std::shared_ptr<ArtSetStat>& artSetStat)
 {
     if (mArtSetStat) mArtSetStat->DeleteCharacterPointer(this);
     mArtSetStat = artSetStat;
@@ -681,7 +681,7 @@ std::shared_ptr<ArtSetStat> Character::CopyArtSetStat() const
 }
 
 
-void Character::SetArtFlower(std::shared_ptr<ArtFlower> artFlower)
+void Character::SetArtFlower(const std::shared_ptr<ArtFlower>& artFlower)
 {
     if (mIsManualMode)
     {
@@ -696,7 +696,7 @@ void Character::SetArtFlower(std::shared_ptr<ArtFlower> artFlower)
 }
 
 
-void Character::SetArtFeather(std::shared_ptr<ArtFeather> artFeather)
+void Character::SetArtFeather(const std::shared_ptr<ArtFeather>& artFeather)
 {
     if (mIsManualMode)
     {
@@ -711,7 +711,7 @@ void Character::SetArtFeather(std::shared_ptr<ArtFeather> artFeather)
 }
 
 
-void Character::SetArtClock(std::shared_ptr<ArtClock> artClock)
+void Character::SetArtClock(const std::shared_ptr<ArtClock>& artClock)
 {
     if (mIsManualMode)
     {
@@ -726,7 +726,7 @@ void Character::SetArtClock(std::shared_ptr<ArtClock> artClock)
 }
 
 
-void Character::SetArtCup(std::shared_ptr<ArtCup> artCup)
+void Character::SetArtCup(const std::shared_ptr<ArtCup>& artCup)
 {
     if (mIsManualMode)
     {
@@ -741,7 +741,7 @@ void Character::SetArtCup(std::shared_ptr<ArtCup> artCup)
 }
 
 
-void Character::SetArtCrown(std::shared_ptr<ArtCrown> artCrown)
+void Character::SetArtCrown(const std::shared_ptr<ArtCrown>& artCrown)
 {
     if (mIsManualMode)
     {
@@ -756,7 +756,11 @@ void Character::SetArtCrown(std::shared_ptr<ArtCrown> artCrown)
 }
 
 
-void Character::SetArtifact(std::shared_ptr<ArtFlower> flower, std::shared_ptr<ArtFeather> feather, std::shared_ptr<ArtClock> clock, std::shared_ptr<ArtCup> cup, std::shared_ptr<ArtCrown> crown)
+void Character::SetArtifact(const std::shared_ptr<ArtFlower>& flower,
+                            const std::shared_ptr<ArtFeather>& feather,
+                            const std::shared_ptr<ArtClock>& clock,
+                            const std::shared_ptr<ArtCup>& cup,
+                            const std::shared_ptr<ArtCrown>& crown)
 {
 	SetArtFlower(flower);
     SetArtFeather(feather);
