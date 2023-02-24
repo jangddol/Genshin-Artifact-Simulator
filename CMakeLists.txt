@@ -92,3 +92,34 @@ target_link_libraries(test_Raiden PUBLIC
         ROOT::MathCore
         ROOT::Thread
         ROOT::ROOTDataFrame)
+
+add_executable(Simulator_Kokomi Simulator_Kokomi.cpp 
+                        ${SOURCES} 
+                        ${SOURCES_CHARACTER} 
+                        ${SOURCES_SKILL} 
+                        ${HEADERS} 
+                        ${HEADERS_ARTIFACT} 
+                        ${HEADERS_ARTSETSTAT} 
+                        ${HEADERS_CHARACTER} 
+                        ${HEADERS_SKILL} 
+                        ${HEADERS_WEAPON} )
+
+target_link_libraries(Simulator_Kokomi PUBLIC
+        ROOT::Core
+        ROOT::Imt
+        ROOT::RIO
+        ROOT::Net
+        ROOT::Hist
+        ROOT::Graf
+        ROOT::Graf3d
+        ROOT::Gpad
+        ROOT::ROOTVecOps
+        ROOT::Tree
+        ROOT::TreePlayer
+        ROOT::Rint
+        ROOT::Postscript
+        ROOT::Matrix
+        ROOT::Physics
+        ROOT::MathCore
+        ROOT::Thread
+        ROOT::ROOTDataFrame)
